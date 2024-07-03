@@ -86,9 +86,17 @@ void System_init(void)
 `system.getTemplate(sciclientInitTemplate)()`
 % }
 
+% if (common.getSocName() == "am65x"){
+% if ( boot_module == undefined) {
     `system.getTemplate("/kernel/dpl/pmu_init.c.xdt")()`
 
     PowerClock_init();
+% }
+% } else {
+    `system.getTemplate("/kernel/dpl/pmu_init.c.xdt")()`
+
+    PowerClock_init();
+% }
     /* Now we can do pinmux */
     Pinmux_init();
     /* finally we initialize all peripheral drivers */
@@ -129,6 +137,17 @@ void System_deinit(void)
 % }
     Dpl_deinit();
 }
+% if ((common.getSocName() == "am65x") && boot_module != undefined){
+void System_lateInit()
+{
+    /* initialize Clock */
+    ClockP_init();
+
+    PowerClock_init();
+
+    DDR_init();
+}
+% }
 % if ((common.getSocName() == "am65x") && boot_module == undefined){
 void CopyVecsToATCMmem()
 {

@@ -3,6 +3,7 @@
     let soc = system.getScript(`/drivers/soc/drivers_${common.getSocName()}`);
     let uartUdmaInstances = [];
     let driverVer = soc.getDriverVer("uart");
+    let boot_module = system.modules["/drivers/bootloader/bootloader"];
     let module = system.modules['/drivers/uart/uart'];
     for(let i=0; i < module.$instances.length; i++) {
         let instance = module.$instances[i];
@@ -167,7 +168,11 @@ UART_Params gUartParams[CONFIG_UART_NUM_INSTANCES] =
             .hwFlowControl      = `config.hwFlowControl.toString(10).toUpperCase()`,
             .hwFlowControlThr   = UART_RXTRIGLVL_`config.hwFlowControlThr`,
             % if(config.intrEnable == "DISABLE") {
+            % if ((common.getSocName() == "am65x") && boot_module != undefined){
+            .transferMode       = UART_CONFIG_MODE_POLLED_WITH_COUNTER,
+            % }else{
             .transferMode       = UART_CONFIG_MODE_POLLED,
+            % }
             .skipIntrReg        = FALSE,
             % }
             % if(config.intrEnable == "ENABLE") {

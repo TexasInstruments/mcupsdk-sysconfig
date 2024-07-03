@@ -20,7 +20,7 @@ function getConfig(){
         {
             name: "bootMedia",
             displayName: "Boot Media",
-            default: "FLASH",
+            default: getDefaultBootMedia(),
             options: soc.getBootMediaArr(),
             onChange: function (inst, ui) {
                 /* appImageOffset applicable only for OSPI Flash boot */
@@ -240,6 +240,13 @@ function validate(inst, report) {
             report.logError("Boot Image Offset should be a hexadecimal number and should start with 0x",inst, "EMMCAppImageOffset");
         }
     }
+}
+
+function getDefaultBootMedia(){
+    if(common.getSocName() == "am65x")
+        return "MEM"
+    else
+        return "FLASH"
 }
 
 exports = bootloader_module;

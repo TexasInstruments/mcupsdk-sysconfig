@@ -3,6 +3,9 @@
     let instance = module.$instances[0];
     let config = module.getInstanceConfig(instance);
 %%}
+%%{
+    let common = system.getScript("/common");
+%%}
 /* DDR */
 
 /* DDR register config .h file as generated from DDR SUBSYSTEM REGISTER CONFIGURATION tool
@@ -40,6 +43,7 @@ DDR_EccRegion gDdrEccRegion =
 };
 
 % }
+%if((common.getSocName() != "am65x")){
 static DDR_Params gDdrParams =
 {
     /* below values are set using the globals defined in `config.ddrConfigIncludeFileName` */
@@ -63,3 +67,4 @@ static DDR_Params gDdrParams =
     .eccRegion = NULL,
 % }
 };
+% }

@@ -4,6 +4,8 @@
     let config = module.getInstanceConfig(instance);
     let lockUnLockArgs = module.getInstanceConfig(instance);
     let cpuName = system.getScript('/common').getSelfSysCfgCoreName();
+    let common = system.getScript("/common");
+    let boot_module = system.modules["/drivers/bootloader/bootloader"];
 %%}
 % if (! config.disableClkSourceConfig) {
     /* set timer clock source */
@@ -17,8 +19,15 @@
     {
 
 % }
+% if (common.getSocName() == "am65x"){
+% if ( boot_module == undefined){
     /* initialize Clock */
     ClockP_init();
+% }
+% } else {
+    /* initialize Clock */
+    ClockP_init();
+% }
 
 % if(cpuName.match(/a53/)) {
 

@@ -60,6 +60,9 @@ extern "C" {
  */
 void System_init(void);
 void System_deinit(void);
+% if ((common.getSocName() == "am65x") && boot_module != undefined){
+void System_lateInit();
+% }
 % if ((common.getSocName() == "am65x") && boot_module == undefined){
 void CopyVecsToATCMmem(void);
 %}

@@ -1,4 +1,12 @@
 %%{
     let module = system.modules['/drivers/ddr/ddr'];
+    let common = system.getScript("/common");
+    let boot_module = system.modules["/drivers/bootloader/bootloader"];
 %%}
-	DDR_init(&gDdrParams);
+% if (common.getSocName() == "am65x"){
+% if ( boot_module == undefined){
+    DDR_init();
+% }
+% } else {
+    DDR_init(&gDdrParams);
+% }
