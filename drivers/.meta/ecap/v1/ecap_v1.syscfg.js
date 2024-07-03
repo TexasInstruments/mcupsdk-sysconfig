@@ -312,6 +312,10 @@ let config = [
             {name: "ECAP_ISR_SOURCE_CAPTURE_EVENT_3", displayName: "Event 3 ISR source"},
             {name: "ECAP_ISR_SOURCE_CAPTURE_EVENT_4", displayName: "Event 4 ISR source"},
             {name: "ECAP_ISR_SOURCE_COUNTER_OVERFLOW", displayName: "Counter overflow ISR source"},
+            {name: "ECAP_ISR_SOURCE_MUNIT_1_ERROR_EVT1", displayName: "Signal Monitor 1 Error 1"},
+            {name: "ECAP_ISR_SOURCE_MUNIT_1_ERROR_EVT2", displayName: "Signal Monitor 1 Error 2"},
+            {name: "ECAP_ISR_SOURCE_MUNIT_2_ERROR_EVT1", displayName: "Signal Monitor 2 Error 1"},
+            {name: "ECAP_ISR_SOURCE_MUNIT_2_ERROR_EVT2", displayName: "Signal Monitor 2 Error 2"},
         ],
     },
     {
