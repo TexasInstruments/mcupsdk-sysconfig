@@ -2,6 +2,9 @@
 let common = system.getScript("/common");
 
 const driverVer = {
+    "ddr": {
+        version: "v0",
+    },
     "gpio": {
         version: "v0_1",
     },
@@ -17,6 +20,7 @@ const driverVer = {
 };
 
 const topModules = [
+    "/drivers/ddr/ddr",
     "/drivers/gpio/gpio",
     "/drivers/i2c/i2c",
     "/drivers/uart/uart",
