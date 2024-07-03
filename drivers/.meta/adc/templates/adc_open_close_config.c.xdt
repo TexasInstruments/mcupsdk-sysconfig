@@ -40,7 +40,7 @@ void Drivers_adcOpen()
 		% }
 	/* Sets the timing of the end-of-conversion pulse */
 	ADC_setInterruptPulseMode(`baseName`, `instance.interruptPulseMode`);
-        % if (common.getSocName() === "am263px"){
+        % if( (common.getSocName() === "am263px") || (common.getSocName() == "am261x")){
             % if(instance.interruptPulseMode == "ADC_PULSE_END_OF_ACQ_WIN"){
     //
     // Sets the timing of early interrupt generation.
@@ -97,14 +97,14 @@ void Drivers_adcOpen()
 	/* Disables continuous mode for an ADC interrupt. */
 	ADC_disableContinuousMode(`baseName`, `intNumber-1`);
 			% }
-            % if (common.getSocName() === "am263px"){
+            % if( (common.getSocName() === "am263px") || (common.getSocName() == "am261x")){
                 % if(instance["interrupt"+intNumber+"SOCSource"] == "ADC_INT_TRIGGER_OSINT"+intNumber){
     ADC_selectPPBOSINTSource (`baseName`,`intNumber-1`,`instance["ppb"+intNumber+"SelectOSINTSource"]`);
                 % }
             % }
 		% }
 
-            % if (common.getSocName() === "am263px"){
+            % if( (common.getSocName() === "am263px") || (common.getSocName() == "am261x")){
                 % let sociTotal = 16
 		        % for(let socNumber = 0; socNumber < sociTotal; socNumber++) {
                     % if(instance["soc" + socNumber.toString() + "Triggermode"] == "repeatermode"){
@@ -257,7 +257,7 @@ void Drivers_adcOpen()
     /* Disables cycle by cycle clear of ADC PPB event flags. */
     ADC_disablePPBEventCBCClear(`baseName`, `ppbNumber-1`);
             % }
-            % if (common.getSocName() === "am263px"){
+            % if( (common.getSocName() === "am263px") || (common.getSocName() == "am261x")){
 	ADC_setPPBCountLimit(`baseName`, `ppbNumber-1`,`instance["ppb"+ppbNumber+"AccumulationLimit"]`);
 	ADC_selectPPBSyncInput(`baseName`, `ppbNumber-1`,`instance["ppb"+ppbNumber+"SyncInput"]`);
 	ADC_selectPPBCompareSource(`baseName`, `ppbNumber-1`,`instance["ppb"+ppbNumber+"CompSource"]`);
