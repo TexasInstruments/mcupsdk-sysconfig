@@ -11,6 +11,7 @@ let pru_icss_config = [
                 moduleId: "TISCI_DEV_PRU_ICSSG0",
                 clkId   : "TISCI_DEV_PRU_ICSSG0_CORE_CLK",
                 clkRate : 200000000,
+                clkParentId: 2
             },
             {
                 moduleId: "TISCI_DEV_PRU_ICSSG0",
@@ -21,6 +22,7 @@ let pru_icss_config = [
                 moduleId: "TISCI_DEV_PRU_ICSSG0",
                 clkId   : "TISCI_DEV_PRU_ICSSG0_IEP_CLK",
                 clkRate : 200000000,
+                clkParentId: 5
             },
         ],
     },
@@ -33,6 +35,7 @@ let pru_icss_config = [
                 moduleId: "TISCI_DEV_PRU_ICSSG1",
                 clkId   : "TISCI_DEV_PRU_ICSSG1_CORE_CLK",
                 clkRate : 200000000,
+                clkParentId: 2
             },
             {
                 moduleId: "TISCI_DEV_PRU_ICSSG1",
@@ -43,6 +46,7 @@ let pru_icss_config = [
                 moduleId: "TISCI_DEV_PRU_ICSSG1",
                 clkId   : "TISCI_DEV_PRU_ICSSG1_IEP_CLK",
                 clkRate : 200000000,
+                clkParentId: 5
             },
         ],
     },

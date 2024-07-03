@@ -5,14 +5,27 @@ let pruicss_top_module_name = "/drivers/pruicss/g_v0/pruicss_g_v0_gpio";
 
 let pruicss_top_module = {
     displayName: "PRU (ICSS) IO Settings",
-
+    defaultInstanceName: "CONFIG_PRU_ICSS_IO",
     templates: {
         "/drivers/pinmux/pinmux_config.c.xdt": {
             moduleName: pruicss_top_module_name,
         },
     },
-
-    defaultInstanceName: "CONFIG_PRU_ICSS_IO",
+    config:[
+        {
+            name: "instance",
+            hidden: true,
+            default: "ICSSG0",
+            options: [
+                {
+                    name: "ICSSG0",
+                },
+                {
+                    name: "ICSSG1",
+                }
+            ],
+        }
+    ],
     moduleInstances,
 };
 
@@ -30,6 +43,9 @@ function moduleInstances(instance) {
             displayName: "PRU (ICSS) GPIO",
             moduleName: '/drivers/pruicss/g_v0/pruicss_g_v0_gpio_gp',
             useArray: true,
+            requiredArgs: {
+                instance: instance["instance"],
+            },
             minInstanceCount: 0,
             defaultInstanceCount: 0,
         });
@@ -38,6 +54,9 @@ function moduleInstances(instance) {
             displayName: "PRU (ICSS) IEP",
             moduleName: '/drivers/pruicss/g_v0/pruicss_g_v0_gpio_iep',
             useArray: true,
+            requiredArgs: {
+                instance: instance["instance"],
+            },
             minInstanceCount: 0,
             defaultInstanceCount: 0,
         });
@@ -46,6 +65,9 @@ function moduleInstances(instance) {
             displayName: "PRU (ICSS) ECAP",
             moduleName: '/drivers/pruicss/g_v0/pruicss_g_v0_gpio_ecap',
             useArray: true,
+            requiredArgs: {
+                instance: instance["instance"],
+            },
             minInstanceCount: 0,
             defaultInstanceCount: 0,
         });
@@ -54,6 +76,9 @@ function moduleInstances(instance) {
             displayName: "PRU (ICSS) MII_G_RT",
             moduleName: '/drivers/pruicss/g_v0/pruicss_g_v0_gpio_mii_g_rt',
             useArray: true,
+            requiredArgs: {
+                instance: instance["instance"],
+            },
             minInstanceCount: 0,
             defaultInstanceCount: 0,
         });
