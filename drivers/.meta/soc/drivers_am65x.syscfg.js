@@ -2,6 +2,9 @@
 let common = system.getScript("/common");
 
 const driverVer = {
+    "bootloader": {
+        version: "v0",
+    },
     "ddr": {
         version: "v0",
     },
@@ -20,6 +23,7 @@ const driverVer = {
 };
 
 const topModules = [
+    "/drivers/bootloader/bootloader",
     "/drivers/ddr/ddr",
     "/drivers/gpio/gpio",
     "/drivers/i2c/i2c",
