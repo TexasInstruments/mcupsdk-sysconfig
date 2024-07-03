@@ -141,6 +141,13 @@ void Module_clockSetFrequency(void)
     }
 }
 
+% // This section is for any clock configurations specifically mentioned for modules
+% for(let subTemplate of args) {
+    % if (subTemplate.clock_config != undefined) {
+`system.getTemplate(subTemplate.clock_config)(subTemplate.moduleName)`
+    % }
+% }
+
 void PowerClock_init(void)
 {
     Module_clockEnable();

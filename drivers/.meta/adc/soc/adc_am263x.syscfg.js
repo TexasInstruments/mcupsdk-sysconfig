@@ -220,35 +220,49 @@ const staticConfig = [
         baseAddr: "CSL_CONTROLSS_ADC0_U_BASE",
         resultBaseAddr : "CSL_CONTROLSS_ADC0_RESULT_U_BASE",
         instanceNumber : "0",
+        refBuf         : "0",
     },
     {
         name: "ADC1",
         baseAddr: "CSL_CONTROLSS_ADC1_U_BASE",
         resultBaseAddr : "CSL_CONTROLSS_ADC1_RESULT_U_BASE",
         instanceNumber : "1",
+        refBuf         : "1",
     },
     {
         name: "ADC2",
         baseAddr: "CSL_CONTROLSS_ADC2_U_BASE",
         resultBaseAddr : "CSL_CONTROLSS_ADC2_RESULT_U_BASE",
         instanceNumber : "2",
+        refBuf         : "1",
     },
     {
         name: "ADC3",
         baseAddr: "CSL_CONTROLSS_ADC3_U_BASE",
         resultBaseAddr : "CSL_CONTROLSS_ADC3_RESULT_U_BASE",
         instanceNumber : "3",
+        refBuf         : "2",
     },
     {
         name: "ADC4",
         baseAddr: "CSL_CONTROLSS_ADC4_U_BASE",
         resultBaseAddr : "CSL_CONTROLSS_ADC4_RESULT_U_BASE",
         instanceNumber : "4",
+        refBuf         : "2",
     },
 ];
 function getStaticConfigArr() {
     return staticConfig;
 }
+
+function isLoopBackAvailable(){
+    return false
+}
+
+function isGlobalForceAvailable(){
+    return false
+}
+
 exports = {
 	ADC_ClkPrescale: ADC_ClkPrescale,
 	ADC_Resolution: ADC_Resolution,
@@ -267,4 +281,6 @@ exports = {
     ADC_Sysclk_Mhz: ADC_Sysclk_Mhz,
     getInterfaceName,
     getStaticConfigArr,
+    isLoopBackAvailable,
+    isGlobalForceAvailable,
 }

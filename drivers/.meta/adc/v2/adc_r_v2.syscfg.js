@@ -438,9 +438,9 @@ adcRModule.templates = {
             "/drivers/system/system_config.h.xdt": {
                 driver_config: "/drivers/adc/templates/adc_r.h.xdt",
             },
-            "/drivers/system/system_config.c.xdt": {
-                driver_init: "/drivers/adc/templates/adc_r_init.c.xdt",
-            },
+            // "/drivers/system/system_config.c.xdt": {
+            //     driver_init: "/drivers/adc/templates/adc_r_init.c.xdt",
+            // },
             "/drivers/system/drivers_open_close.h.xdt": {
                 driver_open_close_config: "/drivers/adc/templates/adc_r_open_close_config.h.xdt",
             },
@@ -449,6 +449,27 @@ adcRModule.templates = {
                 driver_open: "/drivers/adc/templates/adc_r_open.c.xdt",
             },
         };
+adcRModule.moduleStatic = {
+
+    sharedModuleInstances : (inst) => {
+        return [
+            {
+                moduleName : "/drivers/soc_ctrl/v0/subModules/soc_ctrl_adc.syscfg.js",
+                name : "ADCreferences",
+                displayName : "ADC References",
+            }
+        ]
+    },
+    modules : function (){
+        return [
+            {
+                name : "socCtrl",
+                moduleName : "/drivers/soc_ctrl/soc_ctrl",
+                hidden : false,
+            }
+        ]
+    },
+},
 
 adcRModule.validate = onValidate;
 

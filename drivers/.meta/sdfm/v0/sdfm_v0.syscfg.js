@@ -1,6 +1,8 @@
 let common   = system.getScript("/common");
 let pinmux = system.getScript("/drivers/pinmux/pinmux");
 let soc = system.getScript(`/drivers/sdfm/soc/sdfm_${common.getSocName()}`);
+let soc_ctrl = system.getScript("/drivers/soc_ctrl/soc_ctrl")
+
 let numberOfSDFMs = system.getScript(`/drivers/sdfm/soc/sdfm_${common.getSocName()}`).numberOfSDFMs;
 let device_peripheral = system.getScript(`/drivers/sdfm/soc/sdfm_${common.getSocName()}.syscfg.js`);
 let sd_clk_config = system.getScript("/drivers/sdfm/v0/sdfm_clockConfiguration.syscfg.js");
@@ -196,6 +198,28 @@ let sdModule = {
         },
         "/drivers/system/power_clock_config.c.xdt": {
             moduleName: sd_module_name,
+        },
+    },
+    moduleStatic: {
+        name: "sdfmGlobal",
+        displayName: "SDFM Global",
+        sharedModuleInstances : (inst) => {
+            return [
+                {
+                    moduleName : soc_ctrl.getSocCtrlSubModulePath("soc_ctrl_sdfm"),
+                    name : "soc_ctrl_sdfm",
+                    displayName : "SDFM Top Controls",
+                }
+            ]
+        },
+        modules : function (){
+            return [
+                {
+                    name : "topCtrl",
+                    moduleName : "/drivers/soc_ctrl/soc_ctrl",
+                    hidden : false,
+                }
+            ]
         },
     },
     validate : sd_validate.onValidate,

@@ -12,7 +12,7 @@
         SOC_setEpwmTbClk(`config.name.slice(4)`, TRUE);
         SOC_setEpwmGroup(`config.name.slice(4)`, `instance.epwmGroup.slice(-1)`);
         % if(instance.epwmTimebase_emulationMode != "EPWM_EMULATION_FREE_RUN") {
-        Soc_enableEPWMHalt(`config.name.slice(4)`);
+        // Soc_enableEPWMHalt(`config.name.slice(4)`); These configurations have been moved to Drivers Open Close files.
         % }
     % }
     % else if((["am273x"].includes(common.getSocName())) || (["awr294x"].includes(common.getSocName()))){

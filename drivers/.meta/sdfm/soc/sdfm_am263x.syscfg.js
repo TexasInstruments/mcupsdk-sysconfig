@@ -166,11 +166,16 @@ const staticConfig = [
     },
 ];
 
-let numberOfSDFMs = 2;
+let numberOfSDFMs = staticConfig.length;
 
 function getStaticConfigArr() {
     return staticConfig;
 }
+
+function isClkLoopBackAvailable(){
+    return false
+}
+
 exports = {
 	SDFM_OutputThresholdStatus: SDFM_OutputThresholdStatus,
 	SDFM_FilterNumber: SDFM_FilterNumber,
@@ -190,5 +195,6 @@ exports = {
 	SDFM_COMPEVT_FILTER_LOCK_M: SDFM_COMPEVT_FILTER_LOCK_M,
     getInterfaceName,
     getStaticConfigArr,
+    isClkLoopBackAvailable,
     numberOfSDFMs
 }

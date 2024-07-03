@@ -1,0 +1,104 @@
+%%{
+    // this section is for Init parts...
+    let common = system.getScript('/common')
+    let soc_ctrl_adc = system.modules["/drivers/soc_ctrl/v0/subModules/soc_ctrl_adc"];
+    let soc_ctrl_adc_scripts = system.getScript["/drivers/soc_ctrl/v0/subModules/soc_ctrl_adc"];
+
+
+    let instance = soc_ctrl_adc.$instances[0];
+    let RefcontrolEnList = instance.enableAdcReferenceGui
+    let thisCoreCxt = common.getSelfSysCfgCoreName();
+
+    let refBufList = soc_ctrl_adc.refBufList
+    let getAddedInstances = soc_ctrl_adc.getAddedInstances
+    let modules = soc_ctrl_adc.usedModules
+    let adcStaticConfigArray = soc_ctrl_adc.adcStaticConfigArray
+
+    let adcModules = [];
+    for(let mod of modules){
+        if(system.modules[mod] && (system.modules[mod].$instances.length > 0)){
+            adcModules.push(system.modules[mod])
+        }
+    }
+    // console.log(adcStaticConfigArray)
+
+    let adcInstAdded = []
+    let requiredRefBuf = []
+
+    let refBuf2AdcMap = {}
+    for (let module of modules)
+    {
+        adcInstAdded = adcInstAdded.concat(getAddedInstances(module))
+    }
+    // console.log(adcInstAdded)
+
+    for(let adcInst of adcInstAdded){
+        let adcCfg = adcStaticConfigArray.find(o => o.name === adcInst)
+        if(refBuf2AdcMap[adcCfg.refBuf]){
+            refBuf2AdcMap[adcCfg.refBuf].push(adcCfg.instanceNumber)
+        }
+        else{
+            refBuf2AdcMap[adcCfg.refBuf] = [adcCfg.instanceNumber]
+        }
+        // console.log(refBuf2AdcMap)
+
+        if (requiredRefBuf.includes(adcCfg.refBuf)){
+            continue;
+        }
+        else{
+            requiredRefBuf.push(adcCfg.refBuf)
+        }
+    }
+%%}
+%if(soc_ctrl_adc && (adcInstAdded.length>0))
+%{
+    {
+        /* ADC */
+
+        /* ADC Reference and Monitor Configurations */
+        {
+        % for (let buffer of requiredRefBuf){
+            % if(!(RefcontrolEnList.includes(buffer) && instance["adc_ref"+buffer+"_disable"])){
+                % // this case is evaded only if the controls are used and then reference buffer is disabled. hence by default its always enabled.
+            /* Internal Reference Buffer `buffer`, corresponds to ADC instance `refBuf2AdcMap[buffer]` is enabled */
+            SOC_enableAdcInternalReference(`refBuf2AdcMap[buffer][0]`, TRUE);
+            ClockP_usleep(800);
+            % } else {
+            /* Internal Reference Buffer `buffer`, corresponds to ADC instance `refBuf2AdcMap[buffer]` is disabled */
+            SOC_enableAdcInternalReference(`refBuf2AdcMap[buffer][0]`, FALSE);
+            %}
+            /* Monitor control is enabled for buffer `buffer` */
+            SOC_enableAdcReferenceMonitor(`refBuf2AdcMap[buffer][0]`, TRUE);
+            /* Wait for  ClockP_sleep */
+            ClockP_usleep(1);
+             /* Assert the monitor status! */
+            DebugP_assert(SOC_getAdcReferenceStatus(`refBuf2AdcMap[buffer][0]`) == true);
+        % }
+        }
+        % if(instance["adcLoopBackEn"] != null){
+        /* ADC - DAC Loop Back Configurations */
+        {
+            % if(instance["adcLoopBackEn"] == true){
+            SOC_enableAdcDacLoopback(TRUE);
+            % } else {
+            SOC_enableAdcDacLoopback(FALSE);
+            % }
+        }
+        % }
+        %if(instance["adcGlobalForceEn"] != null){
+        /* Global Force Configurations */
+        {
+            % for (let adcInst of adcInstAdded){
+                % let adcCfg = adcStaticConfigArray.find(o => o.name === adcInst)
+                % let adcInstNumber = adcCfg.instanceNumber
+                % if(instance["adcGlobalForceEn"].includes(adcInstNumber)){
+            SOC_enableAdcGlobalForce(`adcInstNumber`, TRUE);
+                % }else {
+            SOC_enableAdcGlobalForce(`adcInstNumber`, FALSE);
+                % }
+            % }
+        }
+        %}
+    }
+
+%}

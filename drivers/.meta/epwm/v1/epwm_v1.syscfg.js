@@ -1,5 +1,6 @@
 let common   = system.getScript("/common");
 let pinmux = system.getScript("/drivers/pinmux/pinmux");
+let soc_ctrl = system.getScript("/drivers/soc_ctrl/soc_ctrl")
 let device_peripheral = system.getScript(`/drivers/epwm/soc/epwm_${common.getSocName()}.syscfg.js`);
 let epwm_validation = system.getScript("/drivers/epwm/v1/epwm_validation.syscfg.js");
 
@@ -177,6 +178,25 @@ let moduleStatic = {
             default : false
         }
     ],
+    sharedModuleInstances : (inst) => {
+        return [
+            {
+                moduleName : soc_ctrl.getSocCtrlSubModulePath("soc_ctrl_epwm"),
+                name : "epwmTbClkSync",
+                displayName : "EPMW TBCLK Sync",
+                collapsed : true,
+            }
+        ]
+    },
+    modules : function (){
+        return [
+            {
+                name : "socCtrl",
+                moduleName : "/drivers/soc_ctrl/soc_ctrl",
+                hidden : false,
+            }
+        ]
+    },
 }
 
 function onValidate(inst, validation)
@@ -307,6 +327,7 @@ let epwmModule = {
     getPeripheralPinNames,
     pinmuxRequirements,
     onMigrate,
+    getStaticConfigArr,
 };
 
 function onMigrate(newInst, oldInst, oldSystem) {

@@ -2,6 +2,7 @@ let common   = system.getScript("/common");
 let pinmux   = system.getScript("/drivers/pinmux/pinmux");
 let device_peripheral = system.getScript(`/drivers/adc/soc/adc_${common.getSocName()}.syscfg.js`);
 let adc_sampletime_sysclk_ns = 1000/device_peripheral.ADC_Sysclk_Mhz;
+let soc_ctrl = system.getScript("/drivers/soc_ctrl/soc_ctrl")
 
 function getStaticConfigArr() {
     return system.getScript(`/drivers/adc/soc/adc_${common.getSocName()}`).getStaticConfigArr();
@@ -1036,9 +1037,9 @@ let adcModule = {
         "/drivers/system/system_config.h.xdt": {
             driver_config: "/drivers/adc/templates/adc.h.xdt",
         },
-        "/drivers/system/system_config.c.xdt": {
-            driver_init: "/drivers/adc/templates/adc_init.c.xdt",
-        },
+        // "/drivers/system/system_config.c.xdt": {
+        //     driver_init: "/drivers/adc/templates/adc_init.c.xdt",
+        // },
         "/drivers/system/drivers_open_close.h.xdt": {
             driver_open_close_config: "/drivers/adc/templates/adc_open_close_config.h.xdt",
         },
@@ -1051,13 +1052,32 @@ let adcModule = {
         name: "adcGlobal",
         displayName: "ADC Global",
         config: globalConfig,
-        validate : onValidateStatic
+        validate : onValidateStatic,
+        sharedModuleInstances : (inst) => {
+            return [
+                {
+                    moduleName : soc_ctrl.getSocCtrlSubModulePath("soc_ctrl_adc"),
+                    name : "adcReferences",
+                    displayName : "ADC References",
+                }
+            ]
+        },
+        modules : function (){
+            return [
+                {
+                    name : "socCtrl",
+                    moduleName : "/drivers/soc_ctrl/soc_ctrl",
+                    hidden : false,
+                }
+            ]
+        },
     },
     validate    : onValidate,
     getInstanceConfig,
     getInterfaceName,
     getPeripheralPinNames,
     pinmuxRequirements,
+    getStaticConfigArr,
 };
 
 exports = adcModule;

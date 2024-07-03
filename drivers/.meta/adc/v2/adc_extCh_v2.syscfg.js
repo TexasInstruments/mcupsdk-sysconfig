@@ -60,7 +60,14 @@ let adcExtChModule = {
     description: "ADC External Channel select XBAR",
     longDescription: "Use SOC APIs like SOC_selectAdcExtChXbar for configuring the ADC_EXTCH_SEL xbar to use specific ADC SOC-ExtChSel bits",
     filterHardware : filterHardware,
-    config: [],
+    config: [
+        // {
+        //     name : "adcExtChDelay",
+        //     displayName : "ADC External Channel Delay Selection",
+        //     options : [],
+        //     default : 0,
+        // } // TODO : add an external Channel list in the soc_adc files and source it here.
+    ],
     templates: {
         "/drivers/pinmux/pinmux_config.c.xdt": {
             moduleName: "/drivers/adc/adc_extCh",

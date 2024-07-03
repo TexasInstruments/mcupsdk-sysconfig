@@ -1,3 +1,6 @@
-#include <drivers/epwm.h>
+% let soc_ctrl_epwm_template = '/drivers/soc_ctrl/templates/soc_ctrl_epwm_open.c.xdt'
+% let header_file = "header_file"
 
+#include <drivers/epwm.h>
+    `system.getTemplate(soc_ctrl_epwm_template)(header_file)`
 void Drivers_epwmOpen(void);

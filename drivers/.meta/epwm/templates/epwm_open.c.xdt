@@ -1,1 +1,6 @@
+% let soc_ctrl_epwm_template = '/drivers/soc_ctrl/templates/soc_ctrl_epwm_open.c.xdt'
+% let begin = "begin"
+% let end = "end"
+    `system.getTemplate(soc_ctrl_epwm_template)(begin)`
     Drivers_epwmOpen();
+    `system.getTemplate(soc_ctrl_epwm_template)(end)`

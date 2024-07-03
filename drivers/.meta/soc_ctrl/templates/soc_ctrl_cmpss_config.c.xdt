@@ -1,0 +1,44 @@
+%%{
+    // this section is for Init parts...
+    let common = system.getScript('/common')
+    let soc_ctrl_cmpss = system.modules["/drivers/soc_ctrl/v0/subModules/soc_ctrl_cmpss"];
+    let soc_ctrl_cmpss_scripts = system.getScript["/drivers/soc_ctrl/v0/subModules/soc_ctrl_cmpss"];
+
+    let arg = args;
+
+    let instance = soc_ctrl_cmpss.$instances[0];
+    let thisCoreCxt = common.getSelfSysCfgCoreName();
+
+    let cmpssCfgArray = soc_ctrl_cmpss.cmpssCfgArray
+    let getAddedInstances = soc_ctrl_cmpss.getAddedInstances
+    let cmpssStaticConfigArray = soc_ctrl_cmpss.cmpssStaticConfigArray
+
+    let cmpssInstAdded = getAddedInstances('/drivers/cmpss/cmpss')
+%%}
+%if(soc_ctrl_cmpss && cmpssInstAdded.length > 0)
+%{
+    /* CMPSS */
+    {
+    %if (instance["loopBackEn"]){
+        {
+        %if (instance["loopBackEn"].length > 0){
+        /* CMPSS LoopBack Configurations */
+        % }
+        % for(let cmpssInst of instance["loopBackEn"]){
+            % let cmpssInstNumberStr = cmpssInst.replace("CMPSS","").toLowerCase();
+            % let cmpssType = cmpssInstNumberStr.includes("a") ? "a" : "b";
+            % cmpssInstNumberStr = cmpssInstNumberStr.replace(cmpssType, "");
+            % if(instance[cmpssInst.toLowerCase()+"HloopBackCfgEn"] || instance[cmpssInst.toLowerCase()+"LloopBackCfgEn"]){
+            /* `cmpssInst` Loop Back configurations */
+            % }
+            % if(instance[cmpssInst.toLowerCase()+"HloopBackCfgEn"]){
+            SOC_enableCmpss`cmpssType`DacLoopBack(`cmpssInstNumberStr`, CMPSS_LOOP_BACK_INH, TRUE);
+            % }
+            % if(instance[cmpssInst.toLowerCase()+"LloopBackCfgEn"]){
+            SOC_enableCmpss`cmpssType`DacLoopBack(`cmpssInstNumberStr`, CMPSS_LOOP_BACK_INL, TRUE);
+            % }
+        % }
+        }
+    %}
+    }
+%}

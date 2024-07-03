@@ -1,0 +1,41 @@
+%%{
+    // this section is for Init parts...
+    let common = system.getScript('/common')
+    let soc_ctrl_sdfm = system.modules["/drivers/soc_ctrl/v0/subModules/soc_ctrl_sdfm"];
+    let soc_ctrl_sdfm_scripts = system.getScript["/drivers/soc_ctrl/v0/subModules/soc_ctrl_sdfm"];
+
+    let arg = args;
+
+    let instance = soc_ctrl_sdfm.$instances[0];
+    let thisCoreCxt = common.getSelfSysCfgCoreName();
+
+    let sdfmCfgArray = soc_ctrl_sdfm.sdfmCfgArray
+    let sdfmClkNumber = soc_ctrl_sdfm.sdfmClkNumber
+    let getAddedInstances = soc_ctrl_sdfm.getAddedInstances
+    let sdfmStaticConfigArray = soc_ctrl_sdfm.sdfmStaticConfigArray
+
+    let sdfmInstAdded = getAddedInstances('/drivers/sdfm/sdfm')
+%%}
+%if(soc_ctrl_sdfm)
+%{
+    % if(instance["sdfmClkLoopBackCfgEn"]){
+        % if (instance["sdfmClkLoopBackCfgEn"].length > 0){
+        /* To Use the Loopback clocks, please configure the pinmux section of sdfm clks for output override enable */
+            % for(let sdfmInst = 0; sdfmInst < sdfmCfgArray.length; sdfmInst++){
+                % for (let clkInst = 0; clkInst < sdfmClkNumber; clkInst++){
+                    % let sdfmInstStr = sdfmInst.toString()
+                    % let clkInstStr = clkInst.toString()
+                    % if(instance["sdfmClkLoopBackCfgEn"].includes("SDFM"+sdfmInstStr)){
+                        % if (instance["sdfm"+sdfmInstStr+"clk"+clkInstStr] == "alternate"){
+        /* SDFM `sdfmInst` Clock `clkInst` Loop Back configuration for Alternate Loopback Clock */
+        SOC_sdfmClkLoopBackConfig(`sdfmInst`, `clkInst`, FALSE);
+                        % }else {
+        /* SDFM `sdfmInst` Clock `clkInst` Loop Back configuration for Default Loopback Clock */
+        SOC_sdfmClkLoopBackConfig(`sdfmInst`, `clkInst`, TRUE);
+                        % }
+                    % }
+                % }
+            % }
+        % }
+    %}
+%}
