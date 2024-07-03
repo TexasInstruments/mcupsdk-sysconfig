@@ -189,12 +189,12 @@ void Drivers_sdfmOpen()
 		%         //CEVT1
 		%   	  if(instance.CEVT1.includes("SDFM_FILTER_"+channel))
 		%         {
-	SDFM_enableInterrupt(`baseName`, `device_peripheral.SDFM_FilterNumber[channel-1].name`, SDFM_HIGH_LEVEL_THRESHOLD_INTERRUPT);
+	SDFM_enableInterrupt(`baseName`, `device_peripheral.SDFM_FilterNumber[channel-1].name`, SDFM_CEVT1_INTERRUPT);
 		%         }
 		%         //CEVT2
 		%   	  if(instance.CEVT2.includes("SDFM_FILTER_"+channel))
 		%         {
-	SDFM_enableInterrupt(`baseName`, `device_peripheral.SDFM_FilterNumber[channel-1].name`, SDFM_LOW_LEVEL_THRESHOLD_INTERRUPT);
+	SDFM_enableInterrupt(`baseName`, `device_peripheral.SDFM_FilterNumber[channel-1].name`, SDFM_CEVT2_INTERRUPT);
 		%         }
 		%	    //FIFO condition
 		%       if(instance["Ch" + channel.toString() + "_FIFO_Enable"])
