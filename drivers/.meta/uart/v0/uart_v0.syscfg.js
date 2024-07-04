@@ -645,6 +645,9 @@ function validate(inst, report) {
         (inst.intrEnable == "DMA") && (common.getSocName() != "am65x")) {
         report.logError("DMA is not supported in MCU Domain", inst, "useMcuDomainPeripherals");
     }
+    if ((inst.intrEnable === "DMA") && (common.getSocName() === "am65x") && (getInterfaceName(inst) !== "MCU_UART" )) {
+        report.logError("DMA is not supported in Main Domain", inst, "intrEnable");
+    }
     if ((inst.intrEnable == "DMA") && (inst.readReturnMode == "PARTIAL")) {
         report.logError("Partial Mode is not supported in DMA", inst, "readReturnMode");
     }
