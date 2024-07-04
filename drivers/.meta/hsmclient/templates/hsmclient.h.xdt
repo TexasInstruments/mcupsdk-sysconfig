@@ -9,7 +9,7 @@
 /*
  *  HSM Client 
  */
-#include <drivers/hsmclient.h>
+#include <security/security_common/drivers/hsmclient/hsmclient.h>
 
 /* sysconfig generated parameter QUEUE LENGTH */
 #define SIPC_QUEUE_LENGTH   (`config.sipc_que_depth`u)

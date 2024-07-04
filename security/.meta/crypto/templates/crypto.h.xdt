@@ -5,4 +5,4 @@
 /*
  * Crypto
  */
-#include <security/crypto.h>
+#include <security/security_common/drivers/crypto/crypto.h>
