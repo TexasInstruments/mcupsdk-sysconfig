@@ -51,9 +51,18 @@ void Drivers_rtiOpen(void)
     % if(!varDeclared)
     % {
     uint32_t baseAddr;
-    uint64_t timeInNsec;
+    % if(config.counter0Enable == true || config.counter1Enable == true) {
     uint32_t cntrPrescaler;
+    % }
+    % for( let j=0; j<4; j++)
+    % {
+    % if(config.compareEnable[j] == true)
+    % {
+    uint64_t timeInNsec;
     uint32_t compPrescaler;
+    % break;
+    %}
+    %}
     % varDeclared = true;
     % }
 

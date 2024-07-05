@@ -406,9 +406,21 @@ let timer_module = {
                 },
                 {
                     name: "enableIntr0",
-                    displayName: "Enable Interrupt",
+                    displayName: "Enable Compare Interrupt",
                     default: false,
                     hidden: true,
+                    onChange: function (inst, ui) {
+                        if(inst.enableIntr0 == true)
+                        {
+                            ui.intrPriority0.hidden = false;
+                            ui.eventCallback0.hidden = false;
+                        }
+                        else
+                        {
+                            ui.intrPriority0.hidden = true;
+                            ui.eventCallback0.hidden = true;
+                        }
+                    }
                 },
                 {
                     name: "intrPriority0",
@@ -512,9 +524,21 @@ let timer_module = {
                 },
                 {
                     name: "enableIntr1",
-                    displayName: "Enable Interrupt",
+                    displayName: "Enable Compare Interrupt",
                     default: false,
                     hidden: true,
+                    onChange: function (inst, ui) {
+                        if(inst.enableIntr1 == true)
+                        {
+                            ui.intrPriority1.hidden = false;
+                            ui.eventCallback1.hidden = false;
+                        }
+                        else
+                        {
+                            ui.intrPriority1.hidden = true;
+                            ui.eventCallback1.hidden = true;
+                        }
+                    }
                 },
                 {
                     name: "intrPriority1",
@@ -618,9 +642,21 @@ let timer_module = {
                 },
                 {
                     name: "enableIntr2",
-                    displayName: "Enable Interrupt",
+                    displayName: "Enable Compare Interrupt",
                     default: false,
                     hidden: true,
+                    onChange: function (inst, ui) {
+                        if(inst.enableIntr2 == true)
+                        {
+                            ui.intrPriority2.hidden = false;
+                            ui.eventCallback2.hidden = false;
+                        }
+                        else
+                        {
+                            ui.intrPriority2.hidden = true;
+                            ui.eventCallback2.hidden = true;
+                        }
+                    }
                 },
                 {
                     name: "intrPriority2",
@@ -724,9 +760,21 @@ let timer_module = {
                 },
                 {
                     name: "enableIntr3",
-                    displayName: "Enable Interrupt",
+                    displayName: "Enable Compare Interrupt",
                     default: false,
                     hidden: true,
+                    onChange: function (inst, ui) {
+                        if(inst.enableIntr3 == true)
+                        {
+                            ui.intrPriority3.hidden = false;
+                            ui.eventCallback3.hidden = false;
+                        }
+                        else
+                        {
+                            ui.intrPriority3.hidden = true;
+                            ui.eventCallback3.hidden = true;
+                        }
+                    }
                 },
                 {
                     name: "intrPriority3",
