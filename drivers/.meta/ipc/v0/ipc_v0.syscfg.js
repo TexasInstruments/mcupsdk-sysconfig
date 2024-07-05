@@ -39,6 +39,17 @@ function getConfigurables()
         hideCrcConfig = true;
     }
 
+      /*
+       * AM65x currently not supporting SafeIpc and CRC.
+       * This can be removed once these are supported.
+       */
+      if (common.getSocName().match(/am65x/))
+      {
+          hideVringConfig = true;
+          hideSafeIpcConfig = true;
+          hideCrcConfig = true;
+      }
+
     /* add defaults and options */
     config.forEach( function (element) {
         if(element.name != "enableLinuxIpc" && element.name != "enableMailboxIpc" && element.name.search("_safeipc") == -1) {
@@ -171,7 +182,7 @@ function onChange(instance, ui)
         {
             ui.sharedMemUsed.hidden = false;
             ui.sharedMemAvailable.hidden = false;
-            if (!common.getSocName().match(/am62x/))
+            if ((!common.getSocName().match(/am62x/)) && (!common.getSocName().match(/am65x/)))
             {
                 ui.enableSafeIpc.hidden = false;
             }

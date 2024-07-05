@@ -5,6 +5,8 @@
     let enabledCpus = module.getEnabledCpus(instance);
     let enabledRPMessageCpus = module.getEnabledRPMessageCpus(instance);
     let ipcSharedMemData = module.getIpcSharedMemData(instance);
+    let common = system.getScript("/common");
+    let cpuName = system.getScript('/common').getSelfSysCfgCoreName();
 %%}
 % if ( enabledCpus.length > 0 || instance.enableLinuxIpc === true || instance.enableMailboxIpc === true) {
     % if(instance.enableCrc === true) {
@@ -55,6 +57,12 @@
         % }
         % else {
         notifyParams.isCrcEnabled = 0;
+        % }
+
+        % if (common.getSocName() == "am65x") {
+        notifyParams.isIPCIntrRouter = 1;
+        % } else {
+        notifyParams.isIPCIntrRouter = 0;
         % }
 
         /* initialize the IPC Notify module */
