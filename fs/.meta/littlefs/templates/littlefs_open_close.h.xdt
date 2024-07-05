@@ -1,0 +1,11 @@
+%%{
+    let common = system.getScript("/common");
+    let module = system.modules['/fs/littlefs/littlefs'];
+%%}
+/*
+ * LittleFS
+ */
+#include <fs/littlefs/portable/lfs_flash.h>
+
+void Drivers_lfsOpen(void);
+void Drivers_lfsClose(void);

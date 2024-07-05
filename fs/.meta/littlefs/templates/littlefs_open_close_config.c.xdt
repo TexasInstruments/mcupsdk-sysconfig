@@ -1,0 +1,84 @@
+%%{
+    let common = system.getScript("/common");
+    let module = system.modules['/fs/littlefs/littlefs'];
+%%}
+/*
+ * LittleFS
+ */
+
+/*Static buffers for LFS*/
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+uint8_t __attribute__((aligned(8))) gLfsReadBuffer`i`[`instance.peripheralDriver.flashSectorSize`] = {0};
+uint8_t __attribute__((aligned(8))) gLfsWriteBuffer`i`[`instance.peripheralDriver.flashSectorSize`] = {0};
+uint8_t __attribute__((aligned(8))) gLfsLookaheadBuffer`i`[`instance.peripheralDriver.flashSectorSize`] = {0};
+% }
+
+/*lfs_config structure array initialised as per all lfs instances*/
+struct lfs_config gLfsCfg[CONFIG_LFS_NUM_INSTANCES] = {
+% for(let i = 0; i < module.$instances.length; i++) {
+    {
+    % let lfsInstance = module.$instances[i];
+    % let flashInstance = lfsInstance.peripheralDriver;
+        .read  = LFS_blockRead,
+        .prog  = LFS_blockWrite,
+        .erase = LFS_blockErase,
+        .sync  = LFS_blockSync,
+        .read_size = `lfsInstance.readSize`,
+        .prog_size = `lfsInstance.progSize`,
+        .block_size = `flashInstance.flashBlockSize`,
+        .block_count = `lfsInstance.blockCount`,
+        .cache_size = `lfsInstance.cacheSize`,
+        .lookahead_size = `lfsInstance.lookaheadSize`,
+        .block_cycles = `lfsInstance.blockCycles`,
+        .compact_thresh = `flashInstance.flashBlockSize`,
+        .name_max = `lfsInstance.maxFileNameSize`,
+        .file_max = `lfsInstance.maxFileSize`,
+        .attr_max = 1022,
+        .metadata_max = `flashInstance.flashSectorSize`,
+    % if(`lfsInstance.cacheSize` >= `flashInstance.flashPageSize`*2)
+    % {
+        .inline_max = `flashInstance.flashPageSize`*2,
+    % }
+    % else{
+        .inline_max = `flashInstance.flashPageSize`,
+    % }
+        .read_buffer = gLfsReadBuffer`i`,
+        .prog_buffer = gLfsWriteBuffer`i`,
+        .lookahead_buffer = gLfsLookaheadBuffer`i`,
+    },
+% }
+};
+
+/*Pointer to LFS_FLASH_Config to bind lfs_config structure with any flash properties*/
+LFS_FLASH_Config *gLfsFlashConfig;
+
+void Drivers_lfsOpen(void)
+{
+	uint32_t instCnt;
+	int32_t status = SystemP_SUCCESS;
+
+    gLfsFlashConfig = malloc(CONFIG_LFS_NUM_INSTANCES * sizeof(LFS_FLASH_Config));
+    gLfsFlashConfig->numLfsInstances = CONFIG_LFS_NUM_INSTANCES;
+
+    % let i = 0;
+	for(instCnt = 0U; instCnt < CONFIG_LFS_NUM_INSTANCES; instCnt++)
+	{
+        % let lfsInstance = module.$instances[i];
+        % let flashInstance = lfsInstance.peripheralDriver;
+        gLfsFlashConfig[instCnt].lfsFlashIndex = `flashInstance.$name`;
+        gLfsFlashConfig[instCnt].lfsFlashOffset = CONFIG_LFS_FLASH_OFFSET`i`;
+        gLfsFlashConfig[instCnt].lfsStructcfg = &gLfsCfg[instCnt];
+        % i = i+1;
+	}
+
+	if(SystemP_FAILURE == status)
+	{
+		Drivers_lfsClose(); /* Exit gracefully */
+	}
+}
+
+void Drivers_lfsClose(void)
+{
+
+}
