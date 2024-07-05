@@ -17,7 +17,7 @@
     % let config = module.getInstanceConfig(instance);
     % if(config.transferMode == "CALLBACK" && config.transferCallbackFxn != "NULL") {
 /* MCSPI Transfer Callback */
-void `config.transferCallbackFxn`(MCSPI_Handle handle);
+void `config.transferCallbackFxn`(MCSPI_Handle handle, MCSPI_Transaction *transaction);
     % }
 % }
 /* MCSPI Driver handles */
