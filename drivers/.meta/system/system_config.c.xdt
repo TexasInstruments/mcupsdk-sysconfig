@@ -151,15 +151,15 @@ void System_lateInit()
 % if ((common.getSocName() == "am65x") && boot_module == undefined){
 void CopyVecsToATCMmem()
 {
-%    /* AM65X_RPROC_BUILD is set through the makefile based on the sbl or rproc linker file selection */
-    if (!AM65X_RPROC_BUILD) {
+%    /* SKIP_ATCM_MEM_RESET is set through the makefile based on the sbl or rproc linker file selection */
+#if !defined(SKIP_ATCM_MEM_RESET)
         int count;
         /* ECC priming. Fill atcm memory with zero of vector size  */
         for(count = 0; count < MCU_MEMSET_ITERATIONS; count++)
         {
             HW_WR_REG32((CSL_MCU_ATCM_BASE) + count*4, 0x00);
         }
-    }
+#endif
     /* copy vectors */
     memcpy((void *)CSL_MCU_ATCM_BASE, (void *)_vectors, MCU_VECS_SIZE);
 }
