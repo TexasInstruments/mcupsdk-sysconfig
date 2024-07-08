@@ -1,5 +1,6 @@
 %%{
     let module = system.modules['/drivers/bootloader/bootloader'];
+	let common   = system.getScript("/common");
 %%}
 /*
  * BOOTLOADER
@@ -15,3 +16,16 @@
 % }
 % }
 #define CONFIG_BOOTLOADER_NUM_INSTANCES (`module.$instances.length`U)
+
+/* BOOTLOADER Image Format Macro */
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+	% if (["am263x", "am263px", "am261x"].includes(common.getSocName())) {
+	% if(instance.imageFormat == "MCELF") {
+#define BOOTLOADER_IMAGE_MCELF
+	% }
+	% else {
+#define BOOTLOADER_IMAGE_RPRC
+	% }
+	% }
+% }
