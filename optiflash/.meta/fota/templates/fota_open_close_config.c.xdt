@@ -1,0 +1,24 @@
+%%{
+    var common = system.getScript("/common");
+    var soc = system.getScript(`/optiflash/soc/optiflash_${common.getSocName()}`);
+    var driverVer = soc.getDriverVer("fota");
+    var module = system.modules['/optiflash/fota/fota'];
+    var selfCoreName = common.getSelfSysCfgCoreName();
+%%}
+
+/*
+ *   FOTA
+ */
+
+FSS_Config fssConf;
+
+void Drivers_FotaOpen()
+{
+    fssConf.ipBaseAddress = CSL_MSS_CTRL_U_BASE;
+    fssConf.extFlashSize = `module.$instances[0].flash_size`;
+}
+
+void Drivers_FotaClose()
+{
+
+}

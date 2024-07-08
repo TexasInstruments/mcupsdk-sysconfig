@@ -5,6 +5,7 @@ const topModules_main = [
     "/optiflash/RL2/RL2",
     "/optiflash/FLC/FLC",
     "/optiflash/RAT/RAT",
+    "/optiflash/fota/fota",
 ];
 
 const driverVersion = {
@@ -17,6 +18,11 @@ const driverVersion = {
         version: 'v0'
     },
     'rat':
+    {
+        version: 'v0'
+    },
+
+    'fota':
     {
         version: 'v0'
     }

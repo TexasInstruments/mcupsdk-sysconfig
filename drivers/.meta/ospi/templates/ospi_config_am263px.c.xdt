@@ -1,5 +1,7 @@
 %%{
     let module = system.modules['/drivers/ospi/ospi'];
+    let fotaModule = system.modules['/optiflash/fota/fota'];
+
     let emdaCount = 0;
     for(let i = 0; i < module.$instances.length; i++)
     {
@@ -41,7 +43,11 @@ static OSPI_Attrs gOspiAttrs[CONFIG_OSPI_NUM_INSTANCES] =
     % let name = config.name;
     {
         .baseAddr             = `config.baseAddr`,
-        .dataBaseAddr         = `config.dataBaseAddr`,
+        %if(fotaModule && fotaModule.$instances.length > 0 && fotaModule.$instances[0].enable){
+        .dataBaseAddr         = `config.dataBaseAddr1`,
+        %}else{
+        .dataBaseAddr         = `config.dataBaseAddr0`,
+        %}
         .inputClkFreq         = `config.inputClkFreq`U,
         .intrNum              = `config.intrNum`U,
         .intrEnable           = `config.intrEnable.toString(10).toUpperCase()`,

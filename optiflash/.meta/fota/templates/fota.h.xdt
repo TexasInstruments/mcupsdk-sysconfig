@@ -1,0 +1,9 @@
+%%{
+    let module = system.modules['/optiflash/fota/FOTA'];
+%%}
+/*
+ * FOTA
+ */
+#define FOTA_IN_USE
+
+#include <drivers/fss.h>

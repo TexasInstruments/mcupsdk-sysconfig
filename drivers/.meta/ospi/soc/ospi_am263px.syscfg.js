@@ -6,7 +6,8 @@ const ospi_config_r5fss = [
     {
         name            : "OSPI0",
         baseAddr        : "CSL_FLASH_CONFIG_REG8_U_BASE",
-        dataBaseAddr    : "CSL_FLASH_DATA_REG0_U_BASE",
+        dataBaseAddr0    : "CSL_FLASH_DATA_REG0_U_BASE",
+        dataBaseAddr1    : "CSL_FLASH_DATA_REG1_U_BASE",
         inputClkFreq    : ospi_input_clk_freq,
         dacEnable       : false,
         baudRateDiv     : 4,

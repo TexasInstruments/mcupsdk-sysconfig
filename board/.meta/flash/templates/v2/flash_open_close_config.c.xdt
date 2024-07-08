@@ -43,6 +43,11 @@ Flash_Attrs gFlashAttrs_`config.fname` =
     .pageSize = `config.flashPageSize`,
     .sectorCount = `Math.round(config.flashSize/config.flashSectorSize)`,
     .sectorSize = `config.flashSectorSize`,
+%if (common.getSocName() === 'am263px'){
+    .phyTuningOffset = 0x80000,
+%} else {
+    .phyTuningOffset = `config.flashSize`/2,
+%}
 };
 % } if (config.flashType == "SERIAL_NAND") {
 Flash_Attrs gFlashAttrs_`config.fname` =
@@ -55,6 +60,7 @@ Flash_Attrs gFlashAttrs_`config.fname` =
     .blockSize = `config.flashBlockSize`,
     .pageCount = `Math.round(config.flashBlockSize/config.flashPageSize)`,
     .pageSize = `config.flashPageSize`,
+
 };
 % }
 % }
@@ -231,6 +237,7 @@ Flash_Config gFlashConfig[CONFIG_FLASH_NUM_INSTANCES] =
   % }
         .devConfig = &gFlashDevCfg_`config.fname`,
         .object = (void *)&gFlashObject_`config.fname`,
+        .rwOffset = 0,
     },
 % }
 };

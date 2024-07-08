@@ -1,0 +1,18 @@
+%%{
+
+    var common = system.getScript("/common");
+    var soc = system.getScript(`/optiflash/soc/optiflash_${common.getSocName()}`);
+    var driverVer = soc.getDriverVer("rat");
+%%}
+
+/**
+ * OptiFlash: FOTA
+ *
+ */
+
+#include <drivers/fss.h>
+
+extern FSS_Config fssConf;
+
+void Drivers_FotaOpen();
+void Drivers_FotaClose();
