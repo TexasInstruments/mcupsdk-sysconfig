@@ -12,8 +12,8 @@
  */
 
 /* memory assigned for each R5x <-> HSM channel */
-uint8_t gQueue_HsmToR5[SIPC_NUM_R5_CORES][SIPC_QUEUE_LENGTH*SIPC_MSG_SIZE] __attribute__((aligned(8),section(".bss.sipc_hsm_queue_mem")));
-uint8_t gQueue_R5ToHsm[SIPC_NUM_R5_CORES][SIPC_QUEUE_LENGTH*SIPC_MSG_SIZE] __attribute__((aligned(8),section(".bss.sipc_r5f_queue_mem")));
+uint8_t gQueue_HsmToSecureHost[SIPC_NUM_R5_CORES][SIPC_QUEUE_LENGTH*SIPC_MSG_SIZE] __attribute__((aligned(8),section(".bss.sipc_hsm_queue_mem")));
+uint8_t gQueue_SecureHostToHsm[SIPC_NUM_R5_CORES][SIPC_QUEUE_LENGTH*SIPC_MSG_SIZE] __attribute__((aligned(8),section(".bss.sipc_secure_host_queue_mem")));
 HsmClient_t gHSMClient ;
 
 void HsmClient_config(void)
@@ -38,16 +38,16 @@ void HsmClient_config(void)
     %if(config.sec_core_option == "secure_host_id_0"){
 
     /* This is HSM -> R5F queue */
-    sipcParams.tx_SipcQueues[CORE_INDEX_HSM] = (uintptr_t)gQueue_R5ToHsm[0] ;
-    sipcParams.rx_SipcQueues[CORE_INDEX_HSM] = (uintptr_t)gQueue_HsmToR5[0] ;
+    sipcParams.tx_SipcQueues[CORE_INDEX_HSM] = (uintptr_t)gQueue_SecureHostToHsm[0] ;
+    sipcParams.rx_SipcQueues[CORE_INDEX_HSM] = (uintptr_t)gQueue_HsmToSecureHost[0] ;
     sipcParams.secHostCoreId[CORE_INDEX_SEC_MASTER_0] = CORE_ID_`hsm_soc.getSelfCoreId().toUpperCase()`;
     %}
     %if(config.sec_core_option == "secure_host_id_1"){
     /* This is HSM -> R5F queue */
-    sipcParams.tx_SipcQueues[CORE_INDEX_HSM] = (uintptr_t)gQueue_R5ToHsm[1] ;
+    sipcParams.tx_SipcQueues[CORE_INDEX_HSM] = (uintptr_t)gQueue_SecureHostToHsm[1] ;
 
     /* This will be R5 -> HSM queue */
-    sipcParams.rx_SipcQueues[CORE_INDEX_HSM] = (uintptr_t)gQueue_HsmToR5[1] ;
+    sipcParams.rx_SipcQueues[CORE_INDEX_HSM] = (uintptr_t)gQueue_HsmToSecureHost[1] ;
     sipcParams.secHostCoreId[CORE_INDEX_SEC_MASTER_1] = CORE_ID_`hsm_soc.getSelfCoreId().toUpperCase()`;
     %}
 
