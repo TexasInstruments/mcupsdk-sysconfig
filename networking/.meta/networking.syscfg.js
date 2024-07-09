@@ -2,7 +2,7 @@
 let common = system.getScript("/common");
 let soc = system.getScript(`/networking/soc/networking_${common.getSocName()}`);
 
-exports = {
+exports = common.getSelfSysCfgCoreName().includes('pru') ? {} : {
     displayName: "TI Networking",
     templates: [
         {

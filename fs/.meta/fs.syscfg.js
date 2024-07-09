@@ -23,7 +23,7 @@ function getTopModules() {
 	}
 }
 
-exports = {
+exports = common.getSelfSysCfgCoreName().includes('pru') ? {} : {
     displayName: "File System",
     topModules: getTopModules(),
 };

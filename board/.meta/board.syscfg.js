@@ -2,7 +2,7 @@
 let common = system.getScript("/common");
 let board = system.getScript(`/board/soc/board_${common.getSocName()}`);
 
-exports = {
+exports = common.getSelfSysCfgCoreName().includes('pru') ? {} : {
     displayName: "TI Board Drivers",
     templates: [
         {

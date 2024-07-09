@@ -2,7 +2,7 @@
 let common = system.getScript("/common");
 let soc = system.getScript(`/kernel/soc/dpl_${common.getSocName()}`);
 
-exports = {
+exports = common.getSelfSysCfgCoreName().includes('pru') ? {} : {
     displayName: "TI Driver Porting Layer (DPL)",
     templates: [
         {

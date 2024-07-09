@@ -10,6 +10,9 @@ const topModules_mcu = [
 
 ];
 
+const topModulesNull = [
+];
+
 exports = {
     getTopModules: function() {
 
@@ -18,7 +21,11 @@ exports = {
         if(common.getSelfSysCfgCoreName().includes("m4f")) {
             topModules = topModules_mcu;
         }
-
-        return topModules;
+        
+        if((common.getSelfSysCfgCoreName().includes("pru"))) {
+            topModules = topModulesNull; 
+        }
+        
+        return topModules; 
     },
 };

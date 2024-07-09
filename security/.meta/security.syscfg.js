@@ -13,4 +13,4 @@ if (!selfCoreName.includes("hsm")) {
     };
 
 }
-exports = SecServicesObj;
+exports = common.getSelfSysCfgCoreName().includes('pru') ? {} : SecServicesObj;

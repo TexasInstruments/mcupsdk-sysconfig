@@ -2,7 +2,7 @@
 let common = system.getScript("/common");
 let soc = system.getScript(`/drivers/soc/drivers_${common.getSocName()}`);
 
-exports = {
+exports = common.getSelfSysCfgCoreName().includes('pru') ? {} : {
     displayName: "TI Drivers",
     templates: [
         {

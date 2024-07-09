@@ -14,6 +14,9 @@ const topModules_a53 = [
 
 ];
 
+const topModulesNull = [
+];
+
 exports = {
     getTopModules: function() {
 
@@ -26,6 +29,10 @@ exports = {
         {
             topModules = topModules_a53;
         }
+        if((common.getSelfSysCfgCoreName().includes("pru"))) {
+            topModules = topModulesNull; 
+        }
+        
 
         return topModules;
     },
