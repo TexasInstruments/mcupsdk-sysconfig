@@ -135,6 +135,7 @@ const topModules_a53 = [
     "/drivers/mcan/mcan",
     "/drivers/mcspi/mcspi",
     "/drivers/mmcsd/mmcsd",
+	"/drivers/ospi/ospi",
     "/drivers/uart/uart",
     "/drivers/udma/udma",
     "/drivers/watchdog/watchdog",
