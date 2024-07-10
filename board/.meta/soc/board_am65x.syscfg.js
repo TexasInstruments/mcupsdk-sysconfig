@@ -2,9 +2,13 @@
 let common = system.getScript("/common");
 
 const driverVer = {
+    "flash": {
+        version: "v0",
+    },
 };
 
 const topModules = [
+    "/board/flash/flash",
     "/board/led/led",
 ];
 
