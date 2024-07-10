@@ -1,5 +1,8 @@
 %%{
     let module = system.modules['/drivers/ospi/ospi'];
+    let common = system.getScript("/common");
+    let soc = system.getScript(`/drivers/soc/drivers_${common.getSocName()}`);
+    let soc_name = common.getSocName();
     let ospiUdmaInstances = [];
     for(let i=0; i < module.$instances.length; i++) {
         let instance = module.$instances[i];
@@ -74,6 +77,7 @@ uint32_t gOspiConfigNum = CONFIG_OSPI_NUM_INSTANCES;
 #include <drivers/ospi/v0/dma/ospi_dma.h>
 %if(ospiUdmaInstances.length > 0) {
 #include <drivers/ospi/v0/dma/udma/ospi_dma_udma.h>
+#include <drivers/ospi/v0/dma/soc/ospi_dma_soc.h>
 #include <drivers/udma.h>
 
 /*
@@ -97,6 +101,7 @@ static uint8_t gOspiUdmaBlkCopyCh`i`RingMem[OSPI_UDMA_BLK_COPY_CH_RING_MEM_SIZE]
 static uint8_t gOspiUdmaBlkCopyCh`i`TrpdMem[OSPI_UDMA_BLK_COPY_CH_TRPD_MEM_SIZE] __attribute__((aligned(UDMA_CACHELINE_ALIGNMENT)));
 %}
 
+% if (soc_name != "am65x"){
 %for(let i = 0; i < ospiUdmaInstances.length; i++) {
 OspiDma_UdmaArgs gOspiUdma`i`Args =
 {
@@ -107,7 +112,31 @@ OspiDma_UdmaArgs gOspiUdma`i`Args =
     .ringMem       = &gOspiUdmaBlkCopyCh`i`RingMem,
     .ringMemSize   = OSPI_UDMA_BLK_COPY_CH_RING_MEM_SIZE,
     .ringElemCount = OSPI_UDMA_BLK_COPY_CH_RING_ELEM_CNT,
+    .isCqRingMem   = UDMA_COMP_QUEUE_RING_MEM_DISABLE,
 };
+%}
+%}
+%else{
+/* OSPI UDMA Blockcopy Channel Cq Ring Mem */
+%for(let i = 0; i < ospiUdmaInstances.length; i++) {
+static uint8_t gOspiUdmaBlkCopyCh`i`CqRingMem[OSPI_UDMA_BLK_COPY_CH_TRPD_MEM_SIZE] __attribute__((aligned(UDMA_CACHELINE_ALIGNMENT)));
+%}
+
+%for(let i = 0; i < ospiUdmaInstances.length; i++) {
+OspiDma_UdmaArgs gOspiUdma`i`Args =
+{
+    .drvHandle     = &gUdmaDrvObj[`ospiUdmaInstances[i].$name`],
+    .chHandle      = &gOspiUdmaBlkCopyChObj[`i`],
+    .trpdMem       = &gOspiUdmaBlkCopyCh`i`TrpdMem,
+    .trpdMemSize   = OSPI_UDMA_BLK_COPY_CH_TRPD_MEM_SIZE,
+    .ringMem       = &gOspiUdmaBlkCopyCh`i`RingMem,
+    .ringMemSize   = OSPI_UDMA_BLK_COPY_CH_RING_MEM_SIZE,
+    .ringElemCount = OSPI_UDMA_BLK_COPY_CH_RING_ELEM_CNT,
+    .cqMem         = &gOspiUdmaBlkCopyCh`i`CqRingMem,
+    .cqMemSize     = OSPI_UDMA_BLK_COPY_CH_RING_MEM_SIZE,
+    .isCqRingMem   = UDMA_COMP_QUEUE_RING_MEM_ENABLE,
+};
+%}
 %}
 %}
 OSPI_DmaConfig gOspiDmaConfig[CONFIG_OSPI_NUM_DMA_INSTANCES] =
