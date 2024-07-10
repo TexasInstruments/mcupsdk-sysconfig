@@ -23,7 +23,14 @@ function getInstanceConfig(moduleInstance) {
 
 function getInterfaceName(inst) {
 
-    return "OSPI";
+    if(common.getSocName() == "am65x")
+    {
+        return "MCU_FSS0_OSPI";
+    }
+    else
+    {
+        return "OSPI";
+    }
 }
 
 function getPeripheralPinNames(inst) {

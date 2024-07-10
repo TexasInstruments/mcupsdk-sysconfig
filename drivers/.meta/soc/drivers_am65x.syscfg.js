@@ -20,6 +20,9 @@ const driverVer = {
     "mmcsd": {
         version: "v2",
     },
+    "ospi": {
+        version: "v0",
+    },
     "pcie": {
         version: "v0",
     },
@@ -38,6 +41,7 @@ const topModules = [
     "/drivers/i2c/i2c",
     "/drivers/ipc/ipc",
     "/drivers/mmcsd/mmcsd",
+    "/drivers/ospi/ospi",
     "/drivers/pcie/pcie",
     "/drivers/uart/uart",
     "/drivers/udma/udma",
