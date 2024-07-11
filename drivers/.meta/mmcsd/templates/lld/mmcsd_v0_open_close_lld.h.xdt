@@ -1,0 +1,17 @@
+%%{
+    let common = system.getScript("/common");
+    let module = system.modules['/drivers/mmcsd/mmcsd'];
+%%}
+/*
+ * MMCSD
+ */
+#include <drivers/mmcsd/v0/lld/mmcsd_lld.h>
+
+/* I2C Driver handles  */
+extern MMCSDLLD_Handle gMmcsdLldHandle[CONFIG_MMCSD_NUM_INSTANCES];
+
+/* MMCSD Driver open/close - can be used by application when Driver_open() and
+ * Driver_close() is not used directly and app wants to control the various driver
+ * open/close sequences */
+void Drivers_mmcsdOpen(void);
+void Drivers_mmcsdClose(void);

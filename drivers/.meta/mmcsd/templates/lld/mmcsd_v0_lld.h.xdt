@@ -1,0 +1,15 @@
+%%{
+    let module = system.modules['/drivers/mmcsd/mmcsd'];
+%%}
+/*
+ * MMCSD
+ */
+#include <drivers/mmcsd/v0/lld/mmcsd_lld.h>
+#include <kernel/dpl/ClockP.h>
+
+/* I2C Instance Macros */
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+#define `instance.$name.toUpperCase()` (`i`U)
+% }
+#define CONFIG_MMCSD_NUM_INSTANCES (`module.$instances.length`U)

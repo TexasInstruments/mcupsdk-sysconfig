@@ -1,0 +1,86 @@
+%%{
+    let common = system.getScript("/common");
+    let soc = system.getScript(`/drivers/soc/drivers_${common.getSocName()}`);
+    let driverVer = soc.getDriverVer("mmcsd");
+    let module = system.modules['/drivers/mmcsd/mmcsd'];
+%%}
+
+
+/* MMCSD Driver Objects */
+extern MMCSDLLD_InitObject gMmcsdLldInitObject[CONFIG_MMCSD_NUM_INSTANCES];
+extern MMCSDLLD_Object gMmcsdLldObject[CONFIG_MMCSD_NUM_INSTANCES];
+
+/* MMCSD Driver handle */
+MMCSDLLD_Handle gMmcsdLldHandle[CONFIG_MMCSD_NUM_INSTANCES];
+
+/* MMCSD Device Data structures */
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+        %if(config.moduleSelectLLD == "MMCSD0") {
+            %if(config.cardTypeMMCLLD == "EMMC") {
+MMCSD_EmmcDeviceData gEmmcData`i`;
+            %}
+        %}
+        %else if(config.moduleSelectLLD == "MMCSD1") {
+            %if(config.cardTypeSDLLD == "SD") {
+MMCSD_SdDeviceData gSdData`i`;
+            %}
+        %}
+%}
+
+/* MMCSD temporary data buffers */
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+    % if    (((config.moduleSelectLLD == "MMCSD0") && (config.cardTypeMMCLLD == "EMMC"))
+    %     || ((config.moduleSelectLLD == "MMCSD1") && (config.cardTypeSDLLD == "SD"))) {
+uint8_t gMmcsdDataBuf`i`[512U] __attribute__((aligned(128U)));
+    % }
+%}
+
+void Drivers_mmcsdOpen(void)
+{
+    int32_t status = SystemP_SUCCESS;
+
+    /* Init all instances */
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+    gMmcsdLldHandle[`i`] = &gMmcsdLldObject[`i`];
+    gMmcsdLldHandle[`i`]->initHandle = &gMmcsdLldInitObject[`i`];
+    % let deviceDataTemp = "NULL";
+    % let dataBufTemp = "NULL";
+    % if(config.moduleSelectLLD == "MMCSD0") {
+    %     if(config.cardTypeMMCLLD == "EMMC") {
+    %         deviceDataTemp = "&gEmmcData";
+    %         dataBufTemp = "gMmcsdDataBuf";
+    %     }
+    % }
+    % else if(config.moduleSelectLLD == "MMCSD1") {
+    %     if(config.cardTypeSDLLD == "SD") {
+    %         deviceDataTemp = "&gSdData";
+    %         dataBufTemp = "gMmcsdDataBuf";
+    %     }
+    % }
+    gMmcsdLldHandle[`i`]->initHandle->deviceData = `deviceDataTemp``i`;
+    gMmcsdLldHandle[`i`]->initHandle->dataBuf = `dataBufTemp``i`;
+
+    status += MMCSD_lld_init(gMmcsdLldHandle[`i`]);
+% }
+    if(SystemP_FAILURE == status)
+    {
+        Drivers_mmcsdClose();   /* Exit gracefully */
+    }
+    return;
+}
+
+void Drivers_mmcsdClose(void)
+{
+    /* Deinit all instances that are open */
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    MMCSD_lld_deInit(gMmcsdLldHandle[`i`]);
+% }
+    return;
+}

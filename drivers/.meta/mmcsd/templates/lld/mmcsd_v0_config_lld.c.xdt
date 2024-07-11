@@ -1,0 +1,72 @@
+%%{
+    let module = system.modules['/drivers/mmcsd/mmcsd'];
+%%}
+/*
+ * MMCSD
+ */
+
+/* MMCSD LLD objects - initialized by the driver */
+MMCSDLLD_Object gMmcsdLldObject[CONFIG_MMCSD_NUM_INSTANCES];
+
+/* MMCSD LLD Init Objects */
+MMCSDLLD_InitObject gMmcsdLldInitObject[CONFIG_MMCSD_NUM_INSTANCES] =
+{
+    % for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+    % let operatingMode = module.getOperatingMode(instance);
+    % let name = config.name;
+    {
+        .ctrlBaseAddr           = `config.ctrlBaseAddr`,
+        .ssBaseAddr             = `config.ssBaseAddr`,
+        .inputClkFreq           = `config.inputClkFreq`U,
+        % let cardTypeTemp = "NO_DEVICE";
+        % if(config.moduleSelectLLD == "MMCSD0") {
+        %     cardTypeTemp = config.cardTypeMMCLLD;
+        % }
+        % else {
+        %     cardTypeTemp = config.cardTypeSDLLD;
+        % }
+        .cardType               = MMCSD_CARD_TYPE_`cardTypeTemp`,
+        .autoAssignMaxSpeed     = `config.autoAssignMaxBusSpeed`,
+        % let modeSelTemp = "";
+        % let modeSelCardTemp = "";
+        % if(config.moduleSelectLLD == "MMCSD0") {
+        %     modeSelTemp = config.modeSelectEMMCLLD;
+        %     modeSelCardTemp = "MMCSD_MMC_MODE_";
+        % }
+        % else {
+        %     modeSelTemp = config.modeSelectSDLLD;
+        %     modeSelCardTemp = "MMCSD_SD_MODE_";
+        % }
+        .uaBusSpeed             = `modeSelCardTemp``modeSelTemp`,
+        .tuningType             = MMCSD_PHY_TUNING_TYPE_`config.tuningType`,
+        .intrNum                = `config.intrNum`U,
+        % let slotTypeTemp = "";
+        % if(config.moduleSelectLLD == "MMCSD0") {
+        %     slotTypeTemp = "MMCSD_SLOT_TYPE_VAL_EMBEDDED";
+        % }
+        % else {
+        %     slotTypeTemp = "MMCSD_SLOT_TYPE_VAL_REMOVABLE";
+        % }
+        .slotType               = `slotTypeTemp`,
+        % let busWidthTemp = "";
+        % if(config.moduleSelectLLD == "MMCSD0") {
+        %     busWidthTemp = config.busWidthMMC;
+        % }
+        % else {
+        %     busWidthTemp = config.busWidthSD;
+        % }
+        .busWidth               = MMCSD_BUS_WIDTH_`busWidthTemp`,
+        .enableDma              = `config.dmaEnable`,
+        .phyType                = MMCSD_PHY_TYPE_`config.phyType`,
+        .pllEnableSD            = `config.usePLLSD`,
+        .deviceData             = NULL,
+        .dataBuf                = NULL,
+        .Clock_getTicks         = ClockP_getTicks,
+        .Clock_uSleep           = ClockP_usleep,
+    }
+% }
+};
+
+uint32_t gMmcsdConfigNum = CONFIG_MMCSD_NUM_INSTANCES;

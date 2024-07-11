@@ -77,10 +77,33 @@ const mmcsd_config_a53ss = [
 ];
 
 const operating_modes_sd = [
+    { name : "DS", displayName : "DS"},
     { name : "HS", displayName : "HS"},
+    { name : "SDR12", displayName : "SDR12"},
+    { name : "SDR25", displayName : "SDR25"},
+    { name : "SDR50", displayName : "SDR50"},
+    { name : "DDR50", displayName : "DDR50"},
+    { name : "SDR104", displayName : "SDR104"},
 ];
 
+const operating_modes_sd_lld = [
+    { name : "DS", displayName : "DS"},
+    { name : "HS", displayName : "HS"},
+    { name : "SDR12", displayName : "SDR12"},
+    { name : "SDR25", displayName : "SDR25"},
+    { name : "SDR50", displayName : "SDR50"},
+    { name : "DDR50", displayName : "DDR50"},
+    { name : "SDR104", displayName : "SDR104"},
+]
+
 const operating_modes_emmc = [
+    { name : "SDR25", displayName : "SDR25"},
+    { name : "SDR50", displayName : "SDR50"},
+    { name : "HS200", displayName : "HS200"},
+];
+
+const operating_modes_emmc_lld = [
+    { name : "SDR25", displayName : "SDR25"},
     { name : "SDR50", displayName : "SDR50"},
     { name : "HS200", displayName : "HS200"},
 ];
@@ -89,8 +112,15 @@ function getOperatingModesSD() {
     return operating_modes_sd;
 }
 
+function getOperatingModesSDLLD() {
+    return operating_modes_sd_lld;
+}
+
 function getOperatingModesEMMC() {
     return operating_modes_emmc;
+}
+function getOperatingModesEMMCLLD() {
+    return operating_modes_emmc_lld;
 }
 
 function getDefaultOperatingModeEMMC() {
@@ -127,7 +157,9 @@ exports = {
 	getDefaultConfig,
 	getConfigArr,
     getOperatingModesSD,
+    getOperatingModesSDLLD,
     getOperatingModesEMMC,
+    getOperatingModesEMMCLLD,
     getDefaultOperatingModeEMMC,
     getDefaultOperatingModeSD,
 };

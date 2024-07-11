@@ -18,13 +18,41 @@ static MMCSD_Attrs gMmcsdAttrs[CONFIG_MMCSD_NUM_INSTANCES] =
         .ssBaseAddr           = `config.ssBaseAddr`,
         .inputClkFreq         = `config.inputClkFreq`U,
         .intrNum              = `config.intrNum`U,
-        .intrEnable           = `config.intrEnable.toString(10).toUpperCase()`,
-        .enableDma            = `config.dmaEnable.toString(10).toUpperCase()`,
+        .intrEnable           = `config.intrEnable`,
+        .enableDma            = `config.dmaEnable`,
         .phyType              = MMCSD_PHY_TYPE_`config.phyType`,
         .cardType             = MMCSD_CARD_TYPE_`config.cardType`,
-        .busWidth             = `config.busWidth`,
-        .supportedModes       = `operatingMode`,
-        .tuningType           = `config.tuningType`,
+        % let busWidthTemp = "";
+        % if(config.moduleSelect == "MMC0") {
+        %     busWidthTemp = config.busWidthMMC;
+        % }
+        % else {
+        %     busWidthTemp = config.busWidthSD;
+        % }
+        .busWidth               = MMCSD_BUS_WIDTH_`busWidthTemp`,
+        .tuningType           = MMCSD_PHY_TUNING_TYPE_`config.tuningType`,
+        .autoAssignMaxSpeed     = `config.autoAssignMaxBusSpeed`,
+        % let modeSelTemp = "";
+        % let modeSelCardTemp = "";
+        % if(config.moduleSelect == "MMC0") {
+        %     modeSelTemp = config.modeSelectEMMC;
+        %     modeSelCardTemp = "MMCSD_MMC_MODE_";
+        % }
+        % else {
+        %     modeSelTemp = config.modeSelectSD;
+        %     modeSelCardTemp = "MMCSD_SD_MODE_";
+        % }
+        .uaBusSpeed             = `modeSelCardTemp``modeSelTemp`,
+        % let slotTypeTemp = "";
+        % if(config.moduleSelect == "MMC0") {
+        %     slotTypeTemp = "MMCSD_SLOT_TYPE_VAL_EMBEDDED";
+        % }
+        % else {
+        %     slotTypeTemp = "MMCSD_SLOT_TYPE_VAL_REMOVABLE";
+        % }
+        .slotType               = `slotTypeTemp`,
+        .pllEnableSD            = `config.usePLLSD`,
+        .intrPriority           = `config.intrPriority`,
     },
 % }
 };
