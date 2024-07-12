@@ -17,6 +17,9 @@ const driverVer = {
     "ipc": {
         version: "v0",
     },
+    "mmcsd": {
+        version: "v2",
+    },
     "pcie": {
         version: "v0",
     },
@@ -34,6 +37,7 @@ const topModules = [
     "/drivers/gpio/gpio",
     "/drivers/i2c/i2c",
     "/drivers/ipc/ipc",
+    "/drivers/mmcsd/mmcsd",
     "/drivers/pcie/pcie",
     "/drivers/uart/uart",
     "/drivers/udma/udma",

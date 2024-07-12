@@ -41,7 +41,7 @@ function moduleInstances(inst) {
     switch(inst.media) {
     	case "SD":
             moduleSelectName = "MMC1";
-            if ((common.getSocName() == "am263x") || (common.getSocName() == "am263px"))
+            if ((common.getSocName() == "am263x") || (common.getSocName() == "am263px") || (common.getSocName() == "am65x"))
             {
                 moduleSelectName = "MMC";
             }
@@ -58,7 +58,7 @@ function moduleInstances(inst) {
     		break;
     	case "EMMC":
             moduleSelectName = "MMC0";
-            if ((common.getSocName() == "am263x") || (common.getSocName() == "am263px"))
+            if ((common.getSocName() == "am263x") || (common.getSocName() == "am263px") || (common.getSocName() == "am65x"))
             {
                 moduleSelectName = "MMC";
             }

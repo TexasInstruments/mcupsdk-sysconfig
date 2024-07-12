@@ -8,7 +8,7 @@ const topModulesNull = [
 ];
 
 function getTopModules() {
-    const fsSocList = ["am64x", "am243x", "am263x", "am263px"];
+    const fsSocList = ["am64x", "am243x", "am263x", "am263px", "am65x"];
     const lfsSocList = ["am64x", "am243x"];
     const lfsPath = "/fs/littlefs/littlefs"
     if(lfsSocList.includes(common.getSocName())){
