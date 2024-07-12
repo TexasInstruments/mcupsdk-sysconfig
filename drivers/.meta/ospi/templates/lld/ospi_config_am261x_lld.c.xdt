@@ -1,5 +1,6 @@
 %%{
     let module = system.modules['/drivers/ospi/ospi'];
+    let fotaModule = system.modules['/optiflash/fota/fota'];
     let emdaCount = 0;
     for(let i = 0; i < module.$instances.length; i++)
     {
@@ -13,6 +14,11 @@
 /*
  * OSPI
  */
+
+#include <drivers/ospi/v0/lld/dma/edma/ospi_edma_lld.h>
+#include <drivers/edma.h>
+#include <drivers/ospi/v0/lld/dma/ospi_lld_dma.h>
+#include <kernel/dpl/ClockP.h>
 
 % let dmaRestrictRegions = module.getDmaRestrictedRegions();
 
@@ -32,15 +38,35 @@ static OSPI_AddrRegion gOspiDmaRestrictRegions[] =
     }
 };
 
-/* OSPI attributes */
-static OSPI_Attrs gOspiAttrs[CONFIG_OSPI_NUM_INSTANCES] =
+/* OSPI Driver Parameters */
+OSPI_Params gOspiParams[CONFIG_OSPI_NUM_INSTANCES] =
+{
+% let dmaInstanceIndex = 0;
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+    {
+        %if(config.dmaEnable == true) {
+        .ospiDmaChIndex = `dmaInstanceIndex`,
+        %dmaInstanceIndex++;
+        %}
+        %else {
+        .ospiDmaChIndex = -1,
+        %}
+    },
+% }
+};
+
+OspiDma_EdmaArgs gOspiEdmaArgs[`module.$instances.length`];
+
+/* OSPI Initialization Object */
+OSPILLD_InitObject gOspiInitObject[CONFIG_OSPI_NUM_INSTANCES] =
 {
 % for(let i = 0; i < module.$instances.length; i++) {
     % let instance = module.$instances[i];
     % let config = module.getInstanceConfig(instance);
     % let name = config.name;
     {
-        .baseAddr             = `config.baseAddr`,
         .dataBaseAddr         = `config.dataBaseAddr`,
         .inputClkFreq         = `config.inputClkFreq`U,
         .intrNum              = `config.intrNum`U,
@@ -54,36 +80,55 @@ static OSPI_Attrs gOspiAttrs[CONFIG_OSPI_NUM_INSTANCES] =
         .decChipSelect        = `config.decChipSelect`,
         .baudRateDiv          = `config.baudRateDiv`,
         .dmaRestrictedRegions = gOspiDmaRestrictRegions,
+        % if(config.dmaEnable == 1)
+        %{
+        .ospiDmaHandle        = (OSPI_DmaHandle) &gOspiDmaConfig[0],
+        .ospiDmaChConfig      = (OSPI_DmaChConfig) &gOspiEdmaArgs[0],
+        %}
+        % else
+        %{
+        .ospiDmaHandle        = NULL,
+        .ospiDmaChConfig      = NULL,
+        %}
     },
 % }
 };
-/* OSPI objects - initialized by the driver */
-static OSPI_Object gOspiObjects[CONFIG_OSPI_NUM_INSTANCES];
-/* OSPI driver configuration */
-OSPI_Config gOspiConfig[CONFIG_OSPI_NUM_INSTANCES] =
+
+/* OSPI Handle */
+OSPILLD_Object gOspiObject[CONFIG_OSPI_NUM_INSTANCES] =
 {
 % for(let i = 0; i < module.$instances.length; i++) {
     % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+    % let name = config.name;
     {
-        &gOspiAttrs[`instance.$name.toUpperCase()`],
-        &gOspiObjects[`instance.$name.toUpperCase()`],
+        .baseAddr             = `config.baseAddr`,
+        .state                = OSPI_STATE_RESET,
+        .protocol             = OSPI_PROTO_`config.protocol.toUpperCase()`,
+        .hOspiInit            = (OSPILLD_InitHandle) &gOspiInitObject[0] ,
+        .currTrans            = NULL,
+        .Clock_getTicks       = ClockP_getTicks,
+        .Clock_usecToTicks    = ClockP_usecToTicks,
+        .Clock_usleep         = ClockP_usleep,
+        .openParams           = &gOspiParams[0],
     },
 % }
 };
 
+OSPILLD_Handle gOspiHandle = &gOspiObject[CONFIG_OSPI0];
+
 uint32_t gOspiConfigNum = CONFIG_OSPI_NUM_INSTANCES;
 
-#include <drivers/ospi/v0/lld/dma/ospi_lld_dma.h>
-#include <drivers/ospi/v0/lld/dma/edma/ospi_edma_lld.h>
+
 % if(emdaCount > 0) {
-OspiDma_EdmaArgs gOspiEdmaArgs[`module.$instances.length`];
 
 OSPI_DmaConfig gOspiDmaConfig[CONFIG_OSPI_NUM_DMA_INSTANCES] =
 {
 %for(let i = 0; i < module.$instances.length; i++) {
     {
         .fxns        = &gOspiDmaEdmaFxns,
-        .ospiDmaArgs = &(gOspiEdmaArgs[`i`])
+        .ospiDmaArgs = &(gOspiEdmaArgs[`i`]),
+        .ospiDrvHandle = &gOspiObject[CONFIG_OSPI0],
     }
 %}
 };

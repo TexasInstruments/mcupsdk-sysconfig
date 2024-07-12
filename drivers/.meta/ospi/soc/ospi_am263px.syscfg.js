@@ -11,7 +11,7 @@ const ospi_config_r5fss = [
         inputClkFreq    : ospi_input_clk_freq,
         dacEnable       : false,
         baudRateDiv     : 4,
-        intrNum         : 171,
+        intrNum         : 54,
         clockIds        : [ "SOC_RcmPeripheralId_OSPI0" ],
         clockFrequencies: [
             {
@@ -96,41 +96,12 @@ function addModuleInstances(instance) {
 
 let ospi_module_name = "/drivers/ospi/ospi";
 
-function getTemplates()
-{
-    return {
-        "/drivers/system/system_config.c.xdt": {
-            driver_config: "/drivers/ospi/templates/ospi_config_am263px.c.xdt",
-            driver_init: "/drivers/ospi/templates/ospi_init.c.xdt",
-            driver_deinit: "/drivers/ospi/templates/ospi_deinit.c.xdt",
-        },
-        "/drivers/system/system_config.h.xdt": {
-            driver_config: "/drivers/ospi/templates/ospi.h.xdt",
-        },
-        "/drivers/system/drivers_open_close.c.xdt": {
-            driver_open_close_config: "/drivers/ospi/templates/ospi_open_close_config.c.xdt",
-            driver_open: "/drivers/ospi/templates/ospi_open.c.xdt",
-            driver_close: "/drivers/ospi/templates/ospi_close.c.xdt",
-        },
-        "/drivers/system/drivers_open_close.h.xdt": {
-            driver_open_close_config: "/drivers/ospi/templates/ospi_open_close.h.xdt",
-        },
-        "/drivers/pinmux/pinmux_config.c.xdt": {
-            moduleName: ospi_module_name,
-        },
-        "/drivers/system/power_clock_config.c.xdt": {
-            moduleName: ospi_module_name,
-        },
-    };
-}
-
 exports = {
     getDefaultConfig,
     getConfigArr,
     getDmaRestrictedRegions,
     getSupportedDataLines,
     addModuleInstances,
-    getTemplates,
     getPhyTuningParams
 };
 

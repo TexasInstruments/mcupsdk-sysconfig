@@ -42,6 +42,7 @@ static OSPI_Attrs gOspiAttrs[CONFIG_OSPI_NUM_INSTANCES] =
     % let name = config.name;
     {
         .baseAddr             = `config.baseAddr`,
+        .protocol             = OSPI_PROTO_`config.protocol.toUpperCase()`,
         .dataBaseAddr         = `config.dataBaseAddr`,
         .inputClkFreq         = `config.inputClkFreq`U,
         .intrNum              = `config.intrNum`U,
@@ -60,6 +61,7 @@ static OSPI_Attrs gOspiAttrs[CONFIG_OSPI_NUM_INSTANCES] =
 };
 /* OSPI objects - initialized by the driver */
 static OSPI_Object gOspiObjects[CONFIG_OSPI_NUM_INSTANCES];
+
 /* OSPI driver configuration */
 OSPI_Config gOspiConfig[CONFIG_OSPI_NUM_INSTANCES] =
 {
@@ -74,10 +76,9 @@ OSPI_Config gOspiConfig[CONFIG_OSPI_NUM_INSTANCES] =
 
 uint32_t gOspiConfigNum = CONFIG_OSPI_NUM_INSTANCES;
 
-#include <drivers/ospi/v0/dma/ospi_dma.h>
+#include <drivers/ospi/v0/lld/dma/udma/ospi_udma_lld.h>
 %if(ospiUdmaInstances.length > 0) {
-#include <drivers/ospi/v0/dma/udma/ospi_dma_udma.h>
-#include <drivers/ospi/v0/dma/soc/ospi_dma_soc.h>
+#include <drivers/ospi/v0/lld/dma/soc/ospi_dma_soc.h>
 #include <drivers/udma.h>
 
 /*
@@ -103,7 +104,7 @@ static uint8_t gOspiUdmaBlkCopyCh`i`TrpdMem[OSPI_UDMA_BLK_COPY_CH_TRPD_MEM_SIZE]
 
 % if (soc_name != "am65x"){
 %for(let i = 0; i < ospiUdmaInstances.length; i++) {
-OspiDma_UdmaArgs gOspiUdma`i`Args =
+OSPI_UdmaParams gOspiUdma`i`Args =
 {
     .drvHandle     = &gUdmaDrvObj[`ospiUdmaInstances[i].$name`],
     .chHandle      = &gOspiUdmaBlkCopyChObj[`i`],

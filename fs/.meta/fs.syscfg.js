@@ -7,8 +7,8 @@ const topModulesNull = [
 ];
 
 function getTopModules() {
-    const fsSocList = ["am64x", "am243x", "am263x", "am263px", "am65x"];
-    const lfsSocList = ["am64x", "am243x","am263px","am263x", "am273x"];
+    const fsSocList = ["am64x", "am243x", "am263x", "am263px", "am65x","am261x"];
+    const lfsSocList = ["am64x", "am243x","am263px","am263x", "am273x","am261x"];
     const lfsPath = "/fs/littlefs/littlefs";
     const fsPath = "/fs/freertos_fat/freertos_fat";
 

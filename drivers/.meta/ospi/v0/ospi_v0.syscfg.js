@@ -165,7 +165,14 @@ let ospi_module_name = "/drivers/ospi/ospi";
 
 let ospi_module = {
     displayName: "OSPI",
-    templates: soc.getTemplates(),
+    templates: {
+        "/drivers/pinmux/pinmux_config.c.xdt": {
+            moduleName: ospi_module_name,
+        },
+        "/drivers/system/power_clock_config.c.xdt": {
+            moduleName: ospi_module_name,
+        },
+    },
     maxInstances: getConfigArr().length,
     defaultInstanceName: "CONFIG_OSPI",
     validate: validate,
@@ -179,6 +186,7 @@ let ospi_module = {
     },
     config : getConfigurables(),
     sharedModuleInstances: soc.addModuleInstances,
+    moduleInstances: moduleInstances,
     pinmuxRequirements,
     getInstanceConfig,
     getInterfaceName,
@@ -346,6 +354,22 @@ function getConfigurables()
             default: 4,
             hidden: true,
             description: `Interrupt Priority: 0 (highest) to ${hwi.getHwiMaxPriority()} (lowest)`,
+        },
+        {
+            name: "sdkInfra",
+            displayName: "SDK Infra",
+            default: "HLD",
+            options: [
+                {
+                    name: "HLD",
+                    displayName: "HLD"
+                },
+                {
+                    name: "LLD",
+                    displayName: "LLD"
+                },
+            ],
+            description: "SDK Infra",
         },
         /* Advance Open attributes */
         {
@@ -657,6 +681,68 @@ function validate(inst, report) {
     {
         report.logError("Value MUST be EVEN number", inst, "baudRateDiv");
     }
+}
+
+/*
+ *  ======== moduleInstances ========
+ */
+function moduleInstances(inst) {
+    let modInstances = new Array();
+
+    if( inst.sdkInfra == "HLD")
+    {
+        if(common.getSocName() == "am64x" | common.getSocName() == "am243x" ){
+            modInstances.push({
+                name: "child",
+                moduleName: '/drivers/ospi/v0/ospi_v0_template',
+                },
+            );
+        }
+        else if(common.getSocName() == "am261x" ){
+            modInstances.push({
+                name: "child",
+                moduleName: '/drivers/ospi/v0/ospi_v0_am261x_template',
+                },
+            );
+        }
+        else
+        {
+            modInstances.push({
+                name: "child",
+                moduleName: '/drivers/ospi/v0/ospi_v0_am263px_template',
+                },
+            );
+        }
+    }
+    else
+    {
+        if(common.getSocName() == "am64x" | common.getSocName() == "am243x" ){
+            modInstances.push({
+                name: "child",
+                moduleName: '/drivers/ospi/v0/ospi_v0_lld_template',
+                },
+            );
+        }
+        else if(common.getSocName() == "am261x" ){
+            modInstances.push({
+                name: "child",
+                moduleName: '/drivers/ospi/v0/ospi_v0_am261x_lld_template',
+                },
+            );
+        }
+        else
+        {
+            modInstances.push({
+                name: "child",
+                moduleName: '/drivers/ospi/v0/ospi_v0_am263px_lld_template',
+                },
+            );
+        }
+
+    }
+
+
+    return (modInstances);
 }
 
 exports = ospi_module;
