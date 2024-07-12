@@ -38,7 +38,7 @@ let moduleName = ""
 
 function isOptiShare(device){
 
-    if(device == "AM263x_beta" || device == "AM263Px")
+    if(device == "AM263x_beta" || device == "AM263Px" || device == "AM261x")
         return true;
     else if(device == "AM273x" || device == "AM243x" || device == "AM64x")
         return false;

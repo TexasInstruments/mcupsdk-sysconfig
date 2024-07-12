@@ -440,10 +440,6 @@ function getInterfaceName(inst) {
 	return "ADC";
 }
 
-function getInterfaceNameAdcR(inst) {
-    return "ADC_R";
-}
-
 function getInterfaceNameAdcSC(inst) {
     return "ADC_SC";
 }
@@ -600,7 +596,6 @@ exports = {
     ADC_Sysclk_Mhz: ADC_Sysclk_Mhz,
     ADC_SafetyAggr_Instances,
     getInterfaceName,
-    getInterfaceNameAdcR,
     getStaticConfigArr,
     getInterfaceNameAdcSC,
 }

@@ -24,7 +24,7 @@ function getDefaultDriver()
 
 function getDefaultFlashName()
 {
-    if(system.deviceData.device == "AM261x") {
+    if(system.deviceData.device == "AM261x_ZCZ") {
         return "IS25LX256";
     } else {
         return "IS25LX256";
@@ -33,20 +33,12 @@ function getDefaultFlashName()
 
 function getDefaultFlashConfig()
 {
-    if(system.deviceData.device == "AM261x") {
-        if(system.deviceData.package == "ZCZ_F")
-        {
-            defaultFlashConfig = system.getScript("/board/flash/IS25LX064.json");
-        }
-        return defaultFlashConfig;
-    } else {
-        return defaultFlashConfigLP;
-    }
+    return defaultFlashConfig;
 }
 
 function getDefaultProtocol()
 {
-    if(system.deviceData.device == "AM261x") {
+    if(system.deviceData.device == "AM261x_ZCZ") {
         return { name : "1s_1s_8s", displayName : "1S-1S-8S" };
     } else {
         return { name : "4s_4d_4d", displayName : "4S-4D-4D" };
@@ -55,7 +47,7 @@ function getDefaultProtocol()
 
 function getDefaultProtocolJson()
 {
-    if(system.deviceData.device == "AM261x") {
+    if(system.deviceData.device == "AM261x_ZCZ") {
         return "p118";
     } else {
         return "p444d";
@@ -64,7 +56,7 @@ function getDefaultProtocolJson()
 
 function getDefaultNandProtocolJson()
 {
-    if(system.deviceData.device == "AM261x") {
+    if(system.deviceData.device == "AM261x_ZCZ") {
         return "p114";
     } else {
         return "p444d";

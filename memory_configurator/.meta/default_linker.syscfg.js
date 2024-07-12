@@ -35,6 +35,12 @@ exports = {
                             sections_count = 12;
                         }
                     }
+					else if(device == "AM261x_ZCZ" || device == "AM261x_ZFG"){
+                        if(selfCoreName.includes("r5fss")){
+                            memory_regions_count = 11;
+                            sections_count = 12;
+                        }
+                    }
                     else if(device == "AM64x" || device == "AM243x_ALV_beta" || device == "AM243x_ALX_beta") {
                         if(selfCoreName.includes("r5fss")){
                             memory_regions_count = 9;

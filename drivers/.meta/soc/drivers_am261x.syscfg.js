@@ -5,9 +5,6 @@ const driverVer = {
     "adc": {
         version: "v2",
     },
-    "adc_r": {
-        version: "v2",
-    },
     "adc_sc": {
         version: "v2",
     },
@@ -71,9 +68,6 @@ const driverVer = {
     "ospi": {
         version: "v0",
     },
-    "resolver": {
-        version: "v0",
-    },
     "rti": {
         version: "v0",
     },
@@ -90,7 +84,6 @@ const driverVer = {
 
 const topModules_main = [
     "/drivers/adc/adc",
-    "/drivers/adc/adc_r",
     "/drivers/adc/adc_sc",
     "/drivers/adc/adc_extCh",
     "/drivers/bootloader/bootloader",
@@ -112,7 +105,6 @@ const topModules_main = [
     "/drivers/mmcsd/mmcsd",
     "/drivers/pruicss/pruicss",
     "/drivers/ospi/ospi",
-    "/drivers/resolver/resolver",
     "/drivers/rti/rti",
     "/drivers/sdfm/sdfm",
     "/drivers/uart/uart",
@@ -128,8 +120,6 @@ function getCpuID() {
     let corename_map = {
         "r5fss0-0" : "CSL_CORE_ID_R5FSS0_0",
         "r5fss0-1" : "CSL_CORE_ID_R5FSS0_1",
-        "r5fss1-0" : "CSL_CORE_ID_R5FSS1_0",
-        "r5fss1-1" : "CSL_CORE_ID_R5FSS1_1",
     };
     if(common.getSelfSysCfgCoreName().includes("hsm")) {
             corename_map = system.getScript(`/imports/drivers/soc/drivers_${common.getSocName()}_hsm.syscfg.js`).corename_map_hsm;
@@ -142,8 +132,6 @@ function getSelfCoreID() {
     let corename_map = {
         "r5fss0-0" : "R5FSS0_CORE0",
         "r5fss0-1" : "R5FSS0_CORE1",
-        "r5fss1-0" : "R5FSS1_CORE0",
-        "r5fss1-1" : "R5FSS1_CORE1",
     };
 
     return corename_map[common.getSelfSysCfgCoreName()];
