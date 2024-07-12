@@ -109,6 +109,14 @@ Bootloader_socCoreOpModeConfig operatingMode=
 void* operatingMode = NULL;
 %}
 
+% if(["am243x", "am64x"].includes(common.getSocName())){
+Bootloader_MemArgs gMemBootloaderArgs =
+{
+    .curOffset = 0,
+    .appImageBaseAddr = 0,
+};
+%}
+
 /* Bootloader driver configuration */
 Bootloader_Config gBootloaderConfig[CONFIG_BOOTLOADER_NUM_INSTANCES] =
 {
