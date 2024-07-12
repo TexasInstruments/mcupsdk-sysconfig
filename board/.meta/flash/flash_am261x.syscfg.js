@@ -33,12 +33,16 @@ function getDefaultFlashName()
 
 function getDefaultFlashConfig()
 {
-    return defaultFlashConfig;
+    if(system.deviceData.device == "AM261x_ZCZ") {
+        return defaultFlashConfig;
+    } else {
+        return defaultFlashConfigLP;
+    }
 }
 
 function getDefaultProtocol()
 {
-    if(system.deviceData.device == "AM261x_ZCZ") {
+    if(system.deviceData.device == "AM261x_ZCZ" || system.deviceData.device == "AM261x_ZFG") {
         return { name : "1s_1s_8s", displayName : "1S-1S-8S" };
     } else {
         return { name : "4s_4d_4d", displayName : "4S-4D-4D" };
@@ -47,7 +51,7 @@ function getDefaultProtocol()
 
 function getDefaultProtocolJson()
 {
-    if(system.deviceData.device == "AM261x_ZCZ") {
+    if(system.deviceData.device == "AM261x_ZCZ" || system.deviceData.device == "AM261x_ZFG") {
         return "p118";
     } else {
         return "p444d";
@@ -56,7 +60,7 @@ function getDefaultProtocolJson()
 
 function getDefaultNandProtocolJson()
 {
-    if(system.deviceData.device == "AM261x_ZCZ") {
+    if(system.deviceData.device == "AM261x_ZCZ" || system.deviceData.device == "AM261x_ZFG") {
         return "p114";
     } else {
         return "p444d";
