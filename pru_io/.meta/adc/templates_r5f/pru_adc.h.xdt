@@ -8,7 +8,7 @@
 % let instance = module.$instances[0];
 % for(let i = 0; i < module.$instances.length; i++) {
     % let instance = module.$instances[i];
-    % if (instance.adaptor === "TandMAdapterBoard") {
+    % if (instance.adapter === "TandMAdapterBoard") {
 #define `instance.$name`_T_M_SEM_ADAPTER        `1`
 % }
 % }

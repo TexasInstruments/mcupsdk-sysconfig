@@ -197,18 +197,18 @@ let adc_phi_pru_evm_adapter_top_module = {
         {
             name: "channelsInUse",
             displayName: "Channels In Use",
-            description: "Number of adc channels to use for sampling from 1 to n",
+            description: "Number of ADC channels to use for sampling from 1 to n",
             options: [
                 { name: "8", },
             ],
             default: "8",
         },
     ],
-    pinmuxRequirements,
-    getInterfaceNameList,
-    getPeripheralPinNames,
-    sharedModuleInstances,
-    moduleInstances,
+    pinmuxRequirements : common.getSelfSysCfgCoreName().includes('pru') ? (inst)=>{return []} : pinmuxRequirements,
+    getInterfaceNameList : common.getSelfSysCfgCoreName().includes('pru') ? (inst)=>{return []} : getInterfaceNameList,
+    getPeripheralPinNames : common.getSelfSysCfgCoreName().includes('pru') ? (inst)=>{return []} : getPeripheralPinNames,
+    sharedModuleInstances : common.getSelfSysCfgCoreName().includes('pru') ? (inst)=>{return []} : sharedModuleInstances,
+    moduleInstances : common.getSelfSysCfgCoreName().includes('pru') ? (inst)=>{return []}  : moduleInstances,
 };
 
 function validate(inst, report) {

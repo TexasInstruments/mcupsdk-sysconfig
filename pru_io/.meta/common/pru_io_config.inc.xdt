@@ -1,3 +1,22 @@
+%%{
+    let common = system.getScript("/common");
+    let r5f_cores = ["r5fss0-0", "r5fss0-1", "r5fss1-0", "r5fss1-1"]
+    let r5F_module = null;
+    function getIcssInstance()
+    {
+        if(common.getSelfSysCfgCoreName().substring(5,7) == "g0")
+        {
+                return "ICSSG0";
+        }
+        else
+        {
+                return "ICSSG1";
+        } 
+    }
+
+    
+
+%%}
 ; Copyright (C) 2022 Texas Instruments Incorporated - http://www.ti.com/
 ;
 ; Redistribution and use in source and binary forms, with or without
@@ -38,6 +57,33 @@
     .if    !$defined("__ti_pru_io_config_inc")
 __ti_pru_io_config_inc    .set 1
 
+;------------------------------------------------------------------------------
+;   PRU CLOCK configuration
+;------------------------------------------------------------------------------
+
+%for(let iterator = 0; iterator < r5f_cores.length; iterator++){
+    %if(_.keys(system.contexts).includes(r5f_cores[iterator]))
+    %{
+    %   r5F_module     = system.contexts[r5f_cores[iterator]].system.modules['/drivers/pruicss/pruicss'];
+    %}
+    %if(r5F_module){
+    % for(let i = 0; i < r5F_module.$instances.length; i++) {
+    % let r5f_instance = r5F_module.$instances[i];
+    % if(r5f_instance.instance == getIcssInstance()){
+    % if (r5f_instance.coreClk === 333333333) {
+    .asg    3,          PRU_CLK_CYC_PRD_CONST ; 3ns cycle period
+    % }
+    % if (r5f_instance.coreClk === 250000000) {
+    .asg    4,          PRU_CLK_CYC_PRD_CONST ; 4ns cycle period
+    % }
+    % if (r5f_instance.coreClk === 200000000) {
+    .asg    5,          PRU_CLK_CYC_PRD_CONST ; 5ns cycle period
+    % }
+    % }
+    % }
+    % }
+    % r5F_module = null
+%}
 % for(let subTemplate of args) {
     % if (subTemplate.pru_io_config) {
 `system.getTemplate(subTemplate.pru_io_config)(subTemplate.moduleName)`

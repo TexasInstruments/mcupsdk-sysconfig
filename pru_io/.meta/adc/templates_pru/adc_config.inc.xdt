@@ -1,5 +1,5 @@
 %%{
-    let module = system.modules[args[0]];
+    let pru_module = system.modules[args[0]];
 
     let adcIcsInfo = {
         ADS8598H: {
@@ -119,36 +119,34 @@
     function getadcinfo() {
         return adcIcsInfo;
     }
+
 %%}
 ;------------------------------------------------------------------------------
 ;   PRU ADC
 ;   Configuration symbols for PRU ADC interface
 ;------------------------------------------------------------------------------
 % adcIcsInfo = getadcinfo();
-% for(let i = 0; i < module.$instances.length; i++) {
-    % let instance = module.$instances[i];
-    % let config   = module.getInstanceConfig(instance);
-    % let core     = instance.adcConfig[0].PRU_ICSSG0_PRU?.$solution.peripheralName.substring(11) || instance.adcConfig[0].PRU_ICSSG1_PRU?.$solution.peripheralName.substring(11);
-    .if     $defined(`config.icssInstance`)
-    .if     $defined(`core`)
+% if(pru_module ){
+% for(let i = 0; i < pru_module.$instances.length; i++) {
+    % let pru_instance = pru_module.$instances[i];
+    % let config   = pru_module.getInstanceConfig(pru_instance);
 
     .asg    `config.adcIC`,                 ADC_IC
-    % if(instance.adcIC === "ADS8598H" || instance.adcIC === "ADS8598S" || instance.adcIC === "ADS8588H" || instance.adcIC === "ADS8588S") {
-    .asg    `adcIcsInfo[config.adcIC][instance.adcConfig[0].interface].mode`,                ADC_COMM_MODE
-    .asg    `adcIcsInfo[config.adcIC][instance.adcConfig[0].interface].interface`,           ADC_COMM_INTERFACE
+    % if(pru_instance.adcIC === "ADS8598H" || pru_instance.adcIC === "ADS8598S" || pru_instance.adcIC === "ADS8588H" || pru_instance.adcIC === "ADS8588S") {
+    .asg    `adcIcsInfo[config.adcIC][pru_instance.adcConfig[0].interface].mode`,                ADC_COMM_MODE
+    .asg    `adcIcsInfo[config.adcIC][pru_instance.adcConfig[0].interface].interface`,           ADC_COMM_INTERFACE
     .asg    `adcIcsInfo[config.adcIC].resolution`,              ADC_COMM_DATAWIDTH
     .asg    `adcIcsInfo[config.adcIC].trigPrd`,                 ADC_COMM_TRIG_PRD
-    .asg    `config.adcConfig[0].overSampling.toUpperCase()`,                 ADC_OSR
-    .asg    `Math.round((1000000000/instance.adcConfig[0].samplingRate)-2)`,              ADC_CONVST_IEP_PRD_CONST
-    % if (config.adaptor === "TandMAdapterBoard") {
+    .asg    `Math.round((1000000000/pru_instance.adcConfig[0].samplingRate)-2)`,              ADC_CONVST_IEP_PRD_CONST
+    % if (config.adapter === "TandMAdapterBoard") {
     .asg    18,         CS_PIN
     .asg    19,         RD_PIN
     % }
-    % if (config.adaptor === "AM64xAdapterBoard") {
+    % if (config.adapter === "AM64xAdapterBoard") {
     .asg    17,         CS_PIN
     .asg    19,         RD_PIN
     % }
-    % } else if (instance.adcIC === "ADS127L11") {
+    % } else if (pru_instance.adcIC === "ADS127L11") {
     .asg    8,          ADC_CS_PIN
     .asg    9,          SDO_PIN
     .asg    10,         START_PIN
@@ -158,25 +156,15 @@
     .asg    19,         SCLK_PIN
 
     .asg    0,          SPI_IEP_INST  ; IEP being used for SPI clock generation
-    % } else if (instance.adcIC === "ADS131M08") {
+    % } else if (pru_instance.adcIC === "ADS131M08") {
     .asg    8,          ADC_CS_PIN
     .asg    9,          SDO_PIN
     .asg    14,         SDI_PIN
     .asg    16,         DRDY_PIN
     .asg    19,         SCLK_PIN
     
-    % } // config.adcIC check
-
-    % if (instance.adcConfig[0].icss.coreClk === 333333333) {
-    .asg    3,          PRU_CLK_CYC_PRD_CONST ; 3ns cycle period
-    % }
-    % if (instance.adcConfig[0].icss.coreClk === 250000000) {
-    .asg    4,          PRU_CLK_CYC_PRD_CONST ; 4ns cycle period
-    % }
-    % if (instance.adcConfig[0].icss.coreClk === 200000000) {
-    .asg    5,          PRU_CLK_CYC_PRD_CONST ; 5ns cycle period
-    % }
-
-    .endif  ; `core`
-    .endif  ; `config.icssInstance`
+    % } // config.adcIC check  
 % }
+% }
+
+

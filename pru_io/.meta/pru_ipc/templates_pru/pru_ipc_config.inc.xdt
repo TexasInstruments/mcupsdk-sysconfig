@@ -1,8 +1,14 @@
 %%{
-    let module     = system.modules['/pru_io/pru_ipc/pru_ipc'];
-    let icss0_intc = system.modules['/drivers/pruicss/icss_intc/icss0_intc_mapping'];
-    let icss1_intc = system.modules['/drivers/pruicss/icss_intc/icss1_intc_mapping'];
-
+    let common = system.getScript("/common");
+    let pru_module = system.modules[args[0]];
+    let r5f_core   = pru_module.$instances[0].r5fCore
+    let r5f_module = null;
+    if(_.keys(system.contexts).includes(r5f_core))
+    {
+        r5f_module     = system.contexts[r5f_core].system.modules['/pru_io/pru_ipc/pru_ipc'];
+        let icss0_intc = system.contexts[r5f_core].system.modules['/drivers/pruicss/icss_intc/icss0_intc_mapping'];
+        let icss1_intc = system.contexts[r5f_core].system.modules['/drivers/pruicss/icss_intc/icss1_intc_mapping'];
+    }
     /**
      * @brief Event Value for PRU
      *
@@ -118,16 +124,17 @@
         instancesOffsets[instance.icssInstance][instance.pruCore].memOffset += 8 + 4*instance.noOfBuffers;
         return  memAddr;
     }
+
 %%}
+
+% if(r5f_module){
+% for(let i = 0; i < r5f_module.$instances.length; i++) {
+    % let instance = r5f_module.$instances[i];
+    % if(instance.icssInstance == pru_module.getIcssInstance() && instance.pruCore == pru_module.getPruCore()){
 ;------------------------------------------------------------------------------
 ;   PRU IPC
 ;   Interrupt mapping for PRU IPC
 ;------------------------------------------------------------------------------
-% for(let i = 0; i < module.$instances.length; i++) {
-    % let instance = module.$instances[i];
-    .if     $defined(`instance.icssInstance`)
-    .if     $defined(`instance.pruCore`)
-
     .asg    0x`getPruConfigMemOffset(instance).toString(16)`,       `instance.$name`_CONFIG_MEM_OFFSET
     % if(instance.interruptRx) {
     .asg    1,          `instance.$name`_RX_INTR_ENABLE
@@ -137,7 +144,6 @@
     .asg    1,       `instance.$name`_TX_INTR_ENABLE
     .asg    0x`getEventValue(instance, "tx").toString(16)`,       `instance.$name`_TX_EVENT
     % }
-
-    .endif  ; `instance.pruCore`
-    .endif  ; `instance.icssInstance`
+    %}
+% }
 % }

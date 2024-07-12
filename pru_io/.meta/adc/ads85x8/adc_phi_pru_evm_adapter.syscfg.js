@@ -533,16 +533,9 @@ function moduleInstances(instance) {
 
 let adc_phi_pru_evm_adapter_top_module_name = "/pru_io/adc/ads85x8/adc_phi_pru_evm_adapter";
 
-let adc_phi_pru_evm_adapter_top_module = {
-    displayName: "ADC Configuration",
-
-    templates: {
-        "/drivers/pinmux/pinmux_config.c.xdt": {
-            moduleName: adc_phi_pru_evm_adapter_top_module_name,
-        },
-    },
-    defaultInstanceName: "CONFIG_ADS8598H_PINMUX",
-    config: [
+function getConfigurations()
+{
+    let config = [
         {
             name: "icssInstance",
             displayName: "ICSSG Instance",
@@ -581,91 +574,113 @@ let adc_phi_pru_evm_adapter_top_module = {
                 }]
             },
         },
-        {
-            name: "overSampling",
-            displayName: "Oversampling Mode",
-            options: [{
-                name: "disabled",
-                displayName: "Disabled",
+    ]
+    if(common.getSelfSysCfgCoreName().includes('pru'))
+    {
+        config.push(
+            {
+                name: "samplingRate",
+                displayName: "Sampling Rate",
+                description: "Should be less than the maximum rate supported by selected ADC",
+                default: 40000,
+            },
+        )
+    }
+    else{
+        config.push(   
+            {
+                name: "overSampling",
+                displayName: "Oversampling Mode",
+                options: [{
+                    name: "disabled",
+                    displayName: "Disabled",
+                },
+                {
+                    name: "osr2",
+                    displayName: "OSR2",
+                },
+                {
+                    name: "osr4",
+                    displayName: "OSR4",
+                },
+                {
+                    name: "osr8",
+                    displayName: "OSR8",
+                },
+                {
+                    name: "osr16",
+                    displayName: "OSR16",
+                },
+                {
+                    name: "osr32",
+                    displayName: "OSR32",
+                },
+                {
+                    name: "osr64",
+                    displayName: "OSR64",
+                }],
+                default: "disabled",
             },
             {
-                name: "osr2",
-                displayName: "OSR2",
+                name: "inputRange",
+                displayName: "Input Voltage Range",
+                options: [{
+                    name: "range5V",
+                    displayName: "±5 V",
+                },
+                {
+                    name: "range10V",
+                    displayName: "±10 V",
+                }],
+                default: "range5V",
             },
             {
-                name: "osr4",
-                displayName: "OSR4",
+                name: "channelsInUse",
+                displayName: "Channels In Use",
+                description: "Number of ADC channels to use for sampling from 1 to n",
+                options: [
+                    { name: "1", },
+                    { name: "2", },
+                    { name: "3", },
+                    { name: "4", },
+                    { name: "5", },
+                    { name: "6", },
+                    { name: "7", },
+                    { name: "8", },
+                ],
+                default: "1",
+            }, 
+            {
+                name: "reference",
+                displayName: "Use Internal Reference Voltage",
+                default: true,
             },
             {
-                name: "osr8",
-                displayName: "OSR8",
-            },
-            {
-                name: "osr16",
-                displayName: "OSR16",
-            },
-            {
-                name: "osr32",
-                displayName: "OSR32",
-            },
-            {
-                name: "osr64",
-                displayName: "OSR64",
-            }],
-            default: "disabled",
+                name: "combinedConvst",
+                displayName: "Use Combined A & B CONVST Pin",
+                description: "Adjust the jumper J7 on Adapter Board for this setting to work",
+                default: true,
+            },   
+        )
+    }
+    return config;
+}
+
+let adc_phi_pru_evm_adapter_top_module = {
+    displayName: "ADC Configuration",
+
+    templates: {
+        "/drivers/pinmux/pinmux_config.c.xdt": {
+            moduleName: adc_phi_pru_evm_adapter_top_module_name,
         },
-        {
-            name: "inputRange",
-            displayName: "Input Voltage Range",
-            options: [{
-                name: "range5V",
-                displayName: "±5 V",
-            },
-            {
-                name: "range10V",
-                displayName: "±10 V",
-            }],
-            default: "range5V",
-        },
-        {
-            name: "channelsInUse",
-            displayName: "Channels In Use",
-            description: "Number of adc channels to use for sampling from 1 to n",
-            options: [
-                { name: "1", },
-                { name: "2", },
-                { name: "3", },
-                { name: "4", },
-                { name: "5", },
-                { name: "6", },
-                { name: "7", },
-                { name: "8", },
-            ],
-            default: "1",
-        },
-        {
-            name: "samplingRate",
-            displayName: "Sampling Rate",
-            description: "Should be less than the max rate supported by selected adc",
-            default: 40000,
-        },
-        {
-            name: "reference",
-            displayName: "Use Internal Reference Voltage",
-            default: true,
-        },
-        {
-            name: "combinedConvst",
-            displayName: "Use Combined A & B CONVST Pin",
-            description: "Adjust the jumper J7 on Adapter Board for this setting to work",
-            default: true,
-        },
-    ],
-    pinmuxRequirements,
-    getInterfaceNameList,
-    getPeripheralPinNames,
-    sharedModuleInstances,
-    moduleInstances,
+    },
+    defaultInstanceName: "CONFIG_ADS8598H_PINMUX",
+    config: getConfigurations(),
+    pinmuxRequirements : common.getSelfSysCfgCoreName().includes('pru') ? (inst)=>{return []} : pinmuxRequirements,
+    getInterfaceNameList : common.getSelfSysCfgCoreName().includes('pru') ? (inst)=>{return []} : getInterfaceNameList,
+    getPeripheralPinNames : common.getSelfSysCfgCoreName().includes('pru') ? (inst)=>{return []} : getPeripheralPinNames,
+    sharedModuleInstances : common.getSelfSysCfgCoreName().includes('pru') ? (inst)=>{return []} : sharedModuleInstances,
+    moduleInstances : common.getSelfSysCfgCoreName().includes('pru') ? (inst)=>{return []}  : moduleInstances,
 };
 
 function validate(inst, report) {
