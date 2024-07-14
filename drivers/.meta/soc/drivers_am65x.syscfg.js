@@ -17,6 +17,9 @@ const driverVer = {
     "ipc": {
         version: "v0",
     },
+    "pcie": {
+        version: "v0",
+    },
     "uart": {
         version: "v0",
     },
@@ -31,6 +34,7 @@ const topModules = [
     "/drivers/gpio/gpio",
     "/drivers/i2c/i2c",
     "/drivers/ipc/ipc",
+    "/drivers/pcie/pcie",
     "/drivers/uart/uart",
     "/drivers/udma/udma",
 ];

@@ -3,6 +3,11 @@ let common = system.getScript("/common");
 
 let maxObRegion = 32;
 
+if( common.getSocName() === "am65x")
+{
+    maxObRegion = 16;
+}
+
 function getInstanceConfig(moduleInstance) {
     return {
         ...moduleInstance,
