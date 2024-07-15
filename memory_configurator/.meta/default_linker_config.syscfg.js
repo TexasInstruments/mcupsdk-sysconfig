@@ -1656,7 +1656,7 @@ function def_sections(sectionInst, ind, device, core){
                 sectionInst.load_memory                 = "MAILBOX_R5F";
                 sectionInst.output_section.create(1);
                 sectionInst.output_section[0].alignment = 0;
-                sectionInst.output_section[0].$name     = ".bss.sipc_r5f_queue_mem";
+                sectionInst.output_section[0].$name     = ".bss.sipc_secure_host_queue_mem";
             }
         }
         else if( core.includes("c66")){
@@ -1769,7 +1769,7 @@ function def_sections(sectionInst, ind, device, core){
                 sectionInst.load_memory                 = "MAILBOX_R5F";
                 sectionInst.output_section.create(1);
                 sectionInst.output_section[0].alignment = 0;
-                sectionInst.output_section[0].$name     = ".bss.sipc_r5f_queue_mem";
+                sectionInst.output_section[0].$name     = ".bss.sipc_secure_host_queue_mem";
             }
         }
     }
@@ -1910,7 +1910,7 @@ function def_sections(sectionInst, ind, device, core){
                 sectionInst.group                       = false;
                 sectionInst.type                        = "NOLOAD";
                 sectionInst.output_section.create(1);
-                sectionInst.output_section[0].$name     = ".bss.sipc_r5f_queue_mem";
+                sectionInst.output_section[0].$name     = ".bss.sipc_secure_host_queue_mem";
                 sectionInst.output_section[0].alignment = 0;
             }
         }
@@ -2052,7 +2052,7 @@ function def_sections(sectionInst, ind, device, core){
                 sectionInst.group                       = false;
                 sectionInst.type                        = "NOLOAD";
                 sectionInst.output_section.create(1);
-                sectionInst.output_section[0].$name     = ".bss.sipc_r5f_queue_mem";
+                sectionInst.output_section[0].$name     = ".bss.sipc_secure_host_queue_mem";
                 sectionInst.output_section[0].alignment = 0;
             }
         }
@@ -2194,7 +2194,7 @@ function def_sections(sectionInst, ind, device, core){
                 sectionInst.group                       = false;
                 sectionInst.type                        = "NOLOAD";
                 sectionInst.output_section.create(1);
-                sectionInst.output_section[0].$name     = ".bss.sipc_r5f_queue_mem";
+                sectionInst.output_section[0].$name     = ".bss.sipc_secure_host_queue_mem";
                 sectionInst.output_section[0].alignment = 0;
             }
         }
