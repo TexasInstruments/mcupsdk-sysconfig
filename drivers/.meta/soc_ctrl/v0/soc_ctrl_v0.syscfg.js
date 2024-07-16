@@ -47,7 +47,7 @@ for (let submoduleComponent of submodulesComponents)
 function getSocCtrlSubModulePath(submoduleName){
     // console.log(submoduleName)
     for(let submoduleComponent of submodulesComponentsList){
-        console.log("/drivers/soc_ctrl/"+driverVer+"/subModules/"+submoduleName+".syscfg.js")
+        // console.log("/drivers/soc_ctrl/"+driverVer+"/subModules/"+submoduleName+".syscfg.js")
         if (submoduleName === submoduleComponent)
         {
             let retString = "/drivers/soc_ctrl/"+driverVer+"/subModules/"+submoduleName+".syscfg.js";

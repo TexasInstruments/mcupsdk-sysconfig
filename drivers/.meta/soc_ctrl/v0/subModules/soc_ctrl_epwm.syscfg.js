@@ -41,7 +41,7 @@ tbClkConfig = tbClkConfig.concat([
         for (let epwmInst = 0; epwmInst < epwmInstLen; epwmInst++){
             ui["tbClkSyncDisable"+epwmInst.toString()].hidden = true
         }
-        console.log(inst.tbclkSyncCtrlEn)
+        // console.log(inst.tbclkSyncCtrlEn)
         for(let epwmInst of inst.tbclkSyncCtrlEn){
             ui["tbClkSyncDisable"+epwmInst.replace("EPWM", "")].hidden = false
         }
