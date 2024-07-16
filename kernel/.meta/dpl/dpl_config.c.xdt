@@ -40,7 +40,7 @@
 
 `system.getTemplate("/kernel/dpl/hwi.c.xdt")()`
 % for(let subTemplate of args) {
-    % if (subTemplate.dpl_config) {
+    % if (subTemplate.dpl_config  && !subTemplate.dpl_config.match(/dpl_cfg*/)) {
 `system.getTemplate(subTemplate.dpl_config)()`
     % }
 % }
@@ -76,8 +76,7 @@ void Dpl_init(void)
     % }
 % }
 
-    /* Enable interrupt handling */
-    HwiP_enable();
+`system.getTemplate("/kernel/dpl/dpl_cfg.c.xdt")()`
 }
 
 void Dpl_deinit(void)

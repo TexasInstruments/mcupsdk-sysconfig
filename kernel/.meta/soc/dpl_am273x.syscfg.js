@@ -6,6 +6,7 @@ const topModules_main = [
     "/kernel/dpl/mpu_armv7",
     "/kernel/dpl/timer",
     "/kernel/dpl/profile",
+    "/kernel/dpl/dpl_cfg",
 ];
 
 const topModules_mcu = [
