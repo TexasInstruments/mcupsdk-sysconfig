@@ -18,6 +18,7 @@
 #include "enet_appmemutils.h"
 #include "enet_appmemutils_cfg.h"
 #include "enet_apputils.h"
+#include <enet_board.h>
 #include <enet_cfg.h>
 #include <include/core/enet_per.h>
 #include <include/core/enet_utils.h>
@@ -44,6 +45,7 @@
 #include "ti_enet_config.h"
 #include "ti_drivers_config.h"
 #include "ti_enet_open_close.h"
+#include "ti_board_config.h"
 #include <utils/include/enet_appsoc.h>
 
 #define ENETAPP_PHY_STATEHANDLER_TASK_PRIORITY        (7U)
@@ -88,6 +90,12 @@ typedef struct EnetAppSysCfg_Obj_s
 
 static EnetAppSysCfg_Obj gEnetAppSysCfgObj;
 
+static void EnetApp_initLinkArgs(const Enet_Type enetType,
+                          const uint32_t instId,
+                          const Enet_MacPort macPort,
+                          const bool isInNoPhyMode,
+                          EnetPer_PortLinkCfg *linkArgs);
+
 static int32_t EnetApp_enablePorts(Enet_Handle hEnet,
                                    Enet_Type enetType,
                                    uint32_t instId,
@@ -100,6 +108,8 @@ static void EnetApp_getCpswInitCfg(Enet_Type enetType,
                                    Cpsw_Cfg *cpswCfg);
 
 static void EnetApp_getMacPortInitConfig(CpswMacPort_Cfg *pMacPortCfg, const Enet_MacPort portIdx);
+
+void EnetApp_getMacPortLinkCfg(EnetMacPort_LinkCfg *pMacPortLinkCfg, const Enet_MacPort portIdx);
 
 static void EnetApp_openDmaChannels(EnetAppDmaSysCfg_Obj *dma,
                                     Enet_Type enetType, 
@@ -433,6 +443,108 @@ static void EnetApp_ConfigureDscpMapping(Enet_Type enetType,
 %}
 }
 
+void EnetApp_macMode2MacMii(emac_mode macMode, EnetMacPort_Interface *pMii)
+{
+    switch (macMode)
+    {
+        case MII:
+        {
+            pMii->layerType    = ENET_MAC_LAYER_MII;
+            pMii->sublayerType = ENET_MAC_SUBLAYER_STANDARD;
+            pMii->variantType  = ENET_MAC_VARIANT_NONE;
+            break;
+        }
+        case RMII:
+        {
+            pMii->layerType    = ENET_MAC_LAYER_MII;
+            pMii->sublayerType = ENET_MAC_SUBLAYER_REDUCED;
+            pMii->variantType  = ENET_MAC_VARIANT_NONE;
+            break;
+        }
+        case RGMII:
+        {
+            pMii->layerType    = ENET_MAC_LAYER_GMII;
+            pMii->sublayerType = ENET_MAC_SUBLAYER_REDUCED;
+            pMii->variantType  = ENET_MAC_VARIANT_FORCED;
+            break;
+        }
+        default:
+        {
+            EnetAppUtils_print("Invalid MAC mode: %u\r\n", macMode);
+            EnetAppUtils_assert(false);
+        }
+    }
+}
+
+static void EnetApp_initLinkArgs(const Enet_Type enetType,
+                          const uint32_t instId,
+                          const Enet_MacPort macPort,
+                          const bool isInNoPhyMode,
+                          EnetPer_PortLinkCfg *pLinkArgs)
+{
+    EnetMacPort_LinkCfg *pLinkCfg = &pLinkArgs->linkCfg;
+    int32_t status = ENET_SOK;
+
+    EnetAppUtils_print("Open MAC port %u\r\n", ENET_MACPORT_ID(macPort));
+
+    /* Set port link params */
+    pLinkArgs->macPort = macPort;
+    EnetBoard_getMiiConfig(&pLinkArgs->mii);
+    EnetApp_getMacPortLinkCfg(pLinkCfg, macPort);
+
+    /* Setup board for requested Ethernet port */
+    EnetBoard_EthPort ethPort =
+    {
+       .enetType = enetType,
+       .instId   = instId,
+       .macPort  = macPort,
+       .boardId  = EnetBoard_getId(),
+       .mii      = pLinkArgs->mii,
+    };
+    status = EnetBoard_setupPorts(&ethPort, 1U);
+    if (status != ENET_SOK)
+    {
+        EnetAppUtils_print("Failed to setup MAC port %u\r\n", ENET_MACPORT_ID(macPort));
+        EnetAppUtils_assert(false);
+    }
+
+    EnetPhy_Cfg *pPhyCfg = &pLinkArgs->phyCfg;
+    EnetPhy_initCfg(pPhyCfg);
+
+    if (isInNoPhyMode)
+    {
+        /* In No-PHY MODE, speed and duplexity can not be in AUTO */
+
+        /* In No-PHY mode, speed of 10M is not possible to operate,
+         * as 10M needs in-band isignalling from PHY to set MAC port clock speed.
+         * Hence, only 100M and 1G is supported in No-PHY mode */
+
+        pPhyCfg->phyAddr    = ENETPHY_INVALID_PHYADDR;
+        pLinkCfg->speed     = (pLinkArgs->mii.layerType == ENET_MAC_LAYER_GMII) ? ENET_SPEED_1GBIT : ENET_SPEED_100MBIT;
+        pLinkCfg->duplexity = ENET_DUPLEX_FULL;
+        EnetAppUtils_print("Setting in NO-PHY mode for MAC port %u\r\n", ENET_MACPORT_ID(macPort));
+    }
+    else
+    {
+        const EnetBoard_PhyCfg* pBoardPhyCfg = EnetBoard_getPhyCfg(&ethPort);
+        if (pBoardPhyCfg != NULL)
+        {
+            pPhyCfg->phyAddr     = pBoardPhyCfg->phyAddr;
+            pPhyCfg->isStrapped  = pBoardPhyCfg->isStrapped;
+            pPhyCfg->loopbackEn  = `instance.macport1LoopbackMode === "LOOPBACK_MODE_PHY" || instance.macport2LoopbackMode === "LOOPBACK_MODE_PHY"`;
+            pPhyCfg->skipExtendedCfg = pBoardPhyCfg->skipExtendedCfg;
+            pPhyCfg->extendedCfgSize = pBoardPhyCfg->extendedCfgSize;
+            memcpy(pPhyCfg->extendedCfg, pBoardPhyCfg->extendedCfg, pPhyCfg->extendedCfgSize);
+        }
+        else
+        {
+            EnetAppUtils_print("No PHY configuration found for MAC port %u\r\n", ENET_MACPORT_ID(macPort));
+            EnetAppUtils_assert(false);
+        }
+    }
+
+}
+
 static int32_t EnetApp_enablePorts(Enet_Handle hEnet,
                                    Enet_Type enetType,
                                    uint32_t instId,
@@ -455,7 +567,9 @@ static int32_t EnetApp_enablePorts(Enet_Handle hEnet,
 
         linkArgs.macPort = macPortList[i];
         EnetApp_getMacPortInitConfig(linkArgs.macCfg, macPortList[i]);
-        EnetApp_initLinkArgs(enetType, instId, &linkArgs, macPortList[i]);
+        
+        /* in MAC loopback mode, we should not configure PHYs. It shall be treated as NO-PHY system */
+        EnetApp_initLinkArgs(enetType, instId, macPortList[i], cpswMacCfg.loopbackEn, &linkArgs);
 
         ENET_IOCTL_SET_IN_ARGS(&prms, &linkArgs);
         ENET_IOCTL(hEnet,

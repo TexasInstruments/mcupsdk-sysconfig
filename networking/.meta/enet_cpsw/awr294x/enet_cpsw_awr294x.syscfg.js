@@ -17,6 +17,7 @@ const cptsScript = system.getScript("./enet_cpsw_cpts_config");
 //Get MAC Port configuration script
 const macportScript = system.getScript("./enet_cpsw_macport_config");
 const utilsScript = system.getScript("./../../common/enet_cpsw_utils");
+const pinMuxScript = system.getScript("./enet_cpsw_awr294x_pinmux");
 
 const enet_cpsw_pinmux_config = {
     name: "pinmuxConfig",
@@ -65,6 +66,16 @@ const enet_cpsw_system_config = {
             description: "Flag to enable phy management in application. The enet driver internal phy functions including phy state machine is bypassed in this mode",
             displayName: "External Phy Management Enable",
             default: false,
+            onChange:function (inst, ui) {
+                if(inst.ExternalPhyMgmtEnable == true) {
+                    ui.macport1LinkSpeed.hidden = true;
+                    ui.macport1LinkDuplexity.hidden = true;
+                }
+                else{
+                    ui.macport1LinkSpeed.hidden = false;
+                    ui.macport1LinkDuplexity.hidden = false;
+                }
+            }
         },
         {
             name: "RtosVariant",
@@ -196,34 +207,16 @@ function getInterfaceName(inst, peripheralName)
 }
 
 function getInterfaceNameList(inst) {
-    let driverVer = soc.getDriverVer("enet_cpsw");
-    let pinmux_instances;
-    let pinmux_module;
-    let pinmux_instance;
-    let pinmux_config;
+    return pinMuxScript.getInterfaceNameList(inst);
+}
 
-    pinmux_instances = inst.pinmux;
-    pinmux_module = system.modules[`/networking/enet_cpsw/${driverVer}/enet_cpsw_${driverVer}_pinmux`];
-    pinmux_instance = pinmux_instances[0];
-    pinmux_config = pinmux_module.getInstanceConfig(pinmux_instance);
-
-    return pinmux_module.getInterfaceNameList(pinmux_config);
+function pinmuxRequirements(inst) {
+    return pinMuxScript.pinmuxRequirements(inst);
 }
 
 function getPeripheralPinNames(inst)
 {
-    let driverVer = soc.getDriverVer("enet_cpsw");
-    let pinmux_instances;
-    let pinmux_module;
-    let pinmux_instance;
-    let pinmux_config;
-
-    pinmux_instances = inst.pinmux;
-    pinmux_module = system.modules[`/networking/enet_cpsw/${driverVer}/enet_cpsw_${driverVer}_pinmux`];
-    pinmux_instance = pinmux_instances[0];
-    pinmux_config = pinmux_module.getInstanceConfig(pinmux_instance);
-
-    return pinmux_module.getPeripheralPinNames(pinmux_config);
+    return pinMuxScript.getPeripheralPinNames(inst);
 }
 
 let cpsw_input_clk_freq = 150000000;
@@ -581,18 +574,6 @@ function moduleInstances(instance) {
     });
 
     Instances.push({
-        name: "pinmux",
-        displayName: "CPSW pinmux",
-        moduleName: `/networking/enet_cpsw/${driverVer}/enet_cpsw_${driverVer}_pinmux`,
-        useArray: true,
-        minInstanceCount: 1,
-        maxInstanceCount: 1,
-        defaultInstanceCount: 1,
-        collapsed:false,
-        group: "pinmuxConfig",
-    });
-
-    Instances.push({
         name: "netifInstance",
         displayName: "NETIF instance",
         moduleName: `/networking/enet_cpsw/${driverVer}/enet_cpsw_lwipif_netif`,
@@ -697,7 +678,7 @@ let enet_cpsw_module = {
         macportScript.config,
         cptsScript.config,
         enet_cpsw_board_config,
-        enet_cpsw_pinmux_config,
+        pinMuxScript.config,
     ],
     moduleStatic: {
         modules: function(inst) {
@@ -709,6 +690,7 @@ let enet_cpsw_module = {
     },
     moduleInstances: moduleInstances,
     utils: utilsScript,
+    pinmuxRequirements,
     getInterfaceNameList,
     getPeripheralPinNames,
     getClockEnableIds,

@@ -225,8 +225,6 @@ function getPeripheralPinNames(inst)
 let enet_cpsw_pinmux_module = {
     displayName: "CPSW pinmux config",
     longDescription: `This configures CPSW module pinmux`,
-    alwaysShowLongDescription: false,
-    defaultInstanceName: "ENET_CPSW_PINMUX",
     config: [
         {
             name: "phyToMacInterfaceMode",
@@ -248,12 +246,13 @@ let enet_cpsw_pinmux_module = {
             hidden: false,
         },
     ],
-    getInstanceConfig,
-    pinmuxRequirements,
-    getInterfaceNameList,
-    getPeripheralPinNames,
-
+    collapsed: false,
 };
 
 
-exports = enet_cpsw_pinmux_module;
+exports = {
+    config: enet_cpsw_pinmux_module,
+    pinmuxRequirements,
+    getInterfaceNameList,
+    getPeripheralPinNames,
+};

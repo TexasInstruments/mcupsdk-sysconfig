@@ -205,12 +205,12 @@ let enet_cpsw_pinmux_module = {
             ],
         },
     ],
-    getInstanceConfig,
-    pinmuxRequirements,
-    getInterfaceNameList,
-    getPeripheralPinNames,
-
 };
 
 
-exports = enet_cpsw_pinmux_module;
+exports = {
+    config: enet_cpsw_pinmux_module,
+    pinmuxRequirements,
+    getInterfaceNameList,
+    getPeripheralPinNames,
+};

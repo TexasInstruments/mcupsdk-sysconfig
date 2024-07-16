@@ -8,6 +8,29 @@ function enet_cpsw_macport_validate(inst, report) {
     {
         report.logError("MAC port 1 should be enabled", inst);
     }
+
+    if (inst.macport1LinkSpeed != "ENET_SPEED_AUTO")
+    {
+        if (inst.macport1LinkDuplexity == "ENET_DUPLEX_AUTO")
+        {
+            report.logError("MAC port 1 Duplexity should be AUTO if Speed is set so", inst);
+        }
+    }
+    if (inst.macport1LinkDuplexity != "ENET_DUPLEX_AUTO")
+    {
+        if (inst.macport1LinkSpeed == "ENET_SPEED_AUTO")
+        {
+            report.logError("MAC port 1 Speed should be AUTO if Duplexity is set so", inst);
+        }
+    }
+
+    if (inst.macport1LinkSpeed == "ENET_SPEED_1GBIT")
+    {
+        if (inst.macport1LinkDuplexity == "ENET_SPEED_HALF")
+        {
+            report.logError("Link capabilty cannot support with 1G speed with half duplex", inst);
+        }
+    }
 }
 
 const enet_cpsw_macport_config = {
@@ -22,6 +45,12 @@ const enet_cpsw_macport_config = {
             default: false,
             onChange: function(inst, ui) {
                 utilsScript.hideGroup(utilsScript.getGroupHierarchyByName(inst.$module.config, "macPortCfg/macPort1Cfg"), false, ui);
+
+                if (inst.ExternalPhyMgmtEnable == true)
+                {
+                    ui.macport1LinkSpeed.hidden = true;
+                    ui.macport1LinkDuplexity.hidden = true;
+                }
                 if (inst.DisableMacPort1 === true)
                 {
                     utilsScript.hideGroup(utilsScript.getGroupHierarchyByName(inst.$module.config, "macPortCfg/macPort1Cfg"), true, ui);
@@ -30,10 +59,57 @@ const enet_cpsw_macport_config = {
             },
         },
         {
-            name: "macport#LoopbackEn",
-            description: "Whether loopback mode is enabled or not",
-            displayName: "Enable MAC Loop-back",
-            default: false,
+            name: "macport#LoopbackMode",
+            description: "Loop-back operation mode to configure. Set to NONE for normal operation",
+            displayName: "Loop-back Mode",
+            default: "LOOPBACK_MODE_NONE",
+            options: [
+                {
+                    name: "LOOPBACK_MODE_MAC",
+                },
+                {
+                    name: "LOOPBACK_MODE_PHY",
+                },
+                {
+                    name: "LOOPBACK_MODE_NONE",
+                },
+            ],
+            hidden: false,
+        },
+        {
+            name: "macport#LinkSpeed",
+            description: "Link Speed capability configuration to PHY during auto-negotiation. Check with PHY datasheet to see the capabilites. Set to AUTO if not-sure",
+            displayName: "Link Speed Capability",
+            default: "ENET_SPEED_AUTO",
+            options: [
+                {
+                    name: "ENET_SPEED_AUTO",
+                },
+                {
+                    name: "ENET_SPEED_10MBIT",
+                },
+                {
+                    name: "ENET_SPEED_100MBIT",
+                },
+            ],
+            hidden: false,
+        },
+        {
+            name: "macport#LinkDuplexity",
+            description: "Link Duplexity capbility configuration to PHY during auto-negotiation. Check with PHY datasheet to see the capabilites. Set to AUTO if not-sure",
+            displayName: "Link Duplexity Capabilty",
+            default: "ENET_DUPLEX_AUTO",
+            options: [
+                {
+                    name: "ENET_DUPLEX_AUTO",
+                },
+                {
+                    name: "ENET_DUPLEX_HALF",
+                },
+                {
+                    name: "ENET_DUPLEX_FULL",
+                },
+            ],
             hidden: false,
         },
         {

@@ -41,4 +41,9 @@
  * capabilities.
  */
 #define ENETBOARD_AM64X_AM243X_EVM            (ENETBOARD_CPB_ID | \
-                                               ENETBOARD_IDK_ID)
+                                               ENETBOARD_IDK_ID )
+
+/*
+ * Get ethernet board id
+ */
+uint32_t EnetBoard_getId(void);

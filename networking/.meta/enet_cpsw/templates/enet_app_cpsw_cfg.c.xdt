@@ -313,11 +313,27 @@ static const CpswHostPort_Cfg enetAppCpswHostPortCfg =
     .txPriorityType    = `instance.hostportTxPriorityType`,
 };
 
+static const EnetMacPort_LinkCfg enetAppMacPortLinkCfg[] =
+{
+    [ENET_MAC_PORT_1] =
+    {
+        `instance.macport1LinkSpeed`,
+        `instance.macport1LinkDuplexity`,
+    },
+% if (instance.hasOwnProperty(`macport2LoopbackMode`))  {
+    [ENET_MAC_PORT_2] =
+    {
+        `instance.macport2LinkSpeed`,
+        `instance.macport2LinkDuplexity`,
+    }
+% }
+};
+
 static const CpswMacPort_Cfg enetAppCpswMacPortCfg[] =
 {
     [ENET_MAC_PORT_1] =
     {
-        .loopbackEn = `instance.macport1LoopbackEn`,
+        .loopbackEn = `instance.macport1LoopbackMode === "LOOPBACK_MODE_MAC"`,
         .crcType    = `instance.macport1CrcType`,
         .rxMtu      = `instance.macport1RxMtu`,
         .passPriorityTaggedUnchanged = `instance.macport1PassPriorityTaggedUnchanged`,
@@ -331,10 +347,10 @@ static const CpswMacPort_Cfg enetAppCpswMacPortCfg[] =
         .sgmiiMode      = ENET_MAC_SGMIIMODE_INVALID, // INVALID as SGMII is not supported in MCU+ devices
 
     },
-% if (instance.hasOwnProperty(`macport2LoopbackEn`))  {
+% if (instance.hasOwnProperty(`macport2LoopbackMode`))  {
     [ENET_MAC_PORT_2] =
     {
-        .loopbackEn = `instance.macport2LoopbackEn`,
+        .loopbackEn = `instance.macport2LoopbackMode === "LOOPBACK_MODE_MAC"`,
         .crcType    = `instance.macport2CrcType`,
         .rxMtu      = `instance.macport2RxMtu`,
         .passPriorityTaggedUnchanged = `instance.macport2PassPriorityTaggedUnchanged`,
@@ -401,4 +417,10 @@ static void EnetApp_getMacPortInitConfig(CpswMacPort_Cfg *pMacPortCfg, const Ene
 {
     EnetAppUtils_assert(portIdx < ENET_ARRAYSIZE(enetAppCpswMacPortCfg));
     *pMacPortCfg = enetAppCpswMacPortCfg[portIdx];
+}
+
+void EnetApp_getMacPortLinkCfg(EnetMacPort_LinkCfg *pMacPortLinkCfg, const Enet_MacPort portIdx)
+{
+    EnetAppUtils_assert(portIdx < ENET_ARRAYSIZE(enetAppMacPortLinkCfg));
+    *pMacPortLinkCfg = enetAppMacPortLinkCfg[portIdx];
 }

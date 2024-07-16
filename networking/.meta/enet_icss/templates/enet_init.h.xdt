@@ -73,11 +73,11 @@ void EnetApp_txChInPeripheral(Enet_Type enetType, uint32_t instId, uint32_t *sta
 
 void EnetApp_rxChInPeripheral(Enet_Type enetType, uint32_t instId, uint32_t *startIdx, uint32_t *chCount);
 
-void EnetApp_initLinkArgs(Enet_Type enetType,  uint32_t instId, EnetPer_PortLinkCfg *linkArgs,   Enet_MacPort macPort);
-
 void EnetApp_updateIcssgInitCfg(Enet_Type enetType,  uint32_t instId,   Icssg_Cfg *icssCfg);
 
 void EnetApp_initPhyStateHandlerTask(EventP_Object* pEvent);
+
+void EnetBoard_getMiiConfig(EnetMacPort_Interface *mii);
 
 %if(instance.RtosVariant == "NoRTOS"){
 void EnetApp_phyStateHandler();

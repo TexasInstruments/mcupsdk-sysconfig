@@ -58,9 +58,6 @@ extern int32_t EnetApp_driverOpen(Enet_Type enetType, uint32_t instId);
 void EnetApp_driverClose(Enet_Type enetType, uint32_t instId);
 % }
 
-
-void EnetApp_initLinkArgs(Enet_Type enetType,  uint32_t instId, EnetPer_PortLinkCfg *linkArgs,   Enet_MacPort macPort);
-
 void EnetApp_updateCpswInitCfg(Enet_Type enetType,  uint32_t instId,   Cpsw_Cfg *cpswCfg);
 
 void EnetApp_initPhyStateHandlerTask(EventP_Object* pEvent);

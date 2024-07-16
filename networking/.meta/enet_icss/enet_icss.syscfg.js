@@ -770,6 +770,7 @@ function validateInstances(instance, report) {
                 report.logError(`ENET ICSSG1 'Dual Mac Port' setting should be different across both the instances`, instance);
             }
         }
+     }
 
 
 /*
@@ -779,8 +780,6 @@ function validateInstances(instance, report) {
         }
 */
 
-
-    }
     return instances;
 }
 
@@ -829,6 +828,40 @@ function validate(instance, report) {
     if (/^([0-9a-fA-F]{2}[:-]){5}[0-9a-fA-F]{2}(,([0-9a-fA-F]{2}[:-]){5}[0-9a-fA-F]{2})+/.test(instance.macAddrList) == false)
     {
         report.logError(`Invalid macAddrList Entry`, instance, "macAddrList");
+    }
+
+    if (instance.macportLinkSpeed == "ENET_SPEED_1GBIT")
+    {
+        if (instance.macportLinkDuplexity == "ENET_SPEED_HALF")
+        {
+            report.logError("Link capabilty cannot support with 1G speed with half duplex", instance);
+        }
+    }
+
+    if ((instance.phyToMacInterfaceMode == "MII") && (instance.GigabitSupportEnable == true))
+    {
+        report.logError(`GigabitSupportEnable is available only with RGMII mode`, instance, "GigabitSupportEnable");
+    }
+
+    if ((instance.phyToMacInterfaceMode == "MII") && (instance.macportLinkSpeed == "ENET_SPEED_1GBIT"))
+    {
+        report.logError(`ENET_SPEED_1GBIT is not available with MII mode`, instance);
+    }
+
+    if (instance.macportLinkDuplexity != "ENET_DUPLEX_AUTO")
+    {
+       if (instance.macportLinkSpeed == "ENET_SPEED_AUTO")
+       {
+           report.logError("MAC port Speed should be AUTO if Duplexity is set so", instance);
+       }
+    }
+
+    if (instance.macportLoopbackMode == "LOOPBACK_MODE_PHY")
+    {
+        if ((instance.macportLinkSpeed == "ENET_SPEED_AUTO") || (instance.macportLinkDuplexity == "ENET_DUPLEX_AUTO"))
+        {
+            report.logError("PHY LOOP needs fixed speed and duplex setting (AUTO not supported)", instance);
+        }
     }
 }
 
@@ -1026,9 +1059,25 @@ let enet_icss_module = {
             },
         },
         {
+            name: "GigabitSupportEnable",
+            description: "Decides buffer pool allocation based on interface speed selected",
+            displayName: "Gigabit Support",
+            default: true,
+        },
+        {
             name: "phyToMacInterfaceMode",
             displayName: "MII/RGMII",
             default: "MII",
+            onChange: function(inst, ui) {
+                if (inst.phyToMacInterfaceMode == "RGMII")
+                {
+                    inst.GigabitSupportEnable = true;
+                }
+                else
+                {
+                    inst.GigabitSupportEnable = false;
+                }
+            },
             options: [
                 {
                     name: "MII",
@@ -1084,10 +1133,58 @@ let enet_icss_module = {
             default: false,
         },
         {
-            name: "GigabitSupportEnable",
-            description: "Decides buffer pool allocation based on interface speed selected",
-            displayName: "Gigabit Support",
-            default: true,
+            name: "macportLoopbackMode",
+            description: "Loop-back operation mode to configure. ICSS support only PHY loopback. Set to NONE for normal operation",
+            displayName: "Loop-back Mode",
+            default: "LOOPBACK_MODE_NONE",
+            options: [
+                {
+                    name: "LOOPBACK_MODE_PHY",
+                },
+                {
+                    name: "LOOPBACK_MODE_NONE",
+                },
+            ],
+            hidden : false,
+        },
+        {
+            name: "macportLinkSpeed",
+            description: "Link Speed capability configuration to PHY during auto-negotiation. Check with PHY datasheet to see the capabilites. Set to AUTO if not-sure",
+            displayName: "Link Speed Capability",
+            default: "ENET_SPEED_AUTO",
+            options: [
+                {
+                    name: "ENET_SPEED_AUTO",
+                },
+                {
+                    name: "ENET_SPEED_10MBIT",
+                },
+                {
+                    name: "ENET_SPEED_100MBIT",
+                },
+                {
+                    name: "ENET_SPEED_1GBIT",
+                },
+            ],
+            hidden: false,
+        },
+        {
+            name: "macportLinkDuplexity",
+            description: "Link Duplexity capbility configuration to PHY during auto-negotiation. Check with PHY datasheet to see the capabilites. Set to AUTO if not-sure",
+            displayName: "Link Duplexity Capabilty",
+            default: "ENET_DUPLEX_AUTO",
+            options: [
+                {
+                    name: "ENET_DUPLEX_AUTO",
+                },
+                {
+                    name: "ENET_DUPLEX_HALF",
+                },
+                {
+                    name: "ENET_DUPLEX_FULL",
+                },
+            ],
+            hidden: false,
         },
         enet_icssg_system_config,
         enet_icssg_udma_channel_config,

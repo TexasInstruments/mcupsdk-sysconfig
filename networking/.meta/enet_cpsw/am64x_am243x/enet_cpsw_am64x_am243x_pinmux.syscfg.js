@@ -20,7 +20,7 @@ function getPeripheralRequirements(inst, peripheralName, name)
 
     if (name == "RGMII")
     {
-    if (inst.enableRgmii1 == true)
+    if (inst.enablexmii1 == true)
     {
         pinResource = pinmux.getPinRequirements(interfaceName, "RGMII1_RD0", "RGMII1_RD0");
         pinmux.setConfigurableDefault( pinResource, "rx", true );
@@ -60,7 +60,7 @@ function getPeripheralRequirements(inst, peripheralName, name)
         resources.push( pinResource);
     }
 
-    if (inst.enableRgmii2 == true)
+    if (inst.enablexmii2 == true)
     {
         pinResource = pinmux.getPinRequirements(interfaceName, "RGMII2_RD0", "RGMII2_RD0");
         pinmux.setConfigurableDefault( pinResource, "rx", true );
@@ -102,48 +102,52 @@ function getPeripheralRequirements(inst, peripheralName, name)
     }
     else if (name == "RMII")
     {
-        pinResource = pinmux.getPinRequirements(interfaceName, "RMII_REF_CLK", "REF_CLK");
+		pinResource = pinmux.getPinRequirements(interfaceName, "RMII_REF_CLK", "REF_CLK");
         pinmux.setConfigurableDefault( pinResource, "rx", true );
         resources.push( pinResource);
-        pinResource = pinmux.getPinRequirements(interfaceName, "RMII1_CRS_DV", "CRS_DV");
-        pinmux.setConfigurableDefault( pinResource, "rx", true );
-        resources.push( pinResource);
-        pinResource = pinmux.getPinRequirements(interfaceName, "RMII1_RX_ER", "RX_ER");
-        pinmux.setConfigurableDefault( pinResource, "rx", true );
-        resources.push( pinResource);
-        pinResource = pinmux.getPinRequirements(interfaceName, "RMII1_RXD0", "RXD0");
-        pinmux.setConfigurableDefault( pinResource, "rx", true );
-        resources.push( pinResource);
-        pinResource = pinmux.getPinRequirements(interfaceName, "RMII1_RXD1", "RXD1");
-        pinmux.setConfigurableDefault( pinResource, "rx", true );
-        resources.push( pinResource);
-        pinResource = pinmux.getPinRequirements(interfaceName, "RMII1_TXD0", "TXD0");
-        resources.push( pinResource);
-        pinResource = pinmux.getPinRequirements(interfaceName, "RMII1_TXD1", "TXD1");
-        resources.push( pinResource);
-        pinResource = pinmux.getPinRequirements(interfaceName, "RMII1_TX_EN", "TX_EN");
-        pinmux.setConfigurableDefault( pinResource, "rx", true );
-        resources.push( pinResource);
+        if (inst.enablexmii1 == true)
+        {
+            pinResource = pinmux.getPinRequirements(interfaceName, "RMII1_CRS_DV", "CRS_DV");
+            pinmux.setConfigurableDefault( pinResource, "rx", true );
+            resources.push( pinResource);
+            pinResource = pinmux.getPinRequirements(interfaceName, "RMII1_RX_ER", "RX_ER");
+            pinmux.setConfigurableDefault( pinResource, "rx", true );
+            resources.push( pinResource);
+            pinResource = pinmux.getPinRequirements(interfaceName, "RMII1_RXD0", "RXD0");
+            pinmux.setConfigurableDefault( pinResource, "rx", true );
+            resources.push( pinResource);
+            pinResource = pinmux.getPinRequirements(interfaceName, "RMII1_RXD1", "RXD1");
+            pinmux.setConfigurableDefault( pinResource, "rx", true );
+            resources.push( pinResource);
+            pinResource = pinmux.getPinRequirements(interfaceName, "RMII1_TXD0", "TXD0");
+            resources.push( pinResource);
+            pinResource = pinmux.getPinRequirements(interfaceName, "RMII1_TXD1", "TXD1");
+            resources.push( pinResource);
+            pinResource = pinmux.getPinRequirements(interfaceName, "RMII1_TX_EN", "TX_EN");
+            resources.push( pinResource);
+        }
 
-        pinResource = pinmux.getPinRequirements(interfaceName, "RMII2_CRS_DV", "CRS_DV");
-        pinmux.setConfigurableDefault( pinResource, "rx", true );
-        resources.push( pinResource);
-        pinResource = pinmux.getPinRequirements(interfaceName, "RMII2_RX_ER", "RX_ER");
-        pinmux.setConfigurableDefault( pinResource, "rx", true );
-        resources.push( pinResource);
-        pinResource = pinmux.getPinRequirements(interfaceName, "RMII2_RXD0", "RXD0");
-        pinmux.setConfigurableDefault( pinResource, "rx", true );
-        resources.push( pinResource);
-        pinResource = pinmux.getPinRequirements(interfaceName, "RMII2_RXD1", "RXD1");
-        pinmux.setConfigurableDefault( pinResource, "rx", true );
-        resources.push( pinResource);
-        pinResource = pinmux.getPinRequirements(interfaceName, "RMII2_TXD0", "TXD0");
-        resources.push( pinResource);
-        pinResource = pinmux.getPinRequirements(interfaceName, "RMII2_TXD1", "TXD1");
-        resources.push( pinResource);
-        pinResource = pinmux.getPinRequirements(interfaceName, "RMII2_TX_EN", "TX_EN");
-        pinmux.setConfigurableDefault( pinResource, "rx", true );
-        resources.push( pinResource);
+        if (inst.enablexmii2 == true)
+        {
+            pinResource = pinmux.getPinRequirements(interfaceName, "RMII2_CRS_DV", "CRS_DV");
+            pinmux.setConfigurableDefault( pinResource, "rx", true );
+            resources.push( pinResource);
+            pinResource = pinmux.getPinRequirements(interfaceName, "RMII2_RX_ER", "RX_ER");
+            pinmux.setConfigurableDefault( pinResource, "rx", true );
+            resources.push( pinResource);
+            pinResource = pinmux.getPinRequirements(interfaceName, "RMII2_RXD0", "RXD0");
+            pinmux.setConfigurableDefault( pinResource, "rx", true );
+            resources.push( pinResource);
+            pinResource = pinmux.getPinRequirements(interfaceName, "RMII2_RXD1", "RXD1");
+            pinmux.setConfigurableDefault( pinResource, "rx", true );
+            resources.push( pinResource);
+            pinResource = pinmux.getPinRequirements(interfaceName, "RMII2_TXD0", "TXD0");
+            resources.push( pinResource);
+            pinResource = pinmux.getPinRequirements(interfaceName, "RMII2_TXD1", "TXD1");
+            resources.push( pinResource);
+            pinResource = pinmux.getPinRequirements(interfaceName, "RMII2_TX_EN", "TX_EN");
+            resources.push( pinResource);
+        }
     }
     else if (name == "CPSW_CPTS")
     {
@@ -219,47 +223,51 @@ function getPeripheralRequirements(inst, peripheralName, name)
         pinmux.setConfigurableDefault( pinResource, "rx", true );
         resources.push( pinResource);
     }
-    else if(peripheralName == "RMII1")
-    {
-        pinResource = pinmux.getPinRequirements(interfaceName, "RMII1_RXD0", "RXD0");
+    else if(peripheralName == "RMII")
+    { 
+        pinResource = pinmux.getPinRequirements(interfaceName, "RMII_REF_CLK", "REF_CLK");
         pinmux.setConfigurableDefault( pinResource, "rx", true );
         resources.push( pinResource);
-        pinResource = pinmux.getPinRequirements(interfaceName, "RMII1_RXD1", "RXD1");
-        pinmux.setConfigurableDefault( pinResource, "rx", true );
-        resources.push( pinResource);
-        pinResource = pinmux.getPinRequirements(interfaceName, "RMII1_RX_ER", "RX_ER");
-        pinmux.setConfigurableDefault( pinResource, "rx", true );
-        resources.push( pinResource);
-        pinResource = pinmux.getPinRequirements(interfaceName, "RMII1_TXD0", "TXD0");
-        pinmux.setConfigurableDefault( pinResource, "rx", true );
-        resources.push( pinResource);
-        pinResource = pinmux.getPinRequirements(interfaceName, "RMII1_TXD1", "TXD1");
-        pinmux.setConfigurableDefault( pinResource, "rx", true );
-        resources.push( pinResource);
-        pinResource = pinmux.getPinRequirements(interfaceName, "RMII1_CRS_DV", "CRS_DV");
-        pinmux.setConfigurableDefault( pinResource, "rx", true );
-        resources.push( pinResource);
-    }
-	else if(peripheralName == "RMII2")
-    {
-        pinResource = pinmux.getPinRequirements(interfaceName, "RMII2_RXD0", "RXD0");
-        pinmux.setConfigurableDefault( pinResource, "rx", true );
-        resources.push( pinResource);
-        pinResource = pinmux.getPinRequirements(interfaceName, "RMII2_RXD1", "RXD1");
-        pinmux.setConfigurableDefault( pinResource, "rx", true );
-        resources.push( pinResource);
-        pinResource = pinmux.getPinRequirements(interfaceName, "RMII2_RX_ER", "RX_ER");
-        pinmux.setConfigurableDefault( pinResource, "rx", true );
-        resources.push( pinResource);
-        pinResource = pinmux.getPinRequirements(interfaceName, "RMII2_TXD0", "TXD0");
-        pinmux.setConfigurableDefault( pinResource, "rx", true );
-        resources.push( pinResource);
-        pinResource = pinmux.getPinRequirements(interfaceName, "RMII2_TXD1", "TXD1");
-        pinmux.setConfigurableDefault( pinResource, "rx", true );
-        resources.push( pinResource);
-        pinResource = pinmux.getPinRequirements(interfaceName, "RMII2_CRS_DV", "CRS_DV");
-        pinmux.setConfigurableDefault( pinResource, "rx", true );
-        resources.push( pinResource);
+        if (inst.enablexmii1 == true)
+        {
+            pinResource = pinmux.getPinRequirements(interfaceName, "RMII1_RX_ER", "RX_ER");
+            pinmux.setConfigurableDefault( pinResource, "rx", true );
+            resources.push( pinResource);
+            pinResource = pinmux.getPinRequirements(interfaceName, "RMII1_RXD0", "RXD0");
+            pinmux.setConfigurableDefault( pinResource, "rx", true );
+            resources.push( pinResource);
+            pinResource = pinmux.getPinRequirements(interfaceName, "RMII1_RXD1", "RXD1");
+            pinmux.setConfigurableDefault( pinResource, "rx", true );
+            resources.push( pinResource);
+            pinResource = pinmux.getPinRequirements(interfaceName, "RMII1_TXD0", "TXD0");
+            resources.push( pinResource);
+            pinResource = pinmux.getPinRequirements(interfaceName, "RMII1_TXD1", "TXD1");
+            resources.push( pinResource);
+            pinResource = pinmux.getPinRequirements(interfaceName, "RMII1_TX_EN", "TX_EN");
+            resources.push( pinResource)
+        }
+
+        if (inst.enablexmii2 == true)
+        {
+            pinResource = pinmux.getPinRequirements(interfaceName, "RMII2_CRS_DV", "CRS_DV");
+            pinmux.setConfigurableDefault( pinResource, "rx", true );
+            resources.push( pinResource);
+            pinResource = pinmux.getPinRequirements(interfaceName, "RMII2_RX_ER", "RX_ER");
+            pinmux.setConfigurableDefault( pinResource, "rx", true );
+            resources.push( pinResource);
+            pinResource = pinmux.getPinRequirements(interfaceName, "RMII2_RXD0", "RXD0");
+            pinmux.setConfigurableDefault( pinResource, "rx", true );
+            resources.push( pinResource);
+            pinResource = pinmux.getPinRequirements(interfaceName, "RMII2_RXD1", "RXD1");
+            pinmux.setConfigurableDefault( pinResource, "rx", true );
+            resources.push( pinResource);
+            pinResource = pinmux.getPinRequirements(interfaceName, "RMII2_TXD0", "TXD0");
+            resources.push( pinResource);
+            pinResource = pinmux.getPinRequirements(interfaceName, "RMII2_TXD1", "TXD1");
+            resources.push( pinResource);
+            pinResource = pinmux.getPinRequirements(interfaceName, "RMII2_TX_EN", "TX_EN");
+            resources.push( pinResource);
+        }
     }
     else if (name == "CPSW_CPTS")
     {
@@ -330,24 +338,24 @@ function pinmuxRequirements(inst) {
         if (common.getSocName() === "am64x")
         {
             let rmii = getPeripheralRequirements(inst, "CPSW", "RMII");
-            pinmux.setPeripheralPinConfigurableDefault( rmii, "RMII0_TXD0", "rx", false);
-            pinmux.setPeripheralPinConfigurableDefault( rmii, "RMII0_TXD1", "rx", false);
-            pinmux.setPeripheralPinConfigurableDefault( rmii, "RMII0_TXEN", "rx", false);
             pinmux.setPeripheralPinConfigurableDefault( rmii, "RMII1_TXD0", "rx", false);
             pinmux.setPeripheralPinConfigurableDefault( rmii, "RMII1_TXD1", "rx", false);
             pinmux.setPeripheralPinConfigurableDefault( rmii, "RMII1_TXEN", "rx", false);
+            pinmux.setPeripheralPinConfigurableDefault( rmii, "RMII2_TXD0", "rx", false);
+            pinmux.setPeripheralPinConfigurableDefault( rmii, "RMII2_TXD1", "rx", false);
+            pinmux.setPeripheralPinConfigurableDefault( rmii, "RMII2_TXEN", "rx", false);
             perRequirements.push(rmii);
         }
         else
         {
             let rmii = getPeripheralRequirements(inst, "RMII", "RMII");
 
-            pinmux.setPeripheralPinConfigurableDefault( rmii, "RMII0_TXD0", "rx", false);
-            pinmux.setPeripheralPinConfigurableDefault( rmii, "RMII0_TXD1", "rx", false);
-            pinmux.setPeripheralPinConfigurableDefault( rmii, "RMII0_TXEN", "rx", false);
             pinmux.setPeripheralPinConfigurableDefault( rmii, "RMII1_TXD0", "rx", false);
             pinmux.setPeripheralPinConfigurableDefault( rmii, "RMII1_TXD1", "rx", false);
             pinmux.setPeripheralPinConfigurableDefault( rmii, "RMII1_TXEN", "rx", false);
+            pinmux.setPeripheralPinConfigurableDefault( rmii, "RMII2_TXD0", "rx", false);
+            pinmux.setPeripheralPinConfigurableDefault( rmii, "RMII2_TXD1", "rx", false);
+            pinmux.setPeripheralPinConfigurableDefault( rmii, "RMII2_TXEN", "rx", false);
             perRequirements.push(rmii);
         }
     }
@@ -360,12 +368,12 @@ function pinmuxRequirements(inst) {
         }
         else
         {
-            if (inst.enableRgmii1 == true)
+            if (inst.enablexmii1 == true)
             {
                 let rgmii1 = getPeripheralRequirements(inst, "RGMII", "RGMII1");
                 perRequirements.push(rgmii1);
             }
-            if (inst.enableRgmii2 == true)
+            if (inst.enablexmii2 == true)
             {
                 let rgmii2 = getPeripheralRequirements(inst, "RGMII", "RGMII2");
                 perRequirements.push(rgmii2);
@@ -379,7 +387,7 @@ function getInterfaceNameList(inst) {
     let interfaceNameList = []
     if (inst.enableTsOut === true)
     {
-                interfaceNameList.push("CPSW_CPTS")
+        interfaceNameList.push("CPSW_CPTS")
     }
     interfaceNameList.push(getInterfaceName(inst, "MDIO"));
     if (inst.phyToMacInterfaceMode === "RMII")
@@ -394,13 +402,13 @@ function getInterfaceNameList(inst) {
         }
         else
         {
-            if (inst.enableRgmii1 == true)
+            if (inst.enablexmii1 == true)
             {
-            interfaceNameList.push(getInterfaceName(inst, "RGMII1"));
+                interfaceNameList.push(getInterfaceName(inst, "RGMII1"));
             }
-            if (inst.enableRgmii2 == true)
+            if (inst.enablexmii2 == true)
             {
-            interfaceNameList.push(getInterfaceName(inst, "RGMII2"));
+                interfaceNameList.push(getInterfaceName(inst, "RGMII2"));
             }
         }
     }
@@ -460,16 +468,9 @@ function getPeripheralPinNames(inst)
     return pinList;
 }
 
-function setNumPorts(inst, numPorts)
-{
-    inst.numPorts = numPorts;
-}
-
 let enet_cpsw_pinmux_module = {
     displayName: "CPSW pinmux config",
     longDescription: `This configures CPSW module pinmux`,
-    alwaysShowLongDescription: false,
-    defaultInstanceName: "ENET_CPSW_PINMUX",
     config: [
         {
             name: "phyToMacInterfaceMode",
@@ -485,40 +486,34 @@ let enet_cpsw_pinmux_module = {
             ],
         },
         {
-            name: "numPorts",
-            displayName: "Num Of Ports",
-            default: 2,
-            displayFormat: "dec",
-            hidden: true,
-            isInteger:true,
-            range: [0, 2],
-        },
-        {
             name: "enableTsOut",
             displayName: "Enable CPTS TS Output",
             default: false,
             hidden: false,
         },
         {
-            name: "enableRgmii1",
-            displayName: "Enable RGMII1 for CPSW",
+            name: "enablexmii1",
+            description: "Enable port 1 specific RGMII/RMII/MII.Change 'Disable MAC Port' status in 'MAC Port Config' to change this",
+            displayName: "Enable Port1 R/G/MII For CPSW",
             default: true,
             hidden: false,
+            readOnly: true,
         },
         {
-            name: "enableRgmii2",
-            displayName: "Enable RGMII2 for CPSW",
+            name: "enablexmii2",
+            description: "Enable port 2 specific RGMII/RMII/MII.Change 'Disable MAC Port' status in 'MAC Port Config' to change this",
+            displayName: "Enable Port1 R/G/MII For CPSW",
             default: true,
             hidden: false,
+            readOnly: true,
         },
     ],
-    getInstanceConfig,
+    collapsed: false,
+};
+
+exports = {
+    config: enet_cpsw_pinmux_module,
     pinmuxRequirements,
     getInterfaceNameList,
     getPeripheralPinNames,
-    setNumPorts,
-
 };
-
-
-exports = enet_cpsw_pinmux_module;
