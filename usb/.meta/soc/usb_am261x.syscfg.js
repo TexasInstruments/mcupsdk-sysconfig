@@ -9,7 +9,7 @@ const topModules_mcu = [
 
 ];
 
-const driverVer = "v0"
+const driverVer = "v1"
 
 exports = {
     getTopModules: function() {
@@ -26,4 +26,3 @@ exports = {
         return driverVer;
     },
 };
-

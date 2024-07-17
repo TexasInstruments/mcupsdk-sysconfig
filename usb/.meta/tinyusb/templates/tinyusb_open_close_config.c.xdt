@@ -1,9 +1,11 @@
 %%{
     let module = system.modules['/drivers/usb/usb'];
+    let common = system.getScript("/common"); 
 %%}
 /*
  * USB
  */
+% if(common.getSocName() == "am64x" || common.getSocName() == "am243x") {
 #define USB_CLK_SEL_HFOSC0_CLKOUT   (0x00U)
 #define USB_CLK_SEL_HFOSC1_CLKOUT   (0x01U)
 /* USB init Parameters */
@@ -16,11 +18,16 @@ static usb_init_param_t gUsbInitParam = {
     1,                          /*< VBUS_SEL for external divider */
     0                           /*< set to device mode */
 };
+% }
 
 void Drivers_usbOpen(void)
 {
     /* initialize USB HW for TI SOC */
+    % if(common.getSocName() == "am64x" || common.getSocName() == "am243x") {
     usb_init(&gUsbInitParam);
+    % } else {
+    USB_init();
+    %}
     /* tiny USB init */
     tusb_init();
 

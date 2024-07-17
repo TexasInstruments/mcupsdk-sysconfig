@@ -13,6 +13,8 @@ const topModules_a53 = [
 
 ];
 
+const driverVer = "v0"
+
 exports = {
     getTopModules: function() {
 
@@ -21,6 +23,7 @@ exports = {
         if(common.getSelfSysCfgCoreName().includes("m4f")) {
             topModules = topModules_mcu;
         }
+
         if (common.getSelfSysCfgCoreName().match(/a53*/))
         {
             topModules = topModules_a53;
@@ -28,4 +31,8 @@ exports = {
 
         return topModules;
     },
+    getDriverVer: function() {
+        return driverVer;
+    },
 };
+
