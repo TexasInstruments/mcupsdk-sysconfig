@@ -6,9 +6,6 @@ let rtiClockSourceConfig = [
         "name": "WUCPUCLK",
     },
     {
-        "name": "XTALCLK",
-    },
-    {
         "name": "SYS_CLK",
     },
     {
@@ -24,7 +21,10 @@ let rtiClockSourceConfig = [
         "name": "DPLL_CORE_HSDIV0_CLKOUT1",
     },
     {
-        "name": "DPLL_PER_HSDIV0_CLKOUT1",
+        "name": "DPLL_PER_HSDIV0_CLKOUT0",
+    },
+    {
+        "name": "DPLL_ETH_HSDIV0_CLKOUT0",
     }
 ];
 
@@ -35,9 +35,6 @@ function getRtiClockSourceValue(instance) {
         default:
         case "WUCPUCLK":
             clkSelMuxValue = 0x000;
-            break;
-        case "XTALCLK":
-            clkSelMuxValue = 0x666;
             break;
         case "SYS_CLK":
             clkSelMuxValue = 0x222;
@@ -54,8 +51,11 @@ function getRtiClockSourceValue(instance) {
         case "DPLL_CORE_HSDIV0_CLKOUT1":
             clkSelMuxValue = 0x444;
             break;
-        case "DPLL_PER_HSDIV0_CLKOUT1":
+        case "DPLL_PER_HSDIV0_CLKOUT0":
             clkSelMuxValue = 0x333;
+            break;
+        case "DPLL_ETH_HSDIV0_CLKOUT0":
+            clkSelMuxValue = 0x666;
             break;
     }
     return clkSelMuxValue;
@@ -64,7 +64,7 @@ function getRtiClockSourceValue(instance) {
 function getStaticConfigArr() {
     let staticConfig_r5f = [];
 
-    for(let i=0; i<8; i++)
+    for(let i=0; i<4; i++)
     {
         staticConfig_r5f.push(
             {
@@ -99,11 +99,8 @@ function getRtiClockSourceHz(clkSource) {
         case "WUCPUCLK":
             clkSourceHz = 25*1000000;
         break;
-        case "XTALCLK":
-            clkSourceHz = 25*1000000;
-        break;
         case "SYS_CLK":
-            clkSourceHz = 200*1000000;
+            clkSourceHz = 250*1000000;
         break;
         case "EXT_REFCLK":
             clkSourceHz = 100*1000000;
@@ -112,13 +109,16 @@ function getRtiClockSourceHz(clkSource) {
             clkSourceHz = 10*1000000;
         break;
         case "CTPS_GENF0":
-            clkSourceHz = 250*1000000;
+            clkSourceHz = 50*1000000;
         break;
         case "DPLL_CORE_HSDIV0_CLKOUT1":
             clkSourceHz = 500*1000000;
         break;
-        case "DPLL_PER_HSDIV0_CLKOUT1":
-            clkSourceHz = 192*1000000;
+        case "DPLL_PER_HSDIV0_CLKOUT0":
+            clkSourceHz = 240*1000000;
+        break;
+        case "DPLL_ETH_HSDIV0_CLKOUT0":
+            clkSourceHz = 450*1000000;
         break;
     }
     return clkSourceHz;
@@ -132,10 +132,6 @@ function getBlockedTimers() {
             blockTimers.push('RTI0');
         if(system.contexts["r5fss0-1"])
             blockTimers.push('RTI1');
-        if(system.contexts["r5fss1-0"])
-            blockTimers.push('RTI2');
-        if(system.contexts["r5fss1-1"])
-            blockTimers.push('RTI3');
     }
     return blockTimers;
 }

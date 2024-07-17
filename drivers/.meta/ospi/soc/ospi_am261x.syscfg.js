@@ -1,6 +1,6 @@
 let common = system.getScript("/common");
 
-let ospi_input_clk_freq = 133333333;
+let ospi_input_clk_freq = 166666666;
 
 const ospi_config_r5fss = [
     {
@@ -15,7 +15,24 @@ const ospi_config_r5fss = [
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_OSPI0",
-                clkId   : "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT0",
+                clkId   : "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT3",
+                clkRate : ospi_input_clk_freq,
+            },
+        ],
+    },
+    {
+        name            : "OSPI1",
+        baseAddr        : "CSL_FLASH_CONFIG_REG8_U_BASE",
+        dataBaseAddr    : "CSL_FLASH_DATA_REG0_U_BASE",
+        inputClkFreq    : ospi_input_clk_freq,
+        dacEnable       : false,
+        baudRateDiv     : 4,
+        intrNum         : 171,
+        clockIds        : [ "SOC_RcmPeripheralId_OSPI1" ],
+        clockFrequencies: [
+            {
+                moduleId: "SOC_RcmPeripheralId_OSPI1",
+                clkId   : "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT3",
                 clkRate : ospi_input_clk_freq,
             },
         ],

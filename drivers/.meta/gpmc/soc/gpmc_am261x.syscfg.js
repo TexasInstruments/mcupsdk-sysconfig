@@ -1,6 +1,6 @@
 let common = system.getScript("/common");
 
-let gpmc_input_clk_freq = 100000000;
+let gpmc_input_clk_freq = 500000000;
 
 const gpmc_config_r5fss = [
     {
@@ -16,7 +16,7 @@ const gpmc_config_r5fss = [
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_GPMC",
-                clkId   : "SOC_RcmPeripheralClockSource_SYS_CLK",
+                clkId   : "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT0",
                 clkRate : gpmc_input_clk_freq,
             },
         ],

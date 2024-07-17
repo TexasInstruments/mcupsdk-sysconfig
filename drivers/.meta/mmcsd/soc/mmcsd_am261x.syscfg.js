@@ -1,6 +1,6 @@
 let common = system.getScript("/common");
 
-let mmcsd_input_clk_freq = 192000000;
+let mmcsd_input_clk_freq = 240000000;
 
 const mmcsd_config_r5fss = [
 	{
@@ -19,7 +19,7 @@ const mmcsd_config_r5fss = [
 		clockFrequencies  : [
 			{
 				moduleId  : "SOC_RcmPeripheralId_MMC0",
-				clkId     : "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT1",
+				clkId     : "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT0",
 				clkRate   : mmcsd_input_clk_freq,
 			},
 		],

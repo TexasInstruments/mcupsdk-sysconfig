@@ -1,7 +1,7 @@
 
 let common = system.getScript("/common");
 
-let i2c_func_clk = 96000000;
+let i2c_func_clk = 240000000;
 
 const staticConfig_r5f = [
     {
@@ -14,7 +14,7 @@ const staticConfig_r5f = [
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_I2C",
-                clkId   : "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT1",
+                clkId   : "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT0",
                 clkRate : i2c_func_clk,
             },
         ],
@@ -29,7 +29,7 @@ const staticConfig_r5f = [
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_I2C",
-                clkId   : "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT1",
+                clkId   : "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT0",
                 clkRate : i2c_func_clk,
             },
         ],
@@ -44,27 +44,11 @@ const staticConfig_r5f = [
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_I2C",
-                clkId   : "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT1",
+                clkId   : "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT0",
                 clkRate : i2c_func_clk,
             },
         ],
     },
-    {
-        name: "I2C3",
-        baseAddr: "CSL_I2C3_U_BASE",
-        intNum: 47,
-        eventId: 0,
-        funcClk: i2c_func_clk,
-        clockIds: [ "SOC_RcmPeripheralId_I2C" ],
-        clockFrequencies: [
-            {
-                moduleId: "SOC_RcmPeripheralId_I2C",
-                clkId   : "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT1",
-                clkRate : i2c_func_clk,
-            },
-        ],
-    },
-
 ];
 
 function getStaticConfigArr() {
