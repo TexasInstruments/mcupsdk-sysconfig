@@ -9,6 +9,8 @@
 #include <fs/freertos_fat/portable/ff_mmcsd.h>
 #include <fs/freertos_fat/FreeRTOS-FAT/include/ff_stdio.h>
 
+#define INCLUDE_FREERTOS_FAT
+
 /* FF Disks */
 extern FF_Disk_t gFFDisks[CONFIG_FF_NUM_INSTANCES];
 % let sdPartitionCount = 0;
