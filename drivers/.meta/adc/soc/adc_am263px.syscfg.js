@@ -206,16 +206,6 @@ let ADC_PriorityMode = [
 	{ name: "ADC_PRI_THRU_SOC14_HIPRI", displayName: "SOC 0-14 hi pri, SOC15 in round robin" },
 	{ name: "ADC_PRI_ALL_HIPRI", displayName: "All priorities based on SOC number" },
 ]
-let ADC_OSDetectMode = [
-	{ name: "ADC_OSDETECT_MODE_DISABLED", displayName: "Open/Shorts detection cir-" },
-	{ name: "ADC_OSDETECT_MODE_VSSA", displayName: "O/S DC is enabled at zero" },
-	{ name: "ADC_OSDETECT_MODE_VDDA", displayName: "O/S DC is enabled at full" },
-	{ name: "ADC_OSDETECT_MODE_5BY12_VDDA", displayName: "O/S DC is enabled at 5/12" },
-	{ name: "ADC_OSDETECT_MODE_7BY12_VDDA", displayName: "O/S DC is enabled at 7/12" },
-	{ name: "ADC_OSDETECT_MODE_5K_PULLDOWN_TO_VSSA", displayName: "O/S DC is enabled at 5K" },
-	{ name: "ADC_OSDETECT_MODE_5K_PULLUP_TO_VDDA", displayName: "O/S DC is enabled at 5K" },
-	{ name: "ADC_OSDETECT_MODE_7K_PULLDOWN_TO_VSSA", displayName: "O/S DC is enabled at 7K" },
-]
 let ADC_OffsetTrim = [
 	{ name: "ADC_OFFSET_TRIM_COMMON", displayName: "Common Trim register for all" },
 	{ name: "ADC_OFFSET_TRIM_INDIVIDUAL", displayName: "Individual Trim registers for" },
@@ -593,7 +583,6 @@ exports = {
 	ADC_SOCNumber: ADC_SOCNumber,
 	ADC_IntSOCTrigger: ADC_IntSOCTrigger,
 	ADC_PriorityMode: ADC_PriorityMode,
-	ADC_OSDetectMode: ADC_OSDetectMode,
     ADC_OffsetTrim: ADC_OffsetTrim,
     ADC_SyncInput: ADC_SyncInput,
     ADC_PPBIntSrcSelect: ADC_PPBIntSrcSelect,

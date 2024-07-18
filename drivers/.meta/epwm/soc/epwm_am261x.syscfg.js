@@ -39,21 +39,7 @@ let EPWM_SyncInPulseSource = [
 	{ name: "EPWM_SYNC_IN_PULSE_SRC_SYNCOUT_EPWM7", displayName: "Sync-in source is EPWM7 sync-out signal" },
 	{ name: "EPWM_SYNC_IN_PULSE_SRC_SYNCOUT_EPWM8", displayName: "Sync-in source is EPWM8 sync-out signal" },
 	{ name: "EPWM_SYNC_IN_PULSE_SRC_SYNCOUT_EPWM9", displayName: "Sync-in source is EPWM9 sync-out signal" },
-	{ name: "EPWM_SYNC_IN_PULSE_SRC_SYNCOUT_EPWM10", displayName: "Sync-in source is EPWM10 sync-out signal" },
-	{ name: "EPWM_SYNC_IN_PULSE_SRC_SYNCOUT_EPWM11", displayName: "Sync-in source is EPWM11 sync-out signal" },
-	{ name: "EPWM_SYNC_IN_PULSE_SRC_SYNCOUT_EPWM12", displayName: "Sync-in source is EPWM12 sync-out signal" },
-	{ name: "EPWM_SYNC_IN_PULSE_SRC_SYNCOUT_EPWM13", displayName: "Sync-in source is EPWM13 sync-out signal" },
-	{ name: "EPWM_SYNC_IN_PULSE_SRC_SYNCOUT_EPWM14", displayName: "Sync-in source is EPWM14 sync-out signal" },
-	{ name: "EPWM_SYNC_IN_PULSE_SRC_SYNCOUT_EPWM15", displayName: "Sync-in source is EPWM15 sync-out signal" },
-	{ name: "EPWM_SYNC_IN_PULSE_SRC_SYNCOUT_EPWM16", displayName: "Sync-in source is EPWM16 sync-out signal" },
-    { name: "EPWM_SYNC_IN_PULSE_SRC_SYNCOUT_EPWM17", displayName: "Sync-in source is EPWM17 sync-out signal" },
-	{ name: "EPWM_SYNC_IN_PULSE_SRC_SYNCOUT_EPWM18", displayName: "Sync-in source is EPWM18 sync-out signal" },
-	{ name: "EPWM_SYNC_IN_PULSE_SRC_SYNCOUT_EPWM19", displayName: "Sync-in source is EPWM19 sync-out signal" },
-	{ name: "EPWM_SYNC_IN_PULSE_SRC_SYNCOUT_EPWM20", displayName: "Sync-in source is EPWM20 sync-out signal" },
-	{ name: "EPWM_SYNC_IN_PULSE_SRC_SYNCOUT_EPWM21", displayName: "Sync-in source is EPWM21 sync-out signal" },
-	{ name: "EPWM_SYNC_IN_PULSE_SRC_SYNCOUT_EPWM22", displayName: "Sync-in source is EPWM22 sync-out signal" },
-	{ name: "EPWM_SYNC_IN_PULSE_SRC_SYNCOUT_EPWM23", displayName: "Sync-in source is EPWM23 sync-out signal" },
-    { name: "EPWM_SYNC_IN_PULSE_SRC_SYNCOUT_ECAP0", displayName: "Sync-in source is ECAP0 sync-out signal" },
+	{ name: "EPWM_SYNC_IN_PULSE_SRC_SYNCOUT_ECAP0", displayName: "Sync-in source is ECAP0 sync-out signal" },
 	{ name: "EPWM_SYNC_IN_PULSE_SRC_SYNCOUT_ECAP1", displayName: "Sync-in source is ECAP1 sync-out signal" },
 	{ name: "EPWM_SYNC_IN_PULSE_SRC_SYNCOUT_ECAP2", displayName: "Sync-in source is ECAP2 sync-out signal" },
 	{ name: "EPWM_SYNC_IN_PULSE_SRC_SYNCOUT_ECAP3", displayName: "Sync-in source is ECAP3 sync-out signal" },
@@ -61,15 +47,7 @@ let EPWM_SyncInPulseSource = [
 	{ name: "EPWM_SYNC_IN_PULSE_SRC_SYNCOUT_ECAP5", displayName: "Sync-in source is ECAP5 sync-out signal" },
 	{ name: "EPWM_SYNC_IN_PULSE_SRC_SYNCOUT_ECAP6", displayName: "Sync-in source is ECAP6 sync-out signal" },
 	{ name: "EPWM_SYNC_IN_PULSE_SRC_SYNCOUT_ECAP7", displayName: "Sync-in source is ECAP7 sync-out signal" },
-    { name: "EPWM_SYNC_IN_PULSE_SRC_SYNCOUT_ECAP8", displayName: "Sync-in source is ECAP8 sync-out signal" },
-	{ name: "EPWM_SYNC_IN_PULSE_SRC_SYNCOUT_ECAP9", displayName: "Sync-in source is ECAP9 sync-out signal" },
-	{ name: "EPWM_SYNC_IN_PULSE_SRC_SYNCOUT_ECAP10", displayName: "Sync-in source is ECAP10 sync-out signal" },
-	{ name: "EPWM_SYNC_IN_PULSE_SRC_SYNCOUT_ECAP11", displayName: "Sync-in source is ECAP11 sync-out signal" },
-	{ name: "EPWM_SYNC_IN_PULSE_SRC_SYNCOUT_ECAP12", displayName: "Sync-in source is ECAP12 sync-out signal" },
-	{ name: "EPWM_SYNC_IN_PULSE_SRC_SYNCOUT_ECAP13", displayName: "Sync-in source is ECAP13 sync-out signal" },
-	{ name: "EPWM_SYNC_IN_PULSE_SRC_SYNCOUT_ECAP14", displayName: "Sync-in source is ECAP14 sync-out signal" },
-	{ name: "EPWM_SYNC_IN_PULSE_SRC_SYNCOUT_ECAP15", displayName: "Sync-in source is ECAP15 sync-out signal" },
-	{ name: "EPWM_SYNC_IN_PULSE_SRC_INPUTXBAR_OUT4", displayName: "Sync-in source is Input XBAR out4 signal" },
+    { name: "EPWM_SYNC_IN_PULSE_SRC_INPUTXBAR_OUT4", displayName: "Sync-in source is Input XBAR out4 signal" },
 	{ name: "EPWM_SYNC_IN_PULSE_SRC_INPUTXBAR_OUT20", displayName: "Sync-in source is Input XBAR out20 signal" },
     { name: "EPWM_SYNC_IN_PULSE_SRC_C2K_TIMESYNC_XBAR_PWM_OUT0", displayName: "Sync-in source is C2K Timesync xbar pwm output 0 signal" },
 	{ name: "EPWM_SYNC_IN_PULSE_SRC_C2K_TIMESYNC_XBAR_PWM_OUT1", displayName: "Sync-in source is C2K Timesync xbar pwm output 1 signal" },
@@ -77,18 +55,6 @@ let EPWM_SyncInPulseSource = [
     { name: "EPWM_SYNC_IN_PULSE_SRC_FSIRX0_RX_TRIG1", displayName: "Sync-in source is FSIRX0 Trigger 1 signal" },
     { name: "EPWM_SYNC_IN_PULSE_SRC_FSIRX0_RX_TRIG2", displayName: "Sync-in source is FSIRX0 Trigger 2 signal" },
     { name: "EPWM_SYNC_IN_PULSE_SRC_FSIRX0_RX_TRIG3", displayName: "Sync-in source is FSIRX0 Trigger 3 signal" },
-    { name: "EPWM_SYNC_IN_PULSE_SRC_FSIRX1_RX_TRIG0", displayName: "Sync-in source is FSIRX1 Trigger 0 signal" },
-    { name: "EPWM_SYNC_IN_PULSE_SRC_FSIRX1_RX_TRIG1", displayName: "Sync-in source is FSIRX1 Trigger 1 signal" },
-    { name: "EPWM_SYNC_IN_PULSE_SRC_FSIRX1_RX_TRIG2", displayName: "Sync-in source is FSIRX1 Trigger 2 signal" },
-    { name: "EPWM_SYNC_IN_PULSE_SRC_FSIRX1_RX_TRIG3", displayName: "Sync-in source is FSIRX1 Trigger 3 signal" },
-    { name: "EPWM_SYNC_IN_PULSE_SRC_FSIRX2_RX_TRIG0", displayName: "Sync-in source is FSIRX2 Trigger 0 signal" },
-    { name: "EPWM_SYNC_IN_PULSE_SRC_FSIRX2_RX_TRIG1", displayName: "Sync-in source is FSIRX2 Trigger 1 signal" },
-    { name: "EPWM_SYNC_IN_PULSE_SRC_FSIRX2_RX_TRIG2", displayName: "Sync-in source is FSIRX2 Trigger 2 signal" },
-    { name: "EPWM_SYNC_IN_PULSE_SRC_FSIRX2_RX_TRIG3", displayName: "Sync-in source is FSIRX2 Trigger 3 signal" },
-    { name: "EPWM_SYNC_IN_PULSE_SRC_FSIRX3_RX_TRIG0", displayName: "Sync-in source is FSIRX3 Trigger 0 signal" },
-    { name: "EPWM_SYNC_IN_PULSE_SRC_FSIRX3_RX_TRIG1", displayName: "Sync-in source is FSIRX3 Trigger 1 signal" },
-    { name: "EPWM_SYNC_IN_PULSE_SRC_FSIRX3_RX_TRIG2", displayName: "Sync-in source is FSIRX3 Trigger 2 signal" },
-    { name: "EPWM_SYNC_IN_PULSE_SRC_FSIRX3_RX_TRIG3", displayName: "Sync-in source is FSIRX3 Trigger 3 signal" },
 ]
 let EPWM_OneShotSyncOutTrigger = [
 	{ name: "EPWM_OSHT_SYNC_OUT_TRIG_SYNC", displayName: "Trigger is OSHT sync" },
@@ -120,20 +86,6 @@ let EPWM_CurrentLink = [
 	{ name: "EPWM_LINK_WITH_EPWM_7", displayName: "link current ePWM with ePWM7" },
 	{ name: "EPWM_LINK_WITH_EPWM_8", displayName: "link current ePWM with ePWM8" },
 	{ name: "EPWM_LINK_WITH_EPWM_9", displayName: "link current ePWM with ePWM9" },
-	{ name: "EPWM_LINK_WITH_EPWM_10", displayName: "link current ePWM with ePWM10" },
-	{ name: "EPWM_LINK_WITH_EPWM_11", displayName: "link current ePWM with ePWM11" },
-	{ name: "EPWM_LINK_WITH_EPWM_12", displayName: "link current ePWM with ePWM12" },
-	{ name: "EPWM_LINK_WITH_EPWM_13", displayName: "link current ePWM with ePWM13" },
-	{ name: "EPWM_LINK_WITH_EPWM_14", displayName: "link current ePWM with ePWM14" },
-	{ name: "EPWM_LINK_WITH_EPWM_15", displayName: "link current ePWM with ePWM15" },
-	{ name: "EPWM_LINK_WITH_EPWM_16", displayName: "link current ePWM with ePWM16" },
-    { name: "EPWM_LINK_WITH_EPWM_17", displayName: "link current ePWM with ePWM17" },
-	{ name: "EPWM_LINK_WITH_EPWM_18", displayName: "link current ePWM with ePWM18" },
-	{ name: "EPWM_LINK_WITH_EPWM_19", displayName: "link current ePWM with ePWM19" },
-	{ name: "EPWM_LINK_WITH_EPWM_20", displayName: "link current ePWM with ePWM20" },
-	{ name: "EPWM_LINK_WITH_EPWM_21", displayName: "link current ePWM with ePWM21" },
-	{ name: "EPWM_LINK_WITH_EPWM_22", displayName: "link current ePWM with ePWM22" },
-	{ name: "EPWM_LINK_WITH_EPWM_23", displayName: "link current ePWM with ePWM23" },
 ]
 let EPWM_LinkComponent = [
 	{ name: "EPWM_LINK_TBPRD", displayName: "Link TBPRD:TBPRDHR registers" },
@@ -769,17 +721,6 @@ let EPWM_DiodeEmulationTripSource= [
     {name: "EPWM_DE_TRIP_SRC_CMPSSA6", displayName: "Trip source is CMPSSA6 signal"},
     {name: "EPWM_DE_TRIP_SRC_CMPSSA7", displayName: "Trip source is CMPSSA7 signal"},
     {name: "EPWM_DE_TRIP_SRC_CMPSSA8", displayName: "Trip source is CMPSSA8 signal"},
-    {name: "EPWM_DE_TRIP_SRC_CMPSSA9", displayName: "Trip source is CMPSSA9 signal"},
-    {name: "EPWM_DE_TRIP_SRC_CMPSSB0", displayName: "Trip source is CMPSSB0 signal"},
-    {name: "EPWM_DE_TRIP_SRC_CMPSSB1", displayName: "Trip source is CMPSSB1 signal"},
-    {name: "EPWM_DE_TRIP_SRC_CMPSSB2", displayName: "Trip source is CMPSSB2 signal"},
-    {name: "EPWM_DE_TRIP_SRC_CMPSSB3", displayName: "Trip source is CMPSSB3 signal"},
-    {name: "EPWM_DE_TRIP_SRC_CMPSSB4", displayName: "Trip source is CMPSSB4 signal"},
-    {name: "EPWM_DE_TRIP_SRC_CMPSSB5", displayName: "Trip source is CMPSSB5 signal"},
-    {name: "EPWM_DE_TRIP_SRC_CMPSSB6", displayName: "Trip source is CMPSSB6 signal"},
-    {name: "EPWM_DE_TRIP_SRC_CMPSSB7", displayName: "Trip source is CMPSSB7 signal"},
-    {name: "EPWM_DE_TRIP_SRC_CMPSSB8", displayName: "Trip source is CMPSSB8 signal"},
-    {name: "EPWM_DE_TRIP_SRC_CMPSSB9", displayName: "Trip source is CMPSSB9 signal"},
 ]
 
 let EPWM_DiodeEmulationSignal =[
@@ -892,94 +833,6 @@ const staticConfig = [
     {
         name: "EPWM9",
         baseAddr: ["CSL_CONTROLSS_G0_EPWM9_U_BASE", "CSL_CONTROLSS_G1_EPWM9_U_BASE", "CSL_CONTROLSS_G2_EPWM9_U_BASE", "CSL_CONTROLSS_G3_EPWM9_U_BASE"],
-    },
-    {
-        name: "EPWM10",
-        baseAddr: ["CSL_CONTROLSS_G0_EPWM10_U_BASE", "CSL_CONTROLSS_G1_EPWM10_U_BASE", "CSL_CONTROLSS_G2_EPWM10_U_BASE", "CSL_CONTROLSS_G3_EPWM10_U_BASE"],
-    },
-    {
-        name: "EPWM11",
-        baseAddr: ["CSL_CONTROLSS_G0_EPWM11_U_BASE", "CSL_CONTROLSS_G1_EPWM11_U_BASE", "CSL_CONTROLSS_G2_EPWM11_U_BASE", "CSL_CONTROLSS_G3_EPWM11_U_BASE"],
-    },
-    {
-        name: "EPWM12",
-        baseAddr: ["CSL_CONTROLSS_G0_EPWM12_U_BASE", "CSL_CONTROLSS_G1_EPWM12_U_BASE", "CSL_CONTROLSS_G2_EPWM12_U_BASE", "CSL_CONTROLSS_G3_EPWM12_U_BASE"],
-    },
-    {
-        name: "EPWM13",
-        baseAddr: ["CSL_CONTROLSS_G0_EPWM13_U_BASE", "CSL_CONTROLSS_G1_EPWM13_U_BASE", "CSL_CONTROLSS_G2_EPWM13_U_BASE", "CSL_CONTROLSS_G3_EPWM13_U_BASE"],
-    },
-    {
-        name: "EPWM14",
-        baseAddr: ["CSL_CONTROLSS_G0_EPWM14_U_BASE", "CSL_CONTROLSS_G1_EPWM14_U_BASE", "CSL_CONTROLSS_G2_EPWM14_U_BASE", "CSL_CONTROLSS_G3_EPWM14_U_BASE"],
-    },
-    {
-        name: "EPWM15",
-        baseAddr: ["CSL_CONTROLSS_G0_EPWM15_U_BASE", "CSL_CONTROLSS_G1_EPWM15_U_BASE", "CSL_CONTROLSS_G2_EPWM15_U_BASE", "CSL_CONTROLSS_G3_EPWM15_U_BASE"],
-    },
-    {
-        name: "EPWM16",
-        baseAddr: ["CSL_CONTROLSS_G0_EPWM16_U_BASE", "CSL_CONTROLSS_G1_EPWM16_U_BASE", "CSL_CONTROLSS_G2_EPWM16_U_BASE", "CSL_CONTROLSS_G3_EPWM16_U_BASE"],
-    },
-    {
-        name: "EPWM17",
-        baseAddr: ["CSL_CONTROLSS_G0_EPWM17_U_BASE", "CSL_CONTROLSS_G1_EPWM17_U_BASE", "CSL_CONTROLSS_G2_EPWM17_U_BASE", "CSL_CONTROLSS_G3_EPWM17_U_BASE"],
-    },
-    {
-        name: "EPWM18",
-        baseAddr: ["CSL_CONTROLSS_G0_EPWM18_U_BASE", "CSL_CONTROLSS_G1_EPWM18_U_BASE", "CSL_CONTROLSS_G2_EPWM18_U_BASE", "CSL_CONTROLSS_G3_EPWM18_U_BASE"],
-    },
-    {
-        name: "EPWM19",
-        baseAddr: ["CSL_CONTROLSS_G0_EPWM19_U_BASE", "CSL_CONTROLSS_G1_EPWM19_U_BASE", "CSL_CONTROLSS_G2_EPWM19_U_BASE", "CSL_CONTROLSS_G3_EPWM19_U_BASE"],
-    },
-    {
-        name: "EPWM20",
-        baseAddr: ["CSL_CONTROLSS_G0_EPWM20_U_BASE", "CSL_CONTROLSS_G1_EPWM20_U_BASE", "CSL_CONTROLSS_G2_EPWM20_U_BASE", "CSL_CONTROLSS_G3_EPWM20_U_BASE"],
-    },
-    {
-        name: "EPWM21",
-        baseAddr: ["CSL_CONTROLSS_G0_EPWM21_U_BASE", "CSL_CONTROLSS_G1_EPWM21_U_BASE", "CSL_CONTROLSS_G2_EPWM21_U_BASE", "CSL_CONTROLSS_G3_EPWM21_U_BASE"],
-    },
-    {
-        name: "EPWM22",
-        baseAddr: ["CSL_CONTROLSS_G0_EPWM22_U_BASE", "CSL_CONTROLSS_G1_EPWM22_U_BASE", "CSL_CONTROLSS_G2_EPWM22_U_BASE", "CSL_CONTROLSS_G3_EPWM22_U_BASE"],
-    },
-    {
-        name: "EPWM23",
-        baseAddr: ["CSL_CONTROLSS_G0_EPWM23_U_BASE", "CSL_CONTROLSS_G1_EPWM23_U_BASE", "CSL_CONTROLSS_G2_EPWM23_U_BASE", "CSL_CONTROLSS_G3_EPWM23_U_BASE"],
-    },
-    {
-        name: "EPWM24",
-        baseAddr: ["CSL_CONTROLSS_G0_EPWM24_U_BASE", "CSL_CONTROLSS_G1_EPWM24_U_BASE", "CSL_CONTROLSS_G2_EPWM24_U_BASE", "CSL_CONTROLSS_G3_EPWM24_U_BASE"],
-    },
-    {
-        name: "EPWM25",
-        baseAddr: ["CSL_CONTROLSS_G0_EPWM25_U_BASE", "CSL_CONTROLSS_G1_EPWM25_U_BASE", "CSL_CONTROLSS_G2_EPWM25_U_BASE", "CSL_CONTROLSS_G3_EPWM25_U_BASE"],
-    },
-    {
-        name: "EPWM26",
-        baseAddr: ["CSL_CONTROLSS_G0_EPWM26_U_BASE", "CSL_CONTROLSS_G1_EPWM26_U_BASE", "CSL_CONTROLSS_G2_EPWM26_U_BASE", "CSL_CONTROLSS_G3_EPWM26_U_BASE"],
-    },
-    {
-        name: "EPWM27",
-        baseAddr: ["CSL_CONTROLSS_G0_EPWM27_U_BASE", "CSL_CONTROLSS_G1_EPWM27_U_BASE", "CSL_CONTROLSS_G2_EPWM27_U_BASE", "CSL_CONTROLSS_G3_EPWM27_U_BASE"],
-    },
-    {
-        name: "EPWM28",
-        baseAddr: ["CSL_CONTROLSS_G0_EPWM28_U_BASE", "CSL_CONTROLSS_G1_EPWM28_U_BASE", "CSL_CONTROLSS_G2_EPWM28_U_BASE", "CSL_CONTROLSS_G3_EPWM28_U_BASE"],
-    },
-    {
-        name: "EPWM29",
-        baseAddr: ["CSL_CONTROLSS_G0_EPWM29_U_BASE", "CSL_CONTROLSS_G1_EPWM29_U_BASE", "CSL_CONTROLSS_G2_EPWM29_U_BASE", "CSL_CONTROLSS_G3_EPWM29_U_BASE"],
-    },
-    {
-        name: "EPWM30",
-        baseAddr: ["CSL_CONTROLSS_G0_EPWM30_U_BASE", "CSL_CONTROLSS_G1_EPWM30_U_BASE", "CSL_CONTROLSS_G2_EPWM30_U_BASE", "CSL_CONTROLSS_G3_EPWM30_U_BASE"],
-    },
-    {
-        name: "EPWM31",
-        baseAddr: ["CSL_CONTROLSS_G0_EPWM31_U_BASE", "CSL_CONTROLSS_G1_EPWM31_U_BASE", "CSL_CONTROLSS_G2_EPWM31_U_BASE", "CSL_CONTROLSS_G3_EPWM31_U_BASE"],
     },
 ];
 function getStaticConfigArr() {

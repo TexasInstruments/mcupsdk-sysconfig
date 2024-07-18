@@ -31,19 +31,26 @@ tbClkConfig = tbClkConfig.concat([
     options : ()=>{
         let opt = []
         for(let epwmInst of getAddedInstances(epwmModule)){
-            opt.push({
-                name : epwmInst, displayName : epwmInst
-            })
+            if(epwmInst != undefined)
+            {
+                opt.push({
+                    name : epwmInst, displayName : epwmInst
+                })
+            }
         }
         return opt
     },
     onChange :  (inst, ui)=>{
         for (let epwmInst = 0; epwmInst < epwmInstLen; epwmInst++){
-            ui["tbClkSyncDisable"+epwmInst.toString()].hidden = true
+            if(epwmInst != undefined){
+                ui["tbClkSyncDisable"+epwmInst.toString()].hidden = true
+            }
         }
         // console.log(inst.tbclkSyncCtrlEn)
         for(let epwmInst of inst.tbclkSyncCtrlEn){
-            ui["tbClkSyncDisable"+epwmInst.replace("EPWM", "")].hidden = false
+            if(inst["tbClkSyncDisable"+epwmInst.replace("EPWM", "")] != undefined){
+                ui["tbClkSyncDisable"+epwmInst.replace("EPWM", "")].hidden = false
+            }
         }
     },
     default : [],
@@ -71,18 +78,25 @@ haltConfig = haltConfig.concat([
         options : ()=>{
             let opt = []
             for(let epwmInst of getAddedInstances(epwmModule)){
-                opt.push({
-                    name : epwmInst, displayName : epwmInst
-                })
+                if(epwmInst != undefined)
+                {
+                    opt.push({
+                        name : epwmInst, displayName : epwmInst
+                    })
+                }
             }
             return opt
         },
         onChange :  (inst, ui)=>{
             for (let epwmInst = 0; epwmInst < epwmInstLen; epwmInst++){
-                ui["haltDisable"+epwmInst.toString()].hidden = true
+                if(epwmInst != undefined){
+                    ui["haltDisable"+epwmInst.toString()].hidden = true
+                }
             }
             for(let epwmInst of inst.haltCtrlEn){
-                ui["haltDisable"+epwmInst.replace("EPWM", "")].hidden = false
+                if(inst["haltDisable"+epwmInst.replace("EPWM", "")] != undefined){
+                    ui["haltDisable"+epwmInst.replace("EPWM", "")].hidden = false
+                }
             }
         },
         default : [],
@@ -93,7 +107,7 @@ for (let epwmInst = 0; epwmInst < epwmInstLen; epwmInst++){
     haltConfig = haltConfig.concat([
         {
             name : "haltDisable"+epwmInst.toString(),
-            displayName : "Disable Halt for EPWM"+epwmInst.toString()+" for CPU "+common.getSelfSysCfgCoreName(),
+            displayName : "Disable Halt For EPWM"+epwmInst.toString()+" On "+(common.getSelfSysCfgCoreName()).toUpperCase(),
             default : false,
             hidden : true,
         }

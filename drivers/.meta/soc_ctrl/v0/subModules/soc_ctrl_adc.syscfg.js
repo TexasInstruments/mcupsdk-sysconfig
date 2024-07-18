@@ -85,12 +85,14 @@ let listConfig = [
 
             for(let adcAdded of adcInstancesAdded){
                 let adcCfg = adcStaticConfigArray.find(o => o.name === adcAdded);
-                if (refBufListinThisCore.includes(adcCfg.refBuf)){
-                    continue;
-                }
-                else
-                {
-                    refBufListinThisCore.push(adcCfg.refBuf)
+                if(adcCfg){
+                    if (refBufListinThisCore.includes(adcCfg.refBuf)){
+                        continue;
+                    }
+                    else
+                    {
+                        refBufListinThisCore.push(adcCfg.refBuf)
+                    }
                 }
             }
             refBufListinThisCore.sort()
@@ -169,7 +171,7 @@ if(soc.isLoopBackAvailable()){
                 let opt = []
                 for(let adcInst of getAddedInstances(adcModule).concat(getAddedInstances(adcRModule))){
                     let staticConfig = adcStaticConfigArray.find(o => o.name === adcInst);
-                    if(staticConfig.instanceNumber){
+                    if(staticConfig && staticConfig.instanceNumber){
                         opt.push({
                             name : staticConfig.instanceNumber, displayName : adcInst
                         })

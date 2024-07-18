@@ -49,50 +49,6 @@ let ADC_Trigger = [
     { name: "ADC_TRIGGER_EPWM8_SOCB", displayName: "ePWM8, ADCSOCB" },
     { name: "ADC_TRIGGER_EPWM9_SOCA", displayName: "ePWM9, ADCSOCA" },
     { name: "ADC_TRIGGER_EPWM9_SOCB", displayName: "ePWM9, ADCSOCB" },
-    { name: "ADC_TRIGGER_EPWM10_SOCA", displayName: "ePWM10, ADCSOCA" },
-    { name: "ADC_TRIGGER_EPWM10_SOCB", displayName: "ePWM10, ADCSOCB" },
-    { name: "ADC_TRIGGER_EPWM11_SOCA", displayName: "ePWM11, ADCSOCA" },
-    { name: "ADC_TRIGGER_EPWM11_SOCB", displayName: "ePWM11, ADCSOCB" },
-    { name: "ADC_TRIGGER_EPWM12_SOCA", displayName: "ePWM12, ADCSOCA" },
-    { name: "ADC_TRIGGER_EPWM12_SOCB", displayName: "ePWM12, ADCSOCB" },
-    { name: "ADC_TRIGGER_EPWM13_SOCA", displayName: "ePWM13, ADCSOCA" },
-    { name: "ADC_TRIGGER_EPWM13_SOCB", displayName: "ePWM13, ADCSOCB" },
-    { name: "ADC_TRIGGER_EPWM14_SOCA", displayName: "ePWM14, ADCSOCA" },
-    { name: "ADC_TRIGGER_EPWM14_SOCB", displayName: "ePWM14, ADCSOCB" },
-    { name: "ADC_TRIGGER_EPWM15_SOCA", displayName: "ePWM15, ADCSOCA" },
-    { name: "ADC_TRIGGER_EPWM15_SOCB", displayName: "ePWM15, ADCSOCB" },
-    { name: "ADC_TRIGGER_EPWM16_SOCA", displayName: "ePWM16, ADCSOCA" },
-    { name: "ADC_TRIGGER_EPWM16_SOCB", displayName: "ePWM16, ADCSOCB" },
-    { name: "ADC_TRIGGER_EPWM17_SOCA", displayName: "ePWM17, ADCSOCA" },
-    { name: "ADC_TRIGGER_EPWM17_SOCB", displayName: "ePWM17, ADCSOCB" },
-    { name: "ADC_TRIGGER_EPWM18_SOCA", displayName: "ePWM18, ADCSOCA" },
-    { name: "ADC_TRIGGER_EPWM18_SOCB", displayName: "ePWM18, ADCSOCB" },
-    { name: "ADC_TRIGGER_EPWM19_SOCA", displayName: "ePWM19, ADCSOCA" },
-    { name: "ADC_TRIGGER_EPWM19_SOCB", displayName: "ePWM19, ADCSOCB" },
-    { name: "ADC_TRIGGER_EPWM20_SOCA", displayName: "ePWM20, ADCSOCA" },
-    { name: "ADC_TRIGGER_EPWM20_SOCB", displayName: "ePWM20, ADCSOCB" },
-    { name: "ADC_TRIGGER_EPWM21_SOCA", displayName: "ePWM21, ADCSOCA" },
-    { name: "ADC_TRIGGER_EPWM21_SOCB", displayName: "ePWM21, ADCSOCB" },
-    { name: "ADC_TRIGGER_EPWM22_SOCA", displayName: "ePWM22, ADCSOCA" },
-    { name: "ADC_TRIGGER_EPWM22_SOCB", displayName: "ePWM22, ADCSOCB" },
-    { name: "ADC_TRIGGER_EPWM23_SOCA", displayName: "ePWM23, ADCSOCA" },
-    { name: "ADC_TRIGGER_EPWM23_SOCB", displayName: "ePWM23, ADCSOCB" },
-    { name: "ADC_TRIGGER_EPWM24_SOCA", displayName: "ePWM24, ADCSOCA" },
-    { name: "ADC_TRIGGER_EPWM24_SOCB", displayName: "ePWM24, ADCSOCB" },
-    { name: "ADC_TRIGGER_EPWM25_SOCA", displayName: "ePWM25, ADCSOCA" },
-    { name: "ADC_TRIGGER_EPWM25_SOCB", displayName: "ePWM25, ADCSOCB" },
-    { name: "ADC_TRIGGER_EPWM26_SOCA", displayName: "ePWM26, ADCSOCA" },
-    { name: "ADC_TRIGGER_EPWM26_SOCB", displayName: "ePWM26, ADCSOCB" },
-    { name: "ADC_TRIGGER_EPWM27_SOCA", displayName: "ePWM27, ADCSOCA" },
-    { name: "ADC_TRIGGER_EPWM27_SOCB", displayName: "ePWM27, ADCSOCB" },
-    { name: "ADC_TRIGGER_EPWM28_SOCA", displayName: "ePWM28, ADCSOCA" },
-    { name: "ADC_TRIGGER_EPWM28_SOCB", displayName: "ePWM28, ADCSOCB" },
-    { name: "ADC_TRIGGER_EPWM29_SOCA", displayName: "ePWM29, ADCSOCA" },
-    { name: "ADC_TRIGGER_EPWM29_SOCB", displayName: "ePWM29, ADCSOCB" },
-    { name: "ADC_TRIGGER_EPWM30_SOCA", displayName: "ePWM30, ADCSOCA" },
-    { name: "ADC_TRIGGER_EPWM30_SOCB", displayName: "ePWM30, ADCSOCB" },
-    { name: "ADC_TRIGGER_EPWM31_SOCA", displayName: "ePWM31, ADCSOCA" },
-    { name: "ADC_TRIGGER_EPWM31_SOCB", displayName: "ePWM31, ADCSOCB" },
     { name: "ADC_TRIGGER_ECAP0_SOCEVT", displayName: "eCAP0, SOCEVT" },
     { name: "ADC_TRIGGER_ECAP1_SOCEVT", displayName: "eCAP1, SOCEVT" },
     { name: "ADC_TRIGGER_ECAP2_SOCEVT", displayName: "eCAP2, SOCEVT" },
@@ -101,14 +57,6 @@ let ADC_Trigger = [
     { name: "ADC_TRIGGER_ECAP5_SOCEVT", displayName: "eCAP5, SOCEVT" },
     { name: "ADC_TRIGGER_ECAP6_SOCEVT", displayName: "eCAP6, SOCEVT" },
     { name: "ADC_TRIGGER_ECAP7_SOCEVT", displayName: "eCAP7, SOCEVT" },
-    { name: "ADC_TRIGGER_ECAP8_SOCEVT", displayName: "eCAP8, SOCEVT" },
-    { name: "ADC_TRIGGER_ECAP9_SOCEVT", displayName: "eCAP9, SOCEVT" },
-    { name: "ADC_TRIGGER_ECAP10_SOCEVT", displayName: "eCAP10, SOCEVT" },
-    { name: "ADC_TRIGGER_ECAP11_SOCEVT", displayName: "eCAP11, SOCEVT" },
-    { name: "ADC_TRIGGER_ECAP12_SOCEVT", displayName: "eCAP12, SOCEVT" },
-    { name: "ADC_TRIGGER_ECAP13_SOCEVT", displayName: "eCAP13, SOCEVT" },
-    { name: "ADC_TRIGGER_ECAP14_SOCEVT", displayName: "eCAP14, SOCEVT" },
-    { name: "ADC_TRIGGER_ECAP15_SOCEVT", displayName: "eCAP15, SOCEVT" },
     { name: "ADC_TRIGGER_RTI4", displayName: "RTI Timer 4" },
     { name: "ADC_TRIGGER_RTI5", displayName: "RTI Timer 5" },
     { name: "ADC_TRIGGER_RTI6", displayName: "RTI Timer 6" },
@@ -123,30 +71,15 @@ let ADC_Channel = [
 	{ name: "ADC_CH_ADCIN3", displayName: "single-ended, ADCIN3" },
 	{ name: "ADC_CH_ADCIN4", displayName: "single-ended, ADCIN4" },
 	{ name: "ADC_CH_ADCIN5", displayName: "single-ended, ADCIN5" },
+	{ name: "ADC_CH_ADCIN6", displayName: "single-ended, ADCIN6" },
     { name: "ADC_CH_CAL0", displayName: "single-ended, CAL0" },
-	{ name: "ADC_CH_CAL1", displayName: "single-ended, CAL1" },
 	{ name: "ADC_CH_ADCIN0_ADCIN1", displayName: "differential, ADCIN0 and ADCIN1" },
 	{ name: "ADC_CH_ADCIN1_ADCIN0", displayName: "differential, ADCIN1 and ADCIN0" },
 	{ name: "ADC_CH_ADCIN2_ADCIN3", displayName: "differential, ADCIN2 and ADCIN3" },
 	{ name: "ADC_CH_ADCIN3_ADCIN2", displayName: "differential, ADCIN3 and ADCIN2" },
 	{ name: "ADC_CH_ADCIN4_ADCIN5", displayName: "differential, ADCIN4 and ADCIN5" },
     { name: "ADC_CH_ADCIN5_ADCIN4", displayName: "differential, ADCIN5 and ADCIN4" },
-    { name: "ADC_CH_CAL0_CAL1", displayName: "single-ended, CAL0 and CAL1" },
-]
-let ADC_R_Channel = [
-	{ name: "ADC_CH_ADCIN0", displayName: "single-ended, ADC_R_IN0" },
-	{ name: "ADC_CH_ADCIN1", displayName: "single-ended, ADC_R_IN1" },
-	{ name: "ADC_CH_ADCIN2", displayName: "single-ended, ADC_R_IN2" },
-	{ name: "ADC_CH_ADCIN3", displayName: "single-ended, ADC_R_IN3" },
-	{ name: "ADC_CH_ADCIN4", displayName: "single-ended, CAL Channel 2" },
-	{ name: "ADC_CH_ADCIN5", displayName: "single-ended, CAL Channel 3" },
-	{ name: "ADC_CH_ADCIN0_ADCIN1", displayName: "differential, ADC_R_IN0 and ADC_R_IN1" },
-	{ name: "ADC_CH_ADCIN1_ADCIN0", displayName: "differential, ADC_R_IN1 and ADC_R_IN0" },
-	{ name: "ADC_CH_ADCIN2_ADCIN3", displayName: "differential, ADC_R_IN2 and ADC_R_IN3" },
-	{ name: "ADC_CH_ADCIN3_ADCIN2", displayName: "differential, ADC_R_IN3 and ADC_R_IN2" },
-	{ name: "ADC_CH_ADCIN4_ADCIN5", displayName: "differential, CAL Channel 2 and CAL Channel 3" },
-    { name: "ADC_CH_ADCIN5_ADCIN4", displayName: "differential, CAL Channel 3 and CAL Channel 2" },
-
+    // { name: "ADC_CH_CAL0_CAL1", displayName: "single-ended, CAL0 and CAL1" },
 ]
 let ADC_PulseMode = [
 	{ name: "ADC_PULSE_END_OF_ACQ_WIN", displayName: "Occurs at the end of the acquisition window" },
@@ -205,16 +138,6 @@ let ADC_PriorityMode = [
 	{ name: "ADC_PRI_THRU_SOC13_HIPRI", displayName: "SOC 0-13 hi pri, others in round robin" },
 	{ name: "ADC_PRI_THRU_SOC14_HIPRI", displayName: "SOC 0-14 hi pri, SOC15 in round robin" },
 	{ name: "ADC_PRI_ALL_HIPRI", displayName: "All priorities based on SOC number" },
-]
-let ADC_OSDetectMode = [
-	{ name: "ADC_OSDETECT_MODE_DISABLED", displayName: "Open/Shorts detection cir-" },
-	{ name: "ADC_OSDETECT_MODE_VSSA", displayName: "O/S DC is enabled at zero" },
-	{ name: "ADC_OSDETECT_MODE_VDDA", displayName: "O/S DC is enabled at full" },
-	{ name: "ADC_OSDETECT_MODE_5BY12_VDDA", displayName: "O/S DC is enabled at 5/12" },
-	{ name: "ADC_OSDETECT_MODE_7BY12_VDDA", displayName: "O/S DC is enabled at 7/12" },
-	{ name: "ADC_OSDETECT_MODE_5K_PULLDOWN_TO_VSSA", displayName: "O/S DC is enabled at 5K" },
-	{ name: "ADC_OSDETECT_MODE_5K_PULLUP_TO_VDDA", displayName: "O/S DC is enabled at 5K" },
-	{ name: "ADC_OSDETECT_MODE_7K_PULLDOWN_TO_VSSA", displayName: "O/S DC is enabled at 7K" },
 ]
 let ADC_OffsetTrim = [
 	{ name: "ADC_OFFSET_TRIM_COMMON", displayName: "Common Trim register for all" },
@@ -408,26 +331,26 @@ let ADC_FORCE = [
 	{ name: "ADC_FORCE_SOC15", displayName: "SW trigger ADC SOC 15" },
 ]
 
-// let ADC_REPEATER = [
-// 	{ name: "ADC_REPEATER_MODULE_BUSY", displayName: "REPEATER MODULE BUSY" },
-// 	{ name: "ADC_REPEATER_PHASE_OVERFLOW", displayName: "REPEATER PHASE OVERFLOW" },
-// 	{ name: "ADC_REPEATER_TRIGGER_OVERFLOW", displayName: "REPEATER TRIGGER OVERFLOW" },
-// ]
-// let ADC_REP1CTL = [
-// 	{ name: "ADC_REP1CTL_ACTIVEMODE_S", displayName: "REP1CTL ACTIVEMODE S" },
-// 	{ name: "ADC_REP1CTL_MODULEBUSY_S", displayName: "REP1CTL MODULEBUSY S" },
-// ]
-// let ADC_REPSTATUS_MASK = [
-// 	{ name: "ADC_REPSTATUS_MASK", displayName: "REPSTATUS MASK" },
-// ]
-// let ADC_SAFECHECK = [
-// 	{ name: "ADC_SAFECHECK_RESULT1_READY", displayName: "SAFECHECK RESULT1 READY" },
-// 	{ name: "ADC_SAFECHECK_RESULT2_READY", displayName: "SAFECHECK RESULT2 READY" },
-// 	{ name: "ADC_SAFECHECK_RESULT_OOT", displayName: "SAFECHECK RESULT OOT" },
-// ]
-// let ADC_SAFECHECK_STATUS_MASK = [
-// 	{ name: "ADC_SAFECHECK_STATUS_MASK", displayName: "SAFECHECK STATUS MASK" },
-// ]
+let ADC_REPEATER = [
+	{ name: "ADC_REPEATER_MODULE_BUSY", displayName: "REPEATER MODULE BUSY" },
+	{ name: "ADC_REPEATER_PHASE_OVERFLOW", displayName: "REPEATER PHASE OVERFLOW" },
+	{ name: "ADC_REPEATER_TRIGGER_OVERFLOW", displayName: "REPEATER TRIGGER OVERFLOW" },
+]
+let ADC_REP1CTL = [
+	{ name: "ADC_REP1CTL_ACTIVEMODE_S", displayName: "REP1CTL ACTIVEMODE S" },
+	{ name: "ADC_REP1CTL_MODULEBUSY_S", displayName: "REP1CTL MODULEBUSY S" },
+]
+let ADC_REPSTATUS_MASK = [
+	{ name: "ADC_REPSTATUS_MASK", displayName: "REPSTATUS MASK" },
+]
+let ADC_SAFECHECK = [
+	{ name: "ADC_SAFECHECK_RESULT1_READY", displayName: "SAFECHECK RESULT1 READY" },
+	{ name: "ADC_SAFECHECK_RESULT2_READY", displayName: "SAFECHECK RESULT2 READY" },
+	{ name: "ADC_SAFECHECK_RESULT_OOT", displayName: "SAFECHECK RESULT OOT" },
+]
+let ADC_SAFECHECK_STATUS_MASK = [
+	{ name: "ADC_SAFECHECK_STATUS_MASK", displayName: "SAFECHECK STATUS MASK" },
+]
 
 let ADC_SafetyAggr_Instances = [
     {name:  "ADC_SAFETY_CHECKER_AGGR1",
@@ -468,34 +391,6 @@ const staticConfig = [
         refBuf         : "1",
     },
     {
-        name: "ADC3",
-        baseAddr: "CSL_CONTROLSS_ADC3_U_BASE",
-        resultBaseAddr : "CSL_CONTROLSS_ADC3_RESULT_U_BASE",
-        instanceNumber : "3",
-        refBuf         : "2",
-    },
-    {
-        name: "ADC4",
-        baseAddr: "CSL_CONTROLSS_ADC4_U_BASE",
-        resultBaseAddr : "CSL_CONTROLSS_ADC4_RESULT_U_BASE",
-        instanceNumber : "4",
-        refBuf         : "2",
-    },
-    {
-        name: "ADC_R0",
-        baseAddr: "CSL_CONTROLSS_ADCR0_U_BASE",
-        resultBaseAddr : "CSL_CONTROLSS_ADCR0_RESULT_U_BASE",
-        instanceNumber : "5",
-        refBuf         : "3",
-    },
-    {
-        name: "ADC_R1",
-        baseAddr: "CSL_CONTROLSS_ADCR1_U_BASE",
-        resultBaseAddr : "CSL_CONTROLSS_ADCR1_RESULT_U_BASE",
-        instanceNumber : "6",
-        refBuf         : "3",
-    },
-    {
         name: "ADC_SAFETY_CHECKER1",
         baseAddr: "CSL_CONTROLSS_ADCSAFE0_U_BASE",
         instanceNumber : "0",
@@ -526,36 +421,6 @@ const staticConfig = [
         instanceNumber : "5",
     },
     {
-        name: "ADC_SAFETY_CHECKER7",
-        baseAddr: "CSL_CONTROLSS_ADCSAFE6_U_BASE",
-        instanceNumber : "6",
-    },
-    {
-        name: "ADC_SAFETY_CHECKER8",
-        baseAddr: "CSL_CONTROLSS_ADCSAFE7_U_BASE",
-        instanceNumber : "7",
-    },
-    {
-        name: "ADC_SAFETY_CHECKER9",
-        baseAddr: "CSL_CONTROLSS_ADCSAFE8_U_BASE",
-        instanceNumber : "8",
-    },
-    {
-        name: "ADC_SAFETY_CHECKER10",
-        baseAddr: "CSL_CONTROLSS_ADCSAFE9_U_BASE",
-        instanceNumber : "9",
-    },
-    {
-        name: "ADC_SAFETY_CHECKER11",
-        baseAddr: "CSL_CONTROLSS_ADCSAFE10_U_BASE",
-        instanceNumber : "10",
-    },
-    {
-        name: "ADC_SAFETY_CHECKER12",
-        baseAddr: "CSL_CONTROLSS_ADCSAFE11_U_BASE",
-        instanceNumber : "11",
-    },
-    {
         name: "ADC_SAFETY_CHECKER_AGGR1",
         baseAddr: "CSL_CONTROLSS_ADCSAFE_EVENT_AGG_U_BASE",
         instanceNumber : "1",
@@ -582,14 +447,12 @@ exports = {
 	ADC_SignalMode: ADC_SignalMode,
 	ADC_Trigger: ADC_Trigger,
 	ADC_Channel: ADC_Channel,
-	ADC_R_Channel: ADC_R_Channel,
 	ADC_PulseMode: ADC_PulseMode,
 	ADC_IntNumber: ADC_IntNumber,
 	ADC_PPBNumber: ADC_PPBNumber,
 	ADC_SOCNumber: ADC_SOCNumber,
 	ADC_IntSOCTrigger: ADC_IntSOCTrigger,
 	ADC_PriorityMode: ADC_PriorityMode,
-	ADC_OSDetectMode: ADC_OSDetectMode,
     ADC_OffsetTrim: ADC_OffsetTrim,
     ADC_SyncInput: ADC_SyncInput,
     ADC_PPBIntSrcSelect: ADC_PPBIntSrcSelect,
