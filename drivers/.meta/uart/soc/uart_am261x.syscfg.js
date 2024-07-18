@@ -78,6 +78,10 @@ function getDefaultClkRate() {
     return uart_input_clk_freq;
 }
 
+function getDefaultClkSource() {
+    return "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT2";
+}
+
 function getClockSourceOptions() {
     return [
         {name: "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT0"},
@@ -111,5 +115,6 @@ exports = {
     getConfigArr,
     getDefaultClkRate,
     getClockSourceOptions,
-    getClockOptions
+    getClockOptions,
+    getDefaultClkSource,
 };

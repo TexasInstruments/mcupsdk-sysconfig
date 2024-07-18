@@ -197,7 +197,7 @@ function getConfigurables()
         {
             name: "clockSource",
             displayName: "Clock Source",
-            default: "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT1",
+            default: soc.getDefaultClkSource(),
             description: "Clock Source",
             options: gClockSourceOptions
         },
