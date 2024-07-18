@@ -74,6 +74,9 @@ const driverVer = {
     "sdfm": {
         version: "v0",
     },
+    "soc_ctrl": {
+        version: "v0",
+    },
     "uart": {
         version: "v2",
     },
@@ -107,6 +110,7 @@ const topModules_main = [
     "/drivers/ospi/ospi",
     "/drivers/rti/rti",
     "/drivers/sdfm/sdfm",
+    "/drivers/soc_ctrl/soc_ctrl",
     "/drivers/uart/uart",
     "/drivers/watchdog/watchdog"
 ];

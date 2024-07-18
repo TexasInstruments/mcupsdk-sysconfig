@@ -107,6 +107,20 @@ function getPinConfigurables(interfaceName, pinName)
                 "legacy": true
             },
         );
+        if( interfaceName == "SDFM")
+        {
+        pinConfig.push(
+            {
+                "type": "CheckBox",
+                "name": "outputOverride",
+                "readOnly": !pinName.includes("CLK"),
+                "hidden": false,
+                "displayName": "Enable Clock Out",
+                "default": false,
+                "legacy": true
+            },
+        );
+        }
     }
     return pinConfig;
 }
@@ -184,6 +198,12 @@ function getPinConfigCStruct(pin, interfaceName, inst)
             case "async":
                 settings += "| PIN_QUAL_ASYNC ";
                 break;
+        }
+    }
+    if(obj.outputOverride != undefined)
+    {
+        if(pin.outputOverride == true) {
+                settings += "| PIN_FORCE_OUTPUT_ENABLE ";
         }
     }
     if(interfaceName == "GPIO_n")
