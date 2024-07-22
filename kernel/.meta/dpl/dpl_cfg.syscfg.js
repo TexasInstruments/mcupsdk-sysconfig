@@ -34,7 +34,7 @@ let dpl_cfg_module = {
         config: [
             {
                 name: "hwiPEnable",
-                displayName: "Enable Interrupts In DPL Initialization",
+                displayName: "Enable Interrupts In DPL Init",
                 default: true,
                 description: `Whether to enable interrupts in DPL initialization`,
                 longDescription: hwiConfigLongDesc

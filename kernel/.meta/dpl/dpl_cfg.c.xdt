@@ -1,10 +1,14 @@
 %%{
     let module = system.modules['/kernel/dpl/dpl_cfg'];
-    let instance = module.$static;
-    let config = module.getInstanceConfig(instance);
 %%}
+%if (module){
+    %%{
+        let instance = module.$static;
+        let config = module.getInstanceConfig(instance);
+    %%}
 
 % if (config.hwiPEnable) {
     /* Enable interrupt handling */
     HwiP_enable();
 % }
+%}
