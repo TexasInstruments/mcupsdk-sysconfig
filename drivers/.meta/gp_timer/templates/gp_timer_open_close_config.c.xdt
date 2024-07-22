@@ -1,0 +1,99 @@
+%%{
+    let common = system.getScript("/common");
+    let soc = system.getScript(`/drivers/soc/drivers_${common.getSocName()}`);
+    let driverVer = soc.getDriverVer("gp_timer");
+    let module = system.modules['/drivers/gp_timer/gp_timer'];
+%%}
+/*
+ * GPTIMER
+ */
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+#define `config.$name`_CLOCK_SRC_MUX_ADDR (0x`config.clkSelMuxAddr.toString(16).toUpperCase()`u)
+#define `config.$name`_CLOCK_SRC_`config.clkSource` (0x`config.clkSelMuxValue.toString(16).toUpperCase()`u)
+%}
+
+/* GPTIMER Driver handles */
+GPTIMER_Handle gGpTimerHandle[GPTIMER_NUM_INSTANCES];
+
+/* GPTIMER Driver Parameters */
+GPTIMER_Params gGpTimerParams[GPTIMER_NUM_INSTANCES] =
+{
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+    {
+        .enablePrescaler = `config.enablePrescaler`,
+        .cntPrescaler = `config.cntPrescaler`,
+        .oneShotMode = `config.enableOneShotMode`,
+        .cntReloadVal = `config.cntReloadVal`,
+        .overflowMaskCount = `config.overflowMaskCount`,
+        .counterInitVal = `config.cntInitVal`,
+    },
+% }
+};
+
+void Drivers_GpTimerOpen(void)
+{
+    uint32_t    instCnt;
+    int32_t     status = SystemP_SUCCESS;
+
+    % for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+    /* Set timer clock source */
+    SOC_controlModuleUnlockMMR(`config.lockUnlockDomain`, `config.lockUnlockPartition`);
+    *(volatile uint32_t*)AddrTranslateP_getLocalAddr(`config.$name`_CLOCK_SRC_MUX_ADDR) = `config.$name`_CLOCK_SRC_`config.clkSource`;
+    SOC_controlModuleLockMMR(`config.lockUnlockDomain`, `config.lockUnlockPartition`);
+    % }
+
+    for(instCnt = 0U; instCnt < GPTIMER_NUM_INSTANCES; instCnt++)
+    {
+        gGpTimerHandle[instCnt] = NULL;   /* Init to NULL so that we can exit gracefully */
+    }
+
+    /* Open all instances */
+    for(instCnt = 0U; instCnt < GPTIMER_NUM_INSTANCES; instCnt++)
+    {
+        gGpTimerHandle[instCnt] = GPTIMER_open(instCnt, &gGpTimerParams[instCnt]);
+        if(NULL == gGpTimerHandle[instCnt])
+        {
+            DebugP_logError("GPTIMER open failed for instance %d !!!\r\n", instCnt);
+            status = SystemP_FAILURE;
+            break;
+        }
+    }
+
+    % for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+        % if(config.startTimer == true) {
+    GPTIMER_start(gGpTimerHandle[`i`]);
+        % }
+    % }
+
+    if(SystemP_FAILURE == status)
+    {
+        Drivers_GpTimerClose();   /* Exit gracefully */
+    }
+
+    return;
+}
+
+void Drivers_GpTimerClose(void)
+{
+    uint32_t instCnt;
+
+    /* Close all instances that are open */
+    for(instCnt = 0U; instCnt < GPTIMER_NUM_INSTANCES; instCnt++)
+    {
+        if(gGpTimerHandle[instCnt] != NULL)
+        {
+            GPTIMER_close(gGpTimerHandle[instCnt]);
+            gGpTimerHandle[instCnt] = NULL;
+        }
+    }
+
+    return;
+}

@@ -83,6 +83,9 @@ const driverVer = {
     "watchdog": {
         version: "v0",
     },
+    "gp_timer": {
+        version: "v0",
+    },
 };
 
 const topModules_main = [
@@ -111,6 +114,7 @@ const topModules_main = [
     "/drivers/uart/uart",
     "/drivers/udma/udma",
     "/drivers/watchdog/watchdog",
+    "/drivers/gp_timer/gp_timer",
 ];
 
 const topModules_mcu = [

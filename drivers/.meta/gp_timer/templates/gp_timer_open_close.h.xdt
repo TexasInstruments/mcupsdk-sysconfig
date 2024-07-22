@@ -1,0 +1,25 @@
+%%{
+    let common = system.getScript("/common");
+    let module = system.modules['/drivers/gp_timer/gp_timer'];
+%%}
+/*
+ * GPTIMER
+ */
+#include <drivers/gp_timer.h>
+#include <kernel/dpl/AddrTranslateP.h>
+
+/* GPTIMER Driver handles */
+extern GPTIMER_Handle gGpTimerHandle[GPTIMER_NUM_INSTANCES];
+
+/*
+ * GPTIMER Driver Advance Parameters - to be used only when Driver_open() and
+ * Driver_close() is not used by the application
+ */
+/* GPTIMER Driver Parameters */
+
+extern GPTIMER_Params gGpTimerParams[GPTIMER_NUM_INSTANCES];
+/* GPTIMER Driver open/close - can be used by application when Driver_open() and
+ * Driver_close() is not used directly and app wants to control the various driver
+ * open/close sequences */
+void Drivers_GpTimerOpen(void);
+void Drivers_GpTimerClose(void);

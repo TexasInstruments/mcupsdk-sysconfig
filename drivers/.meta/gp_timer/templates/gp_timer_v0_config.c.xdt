@@ -1,0 +1,90 @@
+%%{
+    let common = system.getScript("/common");
+    let module = system.modules['/drivers/gp_timer/gp_timer'];
+%%}
+/*
+ * GPTIMER
+ */
+
+/* GPTIMER Callback */
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+
+    % if(config.enableIntr) {
+        % if(config.overflowCallbackFxn != "NULL") {
+void `config.overflowCallbackFxn`(GPTIMER_Handle handle);
+        % }
+        % else {}
+        % if(config.compareMatchCallbackFxn != "NULL") {
+void `config.compareMatchCallbackFxn`(GPTIMER_Handle handle);
+        % }
+        % else {}
+        % if(config.captureCallbackFxn != "NULL") {
+void `config.captureCallbackFxn`(GPTIMER_Handle handle);
+        % }
+        % else {}
+    % }
+    % else {}
+% }
+
+/* GPTIMER atrributes */
+static GPTIMER_HwAttrs gGpTimerHwAttrs[GPTIMER_NUM_INSTANCES] =
+{
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+    {
+        .baseAddr = `config.baseAddr`,
+        .intNum = `config.intrNum`,
+        .eventId = `config.eventId`,
+        .inputClk = `config.timerInputClkHz`,
+        .enableIntr = `config.enableIntr`,
+        .intrPriority = `config.intrPriority`,
+    },
+% }
+};
+/* GPTIMER objects */
+static GPTIMER_Object gGpTimerObjects[GPTIMER_NUM_INSTANCES] =
+{
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+    {
+        /* Timer Mode Configuration*/
+        .timerConfigMode = GPTIMER_MODE_CONFIG_`config.timerConfigMode`,
+        % if(config.timerConfigMode == "FREE_RUN") {}
+        % else if(config.timerConfigMode == "OUTPUT_COMPARE") {
+        .compareConfig.cntCompareValComp = `config.cntCompareValComp`,
+        % }
+        % else if(config.timerConfigMode == "INPUT_CAPTURE") {
+        .captureConfig.captureMode = `config.captureMode`,
+        .captureConfig.captureEventMode = `config.captureEventMode`,
+        % }
+        % else if(config.timerConfigMode == "PWM_GEN") {
+        .pwmConfig.trigOutputPWMMode = `config.trigOutputPWMMode`,
+        .pwmConfig.defaultPWMOutSetting = `config.defaultPWMOutSetting`,
+        .pwmConfig.cntCompareValPWM = `config.cntCompareValPWM`,
+        .pwmConfig.outputModulationType = `config.outputModulationType`,
+        % }
+        % else {}
+        /* Callback Assignment */
+        .overflowCallbackFunction = `config.overflowCallbackFxn`,
+        .compareMatchCallbackFunction = `config.compareMatchCallbackFxn`,
+        .captureCallbackFunction = `config.captureCallbackFxn`,
+    },
+% }
+};
+/* GPTIMER Config */
+GPTIMER_Config gGpTimerConfig[GPTIMER_NUM_INSTANCES] =
+{
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    {
+        .object = &gGpTimerObjects[`instance.$name.toUpperCase()`],
+        .hwAttrs = &gGpTimerHwAttrs[`instance.$name.toUpperCase()`]
+    },
+% }
+};
+
+uint32_t gGpTimerConfigNum = GPTIMER_NUM_INSTANCES;
