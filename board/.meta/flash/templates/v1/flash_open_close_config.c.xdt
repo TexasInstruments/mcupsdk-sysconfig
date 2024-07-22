@@ -32,6 +32,11 @@ Flash_Attrs gFlashAttrs_`config.fname` =
     .pageSize = `config.flashPageSize`,
     .sectorCount = `Math.round(config.flashSize/config.flashSectorSize)`,
     .sectorSize = `config.flashSectorSize`,
+%if (common.getSocName() === 'am263px'){
+    .phyTuningOffset = 0x80000,
+%} else {
+    .phyTuningOffset = `config.flashSize`/2,
+%}
 };
 % }
 
