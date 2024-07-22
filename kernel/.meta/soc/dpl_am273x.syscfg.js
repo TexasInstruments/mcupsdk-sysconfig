@@ -14,6 +14,7 @@ const topModules_mcu = [
     "/kernel/dpl/debug_log",
     "/kernel/dpl/mpu_armv7",
     "/kernel/dpl/timer",
+    "/kernel/dpl/dpl_cfg",
 ];
 
 const topModules_c66 = [
