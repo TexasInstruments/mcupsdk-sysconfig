@@ -520,7 +520,9 @@ static int32_t EnetApp_enablePorts(Enet_Handle hEnet,
             IcssgMacPort_SetPortStateInArgs setPortStateInArgs;
 
             setPortStateInArgs.macPort   = macPortList[i];
-            setPortStateInArgs.portState = ICSSG_PORT_STATE_FORWARD;
+            /*Port state is kept disabled during init similar to PRUICSS firmware, also
+              on Link state change to up or Down the port state is set to FORWARD or DISABLED respectively*/
+            setPortStateInArgs.portState = ICSSG_PORT_STATE_DISABLED;
             ENET_IOCTL_SET_IN_ARGS(&prms, &setPortStateInArgs);
             prms.outArgs = NULL_PTR;
 
