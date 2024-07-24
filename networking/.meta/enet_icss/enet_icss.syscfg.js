@@ -902,7 +902,7 @@ function addSharedModuleInstances(inst) {
         moduleName: '/drivers/pruicss/pruicss',
         requiredArgs: {
             instance: inst.instance,
-            coreClk: 250*1000000,
+            coreClk: 333333333,
         },
     });
 
