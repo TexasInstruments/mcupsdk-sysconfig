@@ -693,10 +693,6 @@ function getCpuInfo() {
                                   clusternum: "0", core: "0"}],
                                  ['CSL_CORE_ID_R5FSS0_1',{subsystem: "R5FSS",
                                   clusternum: "0", core: "1"}],
-                                 ['CSL_CORE_ID_R5FSS1_0',{subsystem: "R5FSS",
-                                  clusternum: "1", core: "0"}],
-                                 ['CSL_CORE_ID_R5FSS1_1', {subsystem: "R5FSS",
-                                  clusternum: "1", core: "1"}],
                                ],
                              );
 	return cpuInfo.get(getCpuID());

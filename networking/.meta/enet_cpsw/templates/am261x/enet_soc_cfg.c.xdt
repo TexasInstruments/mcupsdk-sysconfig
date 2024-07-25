@@ -816,9 +816,7 @@ const EnetRm_ResPrms *EnetAppRm_getResPartInfo(Enet_Type enetType)
 static const EnetRm_IoctlPermissionTable gEnetAppIoctlPermission_3G =
 {
     .defaultPermittedCoreMask = (ENET_BIT(CSL_CORE_ID_R5FSS0_0) |
-                                 ENET_BIT(CSL_CORE_ID_R5FSS0_1) |
-                                 ENET_BIT(CSL_CORE_ID_R5FSS1_0) |
-                                 ENET_BIT(CSL_CORE_ID_R5FSS1_1)),
+                                 ENET_BIT(CSL_CORE_ID_R5FSS0_1)),
     .numEntries = 0,
 };
 
@@ -861,17 +859,17 @@ uint32_t EnetSoC_mapApp2CpdmaCoreId(uint32_t appCoreId)
             coreId = CSL_CORE_ID_R5FSS0_1;
         }
     }
-    if (cpuInfo.grpId == (uint32_t)CSL_ARM_R5_CLUSTER_GROUP_ID_1)
-    {
-        if (cpuInfo.cpuID == CSL_ARM_R5_CPU_ID_0)
-        {
-             coreId = CSL_CORE_ID_R5FSS1_0;
-        }
-        if (cpuInfo.cpuID == CSL_ARM_R5_CPU_ID_1)
-        {
-            coreId = CSL_CORE_ID_R5FSS1_1;
-        }
-    }
+    // if (cpuInfo.grpId == (uint32_t)CSL_ARM_R5_CLUSTER_GROUP_ID_1)
+    // {
+    //     if (cpuInfo.cpuID == CSL_ARM_R5_CPU_ID_0)
+    //     {
+    //          coreId = CSL_CORE_ID_R5FSS1_0;
+    //     }
+    //     if (cpuInfo.cpuID == CSL_ARM_R5_CPU_ID_1)
+    //     {
+    //         coreId = CSL_CORE_ID_R5FSS1_1;
+    //     }
+    // }
 
     return coreId;
 }
