@@ -55,7 +55,7 @@ function getConfigArr() {
 }
 
 function getSupportedDataLines() {
-    if(system.deviceData.device == "AM261x") {
+    if(system.deviceData.device == "AM261x_ZCZ" || system.deviceData.device == "AM261x_ZFG") {
         return 8;
     } else {
         return 4;
