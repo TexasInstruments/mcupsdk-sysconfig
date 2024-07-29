@@ -84,6 +84,30 @@ function getConfig(){
         }
     ]
     if(["am263x", "am263px", "am261x"].includes(common.getSocName())) {
+        cfg.push({
+            name        : "hsmrtDecoupling",
+            displayName : "Is HSMRT part of SBL?",
+            description : 'Whether or not HSMRT is decoupled from the SBL',
+            hidden      : false,
+            default     : false,
+            onChange    : function(inst, ui) {
+                if (inst.hsmrtDecoupling) {
+                    ui.hsmrtImageOffset.hidden = false;
+                }
+                else {
+                    ui.hsmrtImageOffset.hidden = true;
+                }
+            }
+        });
+        cfg.push({
+            name: "hsmrtImageOffset",
+            displayName: "HSM Runtime Image Offset",
+            description: "Offset of the HSM Runtime Image in Flash",
+            default: "0x00400000",
+            hidden: true,
+        });
+    }
+    if(["am263x", "am263px", "am261x"].includes(common.getSocName())) {
         cfg.push(
             {
                 name: "R5FSS0operatingMode",
