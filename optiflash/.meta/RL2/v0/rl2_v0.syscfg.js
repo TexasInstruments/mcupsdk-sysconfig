@@ -1,8 +1,47 @@
 let common = system.getScript("/common");
 let soc = system.getScript(`/optiflash/RL2/soc/rl2_${common.getSocName()}`);
 
+const RL2_CACHESIZE_8K = "RL2_CACHESIZE_8K";
+const RL2_CACHESIZE_16K = "RL2_CACHESIZE_16K";
+const RL2_CACHESIZE_32K = "RL2_CACHESIZE_32K";
+const RL2_CACHESIZE_64K = "RL2_CACHESIZE_64K";
+const RL2_CACHESIZE_128K = "RL2_CACHESIZE_128K";
+const RL2_CACHESIZE_256K = "RL2_CACHESIZE_256K";
+
 const linkerStartSymbol =  "__RL2_" + toCVariableName(common.getSelfSysCfgCoreName()) + "_cachebank_start";
 const linkerEndSymbol = "__RL2_" + toCVariableName(common.getSelfSysCfgCoreName()) + "_cachebank_end";
+
+function cacheSize_to_flashrange(size)
+{
+    switch(size)
+    {
+        case RL2_CACHESIZE_8K: 
+            return (1 * 1024 * 1024);
+            break;
+
+        case RL2_CACHESIZE_16K: 
+            return (2 * 1024 * 1024);
+            break;
+
+        case RL2_CACHESIZE_32K: 
+            return (4 * 1024 * 1024);
+            break;
+
+        case RL2_CACHESIZE_64K: 
+            return (8 * 1024 * 1024);
+            break;
+
+        case RL2_CACHESIZE_128K: 
+            return (16 * 1024 * 1024);
+            break;
+
+        case RL2_CACHESIZE_256K: 
+            return (8 * 1024 * 1024);
+            break;
+        default :
+            return (1 * 1024 * 1024);
+    }
+}
 
 function toCVariableName(str) {
     let result = '';
@@ -53,7 +92,7 @@ function convertRL2CacheSizeTokenToNumbercacheLen(cacheLen) {
 function validate(inst, report) {
 
     let rangeStart =    parseInt(inst['rangeStart']);
-    let rangeEnd =      parseInt(inst['rangeEnd']);
+    let rangeEnd =      parseInt(inst['rangeEnd_2']);
     let cacheLen =      inst["cacheSize"];
 
     let resp;
@@ -67,11 +106,17 @@ function validate(inst, report) {
     resp = soc.rl2.validate_src_range_start_address(rangeEnd);
     if(resp.status === false)
     {
-        report.logError(resp.msg, inst, "rangeEnd");
+        report.logError(resp.msg, inst, "rangeEnd_2");
     }
     else if(rangeEnd <= rangeStart)
     {
-        report.logError("Should not be less than or equal to external flash cached range end address.", inst, "rangeEnd");
+        report.logError("Should not be less than or equal to external flash cached range end address.", inst, "rangeEnd_2");
+    }
+
+    let max_end_range = (cacheSize_to_flashrange(cacheLen) + rangeStart);
+    if(rangeEnd > max_end_range)
+    {
+        report.logError("For selected cache size, external flash's cached range's end address should be less than 0x" + max_end_range.toString(16), inst, "rangeEnd_2");
     }
 
     let valid_option = false;
@@ -193,9 +238,9 @@ exports =
             description: "Starting address of external flash which is required to be cached."
         },
         {
-            name: "rangeEnd",
+            name: "rangeEnd_2",
             displayName: "Flash Cached Region End Address",
-            default: 0x68000000,
+            default: 0x60100000,
             displayFormat: "hex",
             description: "End address of external flash which is required to be cached."
         },
@@ -204,12 +249,12 @@ exports =
             displayName: "Size Of Cache",
             default: "RL2_CACHESIZE_8K",
             options: [
-                { name: "RL2_CACHESIZE_8K", displayName: "8K" },
-                { name: "RL2_CACHESIZE_16K", displayName: "16K" },
-                { name: "RL2_CACHESIZE_32K", displayName: "32K" },
-                { name: "RL2_CACHESIZE_64K", displayName: "64K" },
-                { name: "RL2_CACHESIZE_128K", displayName: "128K" },
-                { name: "RL2_CACHESIZE_256K", displayName: "256K" },
+                { name: RL2_CACHESIZE_8K, displayName: "8KB" },
+                { name: RL2_CACHESIZE_16K, displayName: "16KB" },
+                { name: RL2_CACHESIZE_32K, displayName: "32KB" },
+                { name: RL2_CACHESIZE_64K, displayName: "64KB" },
+                { name: RL2_CACHESIZE_128K, displayName: "128KB" },
+                { name: RL2_CACHESIZE_256K, displayName: "256KB" },
             ],
             description: "Size of Cache."
         },
@@ -220,6 +265,17 @@ exports =
             description: 'Chose in which Memory cache bank for this L2 cache will locate. Mostly L2 memory',
             options: () => { return loadMemoryRegions().memory_regions },
         },
+/*
+ *  Depricated fields. Kept for backward compatibility.
+ */
+        {
+            name: "rangeEnd",
+            displayName: "Flash Cached Region End Address",
+            default: 0x68000000,
+            displayFormat: "hex",
+            description: "End address of external flash which is required to be cached.",
+            hidden      : true,
+        }
     ],
     validate: validate,
     templates:

@@ -40,8 +40,8 @@ RL2_Params gRL2Config[] =
     % let instance = module.$instances[j];
     % if(instance.enable === true) {
     {
-        .rangeStart     = `instance.rangeStart`,
-        .rangeEnd       = `instance.rangeEnd`,
+        .rangeStart     = 0x`parseInt(instance.rangeStart).toString(16)`,
+        .rangeEnd       = 0x`parseInt(instance.rangeEnd_2).toString(16)`,
         .cacheSize      = `instance.cacheSize`,
         .l2Sram0Base    = (unsigned int)&`rl2_mem_start`,
         .l2Sram0Len     = (unsigned int)&`rl2_mem_end`,
