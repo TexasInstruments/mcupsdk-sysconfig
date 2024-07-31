@@ -176,7 +176,7 @@ function getConfig(){
 				name: "imageFormat",
 				displayName: "Image Format",
 				description: "Whether to generate the image via rprc flow or multicore elf flow.",
-				default: "MCELF",
+				default: "RPRC",
 				options: soc.getImageFormat(),
 			}
 		)
