@@ -136,7 +136,7 @@ void Pinmux_init(void)
         %let module=system.modules[subTemplate.moduleName];
         % for(let i = 0; i < module.$instances.length; i++) {
             %let instance = module.$instances[i];
-            if((module.getInterfaceName && module.getInterfaceName(instance)=="ICSSM") || (module.getInterfaceNameList && module.getInterfaceNameList(instance)=="ICSSM")){
+            %if((module.getInterfaceName && module.getInterfaceName(instance)=="ICSSM") || (module.getInterfaceNameList && module.getInterfaceNameList(instance)=="ICSSM")){
                 %flag=1;
                 %let interfaceName = module.getInterfaceName ? module.getInterfaceName(instance) : module.getInterfaceNameList(instance) ;
                 % let peripheral = instance[interfaceName];
