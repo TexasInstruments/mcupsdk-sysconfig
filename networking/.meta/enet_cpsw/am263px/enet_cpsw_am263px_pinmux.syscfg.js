@@ -184,7 +184,8 @@ function getInterfaceNameList(inst) {
     }
     else if (inst.phyToMacInterfaceMode === "RMII")
     {
-        interfaceNameList.push(getInterfaceName(inst, "RMII"));
+        interfaceNameList.push(getInterfaceName(inst, "RMII1"));
+        interfaceNameList.push(getInterfaceName(inst, "RMII2"));
     }
     else
     {
