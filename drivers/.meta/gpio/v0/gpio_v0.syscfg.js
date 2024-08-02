@@ -140,6 +140,8 @@ function pinmuxRequirements(inst) {
             name: peripheralName,
             displayName: "GPIO Peripheral",
             interfaceName: interfaceName,
+            signalTypes: ["GPIO_n"]
+
         };
     }
     else{
@@ -151,6 +153,9 @@ function pinmuxRequirements(inst) {
             interfaceName: interfaceName,
             resources: resources,
             canShareWith: "/drivers/gpio/gpio",
+            signalTypes: {
+                [resources[0].name] : ["GPIO_n"]
+            }
         };
     }
 
@@ -378,6 +383,11 @@ function addModuleInstances(inst) {
     return modInstances;
 }
 
+function filterHardware(component)
+{
+    return (common.typeMatches(component.type, ["GPIO"]));
+}
+
 let gpio_module_name = "/drivers/gpio/gpio";
 
 let gpio_module = {
@@ -412,6 +422,7 @@ let gpio_module = {
     getInterfaceName,
     getPeripheralPinNames,
     onMigrate,
+    filterHardware:filterHardware
 };
 
 function onMigrate(newInst, oldInst, oldSystem) {

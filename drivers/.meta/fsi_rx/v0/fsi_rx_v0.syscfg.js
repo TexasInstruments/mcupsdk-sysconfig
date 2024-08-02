@@ -40,6 +40,11 @@ function pinmuxRequirements(inst) {
         displayName   : "FSI RX Instance",
         interfaceName : interfaceName,
         resources : resources,
+        signalTypes: {
+            CLK: "CLK",
+            D0: "D0",
+            D1: "D1"
+        }
     };
 
     return [peripheral];
@@ -56,6 +61,10 @@ function getPeripheralPinNames(inst) {
 function validate(inst, report) {
     common.validate.checkNumberRange(inst, report, "intrPriority", 0, hwi.getHwiMaxPriority(), "dec");
     common.validate.checkNumberRange(inst, report, "frameDataSize", 1, 16, "dec");
+}
+function filterHardware(component)
+{
+    return (common.typeMatches(component.type, ["FSIRX"]));
 }
 
 let fsi_rx_module_name = "/drivers/fsi_rx/fsi_rx";
@@ -106,6 +115,7 @@ let fsi_rx_module = {
     getInterfaceName,
     getPeripheralPinNames,
     onMigrate,
+    filterHardware:filterHardware
 };
 
 function onMigrate(newInst, oldInst, oldSystem) {

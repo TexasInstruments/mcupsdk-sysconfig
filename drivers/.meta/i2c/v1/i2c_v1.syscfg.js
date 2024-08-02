@@ -35,8 +35,8 @@ function pinmuxRequirements(inst) {
         interfaceName : interfaceName,
         resources     : resources,
         signalTypes   : {
-            sclPin     : ['SCL'],
-            sdaPin     : ['SDA'],
+            SCL     : "SCL",
+            SDA     : "SDA"
         }
     };
 
@@ -304,6 +304,10 @@ function getModuleStatic() {
     
     return config;
 }
+function filterHardware(component)
+{
+    return (common.typeMatches(component.type, ["I2C"]));
+}
 
 let i2c_module_name = "/drivers/i2c/i2c";
 
@@ -363,6 +367,7 @@ let i2c_module = {
     getClockEnableIds,
     getClockFrequencies,
     getClockRate,
+    filterHardware : filterHardware
 };
 
 function validate(instance, report) {

@@ -1,8 +1,7 @@
 let common   = system.getScript("/common");
 let pinmux = system.getScript("/drivers/pinmux/pinmux");
 let soc = system.getScript(`/drivers/sdfm/soc/sdfm_${common.getSocName()}`);
-let soc_ctrl = system.getScript("/drivers/soc_ctrl/soc_ctrl")
-
+let soc_ctrl = system.getScript("/drivers/soc_ctrl/soc_ctrl");
 let numberOfSDFMs = system.getScript(`/drivers/sdfm/soc/sdfm_${common.getSocName()}`).numberOfSDFMs;
 let device_peripheral = system.getScript(`/drivers/sdfm/soc/sdfm_${common.getSocName()}.syscfg.js`);
 let sd_clk_config = system.getScript("/drivers/sdfm/v0/sdfm_clockConfiguration.syscfg.js");
@@ -138,6 +137,14 @@ function pinmuxRequirements(inst)
         displayName: "SDFM Instance",
         interfaceName: interfaceName,
         resources: resources,
+        signalTypes: {
+            D1: "D1",
+            D2: "D2",
+            D3: "D3",
+            CLK1: "CLK1",
+            CLK2: "CLK2",
+            CLK3: "CLK3"
+        }
     };
 
     return [peripheral];
@@ -186,7 +193,6 @@ let sdModule = {
     defaultInstanceName: "CONFIG_SDFM",
     maxInstances: numberOfSDFMs,
     description: "Sigma Delta Filter Peripheral",
-    filterHardware : filterHardware,
     config: config,
     templates: {
         "/drivers/system/system_config.h.xdt": {
@@ -235,6 +241,7 @@ let sdModule = {
     pinmuxRequirements,
     getClockEnableIds,
     getClockFrequencies,
+    filterHardware : filterHardware,
 };
 
 exports = sdModule;

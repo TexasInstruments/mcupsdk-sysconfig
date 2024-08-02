@@ -1,0 +1,909 @@
+/*
+ * Copyright (c) 2018-2020 Texas Instruments Incorporated - http://www.ti.com
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * *  Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ * *  Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * *  Neither the name of Texas Instruments Incorporated nor the names of
+ *    its contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ */
+
+/*
+ *  ======== am261x-som.syscfg.json ========
+ *  Board schematic: Refer to https://www.ti.com/tool/AM261-SOM-EVM
+ */
+
+ {
+    "name"        : "AM261-SOM-EVM",
+    "displayName" : "AM261x controlSOM",
+    "device"      : "AM261x_ZCZ",
+    "part"        : "AM2612",
+    "package"     : "ZCZ",
+    "headers"     : [
+        {
+            "type": "BoosterPack 40 Pin",
+            "default": true,
+            "name": "SOM HD Connector J1",
+            "displayName": "SOM Connector J1",
+            "dimensions": {
+                "columns": [
+                    { "top": 1, "increment": 2, "bottom": 119 },
+                    { "top": 2, "increment": 2, "bottom": 120 }
+                ]
+            },
+            "pins": [
+                    {   "number" :  1,  "ball" : "E3" ,     "name" : "EPWM3_B"              },
+                    {   "number" :  2,  "ball" : "F1" ,     "name" : "EPWM7_B"              },
+                    {   "number" :  3,  "ball" : "D5" ,     "name" : "EPWM3_A"              },
+                    {   "number" :  4,  "ball" : "F4" ,     "name" : "EPWM7_A"              },
+                    {   "number" :  5,  "ball" : "C1" ,     "name" : "EPWM2_B"              },
+                    {   "number" :  6,  "ball" : "F3" ,     "name" : "EPWM6_B"              },
+                    {   "number" :  7,  "ball" : "C2" ,     "name" : "EPWM2_A"              },
+                    {   "number" :  8,  "ball" : "E1" ,     "name" : "EPWM6_A"              },
+                    {   "number" :  9,  "ball" : "D2" ,     "name" : "EPWM1_B"              },
+                    {   "number" : 10,  "ball" : "G2" ,     "name" : "EPWM5_B"              },
+                    {   "number" : 11,  "ball" : "D3" ,     "name" : "EPWM1_A"              },
+                    {   "number" : 12,  "ball" : "F2" ,     "name" : "EPWM5_A"              },
+                    {   "number" : 13,  "ball" : "B1" ,     "name" : "EPWM0_B"              },    
+                    {   "number" : 14,  "ball" : "E4" ,     "name" : "EPWM4_B"              },
+                    {   "number" : 15,  "ball" : "B2" ,     "name" : "EPWM0_A"              },
+                    {   "number" : 16,  "ball" : "D1" ,     "name" : "EPWM4_A"              },
+                    {   "number" : 17,                      "name" : "GND"                  },
+                    {   "number" : 18,                      "name" : "5V0"                  },
+                    {   "number" : 19,  "ball" : "C5" ,     "name" : "TDI"                  },
+                    {   "number" : 20,                      "name" : "5V0"                  },
+                    {   "number" : 21,  "ball" : "C4" ,     "name" : "TDO"                  },
+                    {   "number" : 22,  "ball" : "B3" ,     "name" : "TCK"                  },
+                    {   "number" : 23,  "ball" : "A13",     "name" : "I2C0_SCL"             },
+                    {   "number" : 24,  "ball" : "D5" ,     "name" : "TMS"                  },
+                    {   "number" : 25,  "ball" : "B13",     "name" : "I2C0_SDA"             },
+                    {   "number" : 26,                      "name" : "15W_PD"               },
+                    {   "number" : 27,                      "name" : "NC"                   },
+                    {   "number" : 28,                      "name" : "3V3_LDO2"             },
+                    {   "number" : 29,  "ball" : "R2" ,     "name" : "PORz"                 },
+                    {   "number" : 30,                      "name" : "PMIC_WAKE2"           },
+                    {   "number" : 31,  "ball" : "A6" ,     "name" : "UART0_TXD"            },
+                    {   "number" : 32,                      "name" : "PMIC_SAFE_OUT1"       },
+                    {   "number" : 33,  "ball" : "A7" ,     "name" : "UART0_RXD"            },
+                    {   "number" : 34,                      "name" : "5V0_LDO3"             },
+                    {   "number" : 35,  "ball" : "B9" ,     "name" : "LIN1_TXD"             },
+                    {   "number" : 36,  "ball" : "A4" ,     "name" : "MCAN0_TX"             },
+                    {   "number" : 37,  "ball" : "A9" ,     "name" : "LIN1_RXD"             },
+                    {   "number" : 38,  "ball" : "B6" ,     "name" : "MCAN0_RX"             },
+                    {   "number" : 39,  "ball" : "D7" ,     "name" : "SPI3_CS0"             },
+                    {   "number" : 40,                      "name" : "NC"                   },
+                    {   "number" : 41,  "ball" : "C8" ,     "name" : "SPI3_CLK"             },
+                    {   "number" : 42,                      "name" : "NC"                   },
+                    {   "number" : 43,  "ball" : "B7" ,     "name" : "SPI3_D1"              },
+                    {   "number" : 44,                      "name" : "NC"                   },
+                    {   "number" : 45,  "ball" : "C7" ,     "name" : "SPI3_D0"              },
+                    {   "number" : 46,  "ball" : "A15",     "name" : "SDFM0_CLK3"           },
+                    {   "number" : 47,                      "name" : "NC"                   },
+                    {   "number" : 48,  "ball" : "A2" ,     "name" : "GPIO82"               },
+                    {   "number" : 49,  "ball" : "A11",     "name" : "FSITX0_CLK"           },
+                    {   "number" : 50,  "ball" : "C14",     "name" : "SDFM0_D3"             },
+                    {   "number" : 51,  "ball" : "B11",     "name" : "FSITX0_DATA1"         },
+                    {   "number" : 52,  "ball" : "R3" ,     "name" : "GPIO1"                },
+                    {   "number" : 53,  "ball" : "C10",     "name" : "FSITX0_DATA0"         },
+                    {   "number" : 54,  "ball" : "B16",     "name" : "SDFM0_CLK0"           },
+                    {   "number" : 55,  "ball" : "A10",     "name" : "FSIRX0_CLK"           }, 
+                    {   "number" : 56,  "ball" : "C13",     "name" : "SDFM0_D2"             },
+                    {   "number" : 57,  "ball" : "D9" ,     "name" : "FSIRX0_DATA1"         },
+                    {   "number" : 58,  "ball" : "D13",     "name" : "SDFM0_D1"             },
+                    {   "number" : 59,  "ball" : "B10",     "name" : "FSIRX0_DATA0"         },
+                    {   "number" : 60,  "ball" : "D14",     "name" : "SDFM0_D0"             },
+                    {   "number" : 61,  "ball" : "C6" ,     "name" : "I2C2_SCL"             },
+                    {   "number" : 62,                      "name" : "NC"                   },
+                    {   "number" : 63,  "ball" : "A5" ,     "name" : "I2C2_SDA"             },
+                    {   "number" : 64,                      "name" : "NC"                   },
+                    {   "number" : 65,  "ball" : "D11",     "name" : "EQEP0_INDEX"          },
+                    {   "number" : 66,                      "name" : "NC"                   },
+                    {   "number" : 67,  "ball" : "C12",     "name" : "EQEP0_STROBE"         },
+                    {   "number" : 68,                      "name" : "NC"                   },
+                    {   "number" : 69,  "ball" : "A14",     "name" : "EQEP0_B"              },
+                    {   "number" : 70,  "ball" : "P2" ,     "name" : "GPIO121"              },
+                    {   "number" : 71,  "ball" : "B14",     "name" : "EQEP0_A"              },
+                    {   "number" : 72,  "ball" : "A16",     "name" : "GPIO124"              },
+                    {   "number" : 73,  "ball" : "B15",     "name" : "GPIO126"              },
+                    {   "number" : 74,  "ball" : "M2" ,     "name" : "GPIO138"              },
+                    {   "number" : 75,  "ball" : "P15",     "name" : "GPIO73"               },
+                    {   "number" : 76,                      "name" : "NC"                   },
+                    {   "number" : 77,                      "name" : "GND"                  },
+                    {   "number" : 78,                      "name" : "GND"                  },
+                    {   "number" : 79,                      "name" : "NC"                   },
+                    {   "number" : 80,                      "name" : "NC"                   },
+                    {   "number" : 81,                      "name" : "NC"                   },
+                    {   "number" : 82,                      "name" : "NC"                   },
+                    {   "number" : 83,                      "name" : "ADC_VREFHI2"          },
+                    {   "number" : 84,                      "name" : "NC"                   },
+                    {   "number" : 85,                      "name" : "ADC_VREFHI1"          },
+                    {   "number" : 86,                      "name" : "NC"                   },
+                    {   "number" : 87,                      "name" : "ADC_VREFLO"           },
+                    {   "number" : 88,                      "name" : "NC"                   },
+                    {   "number" : 89,                      "name" : "NC"                   },
+                    {   "number" : 90,                      "name" : "NC"                   },
+                    {   "number" : 91,                      "name" : "NC"                   },
+                    {   "number" : 92,  "ball" : "U16",     "name" : "ADC_CAL0"             },
+                    {   "number" : 93,                      "name" : "NC"                   },
+                    {   "number" : 94,                      "name" : "NC"                   },
+                    {   "number" : 95,                      "name" : "NC"                   },
+                    {   "number" : 96,                      "name" : "NC"                   },
+                    {   "number" : 97,                      "name" : "NC"                   },
+                    {   "number" : 98,                      "name" : "NC"                   },
+                    {   "number" : 99,                      "name" : "NC"                   },
+                    {   "number" : 100,                     "name" : "NC"                   },
+                    {   "number" : 101, "ball" : "T8" ,     "name" : "ADC2_AIN5"            },
+                    {   "number" : 102,                     "name" : "NC"                   },
+                    {   "number" : 103, "ball" : "V9" ,     "name" : "ADC2_AIN4"            },
+                    {   "number" : 104,                     "name" : "NC"                   },
+                    {   "number" : 105, "ball" : "T10",     "name" : "ADC2_AIN1_N"          },
+                    {   "number" : 106, "ball" : "T9" ,     "name" : "ADC2_AIN3_N"          },
+                    {   "number" : 107, "ball" : "R10",     "name" : "ADC2_AIN0_P"          },
+                    {   "number" : 108, "ball" : "U10",     "name" : "ADC2_AIN2_P"          },
+                    {   "number" : 109, "ball" : "V12",     "name" : "ADC1_AIN3_N"          },
+                    {   "number" : 110, "ball" : "R12",     "name" : "ADC1_AIN5"            },
+                    {   "number" : 111, "ball" : "T12",     "name" : "ADC1_AIN2_P"          },
+                    {   "number" : 112, "ball" : "U12",     "name" : "ADC1_AIN4"            },
+                    {   "number" : 113, "ball" : "R14",     "name" : "ADC0_AIN5_N"          },
+                    {   "number" : 114, "ball" : "U11",     "name" : "ADC1_AIN1_N"          },
+                    {   "number" : 115, "ball" : "U13",     "name" : "ADC0_AIN4_P"          },
+                    {   "number" : 116, "ball" : "T11",     "name" : "ADC1_AIN0_P"          },
+                    {   "number" : 117, "ball" : "U15",     "name" : "ADC0_AIN1"            },
+                    {   "number" : 118, "ball" : "U14",     "name" : "ADC0_AIN3_N"          },
+                    {   "number" : 119, "ball" : "V15",     "name" : "ADC0_AIN0/DAC_OUT"    },
+                    {   "number" : 120, "ball" : "T14",     "name" : "ADC0_AIN2_P"          }
+            ]
+        },
+        {
+            "type": "SOM",
+            "default": true,
+            "name": "SOM HD Connector J2",
+            "displayName": "SOM Connector J2",
+            "dimensions": {
+                "columns": [
+                    { "top": 1, "increment": 2, "bottom": 119 },
+                    { "top": 2, "increment": 2, "bottom": 120 }
+                ]
+            },
+            "pins": [
+                    {   "number" :  1,                      "name" : "RGMII1_ETH1_CLK"      },
+                    {   "number" :  2,  "ball" : "N17",     "name" : "RGMII1_TD3"           },
+                    {   "number" :  3,  "ball" : "M18",     "name" : "RGMII1_TX_CTL"        },
+                    {   "number" :  4,  "ball" : "P18",     "name" : "RGMII1_TD2"           },
+                    {   "number" :  5,                      "name" : "IOEXP_OUT_P6"         },
+                    {   "number" :  6,  "ball" : "P17",     "name" : "RGMII1_TD1"           },
+                    {   "number" :  7,  "ball" : "V17",     "name" : "RGMII1_INTn"          },
+                    {   "number" :  8,  "ball" : "P16",     "name" : "RGMII1_TD0"           },
+                    {   "number" :  9,                      "name" : "IOEXP_OUT_P7"         },
+                    {   "number" : 10,  "ball" : "N18",     "name" : "RGMII1_TXC"           },
+                    {   "number" : 11,                      "name" : "RGMII1_RST"           },
+                    {   "number" : 12,                      "name" : "NC"                   },
+                    {   "number" : 13,  "ball" : "R18",     "name" : "RGMII1_RX_CTL"        },    
+                    {   "number" : 14,  "ball" : "T18",     "name" : "RGMII1_RD3"           },
+                    {   "number" : 15,  "ball" : "T16",     "name" : "MII_RX_ER"            },
+                    {   "number" : 16,  "ball" : "U18",     "name" : "RGMII1_RD2"           },
+                    {   "number" : 17,  "ball" : "M17",     "name" : "MDIO0_MDC"            },
+                    {   "number" : 18,  "ball" : "T17",     "name" : "RGMII1_RD1"           },
+                    {   "number" : 19,  "ball" : "N16",     "name" : "MDIO0_MDIO"           },
+                    {   "number" : 20,  "ball" : "U17",     "name" : "RGMII1_RD0"           },
+                    {   "number" : 21,  "ball" : "A12",     "name" : "GPIO137"              },
+                    {   "number" : 22,  "ball" : "R17",     "name" : "RGMII1_RXC"           },
+                    {   "number" : 23,  "ball" : "B12",     "name" : "GPIO136"              },
+                    {   "number" : 24,                      "name" : "NC"                   },
+                    {   "number" : 25,  "ball" : "R16",     "name" : "GPIO74"               },
+                    {   "number" : 26,  "ball" : "B8" ,     "name" : "UART2_RXD"            },
+                    {   "number" : 27,                      "name" : "NC"                   },
+                    {   "number" : 28,  "ball" : "A8" ,     "name" : "UART2_TXD"            },
+                    {   "number" : 29,                      "name" : "NC"                   },
+                    {   "number" : 30,  "ball" : "B11",     "name" : "SPI0_D1"              },
+                    {   "number" : 31,                      "name" : "NC"                   },
+                    {   "number" : 32,  "ball" : "C10",     "name" : "SPI0_D0"              },
+                    {   "number" : 33,                      "name" : "NC"                   },
+                    {   "number" : 34,  "ball" : "A11",     "name" : "SPI0_CLK"             },
+                    {   "number" : 35,                      "name" : "NC"                   },
+                    {   "number" : 36,  "ball" : "C11",     "name" : "SPI0_CS0"             },
+                    {   "number" : 37,                      "name" : "NC"                   },
+                    {   "number" : 38,  "ball" : "V2" ,     "name" : "USB0_DP"              },
+                    {   "number" : 39,                      "name" : "NC"                   },
+                    {   "number" : 40,  "ball" : "U3" ,     "name" : "USB0_DM"              },
+                    {   "number" : 41,                      "name" : "NC"                   },
+                    {   "number" : 42,                      "name" : "NC"                   },
+                    {   "number" : 43,                      "name" : "NC"                   },
+                    {   "number" : 44,                      "name" : "NC"                   },
+                    {   "number" : 45,                      "name" : "NC"                   },
+                    {   "number" : 46,                      "name" : "NC"                   },
+                    {   "number" : 47,                      "name" : "NC"                   },
+                    {   "number" : 48,                      "name" : "NC"                   },
+                    {   "number" : 49,                      "name" : "NC"                   },
+                    {   "number" : 50,  "ball" : "J3" ,     "name" : "GPIO64"               },
+                    {   "number" : 51,                      "name" : "NC"                   },
+                    {   "number" : 52,  "ball" : "G4" ,     "name" : "GPIO63"               },
+                    {   "number" : 53,  "ball" : "K3" ,     "name" : "GPIO70"               },
+                    {   "number" : 54,  "ball" : "J2" ,     "name" : "EPWM9_B"              },
+                    {   "number" : 55,  "ball" : "K4" ,     "name" : "GPIO69"               }, 
+                    {   "number" : 56,  "ball" : "G1" ,     "name" : "EPWM9_A"              },
+                    {   "number" : 57,  "ball" : "J4" ,     "name" : "GPIO68"               },
+                    {   "number" : 58,  "ball" : "H2" ,     "name" : "EPWM8_B"              },
+                    {   "number" : 59,  "ball" : "K2" ,     "name" : "GPIO67"               },
+                    {   "number" : 60,  "ball" : "G3" ,     "name" : "EPWM8_A"              },
+                    {   "number" : 61,                      "name" : "NC"                   },
+                    {   "number" : 62,                      "name" : "NC"                   },
+                    {   "number" : 63,                      "name" : "NC"                   },
+                    {   "number" : 64,                      "name" : "NC"                   },
+                    {   "number" : 65,                      "name" : "NC"                   },
+                    {   "number" : 66,                      "name" : "NC"                   },
+                    {   "number" : 67,                      "name" : "NC"                   },
+                    {   "number" : 68,                      "name" : "NC"                   },
+                    {   "number" : 69,                      "name" : "NC"                   },
+                    {   "number" : 70,                      "name" : "NC"                   },
+                    {   "number" : 71,                      "name" : "NC"                   },
+                    {   "number" : 72,                      "name" : "NC"                   },
+                    {   "number" : 73,                      "name" : "NC"                   },
+                    {   "number" : 74,                      "name" : "NC"                   },
+                    {   "number" : 75,                      "name" : "NC"                   },
+                    {   "number" : 76,                      "name" : "NC"                   },
+                    {   "number" : 77,                      "name" : "NC"                   },
+                    {   "number" : 78,                      "name" : "NC"                   },
+                    {   "number" : 79,                      "name" : "NC"                   },
+                    {   "number" : 80,                      "name" : "NC"                   },
+                    {   "number" : 81,                      "name" : "NC"                   },
+                    {   "number" : 82,                      "name" : "NC"                   },
+                    {   "number" : 83,                      "name" : "NC"                   },
+                    {   "number" : 84,                      "name" : "NC"                   },
+                    {   "number" : 85,                      "name" : "NC"                   },
+                    {   "number" : 86,                      "name" : "NC"                   },
+                    {   "number" : 87,                      "name" : "NC"                   },
+                    {   "number" : 88,                      "name" : "NC"                   },
+                    {   "number" : 89,                      "name" : "NC"                   },
+                    {   "number" : 90,                      "name" : "NC"                   },
+                    {   "number" : 91,                      "name" : "NC"                   },
+                    {   "number" : 92,                      "name" : "NC"                   },
+                    {   "number" : 93,                      "name" : "NC"                   },
+                    {   "number" : 94,                      "name" : "NC"                   },
+                    {   "number" : 95,                      "name" : "NC"                   },
+                    {   "number" : 96,                      "name" : "NC"                   },
+                    {   "number" : 97,                      "name" : "NC"                   },
+                    {   "number" : 98,                      "name" : "NC"                   },
+                    {   "number" : 99,                      "name" : "NC"                   },
+                    {   "number" : 100,                     "name" : "NC"                   },
+                    {   "number" : 101,                     "name" : "NC"                   },
+                    {   "number" : 102,                     "name" : "NC"                   },
+                    {   "number" : 103,                     "name" : "NC"                   },
+                    {   "number" : 104,                     "name" : "NC"                   },
+                    {   "number" : 105,                     "name" : "NC"                   },
+                    {   "number" : 106,                     "name" : "NC"                   },
+                    {   "number" : 107,                     "name" : "NC"                   },
+                    {   "number" : 108,                     "name" : "NC"                   },
+                    {   "number" : 109,                     "name" : "NC"                   },
+                    {   "number" : 110,                     "name" : "NC"                   },
+                    {   "number" : 111,                     "name" : "NC"                   },
+                    {   "number" : 112,                     "name" : "NC"                   },
+                    {   "number" : 113,                     "name" : "NC"                   },
+                    {   "number" : 114,                     "name" : "NC"                   },
+                    {   "number" : 115,                     "name" : "NC"                   },
+                    {   "number" : 116,                     "name" : "NC"                   },
+                    {   "number" : 117,                     "name" : "NC"                   },
+                    {   "number" : 118,                     "name" : "NC"                   },
+                    {   "number" : 119,                     "name" : "NC"                   },
+                    {   "number" : 120,                     "name" : "NC"                   }
+            ]
+        },
+        {
+            "type": "SOM",
+            "default": true,
+            "name": "SOM HD Connector J3",
+            "displayName": "SOM Connector J3",
+            "dimensions": {
+                "columns": [
+                    { "top": 1, "increment": 2, "bottom": 119 },
+                    { "top": 2, "increment": 2, "bottom": 120 }
+                ]
+            },
+            "pins": [
+                    {   "number" :  1,                      "name" : "NC"                   },
+                    {   "number" :  2,                      "name" : "NC"                   },
+                    {   "number" :  3,                      "name" : "NC"                   },
+                    {   "number" :  4,                      "name" : "NC"                   },
+                    {   "number" :  5,                      "name" : "NC"                   },
+                    {   "number" :  6,                      "name" : "NC"                   },
+                    {   "number" :  7,                      "name" : "NC"                   },
+                    {   "number" :  8,                      "name" : "NC"                   },
+                    {   "number" :  9,                      "name" : "NC"                   },
+                    {   "number" : 10,                      "name" : "NC"                   },
+                    {   "number" : 11,                      "name" : "NC"                   },
+                    {   "number" : 12,                      "name" : "NC"                   },
+                    {   "number" : 13,                      "name" : "NC"                   },    
+                    {   "number" : 14,                      "name" : "NC"                   },
+                    {   "number" : 15,                      "name" : "NC"                   },
+                    {   "number" : 16,                      "name" : "NC"                   },
+                    {   "number" : 17,                      "name" : "NC"                   },
+                    {   "number" : 18,                      "name" : "NC"                   },
+                    {   "number" : 19,                      "name" : "NC"                   },
+                    {   "number" : 20,                      "name" : "NC"                   },
+                    {   "number" : 21,                      "name" : "NC"                   },
+                    {   "number" : 22,                      "name" : "NC"                   },
+                    {   "number" : 23,                      "name" : "NC"                   },
+                    {   "number" : 24,                      "name" : "NC"                   },
+                    {   "number" : 25,                      "name" : "NC"                   },
+                    {   "number" : 26,                      "name" : "NC"                   },
+                    {   "number" : 27,                      "name" : "VMAIN_5V0_IN"         },
+                    {   "number" : 28,                      "name" : "NC"                   },
+                    {   "number" : 29,                      "name" : "PMIC_SAFE_OUT2"       },
+                    {   "number" : 30,                      "name" : "NC"                   },
+                    {   "number" : 31,                      "name" : "PMIC_COMP2_IN-"       },
+                    {   "number" : 32,                      "name" : "NC"                   },
+                    {   "number" : 33,                      "name" : "PMIC_COMP2_IN+"       },
+                    {   "number" : 34,                      "name" : "NC"                   },
+                    {   "number" : 35,                      "name" : "PMIC_COMP1_IN-"       },
+                    {   "number" : 36,                      "name" : "NC"                   },
+                    {   "number" : 37,                      "name" : "PMIC_COMP1_IN+"       },
+                    {   "number" : 38,                      "name" : "NC"                   },
+                    {   "number" : 39,                      "name" : "NC"                   },
+                    {   "number" : 40,                      "name" : "NC"                   },
+                    {   "number" : 41,                      "name" : "NC"                   },
+                    {   "number" : 42,                      "name" : "NC"                   },
+                    {   "number" : 43,                      "name" : "NC"                   },
+                    {   "number" : 44,                      "name" : "NC"                   },
+                    {   "number" : 45,                      "name" : "NC"                   },
+                    {   "number" : 46,                      "name" : "NC"                   },
+                    {   "number" : 47,                      "name" : "NC"                   },
+                    {   "number" : 48,                      "name" : "NC"                   },
+                    {   "number" : 49,                      "name" : "NC"                   },
+                    {   "number" : 50,                      "name" : "NC"                   },
+                    {   "number" : 51,                      "name" : "NC"                   },
+                    {   "number" : 52,                      "name" : "NC"                   },
+                    {   "number" : 53,                      "name" : "NC"                   },
+                    {   "number" : 54,  "ball" : "B4" ,     "name" : "MCAN1_TX"             },
+                    {   "number" : 55,                      "name" : "NC"                   }, 
+                    {   "number" : 56,  "ball" : "B5" ,     "name" : "MCAN1_RX"             },
+                    {   "number" : 57,  "ball" : "C9" ,     "name" : "GPIO15"               },
+                    {   "number" : 58,                      "name" : "NC"                   },
+                    {   "number" : 59,                      "name" : "EXT_VMON2"            },
+                    {   "number" : 60,                      "name" : "NC"                   },
+                    {   "number" : 61,                      "name" : "NC"                   },
+                    {   "number" : 62,                      "name" : "NC"                   },
+                    {   "number" : 63,                      "name" : "NC"                   },
+                    {   "number" : 64,                      "name" : "NC"                   },
+                    {   "number" : 65,                      "name" : "NC"                   },
+                    {   "number" : 66,  "ball" : "D15",     "name" : "GPIO119"              },
+                    {   "number" : 67,                      "name" : "NC"                   },
+                    {   "number" : 68,  "ball" : "C15",     "name" : "GPIO120"              },
+                    {   "number" : 69,                      "name" : "NC"                   },
+                    {   "number" : 70,  "ball" : "B5" ,     "name" : "I2C1_SCL"             },
+                    {   "number" : 71,                      "name" : "NC"                   },
+                    {   "number" : 72,  "ball" : "A3" ,     "name" : "I2C1_SDA"             },
+                    {   "number" : 73,                      "name" : "NC"                   },
+                    {   "number" : 74,                      "name" : "NC"                   },
+                    {   "number" : 75,                      "name" : "NC"                   },
+                    {   "number" : 76,  "ball" : "E16",     "name" : "PR0_PRU1_GPIO6"       },
+                    {   "number" : 77,                      "name" : "NC"                   },
+                    {   "number" : 78,  "ball" : "F18",     "name" : "PR0_PRU1_GPIO0"       },
+                    {   "number" : 79,                      "name" : "NC"                   },
+                    {   "number" : 80,  "ball" : "G16",     "name" : "PR0_PRU1_GPIO1"       },
+                    {   "number" : 81,                      "name" : "NC"                   },
+                    {   "number" : 82,  "ball" : "E17",     "name" : "PR0_PRU1_GPIO2"       },
+                    {   "number" : 83,  "ball" : "D17",     "name" : "PR0_PRU1_GPIO10"      },
+                    {   "number" : 84,  "ball" : "E18",     "name" : "PR0_PRU1_GPIO3"       },
+                    {   "number" : 85,  "ball" : "C18",     "name" : "PR0_PRU1_GPIO9"       },
+                    {   "number" : 86,                      "name" : "NC"                   },
+                    {   "number" : 87,  "ball" : "G15",     "name" : "PR0_PRU0_GPIO8"       },
+                    {   "number" : 88,  "ball" : "C16",     "name" : "PR0_PRU1_GPIO16"      },
+                    {   "number" : 89,  "ball" : "D18",     "name" : "PR0_PRU1_GPIO8"       },
+                    {   "number" : 90,  "ball" : "B18",     "name" : "PR0_PRU1_GPIO11"      },
+                    {   "number" : 91,  "ball" : "A17",     "name" : "PR0_PRU1_GPIO15"      },
+                    {   "number" : 92,  "ball" : "B17",     "name" : "PR0_PRU1_GPIO12"      },
+                    {   "number" : 93,  "ball" : "F16",     "name" : "PR0_PRU1_GPIO4"       },
+                    {   "number" : 94,  "ball" : "D16",     "name" : "PR0_PRU1_GPIO13"      },
+                    {   "number" : 95,  "ball" : "F15",     "name" : "PR0_PRU1_GPIO5"       },
+                    {   "number" : 96,  "ball" : "C17",     "name" : "PR0_PRU1_GPIO14"      },
+                    {   "number" : 97,  "ball" : "L18",     "name" : "PR0_MDIO0_MDC"        },
+                    {   "number" : 98,                      "name" : "NC"                   },
+                    {   "number" : 99,  "ball" : "L17",     "name" : "PR0_MDIO0_MDIO"       },
+                    {   "number" : 100, "ball" : "K15",     "name" : "PR0_PRU0_GPIO6"       },
+                    {   "number" : 101,                     "name" : "MII_RST#"             },
+                    {   "number" : 102, "ball" : "K17" ,    "name" : "PR0_PRU0_GPIO0"       },
+                    {   "number" : 103,                     "name" : "NC"                   },
+                    {   "number" : 104, "ball" : "K18" ,    "name" : "PR0_PRU0_GPIO1"       },
+                    {   "number" : 105, "ball" : "F17",     "name" : "PR0_PRU0_GPIO9"       },
+                    {   "number" : 106, "ball" : "J18" ,    "name" : "PR0_PRU0_GPIO2"       },
+                    {   "number" : 107,                     "name" : "NC"                   },
+                    {   "number" : 108, "ball" : "J17",     "name" : "PR0_PRU0_GPIO3"       },
+                    {   "number" : 109, "ball" : "G18",     "name" : "PR0_PRU0_GPIO10"      },
+                    {   "number" : 110,                     "name" : "NC"                   },
+                    {   "number" : 111, "ball" : "G17",     "name" : "PR0_PRU0_GPIO5"       },
+                    {   "number" : 112, "ball" : "H18",     "name" : "PR0_PRU0_GPIO16"      },
+                    {   "number" : 113, "ball" : "K16",     "name" : "PR0_PRU0_GPIO4"       },
+                    {   "number" : 114, "ball" : "M16",     "name" : "PR0_PRU0_GPIO11"      },
+                    {   "number" : 115, "ball" : "L16",     "name" : "PR0_PRU0_GPIO15"      },
+                    {   "number" : 116, "ball" : "M15",     "name" : "PR0_PRU0_GPIO12"      },
+                    {   "number" : 117,                     "name" : "PHY0_25MHZ_CLK"       },
+                    {   "number" : 118, "ball" : "H17",     "name" : "PR0_PRU0_GPIO13"      },
+                    {   "number" : 119,                     "name" : "PHY1_25MHZ_CLK"       },
+                    {   "number" : 120, "ball" : "H16",     "name" : "PR0_PRU0_GPIO14"      }
+            ]
+        },
+        {
+            "type": "Header",
+            "default": true,
+            "name": "XDS110IS0-EVM Header",
+            "displayName": "XDS110ISO-EVM Header",
+            "dimensions": {
+                "columns": [
+                    { "top" : 1, "bottom" : 15, "increment" : 2 },
+                    { "top" : 2, "bottom" : 16, "increment" : 2}
+                ]
+            },
+            "pins": [
+                    {   "number" : 1,                       "name" : "3V3"                  },
+                    {   "number" : 2,                       "name" : "GND"                  },
+                    {   "number" : 3,   "ball" : "D5" ,     "name" : "TMS"                  },
+                    {   "number" : 4,   "ball" : "B3" ,     "name" : "TCK"                  },
+                    {   "number" : 5,   "ball" : "C5" ,     "name" : "TDI"                  },
+                    {   "number" : 6,   "ball" : "C4" ,     "name" : "TDO"                  },
+                    {   "number" : 7,                       "name" : "GND"                  },
+                    {   "number" : 8,                       "name" : "NC"                   },
+                    {   "number" : 9,   "ball" : "A7" ,     "name" : "UART0_RXD"            },
+                    {   "number" : 10,  "ball" : "A6" ,     "name" : "UART0_TXD"            },
+                    {   "number" : 11,  "ball" : "B13",     "name" : "I2C0_SDA"             },
+                    {   "number" : 12,  "ball" : "A13",     "name" : "I2C0_SCL"             },
+                    {   "number" : 13,  "ball" : "C8" ,     "name" : "SPI3_CLK"             },
+                    {   "number" : 14,  "ball" : "C7" ,     "name" : "SPI3_D0"              },
+                    {   "number" : 15,  "ball" : "B7" ,     "name" : "SPI3_D1"              },
+                    {   "number" : 16,  "ball" : "D7" ,     "name" : "SPI3_CS0"             }
+            ]
+        }
+    ],
+    "components": {
+        "SOM J1" : {
+            "displayName"       : "Standard SOM J1 Locations",
+            "description"       : "Standard SOM locations on 120-pin SOM High-Density Connector J1 pins",
+            "longDescription"   : "All TI controlSOMs follow standard SOM locations to ensure compatibility with SOM baseboard hardware.",
+            "subComponents" : {
+                /* EPWM */
+                "EPWM3" :   {
+                    "displayName" : "EPWM3",
+                    "description" : "EPWM3",
+                    "longDescription" : "This controlSOM features standard locations for the EPWM peripheral located on J1-1 and J1-3.",
+                    "definition"    : "/board/components/standard_epwm.json",
+                    "connections" : {
+                        "A" : "E2",
+                        "B" : "E3"
+                    }
+                },
+                "EPWM2" :   {
+                    "displayName" : "EPWM2",
+                    "description" : "EPWM2",
+                    "longDescription" : "This controlSOM features standard locations for the EPWM peripheral located on J1-5 and J1-7.",
+                    "definition"    : "/board/components/standard_epwm.json",
+                    "connections" : {
+                        "A" : "C2",
+                        "B" : "C1"
+                    }
+                },
+                "EPWM1" :   {
+                    "displayName" : "EPWM1",
+                    "description" : "EPWM1",
+                    "longDescription" : "This controlSOM features standard locations for the EPWM peripheral located on J1-9 and J1-11.",
+                    "definition"    : "/board/components/standard_epwm.json",
+                    "connections" : {
+                        "A" : "D3",
+                        "B" : "D2"
+                    }
+                },
+                "EPWM0" :   {
+                    "displayName" : "EPWM0",
+                    "description" : "EPWM0",
+                    "longDescription" : "This controlSOM features standard locations for the EPWM peripheral located on J1-13 and J1-15.",
+                    "definition"    : "/board/components/standard_epwm.json",
+                    "connections" : {
+                        "A" : "B2",
+                        "B" : "B1"
+                    }
+                },
+                "EPWM7" :   {
+                    "displayName" : "EPWM7",
+                    "description" : "EPWM7",
+                    "longDescription" : "This controlSOM features standard locations for the EPWM peripheral located on J1-2 and J1-4.",
+                    "definition"    : "/board/components/standard_epwm.json",
+                    "connections" : {
+                        "A" : "F4",
+                        "B" : "F1"
+                    }
+                },
+                "EPWM6" :   {
+                    "displayName" : "EPWM6",
+                    "description" : "EPWM6",
+                    "longDescription" : "This controlSOM features standard locations for the EPWM peripheral located on J1-6 and J1-8.",
+                    "definition"    : "/board/components/standard_epwm.json",
+                    "connections" : {
+                        "A" : "E1",
+                        "B" : "F3"
+                    }
+                },
+                "EPWM5" :   {
+                    "displayName" : "EPWM5",
+                    "description" : "EPWM5",
+                    "longDescription" : "This controlSOM features standard locations for the EPWM peripheral located on J1-10 and J1-12.",
+                    "definition"    : "/board/components/standard_epwm.json",
+                    "connections" : {
+                        "A" : "F2",
+                        "B" : "G2"
+                    }
+                },
+                "EPWM4" :   {
+                    "displayName" : "EPWM4",
+                    "description" : "EPWM4",
+                    "longDescription" : "This controlSOM features standard locations for the EPWM peripheral located on J1-14 and J1-16.",
+                    "definition"    : "/board/components/standard_epwm.json",
+                    "connections" : {
+                        "A" : "D1",
+                        "B" : "E4"
+                    }
+                },
+    
+                /* I2C */
+                "I2C0" : {
+                    "displayName"       : "I2C0",
+                    "description"       : "I2C0",
+                    "longDescription"   : "This controlSOM features standard locations for the I2C peripheral located on J1-23 and J1-25.",
+                    "definition"        : "/board/components/i2c.json" ,
+                    "connections" : {
+                        "SCL" : "A13" , 
+                        "SDA" : "B13"   
+                    }
+                },
+                "I2C2" : {
+                    "displayName"       : "I2C2",
+                    "description"       : "I2C2",
+                    "longDescription"   : "This controlSOM features standard locations for the I2C peripheral located on J1-61 and J1-63.",
+                    "definition"        : "/board/components/i2c.json" ,
+                    "connections" : {
+                        "SCL" : "C6" , 
+                        "SDA" : "A5"   
+                    }
+                },
+    
+                /* UART */
+                "UART0" : {
+                    "displayName"       : "UART0",
+                    "description"       : "UART0" ,
+                    "longDescription"   : "This controlSOM features standard locations for the UART peripheral located on J1-31 and J1-33.",
+                    "definition"        : "/board/components/uart.json" ,
+                    "connections" : {
+                        "RXD" : "A7" , 
+                        "TXD" : "A6" 
+                    }
+                },
+    
+                /* LIN */
+                "LIN1" :   {
+                    "displayName" : "LIN1",
+                    "description" : "LIN1",
+                    "longDescription" : "This controlSOM features standard locations for the LIN peripheral located on J1-35 and J1-37.",
+                    "definition"    : "/board/components/lin.json",
+                    "connections" : {
+                        "RXD" : "A9",
+                        "TXD" : "B9"
+                    }
+                },
+    
+                /* SPI */
+                "SPI3" :   {
+                    "displayName" : "SPI3",
+                    "description" : "SPI3",
+                    "longDescription" : "This controlSOM features standard locations for the SPI peripheral located on J1-39, J1-41, J1-43, and J1-45.",
+                    "definition"    : "/board/components/standard_spi.json",
+                    "connections" : {
+                        "CLK" : "C8",
+                        "CS0" : "D7",
+                        "D0"  : "C7",
+                        "D1"  : "B7"
+                    }
+                },
+    
+                /* FSI */
+                "FSITX0" :   {
+                    "displayName" : "FSITX0",
+                    "description" : "FSITX0",
+                    "longDescription" : "This controlSOM features standard locations for the FSI TX signals located on J1-49, J1-51, and J1-53.",
+                    "definition"    : "/board/components/fsiTX.json",
+                    "connections" : {
+                        "CLK"   : "A11",
+                        "D0"    : "C10",
+                        "D1"    : "B11"
+                    }
+                },
+                "FSIRX0" :   {
+                    "displayName" : "FSIRX0",
+                    "description" : "FSIRX0",
+                    "longDescription" : "This controlSOM features standard locations for the FSI RX signals located on J1-55, J1-57, and J1-59.",
+                    "definition"    : "/board/components/fsiRX.json",
+                    "connections" : {
+                        "CLK"   : "A10",
+                        "D0"    : "B10",
+                        "D1"    : "D9"
+                    }
+                },
+    
+                /* EQEP */
+                "EQEP0" : {
+                    "displayName"       : "EQEP0" ,
+                    "description"       : "EQEP0" ,
+                    "longDescription"   : "This controlSOM features standard locations for the EQEP0 peripheral located on J1-65, J1-67, J1-69, J1-71.",
+                    "definition"        : "/board/components/eqep.json" ,
+                    "connections" : {
+                        "A"     : "B14", 
+                        "B"     : "A14", 
+                        "INDEX" : "D11", 
+                        "STROBE": "C12"
+                    }
+                },
+    
+                /* MCAN */
+                "MCAN0" : {
+                    "displayName"       : "MCAN0" ,
+                    "description"       : "MCAN0" ,
+                    "longDescription"   : "This controlSOM features standard locations for the MCAN0 peripheral located J1-36 and J1-38.",
+                    "definition"        : "/board/components/mcan.json" ,
+                    "connections" : {
+                        "RX" : "B6" , 
+                        "TX" : "A4"  
+                    }
+                },
+    
+                /* SDFM */
+                "SDFM0" : {
+                    "displayName"       : "SDFM0" ,
+                    "description"       : "SDFM0" ,
+                    "longDescription"   : "This controlSOM features standard locations the SDFM peripheral located on J1-46, J1-50, J1-54, J1-56, J1-58, J1-60, J1-72, and J1-73.",
+                    "definition"        : "/board/components/sdfm.json" ,
+                    "connections" : {
+                        "D0" : "D14",
+                        "D1" : "D13" , 
+                        "D2" : "C13" , 
+                        "D3" : "C14" , 
+                        "CLK0" : "B16",
+                        "CLK1" : "A16" ,
+                        "CLK2" : "B15" ,
+                        "CLK3" : "A15"  
+                    }
+                }
+    
+                /* ADC */
+    
+            }
+        },
+    "SOM J2" : {
+        "displayName"       : "Standard SOM J2 Locations",
+        "description"       : "Standard SOM locations on 120-pin SOM High-Density Connector J2 pins",
+        "longDescription"   : "All TI controlSOMs follow standard SOM locations to ensure compatibility with SOM baseboard hardware.",
+        "subComponents" : {
+            /* RGMII */
+            
+            /* UART */
+            "UART2" : {
+                "displayName"       : "UART2",
+                "description"       : "UART2" ,
+                "longDescription"   : "This controlSOM features standard locations for the UART peripheral located on J2-26 and J2-28.",
+                "definition"        : "/board/components/uart.json" ,
+                "connections" : {
+                    "RXD" : "B8" , 
+                    "TXD" : "A8"  
+                }
+            },
+
+            /* SPI */
+            "SPI0" :   {
+                "displayName" : "SPI0",
+                "description" : "SPI0",
+                "longDescription" : "This controlSOM features standard locations for the SPI peripheral located on J2-30, J2-32, J2-34, and J2-36.",
+                "definition"    : "/board/components/standard_spi.json",
+                "connections" : {
+                    "CLK" : "A11",
+                    "CS0" : "C11",
+                    "D0"  : "C10",
+                    "D1"  : "B11"
+                }
+            },
+
+            /* EPWM */
+            "EPWM9" :   {
+                "displayName" : "EPWM9",
+                "description" : "EPWM9",
+                "longDescription" : "This controlSOM features standard locations for the EPWM peripheral located on J2-54 and J2-56.",
+                "definition"    : "/board/components/standard_epwm.json",
+                "connections" : {
+                    "A" : "G1",
+                    "B" : "J2"
+                }
+            },
+            "EPWM8" :   {
+                "displayName" : "EPWM8",
+                "description" : "EPWM8",
+                "longDescription" : "This controlSOM features standard locations for the EPWM peripheral located on J2-58 and J2-60.",
+                "definition"    : "/board/components/standard_epwm.json",
+                "connections" : {
+                    "A" : "G3",
+                    "B" : "H2"
+                }
+            }
+        }
+    },
+
+    "SOM J3" : {
+        "displayName"       : "Standard SOM J3 Locations",
+        "description"       : "Standard SOM locations on 120-pin SOM High-Density Connector J3 pins",
+        "longDescription"   : "All TI controlSOMs follow standard SOM locations to ensure compatibility with SOM baseboard hardware.",
+        "subComponents" : {
+            /* MCAN */
+            "MCAN1" : {
+                "displayName"       : "MCAN1" ,
+                "description"       : "MCAN1" ,
+                "longDescription"   : "This controlSOM features standard locations for the MCAN1 peripheral located J3-54 and J3-56.",
+                "definition"        : "/board/components/mcan.json" ,
+                "connections" : {
+                    "RX" : "B5", 
+                    "TX" : "B4"  
+                }
+            },
+
+            /* I2C */
+            "I2C1" : {
+                "displayName"       : "I2C1",
+                "description"       : "I2C1",
+                "longDescription"   : "This controlSOM features standard locations for the I2C peripheral located on J3-66 and J3-68.",
+                "definition"        : "/board/components/i2c.json" ,
+                "connections" : {
+                    "SCL" : "B5" , 
+                    "SDA" : "A3"   
+                }
+            }
+        }
+    },    
+    
+    /* LEDs */
+    "USER_LEDS" : {
+        "displayName"       : "User LEDs",
+        "description"       : "GPIO controlled LEDs",
+        "longDescription"   : "The AM261x controlSOM has two user defined LEDs connected to GPIO pins on the AM261x SoC.",
+        "subComponents" :{
+            "USER_LED0" : {
+                "displayName"   : "User LED Red",
+                "definition"    : "/board/components/led.json",
+                "connections" : {
+                    "OUTPUT" : "A16" 
+                }
+            },
+            "USER_LED1" : {
+                "displayName"   : "User LED Green",
+                "definition"    : "/board/components/led.json",
+                "connections" : {
+                    "OUTPUT" : "R3"
+                }
+            }
+        }
+    },
+    /* Push Buttons */
+    "USER_BUTTONS" : {
+        "displayName"       : "controlSOM Push Buttons" ,
+        "description"       : "User Input Pushbuttons on controlSOM" ,
+        "longDescription"   : "This Control Card features three pushbuttons for user input. Open this tab to explore the on-board pushbuttons. \n\n![](../source/sysconfig/board/.meta/images/am261-som-pushbuttons.png)",
+        "subComponents" : {
+            "INTERRUPT_PUSHBUTTON" : {
+                "displayName"       : "User Interrupt signal",
+                "longDescription"   : "User interrupt signal pushbutton",
+                "definition"        : "/board/components/button.json",
+                "settings" : {
+                    "DIN" : {
+                        "pull"      : "External",
+                        "polarity"  : "Active Low"
+                    }
+                },
+                "connections" : {
+                    "INPUT" : "C15" 
+                }
+    
+            },
+            "PORz_PUSHBUTTON" : {
+                "displayName"       : "SoC PORz reset input",
+                "longDescription"   : "SoC PORz reset input pushbutton"
+            },
+            "WARMRST_PUSHBUTTON" : {
+                "displayName"       : "SoC warm reset input",
+                "longDescription"   : "SoC warm reset input pushbutton",
+            }
+        }
+    },
+    
+    /* Switches */
+    "BOOTMODE_SWITCH" : {
+        "displayName"       : "Bootmode switches",
+        "longDescription"   : "The bootmode for the AM261x is selected by a DIP switch (SW1). \n\n![](../source/sysconfig/board/.meta/images/am261-som-bootmodeswitch.png) \n\n  **Boot Mode** | **SW1.4 (SOP3)** | **SW1.3 (SOP2)** | **SW1.2 (SOP1)** | **SW1.1 (SOP0)** \n --------------------------------------|------------------|------------------|------------------|------------------\n **OSPI-OSPI (4S), 50MHz, SDR, 0x6B** |         0        |         0        |         0        |         0        \n **UART, XMODEM, 115200bps**          |         0        |         0        |         0        |         1        \n **OSPI-OSPI (1S), 50MHz, SDR, 0x0B** |         0        |         0        |         1        |         0        \n **OSPI (8S), SDR, 33 MHz, 0x8B**     |         0        |         0        |         1        |         1        \n **DevBoot**                          |         1        |         0        |         1        |         1        \n **xSPI (1S->8D), 20 MHz, SFDP**      |         1        |         1        |         0        |         0        \n **USB DFU**                          |         1        |         1        |         1        |         0        \n **Unsupported Boot Mode**            |         1        |         x        |         x        |         x        "
+    },
+    "DAC_VREF_SWITCH" : {
+        "displayName"       : "DAC VREF Switch",
+        "description"       : "DAC VREF Switch (S2)",
+        "longDescription"   : "The DAC VREF Switch (S2) is a single pole double throw switch that controls the input for the DAC VREF inputs of the AM261x SoC. \n\n![](../source/sysconfig/board/.meta/images/am261-som_adc_vref_switches.png) \n\n  **DAC VREF Switch Position** | **Reference Selection** \n------------------------------|-------------------------\n Pin 1-2 (LEFT)                      | AM261x on-die LDO      \n Pin 2-3 (RIGHT)                     | Output of VREF Switch   "
+    },
+    "ADC_VREF_SWITCH" : {
+        "displayName"       : "ADC VREF Switch",
+        "longDescription"   : "The ADC VREF Switch (S4) contains two single pole double throw switches that control the input for the ADC VREF inputs of the AM261x SoC. \n\n![](../source/sysconfig/board/.meta/images/am261-som_adc_vref_switches.png)\n\n  **ADC VREF Switch Position** | **Reference Selection**                                       \n------------------------------|---------------------------------------------------------------\n Pin 1-2 (LEFT switch UP)                     | OPEN - Allow for reference to be AM261x on-die LDO reference \n Pin 2-3 (LEFT switch DOWN)                     | Output of VREF Switch                                         \n Pin 4-5 (RIGHT switch UP)                     | OPEN - Allow for reference to be AM261x on-die LDO reference \n Pin 5-6 (RIGHT switch DOWN)                     | Output of VREF Switch                                         "
+    },
+    "VREF_SWITCH" : {
+        "displayName"       : "VREF Switch",
+        "description"       : "VREF Switch",
+        "longDescription"   : "The VREF Switch (S1) is a single pole double throw switch that controls which 1.8 V reference will be used for ADC and DAC. \n\n![](../source/sysconfig/board/.meta/images/am261-som_adc_vref_switches.png)\n\n     **VREF Switch Position**  |        **Reference Selection**       \n:---------------------------:|:------------------------------------:\n Pin 1-2 (LEFT switch UP)    | EXT_VREF1 = PMIC LDO4 1.8V Reference \n Pin 2-3 (LEFT switch DOWN)  | EXT_VREF1 = SOM Connector J1 VREF    \n Pin 4-5 (RIGHT switch UP)   | EXT_VREF2 = PMIC LDO4 1.8V Reference \n Pin 5-6 (RIGHT switch DOWN) | EXT_VREF2 = SOM Connector J1 VREF    "
+    },
+    
+    /* OSPI FLASH */
+    "OSPI_FLASH" : {
+        "displayName"       : "OSPI Flash",
+        "description"       : "oSPI Flash Memory Device (U15)",
+        "longDescription"   : "The AM261x Control Card has a 256Mbit OSPI NOR flash memory device (IS25LX256-LHLE), which is connected to the OSPI0 interface of the AM261x SoC",
+    },
+
+    "I2C_BUSES" : {
+        "displayName"       : "I2C Buses" ,
+        "description"       : "I2C Buses on AM261x controlSOM" ,
+        "longDescription"   : "This controlSOM features several devices connected to two instances of the AM261x I2C peripheral. Open this tab to add I2C buses on ControlSOM.",
+        "subComponents" : {
+            "I2C0" : {
+                "displayName"       : "I2C0 Bus",
+                "description"       : "AM261x I2C0 Interface",
+                "definition"        : "/board/components/i2c.json",
+                "longDescription"   : "The AM261x controlSOM has the following devices connected to the I2C0 interface. The deivce names, part numbers, and I2C addresses are shown in the table below:        **Target Device**       | **Target Device Part Number** | **I2C Address**  \n:-----------------------------:|:-----------------------------:|------------------\n Board ID EEPROM               | CAT24M01WI-GT3                | 0x50             \n IO Expander                   | TCA6408ARGTR                  | 0x21             \n 3.3V IO Rail Current Monitor  | INA228AIDGST                  | 0x40             \n 1.25V IO Rail Current Monitor | INA228AIDGST                  | 0x41             \n Temperature Sensor            | TMP411ADR                     | 0x4C             \n SOM Connector J1              | Target Dependent              | Target Dependent |",
+                "connections" : {
+                    "SCL" : "A13",
+                    "SDA" : "B13"
+                }
+            },
+            "I2C1" : {
+                "displayName"       : "I2C1 Bus",
+                "description"       : "AM261x I2C1 Interface",
+                "definition"        : "/board/components/i2c.json",
+                "longDescription"   : "The AM261x SoC I2C1 instance is connected to SOM HD Connector J3.",
+
+                "connections" : {
+                    "SCL" : "B5",
+                    "SDA" : "A3"
+                }
+            },
+            "I2C2" : {
+                "displayName"       : "I2C2 Bus",
+                "description"       : "AM261x I2C2 Interface",
+                "definition"        : "/board/components/i2c.json",
+                "longDescription"   : "The AM261x SoC I2C2 instance is connected to SOM HD Connector J1.",
+
+                "connections" : {
+                    "SCL" : "C6",
+                    "SDA" : "A5"
+                }
+            }
+        }
+    }
+    }
+}
+    

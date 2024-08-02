@@ -76,7 +76,7 @@ function getPeripheralRequirements(inst, peripheralName)
         name: interfaceName,
         displayName: interfaceName,
         interfaceName: interfaceName,
-        resources: resources,
+        resources: resources
     };
 
     return peripheralRequirements;
@@ -105,7 +105,6 @@ let pruicss_top_module_name = "/drivers/pruicss/m_v0/pruicss_m_v0_gpio_gp";
 
 let pruicss_top_module = {
     displayName: "PRU (ICSS) GPIO",
-
     templates: {
         "/drivers/pinmux/pinmux_config.c.xdt": {
             moduleName: pruicss_top_module_name,

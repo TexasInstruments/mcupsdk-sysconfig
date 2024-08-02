@@ -135,6 +135,20 @@ function pinmuxRequirements(inst) {
         displayName: "OSPI Instance",
         interfaceName: interfaceName,
         resources: resources,
+        signalTypes: {
+            D0 : "D0",
+            D1 : "D1",
+            D2 : "D2",
+            D3 : "D3",
+            D4 : "D4",
+            D5 : "D5",
+            D6 : "D6",
+            D7 : "D7",
+            CLK : "CLK",
+            CSn0 : "CSn0",
+            CSn1 : "CSn1",
+            DQS : "DQS"
+        }
     };
 
     return [peripheral];
@@ -171,7 +185,10 @@ function getSupportedProtocols() {
 
     return ospi_supported_protocols;
 }
-
+function filterHardware(component)
+{
+    return (common.typeMatches(component.type, ["OSPI"]));
+}
 let ospi_module_name = "/drivers/ospi/ospi";
 
 let ospi_module = {
@@ -207,6 +224,7 @@ let ospi_module = {
     getDmaRestrictedRegions,
     getSupportedProtocols,
     onMigrate,
+    filterHardware:filterHardware
 };
 
 

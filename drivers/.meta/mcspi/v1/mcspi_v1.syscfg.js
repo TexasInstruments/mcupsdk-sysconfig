@@ -79,6 +79,12 @@ function pinmuxRequirements(inst) {
         displayName: "SPI Instance",
         interfaceName: interfaceName,
         resources: resources,
+        signalTypes: {
+            CLK: "CLK",
+            CS0: "CS0",
+            D0 : "D0",
+            D1 : "D1"
+        }
     };
 
     return [spi];
@@ -99,6 +105,11 @@ function getClockEnableIds(inst) {
     let instConfig = getInstanceConfig(inst);
 
     return instConfig.clockIds;
+}
+
+function filterHardware(component)
+{
+    return (common.typeMatches(component.type, ["SPI"]));
 }
 
 let mcspi_module_name = "/drivers/mcspi/mcspi";
@@ -134,6 +145,7 @@ let mcspi_module = {
     getPeripheralPinNames,
     getClockEnableIds,
     onMigrate,
+    filterHardware : filterHardware
 };
 
 function onMigrate(newInst, oldInst, oldSystem) {

@@ -63,6 +63,10 @@ function pinmuxRequirements(inst) {
         displayName: "LIN Instance",
         interfaceName: interfaceName,
         resources: resources,
+        signalTypes: {
+            RXD: "RXD",
+            TXD: "TXD"
+        }
     };
 
     return [peripheral];
@@ -1198,6 +1202,10 @@ function getConfigurables()
 
     return config;
 }
+function filterHardware(component)
+{
+    return (common.typeMatches(component.type, ["LIN"]));
+}
 
 let lin_module_name = "/drivers/lin/lin";
 
@@ -1257,6 +1265,7 @@ let lin_module = {
     getClockEnableIds,
     getClockFrequencies,
     onMigrate,
+    filterHardware : filterHardware
 };
 
 function onMigrate(newInst, oldInst, oldSystem) {

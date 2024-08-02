@@ -65,7 +65,7 @@ function pinmuxRequirements(inst) {
         displayName: "QSPI Instance",
         interfaceName: interfaceName,
         resources: resources,
-        canShareWith: "/drivers/qspi/qspi"
+        canShareWith: "/drivers/qspi/qspi",
     };
 
    return [qspi];

@@ -61,6 +61,10 @@ function pinmuxRequirements(inst) {
         displayName: "UART Instance",
         interfaceName: interfaceName,
         resources: resources,
+        signalTypes: {
+            RXD: "RXD",
+            TXD: "TXD"
+        }
     };
 
     return [peripheral];
@@ -93,6 +97,11 @@ function getActualBaudrateError(inst) {
 
 let uart_module_name = "/drivers/uart/uart";
 
+function filterHardware(component)
+{
+    return (common.typeMatches(component.type, ["UART"]));
+}
+
 let uart_module = {
     displayName: "UART",
 
@@ -124,6 +133,7 @@ let uart_module = {
     getClockEnableIds,
     getClockFrequencies,
     onMigrate,
+    filterHardware : filterHardware
 };
 
 function onMigrate(newInst, oldInst, oldSystem) {

@@ -72,6 +72,16 @@ function pinmuxRequirements(instance) {
         displayName   : "MMCSD Instance",
         interfaceName : interfaceName,
         resources     : resources,
+        signalTypes: {
+            MMC_CLK  :"MMC_CLK",
+            MMC_SDWP : "MMC_SDWP",
+            MMC_CMD  : "MMC_CMD",
+            MMC_DAT0 : "MMC_DAT0",
+            MMC_DAT1 : "MMC_DAT1",
+            MMC_DAT2 : "MMC_DAT2",
+            MMC_DAT3 : "MMC_DAT3",
+            MMC_SDCD : "MMC_SDCD"
+        }
 	}
 
 	return [peripheral];
@@ -97,6 +107,10 @@ function getClockFrequencies(inst) {
     let instConfig = getInstanceConfig(inst);
 
     return instConfig.clockFrequencies;
+}
+function filterHardware(component)
+{
+    return (common.typeMatches(component.type, ["MMCSD"]));
 }
 
 let mmcsd_module_name = "/drivers/mmcsd/mmcsd";
@@ -358,6 +372,7 @@ let mmcsd_module = {
 	getPeripheralPinNames,
 	getClockEnableIds,
 	getClockFrequencies,
+    filterHardware:filterHardware
 };
 
 function validate(inst, report) {

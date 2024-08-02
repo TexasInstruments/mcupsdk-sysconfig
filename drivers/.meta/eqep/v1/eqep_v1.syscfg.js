@@ -553,6 +553,12 @@ function pinmuxRequirements(inst)
         displayName: "EQEP Instance",
         interfaceName: interfaceName,
         resources: resources,
+        signalTypes: {
+            A: "A",
+            B: "B",
+            INDEX: "INDEX",
+            STROBE: "STROBE"
+        }
     };
 
     return [peripheral];

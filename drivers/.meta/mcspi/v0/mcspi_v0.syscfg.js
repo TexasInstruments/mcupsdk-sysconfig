@@ -76,6 +76,12 @@ function pinmuxRequirements(inst) {
         displayName: "SPI Instance",
         interfaceName: interfaceName,
         resources: resources,
+        signalTypes: {
+            CLK: "CLK",
+            CS0: "CS0",
+            D0 : "D0",
+            D1 : "D1"
+        }
     };
 
     return [spi];
@@ -99,6 +105,10 @@ function getClockEnableIds(inst) {
     let instConfig = getInstanceConfig(inst);
 
     return instConfig.clockIds;
+}
+function filterHardware(component)
+{
+    return (common.typeMatches(component.type, ["SPI"]));
 }
 
 let mcspi_module_name = "/drivers/mcspi/mcspi";
@@ -133,6 +143,8 @@ let mcspi_module = {
     getInterfaceName,
     getPeripheralPinNames,
     getClockEnableIds,
+    filterHardware : filterHardware
+
 };
 
 function addModuleInstances(instance) {
@@ -196,7 +208,7 @@ function getConfigurables()
 {
     let config = [];
 
-        config.push(
+    config.push(
         {
             name: "mode",
             displayName: "Mode of Operation",
@@ -593,7 +605,7 @@ function getConfigurables()
             ],
             description: "Initial delay for first transfer in bus clock cycles. Applicable only for single controller mode",
         },
-        )
+    )
 
     if(common.isMcuDomainSupported())
     {
@@ -695,6 +707,7 @@ function getModule()
     }
     return module;
 }
+
 function enableDisableSDKInfra() {
     if(common.getSelfSysCfgCoreName().includes("a53")) {
         return true;
@@ -704,4 +717,5 @@ function enableDisableSDKInfra() {
         return false;
     }
 }
+
 exports = getModule();

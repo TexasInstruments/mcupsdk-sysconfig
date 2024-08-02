@@ -40,6 +40,11 @@ function pinmuxRequirements(inst) {
         displayName   : "FSI TX Instance",
         interfaceName : interfaceName,
         resources : resources,
+        signalTypes: {
+            CLK: "CLK",
+            D0: "D0",
+            D1: "D1"
+        }
     };
 
     return [peripheral];
@@ -69,6 +74,10 @@ function validate(inst, report) {
     common.validate.checkNumberRange(inst, report, "intrPriority", 0, hwi.getHwiMaxPriority(), "dec");
     common.validate.checkNumberRange(inst, report, "frameDataSize", 1, 16, "dec");
     common.validate.checkNumberRange(inst, report, "userData", 0, 255, "dec");
+}
+function filterHardware(component)
+{
+    return (common.typeMatches(component.type, ["FSITX"]));
 }
 
 let fsi_tx_module_name = "/drivers/fsi_tx/fsi_tx";
@@ -100,6 +109,7 @@ let fsi_tx_module = {
     getPeripheralPinNames,
     getClockEnableIds,
     getClockFrequencies,
+    filterHardware:filterHardware
 };
 
 function addModuleInstances(instance) {

@@ -1,0 +1,716 @@
+/*
+ * Copyright (c) 2018-2020 Texas Instruments Incorporated - http://www.ti.com
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * *  Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ * *  Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * *  Neither the name of Texas Instruments Incorporated nor the names of
+ *    its contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ */
+
+/*
+ *  ======== LP-AM261.syscfg.json ========
+ *  Board schematic: Refer to https://www.ti.com/tool/LP-AM261
+ */
+
+ {
+    "name"        : "LP-AM261",
+    "displayName" : "AM261x LaunchPad",
+    "device"      : "AM261x_ZFG",
+    "part"        : "AM2612",
+    "package"     : "ZFG",
+    "headers"     : [
+        {
+            "type": "BoosterPack 40 pin",
+            "default": true,
+            "name": "boosterpack1",
+            "displayName": "BoosterPack 1 Standard Header (Top)",
+            "dimensions": {
+                "columns": [
+                    { "top": 1,  "bottom": 10 },
+                    { "top": 21, "bottom": 30 },
+
+                    { "blank": true },
+
+                    { "top": 40, "bottom": 31 },
+                    { "top": 20, "bottom": 11 }
+                ]
+            },
+            "pins": [
+                    {   "number" :  1,                      "name" : "3V3"                                              },
+                    {   "number" :  2,   "ball" : "U13",    "name" : "ADC0_AIN1"                                        },
+                    {   "number" :  3,   "ball" : "C18",    "name" : "UART3_RXD/SDFM1_D0"                               },
+                    {   "number" :  4,   "ball" : "C19",    "name" : "UART3_TXD"                                        },
+                    {   "number" :  5,   "ball" : "D11",    "name" : "PR1_PRU1_GPIO4"                                   },
+                    {   "number" :  6,   "ball" : "W7" ,    "name" : "ADC2_AIN3/SDFM1_CLK0"                             },
+                    {   "number" :  7,   "ball" : "A13",    "name" : "SPI0_CLK/PR1_PRU1_GPIO2"                          },
+                    {   "number" :  8,   "ball" : "R2" ,    "name" : "PR1_PRU1_GPIO11"                                  },
+                    {   "number" :  9,   "ball" : "A15",    "name" : "I2C0_SCL"                                         },
+                    {   "number" : 10,   "ball" : "B15",    "name" : "I2C0_SDA/SDFM1_D3"                                },
+
+                    {   "number" : 11,   "ball" : "B5" ,    "name" : "PR1_PRU0_GPIO0/GPIO1"                             },
+                    {   "number" : 12,   "ball" : "Y17",    "name" : "PR1_PRU1_GPIO9"                                   },
+                    {   "number" : 13,   "ball" : "E1" ,    "name" : "PR1_PRU1_GPIO5"                                   },    
+                    {   "number" : 14,   "ball" : "C12",    "name" : "SPI0_D1/PR1_PRU1_GPIO15"                          },
+                    {   "number" : 15,   "ball" : "B12",    "name" : "SPI0_D0/SDFM1_D1"                                 },
+                    {   "number" : 16,   "ball" : "V3" ,    "name" : "BP_PORZ"                                          },
+                    {   "number" : 17,   "ball" : "B17",    "name" : "SDFM0_D1"                                         },
+                    {   "number" : 18,   "ball" : "R1" ,    "name" : "PR1_PRU1_GPIO12"                                  },
+                    {   "number" : 19,   "ball" : "B13",    "name" : "SPI0_CS0/SDFM0_D2/PR1_PRU1_GPIO1"                 },
+                    {   "number" : 20,                      "name" : "GND"                                              },
+
+                    {   "number" : 21,                      "name" : "5V0"                                              },
+                    {   "number" : 22,                      "name" : "GND"                                              },
+                    {   "number" : 23,   "ball" : "Y15",    "name" : "ADC0_AIN6"                                        },
+                    {   "number" : 24,   "ball" : "W12",    "name" : "ADC1_AIN0"                                        },
+                    {   "number" : 25,   "ball" : "W8" ,    "name" : "ADC2_AIN0"                                        },
+                    {   "number" : 26,   "ball" : "W13",    "name" : "ADC0_AIN0"                                        },
+                    {   "number" : 27,   "ball" : "Y10",    "name" : "ADC1_AIN4"                                        },
+                    {   "number" : 28,   "ball" : "W6" ,    "name" : "ADC2_AIN4"                                        },
+                    {   "number" : 29,   "ball" : "Y14",    "name" : "ADC0_AIN4"                                        },
+                    {   "number" : 30,   "ball" : "W9" ,    "name" : "DAC_OUT/ADC1_AIN6"                                },
+
+                    {   "number" : 31,   "ball" : "H2" ,    "name" : "MCAN0_RX/PR1_PRU1_GPIO16"                         },
+                    {   "number" : 32,   "ball" : "H1" ,    "name" : "MCAN0_TX/SDFM0_D0"                                },
+                    {   "number" : 33,   "ball" : "T3" ,    "name" : "LIN1_RXD / PR1_PRU1_GPIO0"                        },
+                    {   "number" : 34,   "ball" : "B11",    "name" : "LIN1_TXD"                                         },
+                    {   "number" : 35,   "ball" : "D1" ,    "name" : "EPWM4_B"                                          },
+                    {   "number" : 36,   "ball" : "D2" ,    "name" : "EPWM4_A"                                          },
+                    {   "number" : 37,   "ball" : "C2" ,    "name" : "EPWM3_B"                                          },
+                    {   "number" : 38,   "ball" : "C1" ,    "name" : "EPWM3_A"                                          },
+                    {   "number" : 39,   "ball" : "B2" ,    "name" : "EPWM2_B"                                          },
+                    {   "number" : 40,   "ball" : "B1" ,    "name" : "EPWM2_A"                                          }
+            ]
+        },
+        {
+            "type": "BoosterPack 40 pin",
+            "default": true,
+            "name": "boosterpack2",
+            "displayName": "BoosterPack 2 Standard Header",
+            "dimensions": {
+                "columns": [
+                    { "top": 41,  "bottom": 50 },
+                    { "top": 61,  "bottom": 70 },
+
+                    { "blank": true },
+
+                    { "top": 80, "bottom": 71 },
+                    { "top": 60, "bottom": 51 }
+                ]
+            },
+            "pins": [    
+                    {   "number" : 41,                      "name" : "3V3"                                              },
+                    {   "number" : 42,   "ball" : "V12",    "name" : "ADC1_AIN1"                                        },
+                    {   "number" : 43,   "ball" : "A14",    "name" : "UART3_TXD/PR1_PRU1_GPIO3"                         },
+                    {   "number" : 44,   "ball" : "B14",    "name" : "UART3_RXD/SDFM1_D2/PR1_PRU1_GPIO19"               },
+                    {   "number" : 45,   "ball" : "B19",    "name" : "SDFM0_CLK0"                                       },
+                    {   "number" : 46,   "ball" : "W11",    "name" : "ADC1_AIN3"                                        },
+                    {   "number" : 47,   "ball" : "D17",    "name" : "SPI2_CLK"                                         },
+                    {   "number" : 48,   "ball" : "A11",    "name" : "PR1_PRU1_GPIO6"                                   },
+                    {   "number" : 49,   "ball" : "B9" ,    "name" : "I2C1_SCL"                                         },
+                    {   "number" : 50,   "ball" : "A9" ,    "name" : "I2C1_SDA"                                         },
+
+                    {   "number" :  51,   "ball" : "T2" ,   "name" : "GPIO1/PR1_PRU0_GPIO0"                             },
+                    {   "number" :  52,   "ball" : "A19",   "name" : "GPIO124"                                          },
+                    {   "number" :  53,   "ball" : "U1" ,   "name" : "GPIO6"                                            },
+                    {   "number" :  54,   "ball" : "B18",   "name" : "SPI2_D1"                                          },
+                    {   "number" :  55,   "ball" : "A16",   "name" : "SPI2_D0"                                          }, 
+                    {   "number" :  56,   "ball" : "V3" ,   "name" : "PORZ"                                             },
+                    {   "number" :  57,   "ball" : "W17",   "name" : "PR1_PRU1_GPIO2/SPI0_CLK/PR1_PRU0_GPIO9"           },
+                    {   "number" :  58,   "ball" : "M1" ,   "name" : "SPI2_CS0"                                         },
+                    {   "number" :  59,   "ball" : "A18",   "name" : "SPI2_CS1"                                         },
+                    {   "number" :  60,                     "name" : "GND"                                              },
+
+                    {   "number" :  61,                     "name" : "5V0"                                              },
+                    {   "number" :  62,                     "name" : "GND"                                              },
+                    {   "number" :  63,   "ball" : "W14",   "name" : "ADC0_AIN2/GPIO46"                                 },
+                    {   "number" :  64,   "ball" : "Y11",   "name" : "ADC1_AIN2/PR1_PRU0_GPIO7 "                        },
+                    {   "number" :  65,   "ball" : "Y6" ,   "name" : "ADC2_AIN2/PR1_PRU0_GPIO8"                         },
+                    {   "number" :  66,   "ball" : "W15",   "name" : "ADC0_AIN5"                                        },
+                    {   "number" :  67,   "ball" : "W10",   "name" : "ADC1_AIN5/PR1_PRU0_GPIO1"                         },
+                    {   "number" :  68,   "ball" : "V9" ,   "name" : "ADC2_AIN5/PR1_PRU0_GPIO2"                         },
+                    {   "number" :  69,   "ball" : "W4" ,   "name" : "DAC_OUT/PR1_PRU1_GPIO0/PR1_PRU0_GPIO6/ADC2_AIN3"  },
+                    {   "number" :  70,   "ball" : "W4" ,   "name" : "DAC_OUT/PR1_PRU1_GPIO9/GPIO78/ADC2_AIN6"          },
+
+                    {   "number" :  71,   "ball" : "B6" ,   "name" : "MCAN1_RX/PR1_PRU0_GPIO9"                          },
+                    {   "number" :  72,   "ball" : "B16",   "name" : "MCAN1_TX/PR1_PRU1_GPIO1"                          },
+                    {   "number" :  73,   "ball" : "B10",   "name" : "LIN2_RXD"                                         },
+                    {   "number" :  74,   "ball" : "A10",   "name" : "LIN2_TXD"                                         },
+                    {   "number" :  75,   "ball" : "J2" ,   "name" : "EPWM7_B"                                          },
+                    {   "number" :  76,   "ball" : "G2" ,   "name" : "EPWM7_A"                                          },
+                    {   "number" :  77,   "ball" : "F1" ,   "name" : "EPWM6_B"                                          },
+                    {   "number" :  78,   "ball" : "F2" ,   "name" : "EPWM6_A"                                          },
+                    {   "number" :  79,   "ball" : "G1" ,   "name" : "EPWM5_B"                                          },
+                    {   "number" :  80,   "ball" : "E2" ,   "name" : "EPWM5_A"                                          }
+            ]
+        },
+        {
+            "type": "Header",
+            "default": true,
+            "name": "OSPI1 Expansion Connector",
+            "displayName": "Connector for OSPI Add-on Board",
+            "dimensions": {
+                "columns": [
+                    { "top" : 1, "bottom" : 29, "increment" : 2 },
+                    { "top" : 2, "bottom" : 30, "increment" : 2 } 
+                ]
+            },
+            "pins": [
+                    {   "number" :  1 ,                     "name" : "GND"              },
+                    {   "number" :  2 ,                     "name" : "VSYS_1V8"         },
+                    {   "number" :  3 ,                     "name" : "VSYS_1V8"         },
+                    {   "number" :  4 ,                     "name" : "GND"              },
+                    {   "number" :  5 , "ball"  :   "K2" ,  "name" : "OSPI1_RSTn"       },
+                    {   "number" :  6 , "ball"  :   "T19",  "name" : "OSPI1_ECC_FAIL"   },
+                    {   "number" :  7 , "ball"  :   "V20",  "name" : "OSPI1_CSn0"       },
+                    {   "number" :  8 ,                     "name" : "OSPI1_CSn1"       },
+                    {   "number" :  9 ,                     "name" : "GND"              },
+                    {   "number" :  10, "ball"  :   "W20",  "name" : "OSPI1_CLK"        },
+                    {   "number" :  11,                     "name" : "GND"              },
+                    {   "number" :  12, "ball"  :   "U19",  "name" : "OSPI1_DQS"        },
+                    {   "number" :  13,                     "name" : "GND"              },
+                    {   "number" :  14, "ball"  :   "V19",  "name" : "OSPI1_D0"         },
+                    {   "number" :  15, "ball"  :   "Y18",  "name" : "OSPI1_D1"         },
+                    {   "number" :  16, "ball"  :   "W18",  "name" : "OSPI1_D2"         },
+                    {   "number" :  17, "ball"  :   "Y19",  "name" : "OSPI1_D3"         },
+                    {   "number" :  18,                     "name" : "GND"              },
+                    {   "number" :  19, "ball"  :   "W19",  "name" : "OSPI1_D4"         },
+                    {   "number" :  20, "ball"  :   "U20",  "name" : "OSPI1_D5"         },
+                    {   "number" :  21, "ball"  :   "T20",  "name" : "OSPI1_D6"         },
+                    {   "number" :  22, "ball"  :   "V18",  "name" : "OSPI1_D7"         },
+                    {   "number" :  23,                     "name" : "GND"              },
+                    {   "number" :  24,                     "name" : "NC"               },
+                    {   "number" :  25, "ball" :    "Y19",  "name" : "NC"               },
+                    {   "number" :  26, "ball" :    "V19",  "name" : "NC"               },
+                    {   "number" :  27, "ball" :    "W19",  "name" : "NC"               },
+                    {   "number" :  28, "ball" :    "Y18",  "name" : "NC"               },
+                    {   "number" :  29,                     "name" : "NC"               },
+                    {   "number" :  30,                     "name" : "NC"               }
+            ]
+        },
+        {
+            "type": "Header",
+            "default": true,
+            "name": "FSI Header",
+            "displayName": "Connector for Fast Serial Interface",
+            "dimensions": {
+                "columns": [
+                    { "top" : 1, "bottom" : 9, "increment" : 2 },
+                    { "top" : 2, "bottom" : 10, "increment" : 2}
+                ]
+            },
+            "pins": [
+                    {   "number" :  1 ,  "ball" : "W18",    "name" : "FSIRX0_CLK"       },
+                    {   "number" :  2 ,  "ball" : "W20",    "name" : "FSITX0_CLK"       },
+                    {   "number" :  3 ,                     "name" : "GND"              },
+                    {   "number" :  4 ,                     "name" : "GND"              },
+                    {   "number" :  5 ,  "ball" : "Y19",    "name" : "FSIRX0_DATA0"     },
+                    {   "number" :  6 ,  "ball" : "V19",    "name" : "FSITX0_DATA0"     },
+                    {   "number" :  7 ,  "ball" : "W19",    "name" : "FSIRX0_DATA1"     },
+                    {   "number" :  8 ,  "ball" : "Y18",    "name" : "FSITX0_DATA1"     },
+                    {   "number" :  9 ,                     "name" : "GND"              },
+                    {   "number" :  10,                     "name" : "VSYS_3V3"         }
+            ]
+        },
+        {
+            "type": "Header",
+            "default": true,
+            "name": "MCAN Header",
+            "displayName": "Header - MCAN0",
+            "dimensions": {
+                "columns": [
+                    { "top": 1, "increment": 2, "bottom": 3}
+                ]
+            },
+            "pins": [
+                    {   "number" :  1  ,                     "name" : "CANA_N"                         },
+                    {   "number" :  2  ,                     "name" : "GND"                            },
+                    {   "number" :  3  ,                     "name" : "CANA_P"                         }
+            ]
+        },
+        {
+            "type": "Header",
+            "default": true,
+            "name": "EQEP0 Header",
+            "displayName": "Header - EQEP0",
+            "dimensions": {
+                "columns": [
+                    { "top": 1, "increment": 1, "bottom": 5 }
+                ]
+            },
+            "pins": [
+                    {   "number" :  1  ,  "ball" : "Y19",     "name" : "EQEP0_A"                       },
+                    {   "number" :  2  ,  "ball" : "W19",     "name" : "EQEP0_B"                       },
+                    {   "number" :  3  ,  "ball" : "U20",     "name" : "EQEP0_INDEX"                   },
+                    {   "number" :  4  ,                      "name" : "VSYS_5V0"                      },
+                    {   "number" :  5  ,                      "name" : "GND"                           }
+            ]
+        },
+        {
+            "type": "Header",
+            "default": true,
+            "name": "EQEP0 STROBE Header",
+            "displayName": "Header - EQEP0_STROBE",
+            "dimensions": {
+                "columns": [
+                    { "top": 1, "increment": 1, "bottom": 2 }
+                ]
+            },
+            "pins": [
+                    {   "number" :  1  ,  "ball" : "T20",     "name" : "EQEP0_STROBE"                  },
+                    {   "number" :  2  ,                      "name" : "GND"                           }
+            ]
+        },
+        {
+            "type": "Header",
+            "default": true,
+            "name": "EQEP1 Header",
+            "displayName": "Header - EQEP1",
+            "dimensions": {
+                "columns": [
+                    { "top": 1, "increment": 1, "bottom": 5 }
+                ]
+            },
+            "pins": [
+                    {   "number" :  1  ,  "ball" : "V18",     "name" : "EQEP1_A"                       },
+                    {   "number" :  2  ,  "ball" : "V20",     "name" : "EQEP1_B"                       },
+                    {   "number" :  3  ,  "ball" : "T19",     "name" : "EQEP1_INDEX"                   },
+                    {   "number" :  4  ,                      "name" : "VSYS_5V0"                      },
+                    {   "number" :  5  ,                      "name" : "GND"                           }
+            ]
+        },
+        {
+            "type": "Header",
+            "default": true,
+            "name": "EQEP2 STROBE Header",
+            "displayName": "Header - EQEP2_STROBE",
+            "dimensions": {
+                "columns": [
+                    { "top": 1, "increment": 1, "bottom": 2 }
+                ]
+            },
+            "pins": [
+                    {   "number" :  1  ,  "ball" : "U19",     "name" : "EQEP1_STROBE"                  },
+                    {   "number" :  2  ,                      "name" : "GND"                           }
+            ]
+        },
+        
+        {
+            "type": "Header",
+            "default": true,
+            "name": "ADC VREF Header",
+            "displayName": "Header - ADC_EXT_VREF",
+            "dimensions": {
+                "columns": [
+                    { "top": 1, "increment": 1, "bottom": 2 }
+                ]
+            },
+            "pins": [
+                    {   "number" :  1  ,                      "name" : "ADC_EXT_VREF"   },
+                    {   "number" :  2  ,                      "name" : "GND"            }
+                    
+            ]
+        },
+        {
+            "type": "Header",
+            "default": true,
+            "name": "DAC VREF Header",
+            "displayName": "Header - DAC_EXT_VREF",
+            "dimensions": {
+                "columns": [
+                    { "top": 1, "increment": 1, "bottom": 2 }
+                ]
+            },
+            "pins": [
+                    {   "number" :  1  ,                      "name" : "DAC_EXT_VREF"   },
+                    {   "number" :  2  ,                      "name" : "GND"            }
+                    
+            ]
+        },
+              
+    ],
+
+    "components": {
+        /* BP Sites */
+        "BOOSTERPACK" : {
+            "displayName"       : "Standard BP Module Locations" , 
+            "description"       : "Standard BoosterPack (BP) module locations on Site 1 of LaunchPad (J1/J3, J2/J4) and Site 2 of LaunchPad (J5/J7, J6/J8)" ,
+            "longDescription"   : "All TI LaunchPads follow standard BoosterPack (BP) locations to ensure compatibility with BoosterPack peripherals. Sites 1 and 2 on this LaunchPad features standard locations for ADC inputs, DAC_OUT, UART3, SPI0, SPI2, I2C0, I2C1, various EPWM Channels, LIN1, LIN2, MCAN0, MCAN1, SDFM0, SDFM1, GPIOs, and various PR1_PRU0 and PR1_PRU1 GPIOs. Note that the standard BoosterPack mode signal hardware connections are enabled as part of this EVM sysconfig file. Secondary signals for specific alternative BoosterPack modes will require muxing in order to route to the BoosterPack headers. The alternative BoosterPack modes are configured using the BP_MUX_SW_S1 and BP_MUX_SW_S0 signals, which are outputs from the I2C-controlled IO Expander. The IO Expander can be configured using the IO Expander module under the 'Software' tab in SysConfig. \n\n![](../source/sysconfig/board/.meta/images/lp-am261_boosterpack.png) \n\n **BP_MUX_SW_S1** | **BP_MUX_SW_S0** | **BoosterPack Mux Mode**         \n------------------|------------------|----------------------------------\n       0/LOW      |       0/LOW      | Standard LaunchPad BoosterPack   \n       0/LOW      |      1/HIGH      | Servo Motor Control BoosterPacks \n      1/HIGH      |       0/LOW      | IO-LINK BoosterPack              \n      1/HIGH      |      1/HIGH      | C2000 DRVx BoosterPack           ",
+            "subComponents" : {
+
+                /* ______Site 1______ */
+
+                "UART3 (Site 1)" : {
+                    "displayName"       : "UART3 BP Site 1" ,
+                    "description"       : "UART BoosterPack (BP) location on site 1" ,
+                    "longDescription"   : "Site 1 of this LaunchPad features standard locations for UART_TX and UART_RX. Add this component to make use of the standard UART BoosterPack (BP) signal locations.",
+                    "definition"        : "/board/components/uart.json" ,
+                    "connections" : {
+                        "RXD" : "C18" , /* UART3_RXD */
+                        "TXD" : "C19"   /* UART3_TXD */
+                    }
+                },
+                "SPI0" : {
+                    "displayName"       : "SPI0 BP" , 
+                    "description"       : "SPI0 BoosterPack (BP) location" ,
+                    "longDescription"   : "This LaunchPad features standard locations for SPI_CLK, SPI_CS, SPI_MOSI, and SPI_MISO. Add this component to make use of the standard SPI BoosterPack (BP) signal locations.",
+                    "definition"        : "/board/components/standard_spi.json" ,
+                    "connections" : {
+                        "CLK" : "A13", /* SPI0_CLK */
+                        "CS0" : "B13", /* SPI0_CS0 */
+                        "D0"  : "B12", /* SPI0_D0  */
+                        "D1"  : "C12"  /* SPI0_D1  */
+                    }
+                },
+                "I2C0" : {
+                    "displayName"       : "I2C0 BP" ,
+                    "description"       : "I2C0 BoosterPack (BP) location" ,
+                    "longDescription"   : "This LaunchPad features standard locations for I2C_SCL and I2C_SDA. Add this component to make use of the standard I2C BoosterPack (BP) signal locations." ,
+                    "definition"        : "/board/components/i2c.json" ,
+                    "connections" : {
+                        "SCL" : "A15" , /* I2C0_SCL */
+                        "SDA" : "B15"   /* I2C0_SDA */
+                    }
+                },
+                "EPWM2" : {
+                    "displayName"       : "EPWM2 BP" ,
+                    "description"       : "EPWM2 BoosterPack (BP) location" ,
+                    "longDescription"   : "This LaunchPad features standard locations for EPWM_A and EPWM_B. Add this component to make use of the standard EPWM BoosterPack (BP) signal locations." ,
+                    "definition"        : "/board/components/standard_epwm.json" ,
+                    "connections" : {
+                        "A" : "B1" , /* EPWM2_A */
+                        "B" : "B2"  /* EPWM2_B */
+                    }
+                },
+                "EPWM3" : {
+                    "displayName"       : "EPWM3 BP" ,
+                    "description"       : "EPWM3 BoosterPack (BP) location on Site 1" ,
+                    "longDescription"   : "Site 1 of this LaunchPad features standard locations for EPWM_A and EPWM_B. Add this component to make use of the standard EPWM BoosterPack (BP) signal locations." ,
+                    "definition"        : "/board/components/standard_epwm.json" ,
+                    "connections" : {
+                        "A" : "C1" , /* EPWM3_A */
+                        "B" : "C2"  /* EPWM3_B */
+                    }
+                },
+                "EPWM4" : {
+                    "displayName"       : "EPWM4 BP" ,
+                    "description"       : "EPWM4 BoosterPack (BP) location" ,
+                    "longDescription"   : "This LaunchPad features standard locations for EPWM_A and EPWM_B. Add this component to make use of the standard EPWM BoosterPack (BP) signal locations." ,
+                    "definition"        : "/board/components/standard_epwm.json" ,
+                    "connections" : {
+                        "A" : "D2" , /* EPWM4_A */
+                        "B" : "D1"  /* EPWM4_B */
+                    }
+                },
+                "LIN1" : {
+                    "displayName"       : "LIN1 BP" ,
+                    "description"       : "LIN1 BoosterPack (BP) location" ,
+                    "longDescription"   : "This LaunchPad features standard locations for LIN_RXD and LIN_TXD. Add this component to make use of the standard LIN BoosterPack (BP) signal locations." ,
+                    "definition"        : "/board/components/lin.json" ,
+                    "connections" : {
+                        "RXD" : "T3" , /* LIN1_RXD */
+                        "TXD" : "B11"  /* LIN1_TXD */
+                    }
+                },
+                "MCAN0" : {
+                    "displayName"       : "MCAN0 BP" ,
+                    "description"       : "MCAN0 BoosterPack (BP) location" ,
+                    "longDescription"   : "This LaunchPad features standard locations for MCAN_RX and MCAN_TX. Add this component to make use of the standard MCAN BoosterPack (BP) signal locations." ,
+                    "definition"        : "/board/components/mcan.json" ,
+                    "connections" : {
+                        "RX" : "H2" , /* MCAN0_RX */
+                        "TX" : "H1"  /* MCAN0_TX */
+                    }
+                },
+                
+                /* ______Site 2______*/
+                "UART3 (Site 2)" : {
+                    "displayName"       : "UART3 BP Site 2" ,
+                    "description"       : "UART BoosterPack (BP) location on site 2" ,
+                    "longDescription"   : "Site 2 of this LaunchPad features standard locations for UART_TX and UART_RX. Add this component to make use of the standard UART BoosterPack (BP) signal locations.",
+                    "definition"        : "/board/components/uart.json" ,
+                    "connections" : {
+                        "RXD" : "B14" , /* UART3_RXD */
+                        "TXD" : "A14"   /* UART3_TXD */
+                    }
+                },
+                "SPI2" : {
+                    "displayName"       : "SPI0 BP" , 
+                    "description"       : "SPI0 BoosterPack (BP) location" ,
+                    "longDescription"   : "This LaunchPad features standard locations for SPI_CLK, SPI_CS, SPI_MOSI, and SPI_MISO. Add this component to make use of the standard SPI BoosterPack (BP) signal locations.",
+                    "definition"        : "/board/components/standard_spi.json" ,
+                    "connections" : {
+                        "CLK" : "D17", /* SPI2_CLK */
+                        "CS0" : "M1", /* SPI2_CS0 */
+                        "D0"  : "A16", /* SPI2_D0  */
+                        "D1"  : "B18"  /* SPI2_D1  */
+                    }
+                },
+                "I2C1" : {
+                    "displayName"       : "I2C0 BP" ,
+                    "description"       : "I2C0 BoosterPack (BP) location" ,
+                    "longDescription"   : "This LaunchPad features standard locations for I2C_SCL and I2C_SDA. Add this component to make use of the standard I2C BoosterPack (BP) signal locations." ,
+                    "definition"        : "/board/components/i2c.json" ,
+                    "connections" : {
+                        "SCL" : "B9" , /* I2C0_SCL */
+                        "SDA" : "A9"   /* I2C0_SDA */
+                    }
+                },
+                "EPWM5" : {
+                    "displayName"       : "EPWM0 BP" ,
+                    "description"       : "EPWM0 BoosterPack (BP) location" ,
+                    "longDescription"   : "This LaunchPad features standard locations for EPWM_A and EPWM_B. Add this component to make use of the standard EPWM BoosterPack (BP) signal locations." ,
+                    "definition"        : "/board/components/standard_epwm.json" ,
+                    "connections" : {
+                        "A" : "E2" , /* EPWM0_A */
+                        "B" : "G1"  /* EPWM0_B */
+                    }
+                },
+                "EPWM6" : {
+                    "displayName"       : "EPWM1 BP" ,
+                    "description"       : "EPWM1 BoosterPack (BP) location on Site 1" ,
+                    "longDescription"   : "Site 1 of this LaunchPad features standard locations for EPWM_A and EPWM_B. Add this component to make use of the standard EPWM BoosterPack (BP) signal locations." ,
+                    "definition"        : "/board/components/standard_epwm.json" ,
+                    "connections" : {
+                        "A" : "F2" , /* EPWM1_A */
+                        "B" : "F1"  /* EPWM1_B */
+                    }
+                },
+                "EPWM7" : {
+                    "displayName"       : "EPWM2 BP" ,
+                    "description"       : "EPWM2 BoosterPack (BP) location" ,
+                    "longDescription"   : "This LaunchPad features standard locations for EPWM_A and EPWM_B. Add this component to make use of the standard EPWM BoosterPack (BP) signal locations." ,
+                    "definition"        : "/board/components/standard_epwm.json" ,
+                    "connections" : {
+                        "A" : "G2" , /* EPWM2_A */
+                        "B" : "J2"  /* EPWM2_B */
+                    }
+                },
+                "LIN2" : {
+                    "displayName"       : "LIN1 BP" ,
+                    "description"       : "LIN1 BoosterPack (BP) location" ,
+                    "longDescription"   : "This LaunchPad features standard locations for LIN_RXD and LIN_TXD. Add this component to make use of the standard LIN BoosterPack (BP) signal locations." ,
+                    "definition"        : "/board/components/lin.json" ,
+                    "connections" : {
+                        "RXD" : "B10" , /* LIN2_RXD */
+                        "TXD" : "A10"  /* LIN2_TXD */
+                    }
+                },
+                "MCAN1" : {
+                    "displayName"       : "MCAN1 BP" ,
+                    "description"       : "MCAN1 BoosterPack (BP) location" ,
+                    "longDescription"   : "This LaunchPad features standard locations for MCAN_RX and MCAN_TX. Add this component to make use of the standard MCAN BoosterPack (BP) signal locations." ,
+                    "definition"        : "/board/components/mcan.json" ,
+                    "connections" : {
+                        "RX" : "B6" , /* MCAN1_RX */
+                        "TX" : "B16"  /* MCAN1_TX */
+                    }
+                }                
+            }
+        },
+        "EQEP_HEADERS" : {
+            "displayName"       : "EQEP Headers" ,
+            "description"       : "Dedicated EQEP headers on LaunchPad" ,
+            "longDescription"   : "This LaunchPad features two dedicated 5-pin EQEP connectors for use with external boosterpacks. Open this tab to add a component.",
+            "subComponents" : {
+                "EQEP0_HEADER" : {
+                    "displayName"       : "EQEP0 Header" ,
+                    "description"       : "Dedicated EQEP0 header on LaunchPad" ,
+                    "longDescription"   : "This LaunchPad features a dedicated 5-pin EQEP0 connector for use with external BoosterPacks. Add this component to use the dedicated EQEP_A, EQEP_B, and EQEP_INDEX signals." ,
+                    "definition"        : "/board/components/eqep.json" ,
+                    "connections" : {
+                        "A"     : "Y19", /* EQEP0_A */
+                        "B"     : "W19", /* EQEP0_B */
+                        "INDEX" : "U20", /* EQEP0_INDEX */
+                        "STROBE": "T20"
+                    }
+                },
+                "EQEP1_HEADER" : {
+                    "displayName"       : "EQEP1 Header" ,
+                    "description"       : "Dedicated EQEP1 header on LaunchPad" ,
+                    "longDescription"   : "This LaunchPad features a dedicated 5-pin EQEP1 connector for use with external BoosterPacks. Add this component to use the dedicated EQEP_A, EQEP_B, and EQEP_INDEX signals." ,
+                    "definition"        : "/board/components/eqep.json" ,
+                    "connections" : {
+                        "A"     : "V18", /* EQEP2_A */
+                        "B"     : "V20", /* EQEP2_B */
+                        "INDEX" : "T19", /* EQEP2_INDEX */
+                        "STROBE": "U19"
+                    }
+                }
+            }
+        },
+        
+        "FSI_HEADER" : {
+            "displayName"       : "FSI Header" ,
+            "description"       : "Dedicated FSI header on LaunchPad" ,
+            "longDescription"   : "This LaunchPad features a dedicated 10-pin FSI connector for use with external BoosterPacks. Add this component to make use of the dedicated FSI_RX and FSI_TX signals.",
+            "subComponents" : {
+                "FSIRX" : {
+                    "displayName"   : "FSIRX",
+                    "description"   : "FSI RX Signals",
+                    "definition"    : "/board/components/fsiRX.json",
+                    "connections" : {
+                        "CLK"   : "W18",
+                        "D0"    : "Y19",
+                        "D1"    : "W19"
+                    }
+                },
+                "FSITX" : {
+                    "displayName"   : "FSITX",
+                    "description"   : "FSI TX Signals",
+                    "definition"    : "/board/components/fsiTX.json",
+                    "connections" : {
+                        "CLK"   : "W20",
+                        "D0"    : "V19",
+                        "D1"    : "Y18"
+                    }
+                }
+            }
+        },
+        
+        /* LEDs */
+        "GPIO LED" : {
+            "displayName"   : "GPIO LED",
+            "definition"    : "/board/components/led.json",
+            "connections" : {
+                "OUTPUT" : "A7" /* AM261_LED_GPIO84 */
+            }
+        },
+        
+        /* LED Symbolic links */
+        "DS3" : {
+            "link" : "GPIO LED"
+        },
+        
+        "I2C_BUSES" : {
+            "displayName"       : "I2C Buses" ,
+            "description"       : "I2C Buses on LaunchPad" ,
+            "longDescription"   : "This LaunchPad features two I2C bus interfaces with several connected peripheral devices. Open this tab to explore and add the LaunchPad I2C interfaces.",
+            "subComponents" : {
+                 "I2C0_BUS" : {
+                    "displayName"       : "I2C0 Bus",
+                    "description"       : "AM261x I2C0 Interface",
+                    "definition"        : "/board/components/i2c.json",
+                    "longDescription"   : "The AM261x LaunchPad has the following devices connected to the I2C0 interface. The deivce names, part numbers, and I2C addresses are shown in the table below: \n\n  **Target Device**        | **Target Device Part Number** | **I2C Address** \n--------------------------|-------------------------------|-----------------\n Board ID EEPROM      |         CAT24M01WI-GT3        |       0x51      \n IO Expander          |          TCA6408ARGTR         |       0x20      \n IO Expander          |          TCA6408ARGTR         |       0x21      \n PMIC                 |           TPS6503660          |       0x60       ",
+                    "connections" : {
+                        "SCL" : "A15", /* I2C0_SCL */
+                        "SDA" : "B15" /* I2C0_SDA */
+                    }
+                },
+                "I2C1_BUS" : {
+                    "displayName"       : "I2C1 Bus",
+                    "description"       : "AM261x I2C1 Interface",
+                    "definition"        : "/board/components/i2c.json",
+                    "longDescription"   : "The AM261x LaunchPad has the following devices connected to the I2C1 interface. The deivce names, part numbers, and I2C addresses are shown in the table below: \n\n  **Target Device** | **Target Device Part Number** | **I2C Address** \n-------------------|-------------------------------|-----------------\n LED Driver        |           TPIC2810D           |       0x01      ",
+                    "connections" : {
+                        "SCL" : "B9", /* I2C1_SCL */
+                        "SDA" : "A9" /* I2C1_SDA */
+                    }
+                }
+            }
+        },
+        
+        /* XDS110 UART */
+        "XDS110UART": {
+            "displayName"     : "XDS110 UART",
+            "description"     : "AM261x UART connection to onboard XDS110 probe",
+            "definition"      : "/board/components/xds110Uart.json",
+            "longDescription" : "The AM261x LaunchPad uses the XDS110 as a USB2.0 to UART bridge for terminal access. UART0 transmit and receive signals of the AM261x SoC are mapped to the XDS110 with a dual channel isolation buffer (ISO7221DR) for translating from the 3.3V IO voltage supply to the 3.3V XDS supply. The XDS110 is connected to a micro-B USB connector for the USB 2.0 signals. ESD protection is provided to the USB 2.0 signals by a transient voltage suppression device (TPD4E004DRYR). The micro-B USB connector's VBUS 5V power is mapped to a low dropout regulator (TPS79601DRBR) to generate the 3.3V XDS110 supply. A separate 3.3V supply for the XDS110 allows for the emulator to maintain a connection when power to the LaunchPad is removed.",
+            "connections" : {
+                "RXD" : "A8",
+                "TXD" : "B8"
+            }
+            
+        },
+        
+        "USER_BUTTONS" : {
+            "displayName"       : "LaunchPad Push Buttons" ,
+            "description"       : "User Input Pushbuttons on LaunchPad" ,
+            "longDescription"   : "This LaunchPad features three pushbuttons for user input. \n\n![](../source/sysconfig/board/.meta/images/lp-am261_pushbuttons.png)"
+        },
+         /* Switches */
+         "BOOTMODE_SWITCH" : { 
+            "displayName" : "Bootmode switches",
+            "longDescription" : "The bootmode for the AM261x is detected by a DIP switch (SW1). The table below shows each valid bootmode and the associated bootmode switch configuration: \n\n![](../source/sysconfig/board/.meta/images/lp-am263_bootmode_switches.png) \n\n **Boot Mode** | **SW1.4 (SOP3)** | **SW1.3 (SOP2)** | **SW1.2 (SOP1)** | **SW1.1 (SOP0)** \n --------------------------------------|------------------|------------------|------------------|------------------\n **OSPI-OSPI (4S), 50MHz, SDR, 0x6B** |         0        |         0        |         0        |         0        \n **UART, XMODEM, 115200bps**          |         0        |         0        |         0        |         1        \n **OSPI-OSPI (1S), 50MHz, SDR, 0x0B** |         0        |         0        |         1        |         0        \n **OSPI (8S), SDR, 33 MHz, 0x8B**     |         0        |         0        |         1        |         1        \n **DevBoot**                          |         1        |         0        |         1        |         1        \n **xSPI (1S->8D), 20 MHz, SFDP**      |         1        |         1        |         0        |         0        \n **USB DFU**                          |         1        |         1        |         1        |         0        \n **Unsupported Boot Mode**            |         1        |         x        |         x        |         x        ",
+        },
+        "ADC_VREF_SWITCH" : { 
+            "displayName" : "ADC VREF Switch",
+            "longDescription" : "The ADC VREF Switch (S2) contains two single pole double throw switch that controls the input of the ADC VREF inputs of the AM261x SoC. \n\n![](../source/sysconfig/board/.meta/images/lp-am261_adc_dac_vref.png) \n\n  **ADC VREF Switch Position** | **Reference Selection**                                      \n------------------------------|--------------------------------------------------------------\n Pin 1-2                      | OPEN - Allow for reference to be AM261x on-die LDO reference \n Pin 2-3                      | External ADC VREF Header                                     \n Pin 4-5                      | OPEN - Allow for reference to be AM261x on-die LDO reference \n Pin 5-6                      | External ADC VREF Header                                     "
+        },
+        "DAC_VREF_SWITCH" : { 
+            "displayName" : "DAC VREF Switch",
+            "longDescription" : "The DAC VREF Switch (S1) is a single pole double throw switch that controls the input of the DAC VREF inputs of the AM261x SoC. \n\n![](../source/sysconfig/board/.meta/images/lp-am261_adc_dac_vref.png) \n\n  **DAC VREF Switch Position** | **Reference Selection**  \n------------------------------|--------------------------\n Pin 1-2                      | AM261x on-die LDO        \n Pin 2-3                      | External DAC VREF Header"
+        },
+        "ETHERNET PHY 1" : { 
+            "displayName" : "Ethernet PHY #1",
+            "longDescription" : "The AM261x LaunchPad utilizes a 48-pin ethernet PHY (DP83869HMRGZT) connected to either CPSW RGMII or one on-die programmable real-time unit and industrial communication subsystem (PRU-ICSS). The RGMII2 and PRU-ICSS MII0 (PR0_PRU0) signals are pinmuxed on the same AM261x pins. The PHY is configured to advertise 1-Gb operation. The ethernet data signals of the PHY are terminated to an RJ45 connector. The RJ45 connector is used on the board for Ethernet 10/100/1000 Mbps connectivity with integrated magnetics and LEDs for link and activity indication.",
+        },
+        "ETHERNET PHY 2" : { 
+            "displayName" : "Ethernet PHY #2",
+            "longDescription" : "The AM261x LaunchPad utilizes a 48-pin ethernet PHY (DP83869HMRGZT) connected to either CPSW RGMII or one on-die programmable real-time unit and industrial communication subsystem (PRU-ICSS). The RGMII1 and PRU-ICSS MII1 (PR0_PRU1) signals are pinmuxed on the same AM261x pins. The PHY is configured to advertise 1-Gb operation. The ethernet data signals of the PHY are terminated to an RJ45 connector. The RJ45 connector is used on the board for Ethernet 10/100/1000 Mbps connectivity with integrated magnetics and LEDs for link and activity indication.",
+        },
+        /* MCAN Transceiver */
+        "MCAN TRANSCEIVER" : {
+            "displayName"       : "MCAN Transceiver",
+            "description"       : "MCAN0 PHY",
+            "definition"        : "/board/components/mcan.json",
+            "longDescription"   : "The LaunchPad is equipped with a single MCAN Transceiver (TCAN1044VDRBTQ1) that is connected to the MCAN0 interface of the AM261x SoC. The MCAN Transceiver has two power inputs, VIO is the transceiver 3.3V system level shifting supply voltage and VCC is the transceiver 5 V supply voltage. The SoC CAN data transmit data input is mapped to TXD of the transceiver and the CAN receive data output of the transceiver is mapped to the MCAN RX signal of the SoC.",
+            "connections" : {
+                "TX" : "H1", /* MCAN0_TX */
+                "RX" : "H2"  /* MCAN0_RX */
+            }
+        },
+        
+        /* OSPI FLASH */
+        "OSPI0 FLASH" : {
+            "displayName"       : "OSPI Flash",
+            "description"       : "OSPI Flash Memory Device (U26)",
+            "longDescription"   : "The LP-AM261 has a 64Mb, 1.8V OSPI flash memory device (MX25UW6445GXDQ00) connected to the OSPI0 interface of the AM261x MCU. The OSPI flash device is powered by the 1.8V LDO output from the PMIC. The AM261x can boot from binary images flashed to this memory device connected to OSPI0."   
+        },
+
+        /* OSPI FLASH */
+        "OSPI1 PSRAM" : {
+            "displayName"       : "OSPI PSRAM",
+            "description"       : "OSPI PSRAM Device (U51)",
+            "longDescription"   : "The LP-AM261 has a 128Mb, 1.8V PSRAM memory device (APS12808L-OBMX-BA) connected to the OSPI1 interface of the AM261x MCU. The OSPI PSRAM is powered by the 1.8V LDO output from the PMIC. The AM261x can utilize this interface for external memory."   
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

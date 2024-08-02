@@ -41,6 +41,10 @@ function pinmuxRequirements(inst) {
         displayName: "MCAN Instance",
         interfaceName: interfaceName,
         resources: resources,
+        signalTypes: {
+            RX: "RX",
+            TX: "TX"
+        }
     };
 
     return [peripheral];
@@ -418,6 +422,11 @@ function validate(inst, report) {
         report.logError("Callback function MUST be provided for callback transfer mode", inst, "transferCallbackFxn");
     }
     common.validate.checkNumberRange(inst, report, "intrPriority", 0, hwi.getHwiMaxPriority(), "dec");
+}
+
+function filterHardware(component)
+{
+    return (common.typeMatches(component.type, ["MCAN"]));
 }
 
 let MCAN_elemSize = [
@@ -1600,6 +1609,7 @@ let mcan_module = {
     getClockEnableIds,
     getClockFrequencies,
     onMigrate,
+    filterHardware:filterHardware
 };
 
 function onMigrate(newInst, oldInst, oldSystem) {

@@ -1,0 +1,861 @@
+/*
+ * Copyright (c) 2018-2020 Texas Instruments Incorporated - http://www.ti.com
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * *  Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ * *  Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * *  Neither the name of Texas Instruments Incorporated nor the names of
+ *    its contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ */
+
+/*
+ *  ======== TMDSCNCD263P.syscfg.json ========
+ *  Board schematic: Refer to https://www.ti.com/tool/TMDSCNCD263P
+ */
+
+ {
+    "name"        : "TMDSCNCD263P",
+    "displayName" : "AM263Px ControlCard",
+    "device"      : "AM263Px",
+    "part"        : "AM263P4",
+    "package"     : "ZCZ_S",
+    "headers"     : [
+        {
+            "type": "HSEC",
+            "default": true,
+            "name": "HSEC 1",
+            "displayName": "HSEC Header 1 (pins 1-120)",
+            "dimensions": {
+                "columns": [
+                    { "top": 1, "increment": 2, "bottom": 119 },
+                    { "top": 2, "increment": 2, "bottom": 120 },
+                    { "blank": true },
+                    { "top": 121, "increment": 2, "bottom": 179 },
+                    { "top": 122, "increment": 2, "bottom": 180 }
+                ]
+            },
+            "pins": [
+                    {   "number" :  1,                       "name" : "NC"                              },
+                    {   "number" :  2,                       "name" : "NC"                              },
+                    {   "number" :  3,   "ball" : "D5" ,     "name" : "TMS"                             },
+                    {   "number" :  4,                       "name" : "NC"                              },
+                    {   "number" :  5,   "ball" : "B3" ,     "name" : "TCK"                             },
+                    {   "number" :  6,   "ball" : "C4" ,     "name" : "TDO"                             },
+                    {   "number" :  7,                       "name" : "GND"                             },
+                    {   "number" :  8,   "ball" : "C5" ,     "name" : "TDI"                             },
+                    {   "number" :  9,   "ball" : "V15",     "name" : "ADC0_AIN0/DAC_OUT"               },
+                    {   "number" : 10,                       "name" : "GND"                             },
+                    {   "number" : 11,   "ball" : "U15",     "name" : "ADC0_AIN1/DAC_OUT"               },
+                    {   "number" : 12,   "ball" : "T11",     "name" : "ADC1_AIN0"                       },
+                    {   "number" : 13,                       "name" : "GND"                             },    
+                    {   "number" : 14,   "ball" : "U11",     "name" : "ADC1_AIN1"                       },
+                    {   "number" : 15,   "ball" : "T14",     "name" : "ADC0_AIN2"                       },
+                    {   "number" : 16,                       "name" : "GND"                             },
+                    {   "number" : 17,   "ball" : "U14",     "name" : "ADC0_AIN3"                       },
+                    {   "number" : 18,   "ball" : "T12",     "name" : "ADC1_AIN2"                       },
+                    {   "number" : 19,                       "name" : "GND"                             },
+                    {   "number" : 20,   "ball" : "V12",     "name" : "ADC1_AIN3"                       },
+                    {   "number" : 21,   "ball" : "U13",     "name" : "ADC0_AIN4"                       },
+                    {   "number" : 22,                       "name" : "GND"                             },
+                    {   "number" : 23,   "ball" : "R14",     "name" : "ADC0_AIN5"                       },
+                    {   "number" : 24,   "ball" : "U12",     "name" : "ADC1_AIN4"                       },
+                    {   "number" : 25,   "ball" : "U6" ,     "name" : "ADC4_AIN0/ADC_R0_AIN0/ADC_CAL0"  },
+                    {   "number" : 26,   "ball" : "R12",     "name" : "ADC1_AIN5"                       },
+                    {   "number" : 27,   "ball" : "V5" ,     "name" : "ADC4_AIN1/ADC_R0_AIN1/ADC_CAL1"  },
+                    {   "number" : 28,   "ball" : "U7" ,     "name" : "ADC3_AIN0/ADC_R0_AIN2"           },
+                    {   "number" : 29,                       "name" : "GND"                             },
+                    {   "number" : 30,   "ball" : "U8" ,     "name" : "ADC3_AIN1/ADC_R0_AIN3"           },
+                    {   "number" : 31,   "ball" : "R10",     "name" : "ADC2_AIN0/ADC_R1_AIN0"           },
+                    {   "number" : 32,                       "name" : "GND"                             },
+                    {   "number" : 33,   "ball" : "T10",     "name" : "ADC2_AIN1/ADC_R1_AIN1"           },
+                    {   "number" : 34,   "ball" : "T7" ,     "name" : "ADC3_AIN2/ADC_R1_AIN2"           },
+                    {   "number" : 35,                       "name" : "GND"                             },
+                    {   "number" : 36,   "ball" : "R7" ,     "name" : "ADC3_AIN3/ADC_R1_AIN3"           },
+                    {   "number" : 37,   "ball" : "U10",     "name" : "ADC2_AIN2"                       },
+                    {   "number" : 38,                       "name" : "GND"                             },
+                    {   "number" : 39,   "ball" : "T9" ,     "name" : "ADC2_AIN3"                       },
+                    {   "number" : 40,   "ball" : "V8" ,     "name" : "ADC3_AIN4"                       },
+                    {   "number" : 41,                       "name" : "NC"                              },
+                    {   "number" : 42,   "ball" : "U9" ,     "name" : "ADC3_AIN5"                       },
+                    {   "number" :  43,                      "name" : "GND"                             },
+                    {   "number" :  44,                      "name" : "NC"                              },
+                    {   "number" :  45,                      "name" : "VREF_3V3"                        },
+                    {   "number" :  46,                      "name" : "GND"                             },
+                    {   "number" :  47,                      "name" : "GND"                             },
+                    {   "number" :  48,                      "name" : "5V0"                             },
+                    {   "number" :  49,   "ball" : "B2" ,    "name" : "EPWM0_A"                         },
+                    {   "number" :  50,   "ball" : "C2" ,    "name" : "EPWM2_A"                         },
+                    {   "number" :  51,   "ball" : "B1" ,    "name" : "EPWM0_B"                         },
+                    {   "number" :  52,   "ball" : "C1" ,    "name" : "EPWM2_B"                         },
+                    {   "number" :  53,   "ball" : "D3" ,    "name" : "EPWM1_A"                         },
+                    {   "number" :  54,   "ball" : "E2" ,    "name" : "EPWM3_A"                         },
+                    {   "number" :  55,   "ball" : "D2" ,    "name" : "EPWM1_B"                         }, 
+                    {   "number" :  56,   "ball" : "E3" ,    "name" : "EPWM3_B"                         },
+                    {   "number" :  57,   "ball" : "D1" ,    "name" : "EPWM4_A"                         },
+                    {   "number" :  58,   "ball" : "E1" ,    "name" : "EPWM6_A"                         },
+                    {   "number" :  59,   "ball" : "E4" ,    "name" : "EPWM4_B"                         },
+                    {   "number" :  60,   "ball" : "F3" ,    "name" : "EPWM6_B"                         },
+                    {   "number" :  61,   "ball" : "F2" ,    "name" : "EPWM5_A"                         },
+                    {   "number" :  62,   "ball" : "F4" ,    "name" : "EPWM7_A"                         },
+                    {   "number" :  63,   "ball" : "G2" ,    "name" : "EPWM5_B"                         },
+                    {   "number" :  64,   "ball" : "F1" ,    "name" : "EPWM7_B"                         },
+                    {   "number" :  65,                      "name" : "GND"                             },
+                    {   "number" :  66,                      "name" : "NC"                              },
+                    {   "number" :  67,   "ball" : "C10",    "name" : "SPI0_D0"                         },
+                    {   "number" :  68,   "ball" : "D15",    "name" : "EQEP1_A"                         },
+                    {   "number" :  69,   "ball" : "B11",    "name" : "SPI0_D1"                         },
+                    {   "number" :  70,   "ball" : "C15",    "name" : "EQEP1_B"                         },
+                    {   "number" :  71,   "ball" : "A11",    "name" : "SPI0_CLK"                        },
+                    {   "number" :  72,   "ball" : "B16",    "name" : "EQEP1_STROBE"                    },
+                    {   "number" :  73,   "ball" : "C11",    "name" : "SPI0_CS0"                        },
+                    {   "number" :  74,   "ball" : "P2" ,    "name" : "EQEP1_INDEX"                     },
+                    {   "number" :  75,   "ball" : "B10",    "name" : "SPI1_D0"                         },
+                    {   "number" :  76,   "ball" : "A9" ,    "name" : "UART1_RXD"                       },
+                    {   "number" :  77,   "ball" : "D9" ,    "name" : "SPI1_D1"                         },
+                    {   "number" :  78,   "ball" : "B9" ,    "name" : "UART1_TXD"                       },
+                    {   "number" :  79,   "ball" : "A10",    "name" : "SPI1_CLK"                        },
+                    {   "number" :  80,   "ball" : "G4" ,    "name" : "MCAN5_RX"                        },
+                    {   "number" :  81,   "ball" : "C9" ,    "name" : "SPI1_CS0"                        },
+                    {   "number" :  82,   "ball" : "J3" ,    "name" : "MCAN5_TX"                        },
+                    {   "number" :  83,                      "name" : "GND"                             },
+                    {   "number" :  84,                      "name" : "5V0"                             },
+                    {   "number" :  85,   "ball" : "C8" ,    "name" : "I2C1_SDA"                        },
+                    {   "number" :  86,   "ball" : "H1" ,    "name" : "EPWM11_A"                        },
+                    {   "number" :  87,   "ball" : "D7" ,    "name" : "I2C1_SCL"                        },
+                    {   "number" :  88,                      "name" : "NC"                              },
+                    {   "number" :  89,   "ball" : "L17",    "name" : "EPWM21_A"                        },
+                    {   "number" :  90,   "ball" : "L18",    "name" : "EPWM21_B"                        },
+                    {   "number" :  91,   "ball" : "D14",    "name" : "SDFM0_D0"                        },
+                    {   "number" :  92,   "ball" : "B13",    "name" : "EQEP2_A"                         },
+                    {   "number" :  93,   "ball" : "A13",    "name" : "EQEP2_B"                         },
+                    {   "number" :  94,   "ball" : "A12",    "name" : "EQEP2_INDEX"                     },
+                    {   "number" :  95,   "ball" : "B12",    "name" : "EQEP2_STROBE"                    },
+                    {   "number" :  96,                      "name" : "NC"                              },
+                    {   "number" :  97,                      "name" : "GND"                             },
+                    {   "number" :  98,   "ball" : "N16",    "name" : "GPIO41"                          },
+                    {   "number" :  99,   "ball" : "D13",    "name" : "SDFM0_D1"                        },
+                    {   "number" :  100,  "ball" : "A14",    "name" : "EQEP0_B"                         },
+                    {   "number" :  101,  "ball" : "A16",    "name" : "SDFM0_CLK1"                      },
+                    {   "number" :  102,  "ball" : "B14",    "name" : "EQEP0_A"                         },
+                    {   "number" :  103,  "ball" : "C13",    "name" : "SDFM0_D2"                        },
+                    {   "number" :  104,  "ball" : "C12",    "name" : "EQEP0_STROBE"                    },
+                    {   "number" :  105,  "ball" : "B15",    "name" : "SDFM0_CLK2"                      },
+                    {   "number" :  106,  "ball" : "D11",    "name" : "EQEP0_INDEX"                     },
+                    {   "number" :  107,  "ball" : "C14",    "name" : "SDFM0_D3"                        },
+                    {   "number" :  108,  "ball" : "G17",    "name" : "MII0_RXER"                       },
+                    {   "number" :  109,  "ball" : "A15",    "name" : "SDFM0_CLK3"                      },
+                    {   "number" :  110,  "ball" : "F17",    "name" : "MII0_COL"                        },
+                    {   "number" :  111,                     "name" : "GND"                             },
+                    {   "number" :  112,                     "name" : "5V0"                             },
+                    {   "number" :  113,                     "name" : "NC"                              },
+                    {   "number" :  114,                     "name" : "PMIC_WKUP1"                      },
+                    {   "number" :  115,                     "name" : "NC"                              },
+                    {   "number" :  116,                     "name" : "NC"                              },
+                    {   "number" :  117,                     "name" : "5V0"                             },
+                    {   "number" :  118,                     "name" : "5V0"                             },
+                    {   "number" :  119,                     "name" : "VSYS_3V3_LDO1"                   },
+                    {   "number" :  120,  "ball" : "R2" ,    "name" : "PORz"                            },
+                    
+                    {   "number" :  121,  "ball" : "G18",    "name" : "PR0_PRU0_GPIO10"                 },
+                    {   "number" :  122,  "ball" : "G15",    "name" : "PR0_PRU0_GPIO8"                  },
+                    {   "number" :  123,  "ball" : "K15",    "name" : "PR0_PRU0_GPIO6"                  },
+                    {   "number" :  124,  "ball" : "K16",    "name" : "PR0_PRU0_GPIO4"                  },
+                    {   "number" :  125,  "ball" : "K17",    "name" : "PR0_PRU0_GPIO0"                  },
+                    {   "number" :  126,  "ball" : "K18",    "name" : "PR0_PRU0_GPIO1"                  },
+                    {   "number" :  127,  "ball" : "J18",    "name" : "PR0_PRU0_GPIO2"                  },
+                    {   "number" :  128,  "ball" : "J17",    "name" : "PR0_PRU0_GPIO3"                  },
+                    {   "number" :  129,  "ball" : "H18",    "name" : "PR0_PRU0_GPIO16"                 },
+                    {   "number" :  130,  "ball" : "L16",    "name" : "PR0_PRU0_GPIO15"                 },
+                    {   "number" :  131,  "ball" : "M16",    "name" : "PR0_PRU0_GPIO11"                 },
+                    {   "number" :  132,  "ball" : "M15",    "name" : "PR0_PRU0_GPIO12"                 },
+                    {   "number" :  133,  "ball" : "H17",    "name" : "PR0_PRU0_GPIO13"                 },
+                    {   "number" :  134,  "ball" : "H16",    "name" : "PR0_PRU0_GPIO14"                 },
+                    {   "number" :  135,                     "name" : "GND"                             },
+                    {   "number" :  136,                     "name" : "NC"                              },
+                    {   "number" :  137,  "ball" : "F15",    "name" : "PR0_PRU1_GPIO5"                  },
+                    {   "number" :  138,  "ball" : "C18",    "name" : "PR0_PRU1_GPIO9"                  },
+                    {   "number" :  139,  "ball" : "D17",    "name" : "PR0_PRU1_GPIO10"                 },
+                    {   "number" :  140,  "ball" : "D18",    "name" : "PR0_PRU1_GPIO8"                  },
+                    {   "number" :  141,  "ball" : "E16",    "name" : "PR0_PRU1_GPIO6"                  },
+                    {   "number" :  142,  "ball" : "F16",    "name" : "PR0_PRU1_GPIO4"                  },
+                    {   "number" :  143,  "ball" : "F18",    "name" : "PR0_PRU1_GPIO0"                  },
+                    {   "number" :  144,  "ball" : "G16",    "name" : "PR0_PRU1_GPIO1"                  },
+                    {   "number" :  145,  "ball" : "E17",    "name" : "PR0_PRU1_GPIO2"                  },
+                    {   "number" :  146,  "ball" : "E18",    "name" : "PR0_PRU1_GPIO3"                  },
+                    {   "number" :  147,  "ball" : "C16",    "name" : "PR0_PRU1_GPIO16"                 },
+                    {   "number" :  148,  "ball" : "A17",    "name" : "PR0_PRU1_GPIO15"                 },
+                    {   "number" :  149,  "ball" : "B18",    "name" : "PR0_PRU1_GPIO11"                 },
+                    {   "number" :  150,  "ball" : "B17",    "name" : "PR0_PRU1_GPIO12"                 },
+                    {   "number" :  151,  "ball" : "D16",    "name" : "PR0_PRU1_GPIO13"                 },
+                    {   "number" :  152,  "ball" : "C17",    "name" : "PR0_PRU1_GPIO14"                 },
+                    {   "number" :  153,  "ball" : "K4" ,    "name" : "EPWM13_A"                        },
+                    {   "number" :  154,  "ball" : "K3" ,    "name" : "EPWM13_B"                        },
+                    {   "number" :  155,                     "name" : "NC"                              },
+                    {   "number" :  156,                     "name" : "NC"                              },
+                    {   "number" :  157,                     "name" : "GND"                             },
+                    {   "number" :  158,                     "name" : "5V0"                             },
+                    {   "number" :  159,                     "name" : "NC"                              },
+                    {   "number" :  160,                     "name" : "NC"                              },
+                    {   "number" :  161,  "ball" : "B8" ,    "name" : "UART2_RXD"                       },
+                    {   "number" :  162,  "ball" : "A8" ,    "name" : "UART2_TXD"                       },
+                    {   "number" :  163,  "ball" : "B6" ,    "name" : "MMC0_CLK"                        },
+                    {   "number" :  164,  "ball" : "A4" ,    "name" : "MMC0_CMD"                        },
+                    {   "number" :  165,  "ball" : "B5" ,    "name" : "MMC0_D0"                         },
+                    {   "number" :  166,  "ball" : "B4" ,    "name" : "MMC0_D1"                         },
+                    {   "number" :  167,  "ball" : "A3" ,    "name" : "MMC0_D2"                         },
+                    {   "number" :  168,  "ball" : "A2" ,    "name" : "MMC0_D3"                         },
+                    {   "number" :  169,  "ball" : "C6" ,    "name" : "MMC0_WP"                         },
+                    {   "number" :  170,  "ball" : "A5" ,    "name" : "MMC0_SDCD"                       },
+                    {   "number" :  171,                     "name" : "PMIC_COMP2_IN+"                  },
+                    {   "number" :  172,                     "name" : "PMIC_WKUP2"                      },      
+                    {   "number" :  173,                     "name" : "PMIC_COMP2_IN-"                  },
+                    {   "number" :  174,                     "name" : "NC"                              },
+                    {   "number" :  175,                     "name" : "PMIC_COMP1_IN+"                  },
+                    {   "number" :  176,                     "name" : "NC"                              },
+                    {   "number" :  177,                     "name" : "PMIC_COMP1_IN-"                  },
+                    {   "number" :  178,                     "name" : "PMIC_SAFE_OUT2"                  },
+                    {   "number" :  179,                     "name" : "GND"                             },
+                    {   "number" :  180,                     "name" : "5V0"                             }
+            ]
+        },
+        {
+            "type": "Header",
+            "default": true,
+            "name": "Ethernet Add-on Board Connector",
+            "displayName": "Ethernet Add-on Board Connector",
+            "dimensions": {
+                "columns": [
+                    { "top" : 1, "bottom" : 47, "increment" : 1 },
+                    { "top" : 2, "bottom" : 48, "increment" : 1 }
+                ]
+            },
+            "pins": [
+                {   "number" :  1,                      "name" : "GND"                  },
+                {   "number" :  2,                      "name" : "EXT_VMON2"            },
+                {   "number" :  3,  "ball" : "C16",     "name" : "ICSSM_MII1_TXCLK"     },
+                {   "number" :  4,                      "name" : "VDD_2V5"              },
+                {   "number" :  5,                      "name" : "GND"                  },
+                {   "number" :  6,                      "name" : "VDD_2V5"              },
+                {   "number" :  7,  "ball" : "M16",     "name" : "ICSSM_MII1_TXD0"      },
+                {   "number" :  8,                      "name" : "GND"                  },
+                {   "number" :  9,  "ball" : "M15",     "name" : "ICSSM_MII1_TXD1"      },
+                {   "number" : 10,  "ball" : "K2" ,     "name" : "ICSSM_PWDN/INTn"      },
+                {   "number" : 11,  "ball" : "H17",     "name" : "ICSSM_MII1_TXD2"      },
+                {   "number" : 12,                      "name" : "ICSSM_RESETn"         },
+                {   "number" : 13,  "ball" : "H16",     "name" : "ICSSM_MII1_TXD3"      },    
+                {   "number" : 14,  "ball" : "C18",     "name" : "ICSSM_MII1_COL"       },
+                {   "number" : 15,                      "name" : "GND"                  },
+                {   "number" : 16,                      "name" : "GND"                  },
+                {   "number" : 17,                      "name" : "GND"                  },
+                {   "number" : 18,                      "name" : "GND"                  },
+                {   "number" : 19,  "ball" : "E16",     "name" : "ICSSM_MII1_RXCLK"     },
+                {   "number" : 20,  "ball" : "L18",     "name" : "PR0_MDIO0_MDC"        },
+                {   "number" : 21,                      "name" : "GND"                  },
+                {   "number" : 22,  "ball" : "L17",     "name" : "PR0_MDIO0_MDIO"       },
+                {   "number" : 23,  "ball" : "F18",     "name" : "ICSSM_MII1_RXD0"      },
+                {   "number" : 24,                      "name" : "GND"                  },
+                {   "number" : 25,  "ball" : "G16",     "name" : "ICSSM_MII1_RXD1"      },
+                {   "number" : 26,                      "name" : "ICSSM_INH"            },
+                {   "number" : 27,  "ball" : "E17",     "name" : "ICSSM_MII1_RXD2"      },
+                {   "number" : 28,                      "name" : "PR0_PRU1_REF_CLK"     },
+                {   "number" : 29,  "ball" : "E18",     "name" : "ICSSM_MII1_RXD3"      },
+                {   "number" : 30,  "ball" : "D17",     "name" : "ICSSM_MII1_CRS"       },
+                {   "number" : 31,                      "name" : "GND"                  },
+                {   "number" : 32,                      "name" : "GND"                  },
+                {   "number" : 33,                      "name" : "GND"                  },
+                {   "number" : 34,                      "name" : "GND"                  },
+                {   "number" : 35,  "ball" : "A17",     "name" : "ICSSM_MII1_TXEN"      },
+                {   "number" : 36,                      "name" : "ICSSM_BRD_CONN_DET"   },
+                {   "number" : 37,                      "name" : "ETH_EEPROM_A2"        },
+                {   "number" : 38,  "ball" : "F4" ,     "name" : "1588_SFD"             },
+                {   "number" : 39,  "ball" : "F15",     "name" : "ICSSM_MII1_RXER"      },
+                {   "number" : 40,  "ball" : "A13",     "name" : "I2C0_SCL"             },
+                {   "number" : 41,                      "name" : "GND"                  },
+                {   "number" : 42,  "ball" : "B13",     "name" : "I2C0_SDA"             },
+                {   "number" : 43,  "ball" : "D18",     "name" : "ICSSM_MII1_RXLINK"    },
+                {   "number" : 44,                      "name" : "VDDIO"                },
+                {   "number" : 45,  "ball" : "F16",     "name" : "ICSSM_MII1_RXDV"      },
+                {   "number" : 46,                      "name" : "VDDIO"                },
+                {   "number" : 47,                      "name" : "ETH_EEPROM_A0"        },
+                {   "number" : 48,                      "name" : "CLKOUT"               }
+            ]
+        },
+        {
+            "type": "Header",
+            "default": true,
+            "name": "FSI Connector",
+            "displayName": "Connector for Fast Serial Interface",
+            "dimensions": {
+                "columns": [
+                    { "top" : 1, "bottom" : 9, "increment" : 2 },
+                    { "top" : 2, "bottom" : 10, "increment" : 2}
+                ]
+            },
+            "pins": [
+                    {   "number" :  1  ,  "ball" : "J2",     "name" : "FSIRX2_CLK"       },
+                    {   "number" :  2  ,  "ball" : "G3",     "name" : "FSITX2_CLK"       },
+                    {   "number" :  3  ,                     "name" : "GND"              },
+                    {   "number" :  4  ,                     "name" : "GND"              },
+                    {   "number" :  5  ,  "ball" : "G4",     "name" : "FSIRX2_DATA0"     },
+                    {   "number" :  6  ,  "ball" : "H2",     "name" : "FSITX2_DATA0"     },
+                    {   "number" :  7  ,  "ball" : "J3",     "name" : "FSIRX2_DATA1"     },
+                    {   "number" :  8  ,  "ball" : "G1",     "name" : "FSITX2_DATA1"     },
+                    {   "number" :  9  ,                     "name" : "GND"              },
+                    {   "number" :  10 ,                     "name" : "VSYS_IO_3V3"      }
+            ]
+        },
+
+        {
+            "type": "Header",
+            "default": true,
+            "name": "SYNC0 Header",
+            "displayName": "Header - SYNC0",
+            "dimensions": {
+                "columns": [
+                    { "top": 1, "increment": 1, "bottom": 2 }
+                ]
+            },
+            "pins": [
+                    {   "number" :  1  ,  "ball" : "D15",     "name" : "PR0_IEP0_EDC_SYNC_OUT0"       },
+                    {   "number" :  2  ,                      "name" : "GND"                          }
+                    
+            ]
+        },
+        {
+            "type": "Header",
+            "default": true,
+            "name": "DIO30 Header",
+            "displayName": "Header - DIO30",
+            "dimensions": {
+                "columns": [
+                    { "top": 1, "increment": 1, "bottom": 2 }
+                ]
+            },
+            "pins": [
+                    {   "number" :  1  ,  "ball" : "D13",     "name" : "PR0_IEP0_EDIO_DATA_IN_OUT30"  },
+                    {   "number" :  2  ,                      "name" : "GND"                          }
+                    
+            ]
+        },
+        {
+            "type": "Header",
+            "default": true,
+            "name": "SYNC1 Header",
+            "displayName": "Header - SYNC1",
+            "dimensions": {
+                "columns": [
+                    { "top": 1, "increment": 1, "bottom": 2 }
+                ]
+            },
+            "pins": [
+                    {   "number" :  1  ,  "ball" : "A16",     "name" : "PR0_IEP0_EDC_SYNC_OUT1"       },
+                    {   "number" :  2  ,                      "name" : "GND"                          }
+                    
+            ]
+        },
+        {
+            "type": "Header",
+            "default": true,
+            "name": "DIO31 Header",
+            "displayName": "Header - DIO31",
+            "dimensions": {
+                "columns": [
+                    { "top": 1, "increment": 1, "bottom": 2 }
+                ]
+            },
+            "pins": [
+                    {   "number" :  1  ,  "ball" : "C15",     "name" : "PR0_IEP0_EDIO_DATA_IN_OUT31"  },
+                    {   "number" :  2  ,                      "name" : "GND"                          }
+                    
+            ]
+        }
+    ],
+    "components": {
+        "HSEC" : {
+            "displayName"       : "Standard HSEC Module Locations",
+            "description"       : "Standard HSEC module locations on 120-pin and 60-pin HSEC pins",
+            "longDescription"   : "All TI Control Cards follow standard HSEC locations to ensure compatibility with HSEC peripherals.",
+            "subComponents" : {
+                "ADC0" :   {
+                    "displayName" : "ADC0",
+                    "description" : "ADC0",
+                    "longDescription" : "This Control Card features standard locations for the ADC0 peripheral. ADC0 analog input channels 0, 1, 2, 3, 4, 5 are accessible on HSEC pins 9, 11, 15, 17, 21 and 23, respectively.",
+                },
+                "ADC1" :   {
+                    "displayName" : "ADC1",
+                    "description" : "ADC1",
+                    "longDescription" : "This Control Card features standard locations for the ADC1 peripheral. ADC1 analog input channels 0, 1, 2, 3, 4, 5 are accessible on HSEC pins 12, 14, 18, 20, 24 and 26, respectively.",
+                },
+                "ADC2" :   {
+                    "displayName" : "ADC2",
+                    "description" : "ADC2",
+                    "longDescription" : "This Control Card features standard locations for the ADC2 peripheral. ADC2 analog input channels 0, 1, 2, 3 are accessible on HSEC pins 31, 33, 37 and 39, respectively.",
+                },
+                "ADC3" :   {
+                    "displayName" : "ADC3",
+                    "description" : "ADC3",
+                    "longDescription" : "This Control Card features standard locations for the ADC3 peripheral. ADC3 analog input channels 0, 1, 2, 3, 4, 5 are accessible on HSEC pins 28, 30, 34, 36, 40 and 42, respectively.",
+                },
+                "ADC4" :   {
+                    "displayName" : "ADC4",
+                    "description" : "ADC4",
+                    "longDescription" : "This Control Card features standard locations for the ADC4 peripheral. ADC4 analog input channels 0, 1 are accessible on HSEC pins 25 and 27, respectively.",
+                },
+                "ADC_R0" :   {
+                    "displayName" : "ADC_R0",
+                    "description" : "ADC_R0",
+                    "longDescription" : "This Control Card brings out the inputs to the ADC_R0 peripheral to the HSEC. ADC_R0 analog input channels 0, 1, 2, 3 are accessible on HSEC pins 25, 27, 28 and 30, respectively. In order to route ADC_R0 signals to HSEC, the following ADC_MUX_SEL signals must be set using the I2C-controlled IO Expander: \n\n | **ADC_R0 Input** | **SEL Signal** | **IO Expander Output** | **SEL Signal State** \n------------------|----------------|------------------------|----------------------\n ADC_R0_AIN0      |  ADC5_MUX_SEL / ADC2_MUX_SEL  |           P10 / P17          |         HIGH / HIGH         \n ADC_R0_AIN1      |  ADC3_MUX_SEL / ADC2_MUX_SEL  |           P05 / P17          |         HIGH / HIGH         \n ADC_R0_AIN2      |  ADC4_MUX_SEL  |           P06          |         HIGH         \n ADC_R0_AIN3      |  ADC4_MUX_SEL  |           P06          |         HIGH         | ",
+                },
+                "ADC_R1" :   {
+                    "displayName" : "ADC_R1",
+                    "description" : "ADC_R1",
+                    "longDescription" : "This Control Card brings out the inputs to the ADC_R1 peripheral to the HSEC. ADC_R1 analog input channels 0, 1, 2, 3 are accessible on HSEC pins 31, 33, 34 and 36, respectively. In order to route ADC_R1 signals to HSEC, the following ADC_MUX_SEL signals must be set using the I2C-controlled IO Expander: \n\n | **ADC_R0 Input** | **SEL Signal** | **IO Expander Output** | **SEL Signal State** \n------------------|----------------|------------------------|----------------------\n ADC_R1_AIN0      |  ADC5_MUX_SEL  |           P10          |         HIGH         \n ADC_R1_AIN1      |  ADC3_MUX_SEL  |           P05          |         HIGH         \n ADC_R1_AIN2      |  ADC4_MUX_SEL  |           P06          |         HIGH         \n ADC_R1_AIN3      |  ADC4_MUX_SEL  |           P06          |         HIGH         | ",
+                },
+                "ADC_CAL[1:0]" :   {
+                    "displayName" : "ADC_CAL[1:0]",
+                    "description" : "ADC_CAL[1:0]",
+                    "longDescription" : "This Control Card brings out inputs [1:0] to the ADC_CAL peripheral to the HSEC. ADC_CAL0 is accessible on HSEC pin 25 and ADC_CAL1 is accessible on HSEC pin 27. In order to route ADC_CAL signals to HSEC, the following ADC_MUX_SEL signals must be set using the I2C-controlled IO Expander: \n\n| **ADC_CAL** | **SEL Signal**              | **IO Expander Output** | **SEL Signal State** \n-------------|-----------------------------|------------------------|----------------------\n ADC_CAL0    | ADC5_MUX_SEL / ADC2_MUX_SEL |        P10 / P17       |      LOW / HIGH     \n ADC_CAL1    | ADC3_MUX_SEL / ADC2_MUX_SEL |        P05 / P17       |      LOW / HIGH     |",
+                },
+                "DAC_OUT" :   {
+                    "displayName" : "DAC_OUT",
+                    "description" : "DAC_OUT",
+                    "longDescription" : "This Control Card routes the DAC_OUT signal to the HSEC. DAC_OUT is accessible on HSEC pin 9 or 11. In order to route DAC_OUT signals to HSEC, the following ADC_MUX_SEL signal must be set using the I2C-controlled IO Expander: \n\n|         | **SEL Signal** | **IO Expander Output** | **SEL Signal State** \n---------|----------------|------------------------|----------------------\n DAC_OUT |  ADC1_MUX_SEL  |           P16          |         HIGH         |",
+                },
+
+                "EPWM0" :   {
+                    "displayName" : "EPWM0",
+                    "description" : "EPWM0",
+                    "longDescription" : "This Control Card features standard locations for the EPWM peripheral located on HSEC pins 49 and 51.",
+                    "definition"    : "board/components/standard_epwm.json",
+                    "connections" : {
+                        "A" : "B2",
+                        "B" : "B1"
+                    }
+                },
+                "EPWM1" :   {
+                    "displayName" : "EPWM1",
+                    "description" : "EPWM1",
+                    "longDescription" : "This Control Card features standard locations for the EPWM peripheral located on HSEC pins 53 and 55.",
+                    "definition"    : "board/components/standard_epwm.json",
+                    "connections" : {
+                        "A" : "D3",
+                        "B" : "D2"
+                    }
+                },
+                "EPWM2" :   {
+                    "displayName" : "EPWM2",
+                    "description" : "EPWM2",
+                    "longDescription" : "This Control Card features standard locations for the EPWM peripheral located on HSEC pins 50 and 52.",
+                    "definition"    : "board/components/standard_epwm.json",
+                    "connections" : {
+                        "A" : "C2",
+                        "B" : "C1"
+                    }
+                },
+                "EPWM3" :   {
+                    "displayName" : "EPWM3",
+                    "description" : "EPWM3",
+                    "longDescription" : "This Control Card features standard locations for the EPWM peripheral located on HSEC pins 54 and 56.",
+                    "definition"    : "board/components/standard_epwm.json",
+                    "connections" : {
+                        "A" : "E2",
+                        "B" : "E3"
+                    }
+                },
+                "EPWM4" :   {
+                    "displayName" : "EPWM4",
+                    "description" : "EPWM4",
+                    "longDescription" : "This Control Card features standard locations for the EPWM peripheral located on HSEC pins 57 and 59.",
+                    "definition"    : "board/components/standard_epwm.json",
+                    "connections" : {
+                        "A" : "D1",
+                        "B" : "E4"
+                    }
+                },
+                "EPWM5" :   {
+                    "displayName" : "EPWM5",
+                    "description" : "EPWM5",
+                    "longDescription" : "This Control Card features standard locations for the EPWM peripheral located on HSEC pins 61 and 63.",
+                    "definition"    : "board/components/standard_epwm.json",
+                    "connections" : {
+                        "A" : "F2",
+                        "B" : "G2"
+                    }
+                },
+                "EPWM6" :   {
+                    "displayName" : "EPWM6",
+                    "description" : "EPWM6",
+                    "longDescription" : "This Control Card features standard locations for the EPWM peripheral located on HSEC pins 58 and 60.",
+                    "definition"    : "board/components/standard_epwm.json",
+                    "connections" : {
+                        "A" : "E1",
+                        "B" : "F3"
+                    }
+                },
+                "EPWM7" :   {
+                    "displayName" : "EPWM7",
+                    "description" : "EPWM7",
+                    "longDescription" : "This Control Card features standard locations for the EPWM peripheral located on HSEC pins 62 and 64.",
+                    "definition"    : "board/components/standard_epwm.json",
+                    "connections" : {
+                        "A" : "F4",
+                        "B" : "F1"
+                    }
+                },
+                "SPI0" :   {
+                    "displayName" : "SPI0",
+                    "description" : "SPI0",
+                    "longDescription" : "This Control Card features standard locations for the SPI peripheral located on HSEC pins 67, 69, 71, 73.",
+                    "definition"    : "board/components/standard_spi.json",
+                    "connections" : {
+                        "CLK" : "A11",
+                        "CS0" : "C11",
+                        "D0"  : "C10",
+                        "D1"  : "B11"
+                    }
+                },
+                "SPI1" :   {
+                    "displayName" : "SPI1",
+                    "description" : "SPI1",
+                    "longDescription" : "This Control Card features standard locations for the SPI peripheral located on HSEC pins 75, 77, 79, 81.",
+                    "definition"    : "board/components/standard_spi.json",
+                    "connections" : {
+                        "CLK" : "A10",
+                        "CS0" : "C9",
+                        "D0"  : "B10",
+                        "D1"  : "D9"
+                    }
+                },
+                "I2C1" : {
+                    "displayName"       : "I2C1",
+                    "description"       : "I2C1",
+                    "longDescription"   : "This Control Card features standard locations for the I2C peripheral located on HSEC pins 85 and 87.",
+                    "definition"        : "/board/components/i2c.json" ,
+                    "connections" : {
+                        "SCL" : "D7" , /* I2C1_SCL */
+                        "SDA" : "C8"   /* I2C1_SDA */
+                    }
+                },
+                "SDFM0" : {
+                    "displayName"       : "SDFM0" ,
+                    "description"       : "SDFM0" ,
+                    "longDescription"   : "This Control Card features standard locations the SDFM peripheral located on HSEC pins 99, 101, 103, 105, 107, 109.",
+                    "definition"        : "/board/components/sdfm.json" ,
+                    "connections" : {
+                        "D1" : "D13" , 
+                        "D2" : "C13" , 
+                        "D3" : "C14" , 
+                        "CLK1" : "A16" ,
+                        "CLK2" : "B15" ,
+                        "CLK3" : "A15"  
+                    }
+                },
+                "EQEP1" : {
+                    "displayName"       : "EQEP1" ,
+                    "description"       : "EQEP1" ,
+                    "longDescription"   : "This Control Card features standard locations for the EQEP1 peripheral located on HSEC pins 68, 70, 72, 74.",
+                    "definition"        : "/board/components/eqep.json" ,
+                    "connections" : {
+                        "A"     : "D15", /* EQEP1_A */
+                        "B"     : "C15", /* EQEP1_B */
+                        "INDEX" : "P2", /* EQEP1_INDEX */
+                        "STROBE": "B16"
+                    }
+                },
+                "UART1" : {
+                    "displayName"       : "UART1",
+                    "description"       : "UART1" ,
+                    "longDescription"   : "This Control Card features standard locations for the UART1 peripheral located on HSEC pins 76 and 78.",
+                    "definition"        : "/board/components/uart.json" ,
+                    "connections" : {
+                        "RXD" : "A9" , /* UART1_RXD */
+                        "TXD" : "B9"  /* UART1_TXD */
+                    }
+                },
+                "MCAN5" : {
+                    "displayName"       : "MCAN5" ,
+                    "description"       : "MCAN5" ,
+                    "longDescription"   : "This Control Card features standard locations for the MCAN5 peripheral located on HSEC pins 80 and 82.",
+                    "definition"        : "/board/components/mcan.json" ,
+                    "connections" : {
+                        "RX" : "G4" , /* MCAN5_RX */
+                        "TX" : "J3"  /* MCAN5_TX */
+                    }
+                },
+                "EQEP0" : {
+                    "displayName"       : "EQEP0" ,
+                    "description"       : "EQEP0" ,
+                    "longDescription"   : "This Control Card features standard locations for the EQEP0 peripheral located on HSEC pins 100, 102, 104, 106.",
+                    "definition"        : "/board/components/eqep.json" ,
+                    "connections" : {
+                        "A"     : "B14", /* EQEP1_A */
+                        "B"     : "A14", /* EQEP1_B */
+                        "INDEX" : "D11", /* EQEP1_INDEX */
+                        "STROBE": "C12"
+                    }
+                },
+                "PR0_PRU0" :   {
+                    "displayName" : "PR0_PRU0",
+                    "description" : "PR0_PRU0",
+                    "longDescription" : "PR0_PRU0 GPIO signals are routed to the 60-pin HSEC connector. These signals are muxed on-board with the path to the Ethernet PHYs. To enable the path to the HSEC, the following select signals must be set using the I2C-controlled IO Expander: \n\n|                | **SEL Signal** | **IO Expander Output** | **SEL Signal State** \n----------------|----------------|------------------------|----------------------\n PR0_PRU0 GPIOs | ICSSM0_MUX_SEL |           P24          |         HIGH         |"
+                },
+                "PR0_PRU1" :   {
+                    "displayName" : "PR0_PRU1",
+                    "description" : "PR0_PRU1",
+                    "longDescription" : "PR0_PRU1 GPIO signals are routed to the 60-pin HSEC connector. These signals are muxed on-board with the path to the Ethernet PHYs. To enable the path to the HSEC, the following select signals must be set using the I2C-controlled IO Expander: \n\n|                | **SEL Signal** | **IO Expander Output** | **SEL Signal State** \n----------------|----------------|------------------------|----------------------\n PR0_PRU1 GPIOs | ICSSM1_MUX_SEL |           P02          |         HIGH         |"
+                }
+
+            }
+        },
+        /* XDS110 UART */
+        "XDS110UART": {
+            "displayName"       : "XDS110 UART",
+            "description"       : "AM263Px UART connection to onboard XDS110 probe",
+            "definition"        : "/board/components/xds110Uart.json",
+            "longDescription"   : "The AM263Px Control Card uses the XDS110 as a USB2.0 to UART bridge for terminal access. UART0 transmit and receive signals of the AM263Px SoC are mapped to the XDS110 with a dual channel isolation buffer (ISO7221CDR) for translating from the 3.3V IO voltage supply to the 3.3V XDS supply. The XDS110 is connected to a micro-B USB connector for the USB 2.0 signals. ESD protection is provided to the USB 2.0 signals by a transient voltage suppression device (TPD4E004DRYR). The micro-B USB connector's VBUS 5V power is mapped to a low dropout regulator (TPS79601DRBR) to generate the 3.3V XDS supply. A separate 3.3V supply for the XDS110 allows for the emulator to maintain a connection when power to the Control Card is removed.",
+            "connections" : {
+                "RXD" : "A7",
+                "TXD" : "A6"
+            }
+            
+        },
+        
+        /* LEDs */
+        "USER LEDS" : {
+            "displayName"       : "User LEDs",
+            "description"       : "GPIO controlled LEDs",
+            "longDescription"   : "The AM263Px Control Card has two user defined LEDs connected to GPIO pins on the AM263Px SoC.",
+            "subComponents" :{
+                "USER_LED0" : {
+                    "displayName"   : "User LED Red",
+                    "longDescription"   : "RED user configurable LED",
+                    "definition"    : "/board/components/led.json",
+                    "connections" : {
+                        "OUTPUT" : "A8" 
+                    }
+                },
+                "USER_LED1" : {
+                    "displayName"   : "User LED Green",
+                    "longDescription"   : "GREEN user configurable LED",
+                    "definition"    : "/board/components/led.json",
+                    "connections" : {
+                        "OUTPUT" : "F1" /* EPWM7_B */
+                    }
+                }
+            }
+        },
+        "USER BUTTONS" : {
+            "displayName"       : "Control Card Push Buttons" ,
+            "description"       : "User Input Pushbuttons on Control Card" ,
+            "longDescription"   : "This Control Card features three pushbuttons for user input. Open this tab to explore the on-board pushbuttons. \n\n![](../source/sysconfig/board/.meta/images/tmdscncd263p_pushbuttons.png)",
+            "subComponents" : {
+                "INTERRUPT" : {
+                    "displayName"       : "User Interrupt signal",
+                    "longDescription"   : "User interrupt signal pushbutton",
+                    "definition"        : "/board/components/button.json",
+                    "settings" : {
+                        "DIN" : {
+                            "pull"      : "External",
+                            "polarity"  : "Active Low"
+                        }
+                    },
+                    "connections" : {
+                        "INPUT" : "B8" /* LIN2_RXD */
+                    }
+        
+                },
+                "PORz" : {
+                    "displayName"       : "SoC PORz reset input",
+                    "longDescription"   : "SoC PORz reset input pushbutton",
+                },
+                "WARMRST" : {
+                    "displayName"       : "SoC warm reset input",
+                    "longDescription"   : "SoC warm reset input pushbutton",
+                }
+            }
+        },
+        
+        /* Switches */
+        "BOOTMODE SWITCH" : {
+            "displayName"       : "Bootmode switches",
+            "longDescription"   : "The bootmode for the AM263Px is selected by a DIP switch (SW6). \n\n![](../source/sysconfig/board/.meta/images/tmdscncd263p_bootmode_switches.png) \n\n  **Boot Mode**                  | **SW6.4 (SOP3)** | **SW6.3 (SOP2)** | **SW6.2 (SOP1)** | **SW6.1 (SOP0)** \n--------------------------------|------------------|------------------|------------------|------------------\n **QSPI(4S), 50MHz**            | 0                | 0                | 0                | 0                \n **UART**                       | 0                | 0                | 0                | 1                \n **QSPI(1S), 50MHz**            | 0                | 0                | 1                | 0                \n **OSPI(8S), 50MHz**            | 0                | 0                | 1                | 1                \n **xSPI (1S->8D), 25MHz, SFDP** | 1                | 1                | 0                | 0                \n **DevBoot**                    | 1                | 0                | 1                | 1                ",
+        },
+        "JTAG PATH SWTICH" : {
+            "displayName"       : "JTAG Path Selection Switch",
+            "description"       : "JTAG Path Selection Switch (SW1)",
+            "longDescription"   : "The AM263Px Control Card allows for JTAG connections to the SoC through the on-board XDS110 or an external emulator via the HSEC docking station. A switch (SW1) is used to drive the select line of a mux (U30) to determine the JTAG path for the SoC. The following image shows proper switch position for SW1 for the two JTAG paths. \n\n![](../source/sysconfig/board/.meta/images/tmdscncd263p_jtag_path_switch.png)"            
+        },
+        "DAC VREF SWITCH" : {
+            "displayName"       : "DAC VREF Switch",
+            "description"       : "DAC VREF Switch (SW8)",
+            "longDescription"   : "The DAC VREF Switch (SW8) is a single pole double throw switch that controls the input for the DAC VREF inputs of the AM263Px SoC. \n\n![](../source/sysconfig/board/.meta/images/tmdscncd263p_dac_vref_switch.png) \n\n  **DAC VREF Switch Position** | **Reference Selection** \n------------------------------|-------------------------\n Pin 1-2 (DOWN)                      | AM263Px on-die LDO      \n Pin 2-3 (UP)                     | Output of VREF Switch   "
+        },
+        "ADC VREF SWITCH" : {
+            "displayName"       : "ADC VREF Switch",
+            "longDescription"   : "The ADC VREF Switch (SW9) contains two single pole double throw switches that control the input for the ADC VREF inputs of the AM263Px SoC. \n\n![](../source/sysconfig/board/.meta/images/tmdscncd263p_adc_vref_switch.png)\n\n  **ADC VREF Switch Position** | **Reference Selection**                                       \n------------------------------|---------------------------------------------------------------\n Pin 1-2 (RIGHT switch DOWN)                     | OPEN - Allow for reference to be AM263Px on-die LDO reference \n Pin 2-3 (RIGHT switch UP)                     | Output of VREF Switch                                         \n Pin 4-5 (LEFT switch UP)                     | OPEN - Allow for reference to be AM263Px on-die LDO reference \n Pin 5-6 (LEFT switch DOWN)                     | Output of VREF Switch                                         "
+        },
+        "VREF SWITCH" : {
+            "displayName"       : "VREF Switch",
+            "description"       : "VREF Switch (SW7)",
+            "longDescription"   : "The VREF Switch (SW7) is a single pole double throw switch that controls which 1.8 V reference will be used for ADC and DAC. \n\n![](../source/sysconfig/board/.meta/images/tmdscncd263p_vref_switch.png)\n\n  **VREF Switch Position** | **Reference Selection** \n--------------------------|-------------------------\n Pin 1-2 (DOWN)                  | On board 1.8V PMIC Output \n Pin 2-3 (UP)                 | HSEC VREF               "
+        },
+        "LIN NODE SWITCH" : {
+            "displayName"       : "LIN Node Switch",
+            "description"       : "LIN Node Switch (SW5)",
+            "longDescription"   : "A single pole throw switch (SW5) that drives the LIN Node application. The Control Card pulls up the enable pin of the LIN transceiver for the transceiver to be in normal operational mode when the I/O Voltage supply is brought up. \n\n![](../source/sysconfig/board/.meta/images/tmdscncd263p_lin_node_switch.png)\n\n **LIN Node Application Switch Position** | **LIN Node Application**    \n------------------------------------------|-----------------------------\n Pin 1 (RIGHT)                                   | Device node application     \n Pin 2 (LEFT)                                   | Controller node application "
+        },
+        "LIN SUPPLY SWITCH" : {
+            "displayName"       : "LIN Switch",
+            "description"       : "LIN Switch (SW4)",
+            "longDescription"   : "The AM263Px Control Card includes a double pole single throw switch (SW4) to control the voltage supply for the LIN Transceiver. \n\n![](../source/sysconfig/board/.meta/images/tmdscncd263p_lin_supply_switch.png)\n\n  **LIN Voltage Switch Position** | **Voltage Supply Selected**                                            \n---------------------------------|------------------------------------------------------------------------\n Pin 1-2 (LEFT)                        | VMAIN, 5V supply output from USB-C connection or HSEC power connection \n Pin 2-3 (RIGHT)                        | VBAT_LIN, external voltage supply from pin 1 of 2 pin header "
+        },
+
+         /* QSPI FLASH */
+         "QSPI FLASH" : {
+            "displayName"       : "QSPI Flash",
+            "description"       : "QSPI Flash Memory Device (U18)",
+            "longDescription"   : "The AM263Px Control Card has a 1Gbit QSPI NAND flash memory device (W25N01GVZEJ), which is connected to the QSPI0 interface of the AM263Px SoC. The QSPI supports single data rates with memory speeds up to 104MHz. The QSPI flash is powered by the 3.3V IO supply (VSYS_3V3_LDO1)."
+        },
+        
+        /* OSPI FLASH */
+        "OSPI FLASH" : {
+            "displayName"       : "OSPI Flash",
+            "description"       : "QSPI Flash Memory Device (U19)",
+            "longDescription"   : "The AM263Px Control Card has a 256Mbit OSPI NOR flash memory device (IS25LX256-LHLE), which is connected to the OSPI0 interface of the AM263Px SoC"
+        },
+
+        "I2C BUSES" : {
+            "displayName"       : "I2C Buses" ,
+            "description"       : "I2C Buses on controlCARD" ,
+            "longDescription"   : "This Control Card features several devices connected to two instances of the AM263Px I2C peripheral. Open this tab to add I2C buses on Control Card.",
+            "subComponents" : {
+                "I2C0" : {
+                    "displayName"       : "I2C0 Bus",
+                    "description"       : "AM263Px I2C0 Interface",
+                    "definition"        : "/board/components/i2c.json",
+                    "longDescription"   : "The AM263Px SoC I2C0 instance is connected to a I2C based 1Mbit EEPROM (CAT23M01WI-GT3) to store board configuration details. The Board ID EEPROM is connected to the I2C0 interface of the AM263Px via a 1:2 Mux (SN74CB3Q3257PWR). The default I2C address of the EEPROM is set to 0x50 by pulling down the address pins A1 and A2 to ground. The Write Protect pin for the EEPROM is by default pulled down to ground and therefore Write Protect is disabled. There is also the option to enable write protect by removing the 10KΩ pull down resistor (R273) and mounting a pull up resistor (R268) to the 3.3V IO voltage supply.",
+
+                    "connections" : {
+                        "SCL" : "A13",
+                        "SDA" : "B13"
+                    }
+                },
+                "I2C2" : {
+                    "displayName"       : "I2C2 Bus",
+                    "description"       : "AM263Px I2C2 Interface",
+                    "definition"        : "/board/components/i2c.json",
+                    "longDescription"   : "The AM263Px SoC I2C2 instance has several devices connected on the Control Card. The AM263Px SoC I2C2 instance is connected to the IO expander (TCA6416ARTWR).  Its address is 0x22. The I2C2 bus also has an LED driver (TPIC2810D) that is used for Industrial Communications LEDs.  The driver is connected to eight green LEDs and it has an I2C address of 0x60. The AM263Px Control Card has two current monitors to report current, bus voltage, temperature, power, energy and charge accumulation on the 3.3-V IO supply (address 0x40) and the 1.2-V core supply (address 0x41). A temperature sensor (TMP411ADR), with address 0x4C is also connected to the I2C2 bus",
+                    "connections" : {
+                        "SCL" : "C7", 
+                        "SDA" : "B7" 
+                    }
+                }
+            }
+        },
+
+        /* MCAN Transceiver */
+        "MCAN TRANSCEIVER" : {
+            "displayName"       : "MCAN Transceiver",
+            "description"       : "MCAN1 PHY Transceiver",
+            "definition"        : "/board/components/mcan.json",
+            "longDescription"   : "The Control Card is equipped with a single MCAN transceiver (TCAN1043A-Q1) that is connected to the MCAN4 interface of the AM263Px SoC.",
+            "connections" : {
+                "TX" : "J2", /* MCAN4_TX */
+                "RX" : "G1"  /* MCAN4_RX */
+            }
+        },
+
+        /* LIN Transceiver */
+        "LIN TRANSCEIVER" : {
+            "displayName"       : "LIN Transceiver",
+            "description"       : "LIN1 PHY Transceiver",
+            "definition"        : "/board/components/lin.json",
+            "longDescription"   : "The AM263Px Control Card supports Local Interconnect Network communication through the use of a LIN transceiver (TLIN2029-Q1) that outputs the LIN Bus to the second pin of a 3 pin header.",
+            "connections" : {
+                "TXD" : "B9", 
+                "RXD" : "A9"
+            }
+        },
+
+        /* uSD Card Connector */
+        "MICRO-SD CARD CONNECTOR" : {
+            "displayName"       : "uSD Card Connector",
+            "description"       : "Micro-SD Connector Interface",
+            "definition"        : "/board/components/mmc.json",
+            "longDescription"   : "The AM263Px Control Card provides a micro SD card interface that is mapped to the MMC0 instance of the AM263Px SoC. A load switch (TPS22918DBVR) is used to power the micro SD card connector. The load switch is driven by the output of a 2-input AND gate between WARMRESETn and GPIO_uSD_PWR_EN to power cycle the card upon reset. The load switch uses quick output discharge (QOD) to ensure that the supply voltage reaches <10% of nominal value during reset. Inline ESD protection is provided for the MMC signals in the form of a six channel transient voltage suppressor device (TPD6E001RSER). The Write Protect (WP) and Card Detect (CD) signals of the SD card connector are pulled up to the 3.3V IO voltage supply. A series termination resistor is provided for the MMC clock signal.",
+            "connections" : {
+                "MMC_DAT0" : "B5", /* MMC0_D0 */
+                "MMC_DAT1" : "B4", /* MMC0_D1 */
+                "MMC_DAT2" : "A3", /* MMC0_D2 */
+                "MMC_DAT3" : "A2", /* MMC0_D3 */
+                "MMC_CMD"  : "A4", /* MMC0_CMD */
+                "MMC_CLK"  : "B6", /* MMC0_CLK */
+                "MMC_SDCD" : "A5",  /* MMC0_CD */
+                "MMC_SDWP" : "C6"
+            }
+        },
+
+        "FSI HEADER" : {
+            "displayName"       : "FSI Header" ,
+            "description"       : "Dedicated FSI header on Control Card" ,
+            "longDescription"   : "This Control Card features a dedicated 10-pin FSI connector for use with external BoosterPacks. Add this component to make use of the dedicated FSI_RX and FSI_TX signals.",
+            "subComponents" : {
+                "FSIRX" : {
+                    "displayName"   : "FSIRX",
+                    "description"   : "FSI RX Signals",
+                    "definition"    : "/board/components/fsiRX.json",
+                    "connections" : {
+                        "CLK"   : "E1",
+                        "D0"    : "F3",
+                        "D1"    : "F4"
+                    }
+                },
+                "FSITX" : {
+                    "displayName"   : "FSITX",
+                    "description"   : "FSI TX Signals",
+                    "definition"    : "/board/components/fsiTX.json",
+                    "connections" : {
+                        "CLK"   : "E4",
+                        "D0"    : "F2",
+                        "D1"    : "G2"
+                    }
+                }
+            }
+        },
+        /* Ethernet PHYs */ 
+        "ETHERNET - PRU0-ICSS/CPSW RGMII GIGABIT PHY" : {
+            "displayName"       : "PRU0 ICSSM RGMII/MII PHY",
+            "description"       : "PRU0 ICSSM RGMII/MII Gigabit Ethernet PHY",
+            "longDescription"   : "The AM263Px Control Card uses one port of RGMII signals and the PRU0 core of the PRU-ICSS (default) or the PRU1 core of the PRU-ICSS to be connected to a 48pin ethernet PHY (DP83869HMRGZT), depending on how the signals are routed (see User Guide Section 2.11.2.1). The PHY is configured to advertise 1 Gbit operation if connected to the PRU0 core. If connected to the PRU1 core, the PHY is configured for 10/100 Mbit operation. The ethernet data signals of the PHY are terminated to an RJ45 Connector. LEDs are used to indicate link status and activity. The required pins for this interface can be added to the design in the Reserve Peripherals or Software tab on the left sidebar in SysConfig."
+        },
+        "ETHERNET ADD-ON BOARD CONNECTOR" : {
+            "displayName"       : "PRU1 ICSSM Ethernet Add-on Board Connector",
+            "description"       : "PRU1 ICSSM Ethernet Add-on Board Connector",
+            "longDescription"   : "The AM263Px Control Card uses one port of RGMII signals and the PRU0 core of the PRU-ICSS or the PRU1 core (default) of the PRU-ICSS to be connected to a 48-pin shielded connector, depending on how the signals are routed (see User Guide Section 2.11.2.1). Compatible TI Ethernet add-on boards can be connected to the Control Card to enable industrial or automotive Ethernet functionality on the AM263Px SoC. The required pins for this interface can be added to the design in the Reserve Peripherals or Software tab on the left sidebar in SysConfig."
+        }
+    }
+}
+  

@@ -1,6 +1,6 @@
 let common   = system.getScript("/common");
 let pinmux = system.getScript("/drivers/pinmux/pinmux");
-let soc_ctrl = system.getScript("/drivers/soc_ctrl/soc_ctrl")
+let soc_ctrl = system.getScript("/drivers/soc_ctrl/soc_ctrl");
 let device_peripheral = system.getScript(`/drivers/epwm/soc/epwm_${common.getSocName()}.syscfg.js`);
 let epwm_validation = system.getScript("/drivers/epwm/v1/epwm_validation.syscfg.js");
 
@@ -285,6 +285,10 @@ function pinmuxRequirements(inst)
         displayName: "EPWM Instance",
         interfaceName: interfaceName,
         resources: resources,
+        signalTypes: {
+            A: "EPWM_A",
+            B: "EPWM_B"
+        }
     };
 
     return [peripheral];
@@ -297,7 +301,6 @@ let epwmModule = {
     displayName: "EPWM",
     defaultInstanceName: "CONFIG_EPWM",
     description: "Enhanced Pulse Width Modulator Peripheral",
-    filterHardware : filterHardware,
     config: config,
     templates: {
         "/drivers/system/system_config.h.xdt": {
@@ -328,6 +331,8 @@ let epwmModule = {
     pinmuxRequirements,
     onMigrate,
     getStaticConfigArr,
+    filterHardware : filterHardware
+
 };
 
 function onMigrate(newInst, oldInst, oldSystem) {
