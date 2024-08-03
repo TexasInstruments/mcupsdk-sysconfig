@@ -7,7 +7,7 @@ const uart_config_r5fss = [
         name            : "UART0",
         baseAddr        : "CSL_UART0_U_BASE",
         inputClkFreq    : uart_input_clk_freq,
-        intrNum         : 38,
+        intrNum         : 73,
         clockIds        : [ "SOC_RcmPeripheralId_LIN0_UART0" ],
         clockFrequencies: [
             {
@@ -21,7 +21,7 @@ const uart_config_r5fss = [
         name            : "UART1",
         baseAddr        : "CSL_UART1_U_BASE",
         inputClkFreq    : uart_input_clk_freq,
-        intrNum         : 39,
+        intrNum         : 74,
         clockIds        : [ "SOC_RcmPeripheralId_LIN1_UART1" ],
         clockFrequencies: [
             {
@@ -35,7 +35,7 @@ const uart_config_r5fss = [
         name            : "UART2",
         baseAddr        : "CSL_UART2_U_BASE",
         inputClkFreq    : uart_input_clk_freq,
-        intrNum         : 40,
+        intrNum         : 75,
         clockIds        : [ "SOC_RcmPeripheralId_LIN2_UART2" ],
         clockFrequencies: [
             {
@@ -49,11 +49,39 @@ const uart_config_r5fss = [
         name            : "UART3",
         baseAddr        : "CSL_UART3_U_BASE",
         inputClkFreq    : uart_input_clk_freq,
-        intrNum         : 41,
+        intrNum         : 76,
         clockIds        : [ "SOC_RcmPeripheralId_LIN3_UART3" ],
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_LIN3_UART3",
+                clkId   : "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT2",
+                clkRate : uart_input_clk_freq,
+            },
+        ],
+    },
+    {
+        name            : "UART4",
+        baseAddr        : "CSL_UART4_U_BASE",
+        inputClkFreq    : uart_input_clk_freq,
+        intrNum         : 77,
+        clockIds        : [ "SOC_RcmPeripheralId_LIN4_UART4" ],
+        clockFrequencies: [
+            {
+                moduleId: "SOC_RcmPeripheralId_LIN4_UART4",
+                clkId   : "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT2",
+                clkRate : uart_input_clk_freq,
+            },
+        ],
+    },
+    {
+        name            : "UART5",
+        baseAddr        : "CSL_UART5_U_BASE",
+        inputClkFreq    : uart_input_clk_freq,
+        intrNum         : 78,
+        clockIds        : [ "SOC_RcmPeripheralId_LIN5_UART5" ],
+        clockFrequencies: [
+            {
+                moduleId: "SOC_RcmPeripheralId_LIN5_UART5",
                 clkId   : "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT2",
                 clkRate : uart_input_clk_freq,
             },

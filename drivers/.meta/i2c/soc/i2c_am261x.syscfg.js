@@ -1,13 +1,13 @@
 
 let common = system.getScript("/common");
 
-let i2c_func_clk = 240000000;
+let i2c_func_clk = 48000000;
 
 const staticConfig_r5f = [
     {
         name: "I2C0",
         baseAddr: "CSL_I2C0_U_BASE",
-        intNum: 44,
+        intNum: 79,
         eventId: 0,
         funcClk: i2c_func_clk,
         clockIds: [ "SOC_RcmPeripheralId_I2C" ],
@@ -22,7 +22,7 @@ const staticConfig_r5f = [
     {
         name: "I2C1",
         baseAddr: "CSL_I2C1_U_BASE",
-        intNum: 45,
+        intNum: 80,
         eventId: 0,
         funcClk: i2c_func_clk,
         clockIds: [ "SOC_RcmPeripheralId_I2C" ],
@@ -37,7 +37,7 @@ const staticConfig_r5f = [
     {
         name: "I2C2",
         baseAddr: "CSL_I2C2_U_BASE",
-        intNum: 46,
+        intNum: 81,
         eventId: 0,
         funcClk: i2c_func_clk,
         clockIds: [ "SOC_RcmPeripheralId_I2C" ],

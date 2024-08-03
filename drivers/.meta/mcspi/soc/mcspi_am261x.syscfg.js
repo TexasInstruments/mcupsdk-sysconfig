@@ -1,7 +1,7 @@
 let common = system.getScript("/common");
 
 
-let mcspi_input_clk_freq = 250000000;
+let mcspi_input_clk_freq = 50000000;
 
 const mcspi_config_r5fss = [
     {
