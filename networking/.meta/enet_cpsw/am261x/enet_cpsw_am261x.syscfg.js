@@ -164,7 +164,7 @@ const enet_cpsw_phy1_config =
                                              ['am261x-som',{phyAddr1: 3, phyAddr2: 0}],
                                              ['am261x-som-addon-ind',{phyAddr1: 3, phyAddr2: 1}],
                                              ['am261x-som-addon-auto',{phyAddr1: 3, phyAddr2: 12}],
-                                             ['am261x-lp', {phyAddr1: 3, phyAddr2: 12}],
+                                             ['am261x-lp', {phyAddr1: 1, phyAddr2: 1}],
                                            ],
                                          );
                 let phyInfo =  cpswPhyAddrInfoMap.get(inst.BoardType);
@@ -215,7 +215,7 @@ const enet_cpsw_phy2_config =
                                              ['am261x-som',{phyAddr1: 3, phyAddr2: 0}],
                                              ['am261x-som-addon-ind',{phyAddr1: 3, phyAddr2: 0}],
                                              ['am261x-som-addon-auto',{phyAddr1: 3, phyAddr2: 12}],
-                                             ['am261x-lp', {phyAddr1: 3, phyAddr2: 12}],
+                                             ['am261x-lp', {phyAddr1: 1, phyAddr2: 12}],
                                            ],
                                          );
                 let phyInfo =  cpswPhyAddrInfoMap.get(inst.BoardType);
@@ -304,7 +304,7 @@ const enet_clock_config =
             {
                 moduleId: "SOC_RcmPeripheralId_CPTS",
                 clkId   : "SOC_RcmPeripheralClockSource_SYS_CLK",
-                clkRate : 200000000,
+                clkRate : 250000000,
             },
         ],
     };

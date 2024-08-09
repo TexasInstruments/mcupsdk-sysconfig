@@ -75,6 +75,12 @@ function getPeripheralRequirements(inst, peripheralName, name)
         pinResource = pinmux.getPinRequirements(interfaceName, "CRS_DV", "CRS_DV");
         pinmux.setConfigurableDefault( pinResource, "rx", true );
         resources.push( pinResource);
+        pinResource = pinmux.getPinRequirements(interfaceName, "REF_CLK", "REF_CLK");
+        pinmux.setConfigurableDefault( pinResource, "rx", true );
+        resources.push( pinResource);
+        pinResource = pinmux.getPinRequirements(interfaceName, "TX_EN", "TX_EN");
+        pinmux.setConfigurableDefault( pinResource, "rx", true );
+        resources.push( pinResource);
     }
     else if (name == "CPSW_CPTS")
     {

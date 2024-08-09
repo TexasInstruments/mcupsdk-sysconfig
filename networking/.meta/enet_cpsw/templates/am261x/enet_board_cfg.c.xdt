@@ -15,6 +15,7 @@
 #include <enet.h>
 #include <networking/enet/core/include/phy/enetphy.h>
 #include <networking/enet/core/include/phy/dp83869.h>
+#include <networking/enet/core/include/phy/dp83826.h>
 #include <networking/enet/core/include/phy/dp83tg720.h>
 #include <networking/enet/utils/include/enet_apputils.h>
 #include <networking/enet/utils/include/enet_appboardutils.h>
@@ -32,17 +33,22 @@
 #include <board/ioexp/ioexp_tca6424.h>
 #include <board/ioexp/ioexp_tca6416.h>
 
+
 static void EnetBoard_setMacPort2IOExpanderCfg(void);
 %}
-
+#include <board/ioexp/ioexp_tca6408.h>
+static void EnetBoard_setMacPort1IOExpanderCfg(void);
 /* PHY drivers */
 extern EnetPhy_Drv gEnetPhyDrvGeneric;
 %if ((device === "am261x-som") && (instance.BoardType === "am261x-som-addon-auto")) {
 extern EnetPhy_Drv gEnetPhyDrvDp83tg720;
+%}else if ((device === "am261x-lp") && (instance.BoardType === "am261x-som-addon-auto")) {
+extern EnetPhy_Drv gEnetPhyDrvDp83tg720;
 %}else if ((device === "am261x-som") && (instance.BoardType === "am261x-som-addon-ind")) {
 extern EnetPhy_Drv gEnetPhyDrvDp83867;
 %}else {
-extern EnetPhy_Drv gEnetPhyDrvDp83869;
+    extern EnetPhy_Drv gEnetPhyDrvdp83826;
+//extern EnetPhy_Drv gEnetPhyDrvDp83869;
 %}
 
 /*! \brief All the registered PHY specific drivers. */
@@ -50,10 +56,13 @@ static const EnetPhyDrv_Handle gEnetPhyDrvs[] =
 {
 %if ((device === "am261x-som") && (instance.BoardType === "am261x-som-addon-auto")) {
     &gEnetPhyDrvDp83tg720, /* DP83TG720 */
+%}else if ((device === "am261x-lp") && (instance.BoardType === "am261x-som-addon-auto")) {
+    &gEnetPhyDrvDp83tg720, /* DP83TG720 */
 %}else if ((device === "am261x-som") && (instance.BoardType === "am261x-som-addon-ind")) {
     &gEnetPhyDrvDp83867,   /* DP83867 */
 %}else {
-    &gEnetPhyDrvDp83869,   /* DP83869 */
+     &gEnetPhyDrvdp83826,   /* DP83826e */
+    //&gEnetPhyDrvDp83869,   /* DP83869 */
 %}
     &gEnetPhyDrvGeneric,   /* Generic PHY - must be last */
 };
@@ -149,6 +158,13 @@ static const Dp83869_Cfg gEnetCpbBoard_phyCfg =
         DP83869_LED_RXTXACT,
         DP83869_LED_LINKED_1000BT,
     },
+};
+%}else {
+/*!
+ * \brief Common Processor Board (CPB) board's DP83826e PHY configuration.
+ */
+static const dp83826_Cfg gEnetCpbBoard_phyCfg =
+{
 };
 %}
 
@@ -357,6 +373,7 @@ int32_t EnetBoard_setupPorts(EnetBoard_EthPort *ethPorts,
 % } else {
             CSL_FINS( mssCtrlRegs->CPSW_CONTROL,MSS_CTRL_CPSW_CONTROL_PORT1_MODE_SEL, MSS_CPSW_CONTROL_PORT_MODE_RMII);
 %}
+            EnetBoard_setMacPort1IOExpanderCfg();
             break;
         case ENET_MAC_PORT_2:
 %if (instance.phyToMacInterfaceMode == "RGMII") {
@@ -365,8 +382,8 @@ int32_t EnetBoard_setupPorts(EnetBoard_EthPort *ethPorts,
 % } else {
             CSL_FINS( mssCtrlRegs->CPSW_CONTROL,MSS_CTRL_CPSW_CONTROL_PORT2_MODE_SEL, MSS_CPSW_CONTROL_PORT_MODE_RMII);
 %}
-%if ((device === "am261x-som") && (instance.DisableMacPort2 === false) && ((instance.BoardType === "am261x-som") || (instance.BoardType === "am261x-som-addon-ind") || (instance.BoardType === "am261x-som-addon-auto"))){
-            EnetBoard_setMacPort2IOExpanderCfg();
+%if ((device === "am261x-lp") && (instance.DisableMacPort2 === false) && ((instance.BoardType === "am261x-lp") || (instance.BoardType === "am261x-som-addon-ind") || (instance.BoardType === "am261x-som-addon-auto"))){
+            EnetBoard_setMacPort1IOExpanderCfg();
 %}
             break;
         default:
@@ -375,6 +392,29 @@ int32_t EnetBoard_setupPorts(EnetBoard_EthPort *ethPorts,
 
     /* Nothing else to do */
     return ENET_SOK;
+}
+
+static void EnetBoard_setMacPort1IOExpanderCfg(void)
+{
+    static TCA6408_Config  gTCA6408_Config;
+    TCA6408_Params      TCA6408Params;
+    TCA6408_Params_init(&TCA6408Params);
+    int32_t status    = SystemP_SUCCESS;
+
+    status = TCA6408_open(&gTCA6408_Config, &TCA6408Params);
+
+    if (status == SystemP_SUCCESS)
+    {
+        /* Configure as output  */
+        status = TCA6408_config(&gTCA6408_Config,
+                    3,
+                    TCA6408_MODE_OUTPUT);
+    }
+    if (status == SystemP_SUCCESS)
+    {
+        status =  TCA6408_setOutput(&gTCA6408_Config, 3, TCA6408_OUT_STATE_LOW);
+    }
+
 }
 
 %if ((device === "am261x-som") && (instance.DisableMacPort2 === false) && ((instance.BoardType === "am261x-som") || (instance.BoardType === "am261x-som-addon-ind") || (instance.BoardType === "am261x-som-addon-auto"))){

@@ -48,7 +48,7 @@ const enet_cpsw_cpts_config = {
             name: "cptsRftClkFreq",
             description: "CPTS RFT clock frequency required to set TS_ADD VAL",
             displayName: "CPTS Clock Frequency Add Value",
-            default: "CPSW_CPTS_RFTCLK_FREQ_200MHZ",
+            default: "CPSW_CPTS_RFTCLK_FREQ_250MHZ",
             options: [
                 {
                     name: "CPSW_CPTS_RFTCLK_FREQ_1000MHZ",

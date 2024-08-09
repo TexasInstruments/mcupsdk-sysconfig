@@ -370,6 +370,34 @@ int32_t EnetApp_driverOpen(Enet_Type enetType, uint32_t instId)
                             gEnetAppSysCfgObj.hEnet, 
                             attachInfo.coreKey,
                             selfCoreId);
+
+	if(false)
+    {
+        Enet_IoctlPrms prms;
+        bool alive = false;
+        int32_t status;
+
+        for (uint32_t phyAdd = 0U; phyAdd < ENET_MDIO_PHY_CNT_MAX; phyAdd++)
+        {
+            EnetApp_phyStateHandler(&gEnetAppSysCfgObj);
+            ENET_IOCTL_SET_INOUT_ARGS(&prms, &phyAdd, &alive);
+
+            ENET_IOCTL(gEnetAppSysCfgObj.hEnet, 0, ENET_MDIO_IOCTL_IS_ALIVE, &prms,status);
+            if (status == ENET_SOK)
+            {
+                if (alive == true)
+                {
+                    EnetAppUtils_print("[ ENETSBL ] PHY %u is alive\r\n", phyAdd);
+                }
+            }
+            else
+            {
+                EnetAppUtils_print("[ ENETSBL ] Failed to get PHY %u alive status: %d\r\n", phyAdd, status);
+            }
+        }
+
+    }	
+	
     return status;
 }
 
@@ -617,6 +645,7 @@ static int32_t EnetApp_enablePorts(Enet_Handle hEnet,
         }
     }
 
+	EnetAppUtils_print("Checking alive Phys from enablePorts [%d]\r\n", status);
     /* Show alive PHYs */
     if (status == ENET_SOK)
     {
@@ -632,6 +661,8 @@ static int32_t EnetApp_enablePorts(Enet_Handle hEnet,
                        ENET_MDIO_IOCTL_IS_ALIVE,
                        &prms,
                        status);
+            // EnetAppUtils_print("Alive status %d [IOCTL_SET_PORT = %d] [alive = %d]\r\n", i, status, alive);
+            
             if (status == ENET_SOK)
             {
                 if (alive == true)
@@ -643,7 +674,7 @@ static int32_t EnetApp_enablePorts(Enet_Handle hEnet,
             {
                 EnetAppUtils_print("Failed to get PHY %d alive status: %d\r\n", i, status);
             }
-        }
+        }        
     }
 
     return status;

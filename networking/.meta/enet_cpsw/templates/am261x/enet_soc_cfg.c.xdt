@@ -576,35 +576,14 @@ uint32_t EnetSoc_getIntrTriggerType(Enet_Type enetType,
 int32_t EnetSoc_getEFusedMacAddrs(uint8_t macAddr[][ENET_MAC_ADDR_LEN],
                                   uint32_t *num)
 {
-    CSL_top_ctrlRegs *mmrRegs;
-    uint32_t val;
 
-    if (*num >= 1U)
-    {
-        mmrRegs = (CSL_top_ctrlRegs *)(uintptr_t)CSL_TOP_CTRL_U_BASE;
-
-        val = CSL_REG32_RD(&mmrRegs->MAC_ID0);
-        macAddr[0][5] = (uint8_t)((val & 0x000000FFU) >> 0U);
-        macAddr[0][4] = (uint8_t)((val & 0x0000FF00U) >> 8U);
-        macAddr[0][3] = (uint8_t)((val & 0x00FF0000U) >> 16U);
-        macAddr[0][2] = (uint8_t)((val & 0xFF000000U) >> 24U);
-
-        val = CSL_REG32_RD(&mmrRegs->MAC_ID1);
-        macAddr[0][1] = (uint8_t)((val & 0x000000FFU) >> 0U);
-        macAddr[0][0] = (uint8_t)((val & 0x0000FF00U) >> 8U);
-
-        /* To prevent getting garbage values when EFused mac address is
-         * not set for the board. Will fix after the board gets EFused
-         * mac address */
-        if(val == 1)
-        {
-            *num = val;
-        }
-        else
-        {
-            *num = 0U;
-        }
-    }
+    macAddr[0][0] = 0x70;
+    macAddr[0][1] = 0xFF;
+    macAddr[0][2] = 0x76;
+    macAddr[0][3] = 0x1E;
+    macAddr[0][4] = 0x9C;
+    macAddr[0][5] = 0x51;
+    *num = 1U;
 
     return ENET_SOK;
 }
