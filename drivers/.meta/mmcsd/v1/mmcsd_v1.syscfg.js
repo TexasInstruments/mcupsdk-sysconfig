@@ -216,14 +216,17 @@ let mmcsd_module = {
             default: false,
             hidden: false,
             onChange: function (inst, ui) {
-                let hideConfigs = false;
+
                 if(inst.intrEnable == false) {
-                    hideConfigs = true;
+
+                    ui.transferMode.hidden = true;
                     inst.transferCallbackFxn = "NULL";
                     inst.transferMode = "BLOCKING";
                     ui.transferCallbackFxn.hidden = true;
                 }
-                ui.transferMode.hidden = hideConfigs;
+                else {
+                    ui.transferMode.hidden = false;
+                }
             },
             description: "If enabled, Transfer will happen in interrupt Mode",
         },
@@ -312,14 +315,14 @@ let mmcsd_module = {
                 if(inst.sdkInfra == "LLD") {
 
                     ui.intrPriority.hidden = true;
-                    ui.transferMode.hidden = true;
                     ui.intrEnable.hidden = true;
                 }
                 else {
 
-                    ui.intrPriority.hidden = false;
-                    ui.transferMode.hidden = false;
+                    inst.intrEnable = false;
                     ui.intrEnable.hidden = false;
+                    ui.intrPriority.hidden = false;
+                    ui.transferMode.hidden = true;
                 }
             },
             description: "SDK Infra",
