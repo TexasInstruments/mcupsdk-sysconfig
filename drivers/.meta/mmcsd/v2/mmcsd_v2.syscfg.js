@@ -194,7 +194,7 @@ let mmcsd_module = {
 			driver_config: "/drivers/mmcsd/templates/mmcsd.h.xdt",
 		},
 		"/drivers/system/drivers_open_close.c.xdt": {
-            driver_open_close_config: "/drivers/mmcsd/templates/mmcsd_open_close_config.c.xdt",
+            driver_open_close_config: "/drivers/mmcsd/templates/mmcsd_open_close_config_v2.c.xdt",
             driver_open: "/drivers/mmcsd/templates/mmcsd_open.c.xdt",
             driver_close: "/drivers/mmcsd/templates/mmcsd_close.c.xdt",
         },
