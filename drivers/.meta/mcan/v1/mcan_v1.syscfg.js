@@ -152,6 +152,7 @@ function onChangeHideHLDParams(inst, ui)
 {
     if(inst.sdkInfra == "LLD") {
         ui.operMode.hidden = true;
+        ui.intrPriority.hidden = true;
         ui.transferMode.hidden = true;
         ui.transferCallbackFxn.hidden = true;
         ui.errorCallbackFxn.hidden = true;
@@ -235,6 +236,7 @@ function onChangeHideHLDParams(inst, ui)
         ui.nomRatePrescalar.hidden = false;
         ui.nomTimeSeg1.hidden = false;
         ui.nomTimeSeg2.hidden = false;
+        ui.nomSynchJumpWidth.hidden = false;
         ui.dataRatePrescalar.hidden = false;
         ui.dataTimeSeg1.hidden = false;
         ui.dataTimeSeg2.hidden = false;
@@ -246,15 +248,22 @@ function onChangeHideHLDParams(inst, ui)
     }
     else {
         ui.operMode.hidden = false;
-        ui.transferMode.hidden = false;
-        if((inst.intrEnable == "INTERRUPT") || (inst.intrEnable == "DMA"))
+        if((inst.operMode == "INTERRUPT") || (inst.operMode == "DMA")) 
         {
-            ui.transferCallbackFxn.hidden = false;
-            ui.errorCallbackFxn.hidden = false;
-            if(inst.transferMode != "CALLBACK")
-            {
+            ui.transferMode.hidden = false;
+            if(inst.operMode == "INTERRUPT") {
+                ui.intrPriority.hidden = false;
+            }
+            if(inst.operMode == "DMA") {
+                ui.intrPriority.hidden = true;
+            }
+            if(inst.transferMode == "BLOCKING") {
                 ui.transferCallbackFxn.hidden = true;
                 ui.errorCallbackFxn.hidden = true;
+            }
+            if(inst.transferMode == "CALLBACK") {
+                ui.transferCallbackFxn.hidden = false;
+                ui.errorCallbackFxn.hidden = false;
             }
         }
         else
@@ -285,20 +294,7 @@ function onChangeHideHLDParams(inst, ui)
         ui.errInterruptEnable.hidden = false;
         ui.dataInterruptEnable.hidden = false;
         ui.tdcEnable.hidden = false;
-        ui.tdcConfig_tdcf.hidden = false;
-        ui.tdcConfig_tdco.hidden = false;
         ui.additionalCoreConfig.hidden = false;
-        ui.monEnable.hidden = false;
-        ui.asmEnable.hidden = false;
-        ui.tsPrescalar.hidden = false;
-        ui.tsSelect.hidden = false;
-        ui.timeoutSelect.hidden = false;
-        ui.timeoutPreload.hidden = false;
-        ui.timeoutCntEnable.hidden = false;
-        ui.rrfe.hidden = false;
-        ui.rrfs.hidden = false;
-        ui.anfe.hidden = false;
-        ui.anfs.hidden = false;
         ui.msgRamConfig.hidden = false;
         ui.flssa.hidden = false;
         ui.lss.hidden = false;
@@ -424,7 +420,7 @@ let config = [
                     },
                 ],
                 onChange: function (inst, ui) {
-                    if(inst.operMode == "POLLED") {
+                    if((inst.operMode == "POLLED")  && (inst.sdkInfra == "HLD")) {
                         ui.intrPriority.hidden = true;
                         inst.transferMode = "BLOCKING";
                         inst.transferCallbackFxn = "NULL";
@@ -433,12 +429,17 @@ let config = [
                         ui.transferCallbackFxn.hidden = true;
                         ui.errorCallbackFxn.hidden = true;
                     }
-                    if((inst.operMode == "INTERRUPT") || (inst.operMode == "DMA")) {
-                        ui.intrPriority.hidden = false;
+                    if(((inst.operMode == "INTERRUPT") || (inst.operMode == "DMA")) && (inst.sdkInfra == "HLD")) {
+                        if(inst.operMode == "INTERRUPT") {
+                            ui.intrPriority.hidden = false;
+                        }
+                        if(inst.operMode == "DMA") {
+                            ui.intrPriority.hidden = true;
+                        }
                         ui.transferMode.hidden = false;
                         ui.transferCallbackFxn.hidden = false;
                         ui.errorCallbackFxn.hidden = false;
-                        if(inst.transferMode != "CALLBACK")
+                        if(inst.transferMode == "BLOCKING")
                         {
                             ui.transferCallbackFxn.hidden = true;
                             ui.errorCallbackFxn.hidden = true;
@@ -463,20 +464,21 @@ let config = [
                     },
                 ],
                 onChange: function (inst, ui) {
-                    if(inst.transferMode == "CALLBACK") {
-                        ui.transferCallbackFxn.hidden = false;
-                        ui.errorCallbackFxn.hidden = false;
+                    if((inst.transferMode == "CALLBACK") && (inst.sdkInfra == "HLD")){
                         if(inst.transferCallbackFxn == "NULL") {
                             /* Clear NULL entry as user need to provide a fxn */
                             inst.transferCallbackFxn = "";
                             inst.errorCallbackFxn = "";
                         }
+                        ui.transferCallbackFxn.hidden = false;
+                        ui.errorCallbackFxn.hidden = false;
+
                     }
-                    else {
-                        ui.transferCallbackFxn.hidden = true;
-                        ui.errorCallbackFxn.hidden = true;
+                    if((inst.transferMode == "BLOCKING") && (inst.sdkInfra == "HLD")) {
                         inst.transferCallbackFxn = "NULL";
                         inst.errorCallbackFxn = "NULL";
+                        ui.transferCallbackFxn.hidden = true;
+                        ui.errorCallbackFxn.hidden = true;
                     }
                 },
                 description: "This determines whether the driver operates synchronously or asynchronously",
@@ -518,14 +520,14 @@ let config = [
             },
             {
                 name: "enableLoopback",
-                displayName: "Enable Loopback mode ",
+                displayName: "Enable Loopback Mode",
                 description: `This enables internal loopback mode for MCAN.`,
                 default: true,
                 hidden : true,
             },
             {
                 name: "loopbackMode",
-                displayName: "Loopback mode ",
+                displayName: "Loopback Mode",
                 description: `This enables internal loopback mode for MCAN.`,
                 default: "INTERNAL",
                 hidden : true,
@@ -542,43 +544,43 @@ let config = [
             },
             {
                 name        : "txpEnable",
-                displayName : "Enable Transmit pause",
+                displayName : "Enable Transmit Pause",
                 description : 'Enable Transmit pause.',
                 hidden      : true,
                 default     : false,
             },
             {
                 name        : "efbi",
-                displayName : "Enable Edge filtering",
+                displayName : "Enable Edge Filtering",
                 description : 'Enable Edge filtering.',
                 hidden      : true,
                 default     : false,
             },
             {
                 name        : "pxhddisable",
-                displayName : "Enable Protocol exception handling",
-                description : 'Enable Protocol exception handling',
+                displayName : "Enable Protocol Exception Handling",
+                description : 'Enable protocol exception handling',
                 hidden      : true,
                 default     : false,
             },
             {
                 name        : "darEnable",
-                displayName : "Disable Automatic retransmission",
-                description : 'Disable Automatic retransmission of message.',
+                displayName : "Disable Automatic Retransmission",
+                description : 'Disable automatic retransmission of message.',
                 hidden      : true,
                 default     : false,
             },
             {
                 name        : "wkupReqEnable",
-                displayName : "Enable Wakeup request",
-                description : 'Enable Wakeup request.',
+                displayName : "Enable Wakeup Request",
+                description : 'Enable wakeup request.',
                 hidden      : true,
                 default     : false,
             },
             {
                 name        : "autoWkupEnable",
                 displayName : "Enable Auto-Wakeup",
-                description : 'Enable Auto-Wakeup.',
+                description : 'Enable auto-wakeup.',
                 hidden      : true,
                 default     : false,
             },
@@ -605,35 +607,35 @@ let config = [
             },
             {
                 name: "enableTransmitPause",
-                displayName: "Enable Transmit pause",
+                displayName: "Enable Transmit Pause",
                 description: `This enables Transmit pause for MCAN.`,
                 default: false,
                 hidden : true,
             },
             {
                 name: "enableEdgeFiltering",
-                displayName: "Enable Edge filtering",
+                displayName: "Enable Edge Filtering",
                 description: `This enables Edge filtering for MCAN.`,
                 default: false,
                 hidden : true,
             },
             {
                 name: "enableProtocolExceptionHandling",
-                displayName: "Enable Protocol exception handling",
+                displayName: "Enable Protocol Exception Handling",
                 description: `This enables Protocol exception handling for MCAN.`,
                 default: false,
                 hidden : true,
             },
             {
                 name: "disableAutomaticRetransmission",
-                displayName: "Disable Automatic retransmission",
+                displayName: "Disable Automatic Retransmission",
                 description: `This Disables Automatic retransmission of message for MCAN.`,
                 default: false,
                 hidden: true,
             },
             {
                 name: "enableWakeupRequest",
-                displayName: "Enable Wakeup request",
+                displayName: "Enable Wakeup Request",
                 description: `This enables Wakeup request for MCAN.`,
                 default: false,
                 hidden : true,
@@ -647,21 +649,21 @@ let config = [
             },
             {
                 name        : "wdcPreload",
-                displayName : "Watchdog Counter preload Value",
+                displayName : "Watchdog Counter Preload Value",
                 description : 'Message RAM Watchdog Counter preload Value.',
                 hidden      : true,
                 default     : 0xFF,
             },
             {
                 name            : "errInterruptEnable",
-                displayName     : "Enable/Disable error/status intr",
+                displayName     : "Enable/Disable Error/Status Intr",
                 longDescription : 'Enable/Disable error/status interrupts. Must be enabled to receive error and status interrupts.',
                 hidden          : true,
                 default         : true,
             },
             {
                 name            : "dataInterruptEnable",
-                displayName     : "Enable/Disable data interrupts.",
+                displayName     : "Enable/Disable Data Interrupts.",
                 longDescription : 'Enable/Disable data interrupts. Must be enabled to receive transmit complete and data receive interrupts.',
                 hidden          : true,
                 default         : true,
@@ -724,14 +726,14 @@ let config = [
             },
             {
                 name        : "tsPrescalar",
-                displayName : "Time stamp Prescaler Value",
+                displayName : "Time Stamp Prescaler Value",
                 description : 'Time stamp Prescaler Value.',
                 hidden      : true,
                 default     : 0xF,
             },
             {
                 name        : "tsSelect",
-                displayName : "Timestamp counter value",
+                displayName : "Timestamp Counter Value",
                 description : 'Timestamp counter value.',
                 hidden      : true,
                 default     : "0",
@@ -743,7 +745,7 @@ let config = [
             },
             {
                 name        : "timeoutSelect",
-                displayName : "Time-out counter source select",
+                displayName : "Time-out Counter Source Select",
                 description : 'Time-out counter source select.',
                 hidden      : true,
                 default     : "MCAN_TIMEOUT_SELECT_CONT",
@@ -756,7 +758,7 @@ let config = [
             },
             {
                 name        : "timeoutPreload",
-                displayName : "Start value of the Timeout Counter",
+                displayName : "Start Value Of The Timeout Counter",
                 description : 'Start value of the Timeout Counter.',
                 hidden      : true,
                 default     : 0xFFFF,
@@ -869,8 +871,8 @@ let config = [
                     },
                     {
                         name        : "txBufMode",
-                        displayName : "Tx FIFO operation Mode",
-                        description : 'Tx FIFO operation Mode.',
+                        displayName : "Tx FIFO Operation Mode",
+                        description : 'Tx FIFO Operation Mode.',
                         hidden      : true,
                         default     : "0",
                         options     : [
@@ -895,7 +897,7 @@ let config = [
                     },
                     {
                         name        : "txEventFIFOWaterMark",
-                        displayName : "Tx Event FIFO Level watermark intr",
+                        displayName : "Tx Event FIFO Level Watermark Intr",
                         description : 'Level for Tx Event FIFO watermark interrupt.',
                         hidden      : true,
                         default     : 3,
@@ -908,7 +910,7 @@ let config = [
                 config : [
                     {
                         name        : "rxFIFO0size",
-                        displayName : "Number of Rx FIFO0 elements",
+                        displayName : "Number of Rx FIFO0 Elements",
                         description : 'Number of Rx FIFO0 elements.',
                         hidden      : true,
                         default     : 10,
@@ -922,15 +924,15 @@ let config = [
                     },
                     {
                         name        : "rxFIFO0OpMode",
-                        displayName : "FIFO0 operation mode",
-                        description : 'FIFO0 operation mode.',
+                        displayName : "FIFO0 Operation Mode",
+                        description : 'FIFO0 Operation mode.',
                         hidden      : true,
                         default     : MCAN_fifoOPMode[0].name,
                         options     : MCAN_fifoOPMode,
                     },
                     {
                         name        : "rxFIFO1size",
-                        displayName : "Number of Rx FIFO1 elements",
+                        displayName : "Number of Rx FIFO1 Elements",
                         description : 'Number of Rx FIFO1 elements.',
                         hidden      : true,
                         default     : 10,
@@ -944,8 +946,8 @@ let config = [
                     },
                     {
                         name        : "rxFIFO1OpMode",
-                        displayName : "FIFO1 operation mode",
-                        description : 'FIFO1 operation mode.',
+                        displayName : "FIFO1 Operation Mode",
+                        description : 'FIFO1 Operation mode.',
                         hidden      : true,
                         default     : MCAN_fifoOPMode[0].name,
                         options     : MCAN_fifoOPMode,
@@ -1024,7 +1026,7 @@ let config = [
         },
         {
             name: "nomPropSeg",
-            displayName: "NominalProp Segment value ",
+            displayName: "NominalProp Segment Value",
             default: 8,
             displayFormat: "dec",
             hidden: true,
@@ -1035,7 +1037,7 @@ let config = [
         },
         {
             name: "nomPseg1",
-            displayName: "NominalPhase Segment1 value",
+            displayName: "NominalPhase Segment1 Value",
             default: 6,
             displayFormat: "dec",
             hidden: true,
@@ -1046,7 +1048,7 @@ let config = [
         },
         {
             name: "nomPseg2",
-            displayName: "NominalPhase Segment2 value",
+            displayName: "NominalPhase Segment2 Value",
             default: 5,
             displayFormat: "dec",
             hidden: true,
@@ -1067,7 +1069,7 @@ let config = [
             name: "canfdNomBitRate",
             displayName: "Effective Nom Bitrate (Kbps)",
             default: 1000,
-            description: "Recommended sampling point should be between 85 to 90 percent",
+            description: "Recommended sampling point should be between 85 to 90 percent.",
             readOnly: true,
             hidden: true,
             displayFormat: "dec",
@@ -1082,8 +1084,7 @@ let config = [
             name: "canfdSamplingNomBitRate",
             displayName: "Sampling Point For Nom Bitrate",
             default: 85,
-            description: "Recommended sampling point should be between 85 to 90 percent",
-            readOnly: true,
+            description: "Recommended sampling point should be between 85 to 90 percent. Calculated from above provided values. Do-not change",
             hidden: true,
             displayFormat: "dec",
             longDescription: " Sampling Point(%) = 100 * (1 + TSEG1) / (1 + TSEG1 + TSEG2) "
@@ -1101,7 +1102,7 @@ let config = [
         },
         {
             name: "dataPropSeg",
-            displayName: "Prop Segment value",
+            displayName: "Prop Segment Value",
             description: "Prop Segment value for Data Bitrate",
             default: 2,
             hidden: true,
@@ -1113,7 +1114,7 @@ let config = [
         },
         {
             name: "dataPseg1",
-            displayName: "Phase Segment1 value",
+            displayName: "Phase Segment1 Value",
             description: "Phase Segment1 value for Data Bitrate",
             default: 2,
             hidden: true,
@@ -1125,7 +1126,7 @@ let config = [
         },
         {
             name: "dataPseg2",
-            displayName: "Phase Segment2 value",
+            displayName: "Phase Segment2 Value",
             description: "Phase Segment2 value for Data Bitrate",
             default: 3,
             hidden: true,
@@ -1147,7 +1148,7 @@ let config = [
             name: "canfdDataBitRate",
             displayName: "Effective Data Bitrate (Kbps)",
             default: 5000,
-            description: "Recommended sampling point should be between 85 to 90 percent",
+            description: "Recommended sampling point should be between 85 to 90 percent.",
             readOnly: true,
             hidden: true,
             displayFormat: "dec",
@@ -1156,8 +1157,7 @@ let config = [
             name: "canfdSamplingDataBitRate",
             displayName: "Data Bitrate Sampling Point",
             default: 87.5,
-            description: "Recommended sampling point should be between 85 to 90 percent",
-            readOnly: true,
+            description: "Recommended sampling point should be between 85 to 90 percent. Calculated from above provided values. Do-not change",
             hidden: true,
             displayFormat: "dec",
         },
