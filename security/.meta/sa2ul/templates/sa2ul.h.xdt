@@ -6,7 +6,7 @@
  * SA2UL
  */
 #include <security/security_common/drivers/crypto/sa2ul/sa2ul.h>
-#include <security/security_common/drivers/crypto/pka/pka.h>
+#include <security/security_common/drivers/crypto/asym_crypt.h>
 #include <security/security_common/drivers/crypto/rng/rng.h>
 
 /* sa2ul Instance Macros */
