@@ -1,1 +1,9 @@
+%%{
+    let soc = system.getScript('/common').getSocName();
+    let cpuName = system.getScript('/common').getSelfSysCfgCoreName();
+%%}
 #include <kernel/dpl/DebugP.h>
+% if(soc == "f29h85x" && (cpuName.match(/hsm/))){
+#include <soc/f29h85x/soc_defines.h>
+#include <modules/memlog/memlog.h>
+%}
