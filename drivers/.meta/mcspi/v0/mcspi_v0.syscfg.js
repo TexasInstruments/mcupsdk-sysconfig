@@ -138,26 +138,40 @@ let mcspi_module = {
 function addModuleInstances(instance) {
     let modInstances = new Array();
 
-    if((instance.sdkInfra == "HLD") && (!(common.getSelfSysCfgCoreName().includes("m4f")))) {
-        modInstances.push({
-            name: "udmaDriver",
-            displayName: "UDMA Configuration",
-            moduleName: "/drivers/udma/udma",
-            requiredArgs: {
-                instance: "PKTDMA_0",
-            }
-        });
+    if(common.getSocName() === "am65x"){
+        if(instance.intrEnable == "DMA") {
+                modInstances.push({
+                    name: "udmaDriver",
+                    displayName: "UDMA Configuration",
+                    moduleName: "/drivers/udma/udma",
+                    requiredArgs: {
+                        instance: "MCU_0",
+                    }
+                });
+        }
     }
+    else{
+        if((instance.sdkInfra == "HLD") && (!(common.getSelfSysCfgCoreName().includes("m4f")))) {
+            modInstances.push({
+                name: "udmaDriver",
+                displayName: "UDMA Configuration",
+                moduleName: "/drivers/udma/udma",
+                requiredArgs: {
+                    instance: "PKTDMA_0",
+                }
+            });
+        }
 
-    if((instance.intrEnable == "DMA") && (instance.sdkInfra == "LLD")) {
-        modInstances.push({
-            name: "udmaDriver",
-            displayName: "UDMA Configuration",
-            moduleName: "/drivers/udma/udma",
-            requiredArgs: {
-                instance: "PKTDMA_0",
-            }
-        });
+        if((instance.intrEnable == "DMA") && (instance.sdkInfra == "LLD")) {
+            modInstances.push({
+                name: "udmaDriver",
+                displayName: "UDMA Configuration",
+                moduleName: "/drivers/udma/udma",
+                requiredArgs: {
+                    instance: "PKTDMA_0",
+                }
+            });
+        }
     }
 
     return modInstances;
@@ -510,6 +524,7 @@ function getConfigurables()
                 }
             },
             description: "SDK Infra",
+            hidden: (common.getSocName() == "am65x"),
         },
         {
             name: "multiWordAccess",
@@ -592,7 +607,7 @@ function validate(inst, report) {
         report.logError("Callback function MUST be provided for callback transfer mode", inst, "errorCallbackFxn");
     }
     if ((inst.useMcuDomainPeripherals) &&
-        (inst.intrEnable == "DMA")) {
+        (inst.intrEnable == "DMA") && (common.getSocName() != "am65x")) {
         report.logError("DMA is not supported in MCU Domain", inst, "useMcuDomainPeripherals");
     }
     common.validate.checkNumberRange(inst, report, "intrPriority", 0, hwi.getHwiMaxPriority(), "dec");

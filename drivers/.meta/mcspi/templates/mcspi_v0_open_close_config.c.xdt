@@ -100,6 +100,7 @@ MCSPI_ChConfig *gConfigMcspiChCfg[`module.$instances.length`] =
 %if(mcspiUdmaInstances.length > 0) {
 #include <drivers/mcspi/v0/lld/dma/udma/mcspi_dma_udma.h>
 #include <drivers/udma.h>
+#include <drivers/mcspi/v0/lld/dma/soc/mcspi_dma_soc.h>
 
 /*
  * Ring parameters
@@ -137,6 +138,11 @@ static Udma_EventObject        gMcspi`i`UdmaCqRxEventObjCh`ch`;
 static uint8_t gMcspi`i`UdmaRxRingMemCh`ch`[MCSPI_UDMA_TEST_RING_MEM_SIZE] __attribute__((aligned(UDMA_CACHELINE_ALIGNMENT)));
 static uint8_t gMcspi`i`UdmaTxRingMemCh`ch`[MCSPI_UDMA_TEST_RING_MEM_SIZE] __attribute__((aligned(UDMA_CACHELINE_ALIGNMENT)));
 
+% if(common.getSocName() === "am65x"){
+/* MCSPI UDMA Channel Completion Queue Ring Mem */
+static uint8_t gMcspi`i`UdmaCqRxRingMemCh`ch`[UDMA_ALIGN_SIZE(MCSPI_UDMA_TEST_RING_MEM_SIZE)] __attribute__((aligned(UDMA_CACHELINE_ALIGNMENT)));
+static uint8_t gMcspi`i`UdmaCqTxRingMemCh`ch`[UDMA_ALIGN_SIZE(MCSPI_UDMA_TEST_RING_MEM_SIZE)] __attribute__((aligned(UDMA_CACHELINE_ALIGNMENT)));
+%}
 /* MCSPI UDMA Channel HPD Mem */
 static uint8_t gMcspi`i`UdmaTxHpdMemCh`ch`[MCSPI_UDMA_TEST_DESC_SIZE] __attribute__((aligned(UDMA_CACHELINE_ALIGNMENT)));
 static uint8_t gMcspi`i`UdmaRxHpdMemCh`ch`[MCSPI_UDMA_TEST_DESC_SIZE] __attribute__((aligned(UDMA_CACHELINE_ALIGNMENT)));
@@ -158,11 +164,20 @@ MCSPI_UdmaChConfig g`instNameCamelCase`DmaChCfg[`instance.$name.toUpperCase()`_N
     .hpdMemSize       = MCSPI_UDMA_TEST_DESC_SIZE,
     .txRingMem        = &gMcspi`i`UdmaTxRingMemCh`ch`,
     .rxRingMem        = &gMcspi`i`UdmaRxRingMemCh`ch`,
+%if(common.getSocName() === "am65x"){
+    .cqTxRingMem      = &gMcspi`i`UdmaCqTxRingMemCh`ch`,
+    .cqRxRingMem      = &gMcspi`i`UdmaCqRxRingMemCh`ch`,
+%}
     .ringMemSize      = MCSPI_UDMA_TEST_RING_MEM_SIZE,
     .ringElemCnt      = MCSPI_UDMA_TEST_RING_ENTRIES,
     .rxEvtNum         = `config.udmaPdmaChannels[ch_config.cs].rxCh`,
     .txEvtNum         = `config.udmaPdmaChannels[ch_config.cs].txCh`,
     .isOpen           = FALSE,
+%if(common.getSocName() === "am65x"){
+        .isCqRingMem      = UDMA_COMP_QUEUE_RING_MEM_ENABLED,
+%}else{
+        .isCqRingMem      = UDMA_COMP_QUEUE_RING_MEM_DISABLED,
+%}
 },
 % }
 
