@@ -112,7 +112,7 @@ function getStaticConfigArr() {
                 {
                     name: `RTI${i}`,
                     timerBaseAddr: 0x52180000 + i*0x1000,
-                    timerHwiIntNum: 124 + (7 * i),
+                    timerHwiIntNum: 124 + (6 * i),
                     timerInputPreScaler: 1,
                     clkSelMuxAddr: 0x53208000 + 0x140 + 4*i,
                     disableClkSourceConfig: false,

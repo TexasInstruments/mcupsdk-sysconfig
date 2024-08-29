@@ -70,8 +70,7 @@ function getStaticConfigArr() {
             {
                 name: `RTI${i}`,
                 baseAddr: 0x52180000 + i*0x1000,
-                /* RTI Interrupts are not continous. RTI 0-3 are grouped together and RTI 4-7 are grouped separately */
-                hwiIntNum: ((i < 4) ? (84 + (7 * i)) : (219 + (7 * (i - 4)))),
+                hwiIntNum: (124 + (6 * i)),
                 clkSelMuxAddr: 0x53208000 + 0x114 + 4*i,
                 disableClkSourceConfig: false,
                 lockUnlockDomain: "SOC_DOMAIN_ID_MAIN",
