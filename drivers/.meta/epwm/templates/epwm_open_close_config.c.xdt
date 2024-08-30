@@ -14,13 +14,13 @@ void Drivers_epwmOpen(void)
 	/* Time Base */
 	`epwm_json_resolver.getCode(instance, instance,"epwmTimebase_emulationMode")`
 	`epwm_json_resolver.getCode(instance, instance,"epwmTimebase_clockDiv")`
+	`epwm_json_resolver.getCode(instance, instance,"epwmTimebase_periodGld")`
+	`epwm_json_resolver.getCode(instance, instance,"epwmTimebase_periodLoadMode")`
+    `epwm_json_resolver.getCode(instance, instance,"epwmTimebase_periodLoadEvent")`
 	`epwm_json_resolver.getCode(instance, instance,"epwmTimebase_period")`
 	% if (instance["epwmTimebase_periodLink"] != "EPWM_LINK_WITH_DISABLE") {
 	`epwm_json_resolver.getCode(instance, instance,"epwmTimebase_periodLink")`
 	% }
-	`epwm_json_resolver.getCode(instance, instance,"epwmTimebase_periodGld")`
-	`epwm_json_resolver.getCode(instance, instance,"epwmTimebase_periodLoadMode")`
-    `epwm_json_resolver.getCode(instance, instance,"epwmTimebase_periodLoadEvent")`
 	`epwm_json_resolver.getCode(instance, instance,"epwmTimebase_counterValue")`
 	`epwm_json_resolver.getCode(instance, instance,"epwmTimebase_counterMode")`
 	`epwm_json_resolver.getCode(instance, instance,"epwmTimebase_counterModeAfterSync")`
@@ -33,17 +33,21 @@ void Drivers_epwmOpen(void)
     `epwm_json_resolver.getCode(instance, instance,"hrpwm_syncSource")`
 
 	/* Counter Compare */
-	`epwm_json_resolver.getCode(instance, instance,"epwmCounterCompare_cmpA")`
 	`epwm_json_resolver.getCode(instance, instance,"epwmCounterCompare_cmpAGld")`
 	`epwm_json_resolver.getCode(instance, instance,"epwmCounterCompare_enableShadowLoadModeCMPA")`
+    % if(instance["epwmCounterCompare_enableShadowLoadModeCMPA"]){
 	`epwm_json_resolver.getCode(instance, instance,"epwmCounterCompare_shadowLoadModeCMPA")`
+    % }
+	`epwm_json_resolver.getCode(instance, instance,"epwmCounterCompare_cmpA")`
 	% if (instance["epwmCounterCompare_cmpALink"] != "EPWM_LINK_WITH_DISABLE") {
 	`epwm_json_resolver.getCode(instance, instance,"epwmCounterCompare_cmpALink")`
 	% }
-	`epwm_json_resolver.getCode(instance, instance,"epwmCounterCompare_cmpB")`
 	`epwm_json_resolver.getCode(instance, instance,"epwmCounterCompare_cmpBGld")`
 	`epwm_json_resolver.getCode(instance, instance,"epwmCounterCompare_enableShadowLoadModeCMPB")`
+    % if(instance["epwmCounterCompare_enableShadowLoadModeCMPB"]){
 	`epwm_json_resolver.getCode(instance, instance,"epwmCounterCompare_shadowLoadModeCMPB")`
+    % }
+	`epwm_json_resolver.getCode(instance, instance,"epwmCounterCompare_cmpB")`
 	% if (instance["epwmCounterCompare_cmpBLink"] != "EPWM_LINK_WITH_DISABLE") {
 	`epwm_json_resolver.getCode(instance, instance,"epwmCounterCompare_cmpBLink")`
 	% }
