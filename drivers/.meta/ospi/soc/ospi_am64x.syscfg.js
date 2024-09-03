@@ -51,7 +51,7 @@ const ospi_dma_restrict_regions = [
 
 function getDefaultConfig()
 {
-    if(common.getSelfSysCfgCoreName().match(/r5f*/))
+    if((common.getSelfSysCfgCoreName().match(/r5f*/)) || (common.getSelfSysCfgCoreName().match(/m4f*/)))
     {
         return ospi_config_r5fss[0];
     }
@@ -63,7 +63,7 @@ function getDefaultConfig()
 
 function getConfigArr() {
 
-    if(common.getSelfSysCfgCoreName().match(/r5f*/))
+    if((common.getSelfSysCfgCoreName().match(/r5f*/)) || (common.getSelfSysCfgCoreName().match(/m4f*/)))
     {
         return ospi_config_r5fss;
     }
