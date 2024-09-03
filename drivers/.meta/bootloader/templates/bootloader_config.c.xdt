@@ -147,7 +147,7 @@ Bootloader_Config gBootloaderConfig[CONFIG_BOOTLOADER_NUM_INSTANCES] =
         .disableAppImageAuth = FALSE,
         .initICSSCores = FALSE,
     % }
-    % if(common.getSocName() == "am65x"){
+    % if(["am243x", "am64x", "am65x"].includes(common.getSocName())) {
         BOOTLOADER_SCRATCH_MEM_ENABLE,
     % } else {
         0,
