@@ -23,6 +23,7 @@ uint32_t    gCANFDConfigNum = CONFIG_MCAN_NUM_INSTANCES;
     % if(config.transferMode == "CALLBACK" && config.transferCallbackFxn != "NULL") {
 /* CANFD Transfer Callback */
 void `config.transferCallbackFxn`(void *args, CANFD_Reason reason);
+void `config.errorCallbackFxn`(void *args, CANFD_Reason reason, CANFD_ErrStatusResp* errStatusResp);
     % }
 % }
 
@@ -38,9 +39,9 @@ static CANFD_Attrs gCanfdAttrs[CONFIG_MCAN_NUM_INSTANCES] =
         .intrNum1                             = `config.intrNum1`,
         .intrPriority                         = `config.intrPriority`U,
         .operMode                             = CANFD_OPER_MODE_`config.operMode`,
+        .OptionTLVtype                        = `config.optionTLVType`,
         .CANFDMcanloopbackParams.enable       = `config.enableLoopback`,
         .CANFDMcanloopbackParams.mode         = CANFD_MCANLoopBackMode_`config.loopbackMode`,
-
         .CANFDMcanBitTimingParams.nomBrp      = 0x`config.nomBrp.toString(16).toUpperCase()`U,
         .CANFDMcanBitTimingParams.nomPropSeg  = 0x`config.nomPropSeg.toString(16).toUpperCase()`U,
         .CANFDMcanBitTimingParams.nomPseg1    = 0x`config.nomPseg1.toString(16).toUpperCase()`U,

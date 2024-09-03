@@ -160,6 +160,7 @@ function onChangeHideHLDParams(inst, ui)
         ui.brsEnable.hidden = true;
         ui.enableLoopback.hidden = true;
         ui.loopbackMode.hidden = true;
+        ui.optionTLVType.hidden = true;
         ui.txpEnable.hidden = true;
         ui.efbi.hidden = true;
         ui.pxhddisable.hidden = true;
@@ -275,6 +276,7 @@ function onChangeHideHLDParams(inst, ui)
         ui.brsEnable.hidden = false;
         ui.enableLoopback.hidden = false;
         ui.loopbackMode.hidden = false;
+        ui.optionTLVType.hidden = false;
         ui.txpEnable.hidden = false;
         ui.efbi.hidden = false;
         ui.pxhddisable.hidden = false;
@@ -539,6 +541,43 @@ let config = [
                     {
                         name: "EXTERNAL",
                         displayName: "External"
+                    },
+                ],
+            },
+            {
+                name: "optionTLVType",
+                displayName: "Select Option for TLV Type",
+                description: `This selects the types of option info in TLV for CANFD.`,
+                default: "CANFD_Option_MCAN_LOOPBACK",
+                hidden : true,
+                options: [
+                    {
+                        name: "CANFD_Option_MCAN_ERROR_COUNTER",
+                        displayName: "CANFD Option MCAN Error_Counter"
+                    },
+                    {
+                        name: "CANFD_Option_MCAN_PROTOCOL_STATUS",
+                        displayName: "CANFD Option MCAN Protocol Status"
+                    },
+                    {
+                        name: "CANFD_Option_MCAN_MSG_OBJECT_STATS",
+                        displayName: "CANFD Option MCAN Message Object Status"
+                    },
+                    {
+                        name: "CANFD_Option_MCAN_PROTOCOL_STATUS",
+                        displayName: "CANFD Option MCAN Protocol Status"
+                    },
+                    {
+                        name: "CANFD_Option_MCAN_MODE",
+                        displayName: "CANFD Option MCAN Mode"
+                    },
+                    {
+                        name: "CANFD_Option_MCAN_LOOPBACK",
+                        displayName: "CANFD Option MCAN Loopback"
+                    },
+                    {
+                        name: "CANFD_Option_MCAN_POWER_DOWN",
+                        displayName: "CANFD Option MCAN Power Down"
                     },
                 ],
             },
@@ -1010,7 +1049,7 @@ let config = [
     },
     {
         name: "GROUP_BITRATECONFIG",
-        displayName: "Bit-rate Config",
+        displayName: "Configure Bit-rate For CANFD",
         longDescription: "The parameters for bit timing calculation. Bit timing related to data phase will be valid only in case where MCAN is put in CANFD mode and will be '0' otherwise.",
         config : [
         {
@@ -1165,7 +1204,7 @@ let config = [
     },
     {
         name: "GROUP_LLD_BITRATECONFIG",
-        displayName: "Config Bit-rate for LLD",
+        displayName: "Configure Bit-rate For MCAN",
         longDescription: "The parameters for bit timing calculation. Bit timing related to data phase will be valid only in case where MCAN is put in CANFD mode and will be '0' otherwise.",
         config : [
         {
