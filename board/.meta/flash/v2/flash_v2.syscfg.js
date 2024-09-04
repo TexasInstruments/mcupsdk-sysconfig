@@ -1032,7 +1032,7 @@ function getConfigurables()
                                     name: "proto_cfgReg",
                                     displayName: "Address Of Config Reg",
                                     default: soc.getDefaultFlashConfig().protos[defProtoJson].protoCfg == null ? "0x00000000" : soc.getDefaultFlashConfig().protos[defProtoJson].protoCfg.cfgReg,
-                                    hidden: true,
+                                    hidden: soc.getDefaultFlashConfig().protos[defProtoJson].protoCfg == null,
                                 },
                                 {
                                     name: "proto_cmdRegRd",
@@ -1086,7 +1086,7 @@ function getConfigurables()
                                     name: "dummy_cfgReg",
                                     displayName: "Address Of Config Reg",
                                     default: soc.getDefaultFlashConfig().protos[defProtoJson].dummyCfg == null ? "0x00000000" : soc.getDefaultFlashConfig().protos[defProtoJson].dummyCfg.cfgReg,
-                                    hidden: true,
+                                    hidden: soc.getDefaultFlashConfig().protos[defProtoJson].dummyCfg == null,
                                 },
                                 {
                                     name: "dummy_cmdRegRd",
@@ -1140,7 +1140,7 @@ function getConfigurables()
                                     name: "strDtr_cfgReg",
                                     displayName: "Address Of Config Reg",
                                     default: soc.getDefaultFlashConfig().protos[defProtoJson].strDtrCfg == null ? "0x00000000" : soc.getDefaultFlashConfig().protos[defProtoJson].strDtrCfg.cfgReg,
-                                    hidden: true,
+                                    hidden: soc.getDefaultFlashConfig().protos[defProtoJson].strDtrCfg == null,
                                 },
                                 {
                                     name: "strDtr_cmdRegRd",

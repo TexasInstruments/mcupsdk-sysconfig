@@ -378,7 +378,7 @@ function getConfigurables()
                         displayName: "Phase Detect Delay Element",
                         description: "Number of delay elements to be inserted between phase detect flip-flops ",
                         default: soc.getPhyTuningParams().phaseDelayElement,
-                        hidden: !phyConfigs,
+                        hidden: true,
                     },
                     {
                         name : "phyControlMode",
@@ -398,7 +398,7 @@ function getConfigurables()
                             { name : "PHY_MASTER_MODE", displayName : "Master Mode"},
                             { name : "PHY_BYPASS_MODE", displayName : "Bypass Mode"}
                         ],
-                        hidden: !phyConfigs,
+                        hidden: true,
                     },
                     {
                         name : "dllLockMode",
@@ -410,7 +410,7 @@ function getConfigurables()
                             { name : "FULL_CYCLE_LOCK", displayName : "Full Cycle Lock"},
                             { name : "HALF_CYCLE_LOCK", displayName : "Half Cycle Lock"}
                         ],
-                        hidden: !phyConfigs,
+                        hidden: true,
                     },
                     {
                         name : "windowParams",
@@ -498,7 +498,7 @@ function getConfigurables()
                                 description : "Minimum value of Read delay for Read Delay Capture Register for tuning search.",
                                 default: soc.getPhyTuningParams().rdDelayMin,
                                 displayFormat: "dec",
-                                hidden: !phyConfigs,
+                                hidden: true,
                             },
                             {
                                 name: "rdDelayMax",
@@ -506,7 +506,7 @@ function getConfigurables()
                                 description : "Maximum value of Read delay for Read Delay Capture Register for tuning search.",
                                 default: soc.getPhyTuningParams().rdDelayMax,
                                 displayFormat: "dec",
-                                hidden: !phyConfigs,
+                                hidden: true,
                             },
                             {
                                 name: "txDllLowWindowStart",
@@ -515,7 +515,7 @@ function getConfigurables()
                                 This corresponds to the bottom left point serach.",
                                 default: soc.getPhyTuningParams().txDllLowWindowStart,
                                 displayFormat: "dec",
-                                hidden: !phyConfigs,
+                                hidden: true,
                             },
                             {
                                 name: "txDllLowWindowEnd",
@@ -524,7 +524,7 @@ function getConfigurables()
                                 This corresponds to the bottom left point search.",
                                 default: soc.getPhyTuningParams().txDllLowWindowEnd,
                                 displayFormat: "dec",
-                                hidden: !phyConfigs,
+                                hidden: true,
                             },
                             {
                                 name: "txDllHighWindowStart",
@@ -533,7 +533,7 @@ function getConfigurables()
                                 This corresponds to the top right point search.",
                                 default: soc.getPhyTuningParams().txDllHighWindowStart,
                                 displayFormat: "dec",
-                                hidden: !phyConfigs,
+                                hidden: true,
                             },
                             {
                                 name: "txDllHighWindowEnd",
@@ -542,7 +542,7 @@ function getConfigurables()
                                 This corresponds to the top right point search.",
                                 default: soc.getPhyTuningParams().txDllHighWindowEnd,
                                 displayFormat: "dec",
-                                hidden: !phyConfigs,
+                                hidden: true,
                             },
                             {
                                 name: "rxLowSearchStart",
@@ -551,7 +551,7 @@ function getConfigurables()
                                 The value of Rx dll will lie in this window bottom left point search.",
                                 default: soc.getPhyTuningParams().rxLowSearchStart,
                                 displayFormat: "dec",
-                                hidden: !phyConfigs,
+                                hidden: true,
                             },
                             {
                                 name: "rxLowSearchEnd",
@@ -560,7 +560,7 @@ function getConfigurables()
                                 The value of Rx dll will lie in this window bottom left point search.",
                                 default: soc.getPhyTuningParams().rxLowSearchEnd,
                                 displayFormat: "dec",
-                                hidden: !phyConfigs,
+                                hidden: true,
                             },
                             {
                                 name: "rxHighSearchStart",
@@ -569,7 +569,7 @@ function getConfigurables()
                                 The value of Rx dll will lie in this window top right point search.",
                                 default: soc.getPhyTuningParams().rxHighSearchStart,
                                 displayFormat: "dec",
-                                hidden: !phyConfigs,
+                                hidden: true,
                             },
                             {
                                 name: "rxHighSearchEnd",
@@ -578,7 +578,7 @@ function getConfigurables()
                                 The value of Rx dll will lie in this window for top right point search.",
                                 default: soc.getPhyTuningParams().rxHighSearchEnd,
                                 displayFormat: "dec",
-                                hidden: !phyConfigs,
+                                hidden: true,
                             },
                             {
                                 name: "txLowSearchStart",
@@ -587,7 +587,7 @@ function getConfigurables()
                                 The value of Tx dll will lie in this window.",
                                 default: soc.getPhyTuningParams().txLowSearchStart,
                                 displayFormat: "dec",
-                                hidden: !phyConfigs,
+                                hidden: true,
                             },
                             {
                                 name: "txLowSearchEnd",
@@ -596,7 +596,7 @@ function getConfigurables()
                                 The value of Tx dll will lie in this window.",
                                 default: soc.getPhyTuningParams().txLowSearchEnd,
                                 displayFormat: "dec",
-                                hidden: !phyConfigs,
+                                hidden: true,
                             },
                             {
                                 name: "txHighSearchStart",
@@ -605,7 +605,7 @@ function getConfigurables()
                                 The value of Tx dll will lie in this window.",
                                 default: soc.getPhyTuningParams().txHighSearchStart,
                                 displayFormat: "dec",
-                                hidden: !phyConfigs,
+                                hidden: true,
                             },
                             {
                                 name: "txHighSearchEnd",
@@ -614,7 +614,7 @@ function getConfigurables()
                                 The value of Tx dll will lie in this window.",
                                 default: soc.getPhyTuningParams().txHighSearchEnd,
                                 displayFormat: "dec",
-                                hidden: !phyConfigs,
+                                hidden: true,
                             },
                             {
                                 name: "txDLLSearchOffset",
@@ -622,7 +622,7 @@ function getConfigurables()
                                 description : "Tx Dll step increase for backup Rx Dll low and high search.",
                                 default: soc.getPhyTuningParams().txDLLSearchOffset,
                                 displayFormat: "dec",
-                                hidden: !phyConfigs,
+                                hidden: true,
                             },
                             {
                                 name: "rxTxDLLSearchStep",
@@ -630,7 +630,7 @@ function getConfigurables()
                                 description : "Rx Dll and Tx DLL step increase for Rx Dll and Tx Dll low and high search.",
                                 default: soc.getPhyTuningParams().rxTxDLLSearchStep,
                                 displayFormat: "dec",
-                                hidden: !phyConfigs,
+                                hidden: true,
                             },
                         ]
                     }
