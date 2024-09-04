@@ -4,6 +4,13 @@ let pinmux = system.getScript("/drivers/pinmux/pinmux");
 
 function getInterfaceName(inst, peripheralName)
 {
+    let device = common.getDeviceName();
+    if(device === "am263px-cc")
+    {
+        return "PRU-ICSS_"+peripheralName;
+    }
+    //assuming default device as am263x
+    //NOTE: when am261x is supported, logic should be changed
     return `${inst.instance}_${peripheralName}`
 }
 
