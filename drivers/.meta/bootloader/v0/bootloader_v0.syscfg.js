@@ -86,7 +86,7 @@ function getConfig(){
     if(["am263x", "am263px", "am261x"].includes(common.getSocName())) {
         cfg.push({
             name        : "hsmrtDecoupling",
-            displayName : "Is HSMRT not a part of the SBL?",
+            displayName : "Is Hsmrt Not A Part Of The Sbl",
             description : 'Whether or not HSMRT is decoupled from the SBL',
             hidden      : false,
             default     : false,
