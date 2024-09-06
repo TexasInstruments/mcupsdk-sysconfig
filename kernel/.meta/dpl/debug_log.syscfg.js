@@ -9,7 +9,72 @@ function getUartConfigSupported() {
 
     let socName = common.getSocName();
     let uartConfigSupported = true;
+
+    /* Uart log is currently not supported for F29H85x, this can be added after the support is added. */
+    if(socName.match(/f29h85x/))
+    {
+        uartConfigSupported = false;
+    }
     return uartConfigSupported;
+}
+
+function getLogZoneErrorSupported() {
+
+    let socName = common.getSocName();
+    let LogZoneErrorSupported = true;
+
+    /* Log Zone Error is currently not supported for F29H85x, this can be added after the support is added. */
+    if(socName.match(/f29h85x/))
+    {
+        LogZoneErrorSupported = false;
+    }
+    return LogZoneErrorSupported;
+}
+
+function getLogZoneWarningSupported() {
+
+    let socName = common.getSocName();
+    let LogZoneWarningSupported = true;
+
+    /* Log Zone Warning is currently not supported for F29H85x, this can be added after the support is added. */
+    if(socName.match(/f29h85x/))
+    {
+        LogZoneWarningSupported = false;
+    }
+    return LogZoneWarningSupported;
+}
+
+function getLogZoneInfoSupported() {
+
+    let socName = common.getSocName();
+    let LogZoneInfoSupported = true;
+
+    /* Log Zone Info is currently not supported for F29H85x, this can be added after the support is added. */
+    if(socName.match(/f29h85x/))
+    {
+        LogZoneInfoSupported = false;
+    }
+    return LogZoneInfoSupported;
+}
+
+function getCssLogSupported() {
+
+    let socName = common.getSocName();
+    let CssLogSupported = true;
+
+    /* Css Log is currently not supported for F29H85x, this can be added after the support is added. */
+    if(socName.match(/f29h85x/))
+    {
+        CssLogSupported = false;
+    }
+    return CssLogSupported;
+}
+
+function getMemLogSupported() {
+
+    let socName = common.getSocName();
+    let MemLogSupported = true;
+    return MemLogSupported;
 }
 
 function getSharedMemLogSupported() {
@@ -17,8 +82,8 @@ function getSharedMemLogSupported() {
     let socName = common.getSocName();
     let sharedMemLogSupported = true;
 
-    /* Shared mem log is currently not supported for AM62, this can be added after the support is added. */
-    if(socName.match(/am62x/))
+    /* Shared mem log is currently not supported for AM62 and F29H85x, this can be added after the support is added. */
+    if(socName.match(/am62x/) || socName.match(/f29h85x/))
     {
         sharedMemLogSupported = false;
     }
@@ -85,16 +150,19 @@ Refer instructions in the generated ti_dpl_config.c for more details.
                 name: "enableLogZoneError",
                 displayName: "Enable Error Log Zone",
                 default: true,
+                hidden: !getLogZoneErrorSupported(),
             },
             {
                 name: "enableLogZoneWarning",
                 displayName: "Enable Warning Log Zone",
                 default: true,
+                hidden: !getLogZoneWarningSupported(),
             },
             {
                 name: "enableLogZoneInfo",
                 displayName: "Enable Info Log Zone",
                 default: false,
+                hidden: !getLogZoneInfoSupported(),
             },
             {
                 name: "enableCssLog",
@@ -106,12 +174,14 @@ Refer instructions in the generated ti_dpl_config.c for more details.
 Do not enable CCS loging in A53 when booting using SBL. This can cause error while running the application.
 `,
                 default: true,
+                hidden: !getCssLogSupported(),
             },
             {
                 name: "enableMemLog",
                 displayName: "Enable Memory Log",
                 description: "Logs string to memory. This can be viewed via ROV in CCS",
                 default: false,
+                hidden: !getMemLogSupported(),
             },
             {
                 name: "enableUartLog",
