@@ -40,7 +40,7 @@ as soon as the conversions are complete, and compares the absolute value of the 
 tolerance. If the computed delta is out of range, the checker can generate a trip event signal that is sent to
 an ePWM or output crossbar, and can also trigger an CPU interrupt. The structure and
 operation of an ADC result safety checker tile are demonstrated in the figure:
-![](../source/drivers/.meta/adc/images/safetychecker.png)
+![](../source/sysconfig/drivers/.meta/adc/images/safetychecker.png)
 
 To configure an ADC result safety checker tile:
 1) Select the first ADC instance to test. Then, in the Input field, select the source of the result, which can be any one of the SOCs, PPB modules or PPB sums. The result value should be given in the Selected Result field.
