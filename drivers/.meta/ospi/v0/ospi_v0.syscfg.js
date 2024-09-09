@@ -34,7 +34,7 @@ function getInterfaceName(inst) {
 }
 
 function getPeripheralPinNames(inst) {
-    return [ "CLK", "CSn0", "CSn1", "CSn2", "CSn3", "D0", "D1", "D2", "D3", "D4", "D5", "D6", "D7", "DQS" ];
+    return [ "CLK", "CSn0", "CSn1", "CSn2", "CSn3", "D0", "D1", "D2", "D3", "D4", "D5", "D6", "D7", "DQS","ECC_FAIL" ];
 }
 
 function getDmaRestrictedRegions() {
@@ -111,6 +111,11 @@ function pinmuxRequirements(inst) {
             resources.push( pinResource);
 
     }
+
+    pinResource = pinmux.getPinRequirements(interfaceName, "ECC_FAIL", "OSPI ECC Fail Pin");
+    pinmux.setConfigurableDefault( pinResource, "rx", false );
+    pinResource.used=false;
+    resources.push( pinResource);
 
     let peripheral = {
         name: interfaceName,
