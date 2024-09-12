@@ -87,7 +87,7 @@
         }
     },
     "addrByteSupport": "1",
-    "fourByteAddrEnSeq": "0",
+    "fourByteAddrEnSeq": "0xA1",
     "cmdExtType": "REPEAT",
     "resetType": "0x30",
     "deviceBusyType": "0",
@@ -103,7 +103,7 @@
         "dummy8": 8,
         "addressBytesSize": 0
     },
-    "xspiWipRdCmd": "0x05",
+    "xspiWipRdCmd": "0x00",
     "xspiWipReg": "0x00000000",
     "xspiWipBit": 0,
     "flashDeviceBusyTimeout": 72000000,
