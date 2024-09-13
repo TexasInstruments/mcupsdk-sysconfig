@@ -70,8 +70,8 @@ function getStaticConfigArr() {
             {
                 timerName: `RTI${i}`,
                 timerBaseAddr: 0x52180000 + i*0x1000,
-                /* RTI Interrupts are not continous. RTI 0-3 are grouped together and RTI 4-7 are grouped separately */
-                timerHwiIntNum: 124 + (7 * i),
+                /* RTI 0-3 are grouped together */
+                timerHwiIntNum: 124 + (6 * i),
                 timerInputPreScaler: 1,
                 clkSelMuxAddr: 0x53208000 + 0x140 + 4*i,
                 disableClkSourceConfig: false,

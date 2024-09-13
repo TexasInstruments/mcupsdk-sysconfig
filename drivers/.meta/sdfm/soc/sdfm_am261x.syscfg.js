@@ -93,7 +93,7 @@ function getInterfaceName(instance) {
     return "SDFM";
 }
 
-let sdfm_func_clk = 400 * 1000 * 1000;
+let sdfm_func_clk = 500 * 1000 * 1000;
 const staticConfig = [
     {
         name: "SDFM0",

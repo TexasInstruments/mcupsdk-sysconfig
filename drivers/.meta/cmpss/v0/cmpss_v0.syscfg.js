@@ -735,6 +735,7 @@ let cmpssModule = {
     maxInstances        : numberOfInstance,
     defaultInstanceName : "CONFIG_CMPSS",
     description         : "Comparator Subsystem",
+    longDescription     : "Pins are shared with ADC and can be referred from TRM. Here is a snippet from the same...\n![ADC CMPSS Pin Sharing](../source/sysconfig/drivers/.meta/cmpss/images/"+common.getSocName()+"_cmpss_adc.png)",
     filterHardware      : filterHardware,
     config              : config,
     templates: {
