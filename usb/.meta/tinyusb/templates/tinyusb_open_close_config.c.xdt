@@ -36,5 +36,8 @@ void Drivers_usbOpen(void)
 
 void Drivers_usbClose(void)
 {
+    % if(common.getSocName() == "am261x"){
+    USB_deinit();
+    % }
     return;
 }
