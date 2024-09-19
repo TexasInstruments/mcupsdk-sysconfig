@@ -1,6 +1,6 @@
 let common = system.getScript("/common");
 
-let mcan_func_clk =240 * 1000 * 1000;
+let mcan_func_clk = 80 * 1000 * 1000;
 
 const mcan_config_r5fss = [
     {
