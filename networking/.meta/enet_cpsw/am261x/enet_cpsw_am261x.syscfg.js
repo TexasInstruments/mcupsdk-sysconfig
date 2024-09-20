@@ -157,14 +157,14 @@ const enet_cpsw_phy1_config =
             displayFormat: "dec",
             isInteger:true,
             range: [0, 31],
-            readOnly: true,
+            readOnly: false,
             getValue:function (inst) {
                 const cpswPhyAddrInfoMap = new Map(
                                            [
                                              ['am261x-som',{phyAddr1: 3, phyAddr2: 0}],
                                              ['am261x-som-addon-ind',{phyAddr1: 3, phyAddr2: 1}],
-                                             ['am261x-som-addon-auto',{phyAddr1: 12, phyAddr2: 12}],
-                                             ['am261x-lp', {phyAddr1: 1, phyAddr2: 1}],
+                                             ['am261x-lp-addon-auto',{phyAddr1: 12, phyAddr2: 12}],
+                                             ['am261x-lp-addon-ind', {phyAddr1: 3, phyAddr2: 3}],
                                            ],
                                          );
                 let phyInfo =  cpswPhyAddrInfoMap.get(inst.BoardType);
@@ -208,14 +208,14 @@ const enet_cpsw_phy2_config =
             displayFormat: "dec",
             isInteger:true,
             range: [0, 31],
-            readOnly: true,
+            readOnly: false,
             getValue:function (inst) {
                 const cpswPhyAddrInfoMap = new Map(
                                            [
                                              ['am261x-som',{phyAddr1: 3, phyAddr2: 0}],
                                              ['am261x-som-addon-ind',{phyAddr1: 3, phyAddr2: 0}],
-                                             ['am261x-som-addon-auto',{phyAddr1: 3, phyAddr2: 12}],
-                                             ['am261x-lp', {phyAddr1: 1, phyAddr2: 3}],
+                                             ['am261x-lp-addon-auto',{phyAddr1: 3, phyAddr2: 12}],
+                                             ['am261x-lp-addon-ind', {phyAddr1: 1, phyAddr2: 3}],
                                            ],
                                          );
                 let phyInfo =  cpswPhyAddrInfoMap.get(inst.BoardType);
@@ -590,7 +590,7 @@ function validate(instance, report) {
     macportScript.validate(instance, report);
     hostportScript.validate(instance, report);
 
-    if ((instance.BoardType === "am261x-som") || (instance.BoardType === "am261x-som-addon-ind") || (instance.BoardType === "am261x-som-addon-auto"))
+    if ((instance.BoardType === "am261x-som") || (instance.BoardType === "am261x-som-addon-ind") || (instance.BoardType === "am261x-lp-addon-auto"))
     {
         /*if (instance.DisableMacPort1 === false)
         {
@@ -751,10 +751,10 @@ let enet_cpsw_module = {
                     name: "am261x-som",
                 },
                 {
-                    name: "am261x-som-addon-auto",
+                    name: "am261x-lp-addon-auto",
                 },
                 {
-                    name: "am261x-lp",
+                    name: "am261x-lp-addon-ind",
                 },
             ],
         },
