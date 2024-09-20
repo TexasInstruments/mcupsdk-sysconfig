@@ -163,7 +163,7 @@ const enet_cpsw_phy1_config =
                                            [
                                              ['am261x-som',{phyAddr1: 3, phyAddr2: 0}],
                                              ['am261x-som-addon-ind',{phyAddr1: 3, phyAddr2: 1}],
-                                             ['am261x-som-addon-auto',{phyAddr1: 3, phyAddr2: 12}],
+                                             ['am261x-som-addon-auto',{phyAddr1: 12, phyAddr2: 12}],
                                              ['am261x-lp', {phyAddr1: 1, phyAddr2: 1}],
                                            ],
                                          );
@@ -215,7 +215,7 @@ const enet_cpsw_phy2_config =
                                              ['am261x-som',{phyAddr1: 3, phyAddr2: 0}],
                                              ['am261x-som-addon-ind',{phyAddr1: 3, phyAddr2: 0}],
                                              ['am261x-som-addon-auto',{phyAddr1: 3, phyAddr2: 12}],
-                                             ['am261x-lp', {phyAddr1: 1, phyAddr2: 12}],
+                                             ['am261x-lp', {phyAddr1: 1, phyAddr2: 3}],
                                            ],
                                          );
                 let phyInfo =  cpswPhyAddrInfoMap.get(inst.BoardType);
@@ -592,10 +592,11 @@ function validate(instance, report) {
 
     if ((instance.BoardType === "am261x-som") || (instance.BoardType === "am261x-som-addon-ind") || (instance.BoardType === "am261x-som-addon-auto"))
     {
-        if (instance.DisableMacPort1 === false)
+        /*if (instance.DisableMacPort1 === false)
         {
             report.logError(`Port1 is unavailable on the am261x-som Board`, instance);
         }
+        */
     }
 
     if (getNetifCount(instance) > 0)
