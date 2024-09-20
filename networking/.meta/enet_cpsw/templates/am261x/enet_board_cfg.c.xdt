@@ -378,7 +378,7 @@ int32_t EnetBoard_setupPorts(EnetBoard_EthPort *ethPorts,
 % } else {
             CSL_FINS( mssCtrlRegs->CPSW_CONTROL,MSS_CTRL_CPSW_CONTROL_PORT2_MODE_SEL, MSS_CPSW_CONTROL_PORT_MODE_RMII);
 %}
-%if ((device === "am261x-lp") && (instance.DisableMacPort2 === false) && ((instance.BoardType === ""am261x-lp-addon-ind") || (instance.BoardType === "am261x-som-addon-ind") || (instance.BoardType === "am261x-lp-addon-auto"))){
+%if ((device === "am261x-lp") && (instance.DisableMacPort2 === false) && ((instance.BoardType === "am261x-lp-addon-ind") || (instance.BoardType === "am261x-som-addon-ind") || (instance.BoardType === "am261x-lp-addon-auto"))){
             EnetBoard_setMacPort1IOExpanderCfg();
 %}
             break;
