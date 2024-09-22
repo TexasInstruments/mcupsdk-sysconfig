@@ -164,7 +164,7 @@ const enet_cpsw_phy1_config =
                                              ['am261x-som',{phyAddr1: 3, phyAddr2: 0}],
                                              ['am261x-som-addon-ind',{phyAddr1: 3, phyAddr2: 1}],
                                              ['am261x-lp-addon-auto',{phyAddr1: 12, phyAddr2: 12}],
-                                             ['am261x-lp-addon-ind', {phyAddr1: 3, phyAddr2: 3}],
+                                             ['am261x-lp-addon-ind', {phyAddr1: 1, phyAddr2: 1}],
                                            ],
                                          );
                 let phyInfo =  cpswPhyAddrInfoMap.get(inst.BoardType);
@@ -215,7 +215,7 @@ const enet_cpsw_phy2_config =
                                              ['am261x-som',{phyAddr1: 3, phyAddr2: 0}],
                                              ['am261x-som-addon-ind',{phyAddr1: 3, phyAddr2: 0}],
                                              ['am261x-lp-addon-auto',{phyAddr1: 3, phyAddr2: 12}],
-                                             ['am261x-lp-addon-ind', {phyAddr1: 1, phyAddr2: 3}],
+                                             ['am261x-lp-addon-ind', {phyAddr1: 1, phyAddr2: 1}],
                                            ],
                                          );
                 let phyInfo =  cpswPhyAddrInfoMap.get(inst.BoardType);
