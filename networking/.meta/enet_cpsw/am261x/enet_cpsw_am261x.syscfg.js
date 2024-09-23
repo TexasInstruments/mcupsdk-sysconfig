@@ -157,14 +157,11 @@ const enet_cpsw_phy1_config =
             displayFormat: "dec",
             isInteger:true,
             range: [0, 31],
-            readOnly: false,
             getValue:function (inst) {
                 const cpswPhyAddrInfoMap = new Map(
                                            [
-                                             ['am261x-som',{phyAddr1: 3, phyAddr2: 0}],
-                                             ['am261x-som-addon-ind',{phyAddr1: 3, phyAddr2: 1}],
-                                             ['am261x-lp-addon-auto',{phyAddr1: 12, phyAddr2: 12}],
-                                             ['am261x-lp-addon-ind', {phyAddr1: 1, phyAddr2: 1}],
+                                             ['am261x-lp (dp83tg720 phy)',{phyAddr1: 12, phyAddr2: 12}],
+                                             ['am261x-lp (dp83826 phy)', {phyAddr1: 1, phyAddr2: 1}],
                                            ],
                                          );
                 let phyInfo =  cpswPhyAddrInfoMap.get(inst.BoardType);
@@ -208,14 +205,11 @@ const enet_cpsw_phy2_config =
             displayFormat: "dec",
             isInteger:true,
             range: [0, 31],
-            readOnly: false,
             getValue:function (inst) {
                 const cpswPhyAddrInfoMap = new Map(
                                            [
-                                             ['am261x-som',{phyAddr1: 3, phyAddr2: 0}],
-                                             ['am261x-som-addon-ind',{phyAddr1: 3, phyAddr2: 0}],
-                                             ['am261x-lp-addon-auto',{phyAddr1: 3, phyAddr2: 12}],
-                                             ['am261x-lp-addon-ind', {phyAddr1: 1, phyAddr2: 1}],
+                                             ['am261x-lp (dp83tg720 phy)',{phyAddr1: 3, phyAddr2: 12}],
+                                             ['am261x-lp (dp83826 phy)', {phyAddr1: 1, phyAddr2: 1}],
                                            ],
                                          );
                 let phyInfo =  cpswPhyAddrInfoMap.get(inst.BoardType);
@@ -590,15 +584,6 @@ function validate(instance, report) {
     macportScript.validate(instance, report);
     hostportScript.validate(instance, report);
 
-    if ((instance.BoardType === "am261x-som") || (instance.BoardType === "am261x-som-addon-ind") || (instance.BoardType === "am261x-lp-addon-auto"))
-    {
-        /*if (instance.DisableMacPort1 === false)
-        {
-            report.logError(`Port1 is unavailable on the am261x-som Board`, instance);
-        }
-        */
-    }
-
     if (getNetifCount(instance) > 0)
     {
         if (getDefaultNetifCount(instance) !=1)
@@ -745,16 +730,13 @@ let enet_cpsw_module = {
             name: "BoardType",
             description: "Board selection for AM261x",
             displayName: "BoardType",
-            default: "am261x-som",
+            default: "am261x-lp (dp83tg720 phy)",
             options: [
                 {
-                    name: "am261x-som",
+                    name: "am261x-lp (dp83tg720 phy)",
                 },
                 {
-                    name: "am261x-lp-addon-auto",
-                },
-                {
-                    name: "am261x-lp-addon-ind",
+                    name: "am261x-lp (dp83826 phy)",
                 },
             ],
         },
