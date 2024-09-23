@@ -32,10 +32,8 @@ static void EnetBoard_setMacPort2IOExpanderCfg(void);
 /* PHY drivers */
 extern EnetPhy_Drv gEnetPhyDrvGeneric;
 %if ((device === "am261x-lp") && (instance.BoardType === "am261x-lp (dp83tg720 phy)")) {
-extern EnetPhy_Drv gEnetPhyDrvDp83tg720;
-%}else if ((device === "am261x-som") && (instance.BoardType === "am261x-som-addon-ind")) {
-extern EnetPhy_Drv gEnetPhyDrvDp83867;
-%}else {
+	extern EnetPhy_Drv gEnetPhyDrvDp83tg720;
+%}else if ((device === "am261x-lp") && (instance.BoardType === "am261x-lp (dp83826 phy)")) {
     extern EnetPhy_Drv gEnetPhyDrvdp83826;
 %}
 
@@ -361,6 +359,8 @@ static void EnetBoard_setMacPort1IOExpanderCfg(void)
 
     status = TCA6408_open(&gTCA6408_Config, &TCA6408Params);
 
+	TCA6408Params.i2cAddress  = 0x21U;
+
     if (status == SystemP_SUCCESS)
     {
         /* Configure as output  */
@@ -382,6 +382,8 @@ static void EnetBoard_setMacPort2IOExpanderCfg(void)
     int32_t status    = SystemP_SUCCESS;
 
     status = TCA6408_open(&gTCA6408_Config, &TCA6408Params);
+
+	TCA6408Params.i2cAddress  = 0x21U;
 
     if (status == SystemP_SUCCESS)
     {
