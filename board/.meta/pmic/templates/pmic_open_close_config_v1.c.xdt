@@ -1,0 +1,148 @@
+%%{
+    let common = system.getScript("/common");
+    let module = system.modules['/board/pmic/pmic'];
+    let instance = module.$instances[0]; /* PMIC maxInstance = 1 */
+    let peripheralDriver = instance.peripheralDriver;
+%%}
+
+/*
+ * PMIC
+ */
+
+#include "ti_drivers_open_close.h"
+#include "ti_board_open_close.h"
+
+int32_t Board_pmicOpen()
+{
+    int32_t  status = SystemP_SUCCESS;
+
+    status = Pmic_wdgResetDisable();
+
+    return status;
+}
+
+void Board_pmicClose(void)
+{
+    return;
+}
+
+void Drivers_pmicOpen()
+{
+    Drivers_i2cOpen();
+    Board_pmicOpen();
+    Drivers_i2cClose();
+}
+
+int32_t Pmic_wdgResetDisable()
+{
+    uint8_t regdata = 0U;
+    int32_t status = SystemP_SUCCESS;
+
+    /* Set bits 0 and 2 of WD_MODE_REG to enable long window mode */
+    regdata = PMIC_WD_LONG_WN_ENABLE;
+    status = Pmic_writeToReg(PMIC_WD_MODE_REG_REGADDR, regdata);
+    
+    if(status == SystemP_SUCCESS)
+    {
+        /* Set bit 1 of WD_ENABLE_REG to disable wdg reset */
+        regdata = PMIC_WD_RST_DISABLE;
+        status = Pmic_writeToReg(PMIC_WD_ENABLE_REG_REGADDR, regdata);
+    }
+    
+    return status;
+}
+
+int32_t Pmic_readFromReg(uint8_t regAddr, uint8_t *rxData)
+{
+    int32_t status = SystemP_SUCCESS;
+    uint8_t i2cFrame[PMIC_READ_FRAME_LEN] = {0U};
+    uint8_t txBuffer[PMIC_IO_BUF_SIZE + 1U] = {0U};
+    uint8_t buflen = 0U; 
+    I2C_Handle i2cHandle;
+    I2C_Transaction i2cTransaction;
+    
+    i2cHandle = gI2cHandle[`peripheralDriver.$name.toUpperCase()`];
+
+    if (status == SystemP_SUCCESS)
+    {
+        /* i2cFrame[0U] - Target device I2C address with write bit
+         * i2cFrame[1U] - Target device internal register address
+         * i2cFrame[2U] - Target device I2C address with read bit
+         * i2cFrame[3U] - RDATA
+        */
+
+        i2cFrame[0U] = (uint8_t)((PMIC_I2C_ADDR & 0x7FU) << 1U);
+        i2cFrame[1U] = regAddr;
+        i2cFrame[2U] = (uint8_t)(((PMIC_I2C_ADDR & 0x7FU) << 1U) | 1U);
+        buflen = PMIC_READ_FRAME_LEN - 3U; 
+
+        /* Begin read exchange. Data will be stored at i2cFrame[3U] */
+        
+        I2C_Transaction_init(&i2cTransaction);
+        i2cTransaction.writeBuf   = txBuffer;
+        i2cTransaction.writeCount = 1U;
+        i2cTransaction.targetAddress = PMIC_I2C_ADDR;
+        txBuffer[0] = regAddr;
+
+        status = I2C_transfer(i2cHandle, &i2cTransaction);
+        if(status == SystemP_SUCCESS)
+        {
+            /* Read the register */
+            I2C_Transaction_init(&i2cTransaction);
+            i2cTransaction.readBuf = &i2cFrame[3U];
+            i2cTransaction.readCount = buflen;
+            i2cTransaction.targetAddress = PMIC_I2C_ADDR;
+            status = I2C_transfer(i2cHandle, &i2cTransaction);
+        }
+    }
+
+    /* Store read data */
+    if (status == SystemP_SUCCESS)
+    {
+        *rxData = i2cFrame[3U];
+    }
+
+    return status;
+}
+
+int32_t Pmic_writeToReg(uint8_t regAddr, uint8_t txData)
+{
+    int32_t status = SystemP_SUCCESS;
+    uint8_t i2cFrame[PMIC_WRITE_FRAME_LEN] = {0U};
+    uint8_t txBuffer[PMIC_IO_BUF_SIZE + 1U] = {0};
+    uint8_t buflen = 0U;
+    I2C_Handle i2cHandle;
+    I2C_Transaction i2cTransaction;
+    
+    i2cHandle = gI2cHandle[`peripheralDriver.$name.toUpperCase()`];
+
+    /* Write to PMIC */
+    if (status == SystemP_SUCCESS)
+    {
+        /* i2cFrame[0U] - Target device I2C address with write bit
+         * i2cFrame[1U] - Target device internal register address
+         * i2cFrame[2U] - WDATA
+        */
+
+        i2cFrame[0U] = (uint8_t)((PMIC_I2C_ADDR & 0x7FU) << 1U);
+        i2cFrame[1U] = regAddr;
+        i2cFrame[2U] = txData;
+
+        buflen = PMIC_WRITE_FRAME_LEN - 2U;
+
+        /* Begin write exchange. TX buffer starts at i2cFrame[2U] */
+
+        I2C_Transaction_init(&i2cTransaction);
+        txBuffer[0] = regAddr;
+        memcpy(&txBuffer[1U], &i2cFrame[2U], buflen);
+        i2cTransaction.writeBuf   = txBuffer;
+        i2cTransaction.writeCount = buflen + 1U;
+        i2cTransaction.readBuf = NULL;
+        i2cTransaction.readCount = 0U;
+        i2cTransaction.targetAddress = PMIC_I2C_ADDR;
+
+        status = I2C_transfer(i2cHandle, &i2cTransaction);
+    }
+
+    return status;
+}
