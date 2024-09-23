@@ -27,8 +27,6 @@
 #define `instance.$name.toUpperCase()`_PHY0_ADDR (`instance.phyAddr1`U)
 #define `instance.$name.toUpperCase()`_PHY1_ADDR (`instance.phyAddr2`U)
 
-static void EnetBoard_setMacPort1IOExpanderCfg(void);
-static void EnetBoard_setMacPort2IOExpanderCfg(void);
 /* PHY drivers */
 extern EnetPhy_Drv gEnetPhyDrvGeneric;
 %if ((device === "am261x-lp") && (instance.BoardType === "am261x-lp (dp83tg720 phy)")) {
@@ -95,13 +93,7 @@ const EnetPhy_DrvInfoTbl gEnetPhyDrvTbl =
 /*                          Function Declarations                             */
 /* ========================================================================== */
 
-static const EnetBoard_PortCfg *EnetBoard_getPortCfg(const EnetBoard_EthPort *ethPort);
-
-static const EnetBoard_PortCfg *EnetBoard_findPortCfg(const EnetBoard_EthPort *ethPort,
-                                                      const EnetBoard_PortCfg *ethPortCfgs,
-                                                      uint32_t numEthPorts);
-
-static void EnetBoard_enableExternalMux();
+/* None */
 
 /* ========================================================================== */
 /*                            Global Variables                                */
@@ -246,12 +238,12 @@ const EnetBoard_PhyCfg *EnetBoard_getPhyCfg(const EnetBoard_EthPort *ethPort)
     return (portCfg != NULL) ? &portCfg->phyCfg : NULL;
 }
 
-static void EnetBoard_enableExternalMux()
+void EnetBoard_enableExternalMux()
 {
     /* Enable external MUXes, if any, as per the board design */
 }
 
-static const EnetBoard_PortCfg *EnetBoard_getPortCfg(const EnetBoard_EthPort *ethPort)
+const EnetBoard_PortCfg *EnetBoard_getPortCfg(const EnetBoard_EthPort *ethPort)
 {
     const EnetBoard_PortCfg *portCfg = NULL;
 
@@ -272,7 +264,7 @@ static const EnetBoard_PortCfg *EnetBoard_getPortCfg(const EnetBoard_EthPort *et
     return portCfg;
 }
 
-static const EnetBoard_PortCfg *EnetBoard_findPortCfg(const EnetBoard_EthPort *ethPort,
+const EnetBoard_PortCfg *EnetBoard_findPortCfg(const EnetBoard_EthPort *ethPort,
                                                       const EnetBoard_PortCfg *ethPortCfgs,
                                                       uint32_t numEthPorts)
 {
@@ -348,7 +340,7 @@ int32_t EnetBoard_setupPorts(EnetBoard_EthPort *ethPorts,
     return ENET_SOK;
 }
 
-static void EnetBoard_setMacPort1IOExpanderCfg(void)
+void EnetBoard_setMacPort1IOExpanderCfg(void)
 {
     static TCA6408_Config  gTCA6408_Config;
     TCA6408_Params      TCA6408Params;
@@ -372,7 +364,7 @@ static void EnetBoard_setMacPort1IOExpanderCfg(void)
     }
 }
 
-static void EnetBoard_setMacPort2IOExpanderCfg(void)
+void EnetBoard_setMacPort2IOExpanderCfg(void)
 {
     static TCA6408_Config  gTCA6408_Config;
     TCA6408_Params      TCA6408Params;
