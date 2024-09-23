@@ -576,7 +576,7 @@ uint32_t EnetSoc_getIntrTriggerType(Enet_Type enetType,
 int32_t EnetSoc_getEFusedMacAddrs(uint8_t macAddr[][ENET_MAC_ADDR_LEN],
                                   uint32_t *num)
 {
-
+    /* TODO: Remove hardcoded mc adress after it is fused on EEPROM*/
     macAddr[0][0] = 0x70;
     macAddr[0][1] = 0xFF;
     macAddr[0][2] = 0x76;

@@ -247,7 +247,7 @@ static int32_t EnetAppSoc_fillMacAddrList(uint8_t macAddr[][ENET_MAC_ADDR_LEN],
 
         if (maxMacEntries > numEfusedMacAddrs)
         {
-            //EnetBoard_getMacAddrList(&macAddr[numEfusedMacAddrs], (maxMacEntries - numEfusedMacAddrs),&numBoardMacAddrs);
+            EnetBoard_getMacAddrList(&macAddr[numEfusedMacAddrs], (maxMacEntries - numEfusedMacAddrs),&numBoardMacAddrs);
         }
         EnetAppUtils_assert(pAvailMacEntries != NULL);
         *pAvailMacEntries = numEfusedMacAddrs + numBoardMacAddrs;

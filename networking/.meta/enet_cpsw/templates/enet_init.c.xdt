@@ -370,7 +370,6 @@ int32_t EnetApp_driverOpen(Enet_Type enetType, uint32_t instId)
                             gEnetAppSysCfgObj.hEnet, 
                             attachInfo.coreKey,
                             selfCoreId);
-	
     return status;
 }
 
