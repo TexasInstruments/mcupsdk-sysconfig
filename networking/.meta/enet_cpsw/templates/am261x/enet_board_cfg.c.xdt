@@ -355,12 +355,12 @@ void EnetBoard_setMacPort1IOExpanderCfg(void)
     {
         /* Configure as output  */
         status = TCA6408_config(&gTCA6408_Config,
-                    3,
+                    4,
                     TCA6408_MODE_OUTPUT);
     }
     if (status == SystemP_SUCCESS)
     {
-        status =  TCA6408_setOutput(&gTCA6408_Config, 3, TCA6408_OUT_STATE_LOW);
+        status =  TCA6408_setOutput(&gTCA6408_Config, 4, TCA6408_OUT_STATE_HIGH);
     }
 }
 
@@ -379,12 +379,12 @@ void EnetBoard_setMacPort2IOExpanderCfg(void)
     {
         /* Configure as output  */
         status = TCA6408_config(&gTCA6408_Config,
-                    4,
+                    3,
                     TCA6408_MODE_OUTPUT);
     }
     if (status == SystemP_SUCCESS)
     {
-        status =  TCA6408_setOutput(&gTCA6408_Config, 4, TCA6408_OUT_STATE_HIGH);
+        status =  TCA6408_setOutput(&gTCA6408_Config, 3, TCA6408_OUT_STATE_LOW);
     }
 }
 
