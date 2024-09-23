@@ -381,7 +381,7 @@ const staticConfig = [
         baseAddr: "CSL_CONTROLSS_ADC1_U_BASE",
         resultBaseAddr : "CSL_CONTROLSS_ADC1_RESULT_U_BASE",
         instanceNumber : "1",
-        refBuf         : "1",
+        refBuf         : "0",
     },
     {
         name: "ADC2",
