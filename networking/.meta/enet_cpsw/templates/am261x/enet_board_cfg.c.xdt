@@ -344,12 +344,12 @@ void EnetBoard_setMacPort1IOExpanderCfg(void)
 {
     static TCA6408_Config  gTCA6408_Config;
     TCA6408_Params      TCA6408Params;
-    TCA6408_Params_init(&TCA6408Params);
     int32_t status    = SystemP_SUCCESS;
 
-    status = TCA6408_open(&gTCA6408_Config, &TCA6408Params);
-
+    TCA6408_Params_init(&TCA6408Params);
 	TCA6408Params.i2cAddress  = I2C_ADDRESS_IO_EXPANDER_TCA6408;
+
+    status = TCA6408_open(&gTCA6408_Config, &TCA6408Params);
 
     if (status == SystemP_SUCCESS)
     {
@@ -368,12 +368,12 @@ void EnetBoard_setMacPort2IOExpanderCfg(void)
 {
     static TCA6408_Config  gTCA6408_Config;
     TCA6408_Params      TCA6408Params;
-    TCA6408_Params_init(&TCA6408Params);
     int32_t status    = SystemP_SUCCESS;
 
-    status = TCA6408_open(&gTCA6408_Config, &TCA6408Params);
+    TCA6408_Params_init(&TCA6408Params);
+    TCA6408Params.i2cAddress  = I2C_ADDRESS_IO_EXPANDER_TCA6408;
 
-	TCA6408Params.i2cAddress  = I2C_ADDRESS_IO_EXPANDER_TCA6408;
+    status = TCA6408_open(&gTCA6408_Config, &TCA6408Params);
 
     if (status == SystemP_SUCCESS)
     {
