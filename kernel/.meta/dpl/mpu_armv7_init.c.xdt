@@ -1,8 +1,13 @@
 %%{
     let module = system.modules['/kernel/dpl/mpu_armv7'];
+    let soc = system.getScript('/common').getSocName();
 %%}
 
+%if(soc === 'am263px' || soc === 'am261x') {
+#define BOOT_SECTION __attribute__((section(".text.boot"), do_not_share))
+%} else {
 #define BOOT_SECTION __attribute__((section(".text.boot")))
+%}
 
 /* This function is called by _c_int00 */
 void BOOT_SECTION __mpu_init() 
