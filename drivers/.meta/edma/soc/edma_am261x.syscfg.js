@@ -21,38 +21,22 @@ const edma_config = [
         defaultOwnDmaChannelStart_r5fss0_0: "0",
         defaultOwnDmaChannelEnd_r5fss0_0: "39",
         defaultOwnDmaChannelStart_r5fss0_1: "40",
-        defaultOwnDmaChannelEnd_r5fss0_1: "47",
-        defaultOwnDmaChannelStart_r5fss1_0: "48",
-        defaultOwnDmaChannelEnd_r5fss1_0: "55",
-        defaultOwnDmaChannelStart_r5fss1_1: "56",
-        defaultOwnDmaChannelEnd_r5fss1_1: "63",
+        defaultOwnDmaChannelEnd_r5fss0_1: "63",
 
         defaultOwnQdmaChannelStart_r5fss0_0: "0",
-        defaultOwnQdmaChannelEnd_r5fss0_0: "1",
-        defaultOwnQdmaChannelStart_r5fss0_1: "2",
-        defaultOwnQdmaChannelEnd_r5fss0_1: "3",
-        defaultOwnQdmaChannelStart_r5fss1_0: "4",
-        defaultOwnQdmaChannelEnd_r5fss1_0: "5",
-        defaultOwnQdmaChannelStart_r5fss1_1: "6",
-        defaultOwnQdmaChannelEnd_r5fss1_1: "7",
+        defaultOwnQdmaChannelEnd_r5fss0_0: "5",
+        defaultOwnQdmaChannelStart_r5fss0_1: "6",
+        defaultOwnQdmaChannelEnd_r5fss0_1: "7",
 
         defaultOwnTccStart_r5fss0_0: "0",
         defaultOwnTccEnd_r5fss0_0: "39",
         defaultOwnTccStart_r5fss0_1: "40",
-        defaultOwnTccEnd_r5fss0_1: "47",
-        defaultOwnTccStart_r5fss1_0: "48",
-        defaultOwnTccEnd_r5fss1_0: "55",
-        defaultOwnTccStart_r5fss1_1: "56",
-        defaultOwnTccEnd_r5fss1_1: "63",
+        defaultOwnTccEnd_r5fss0_1: "63",
 
         defaultOwnParamStart_r5fss0_0: "0",
         defaultOwnParamEnd_r5fss0_0: "234",
         defaultOwnParamStart_r5fss0_1: "235",
-        defaultOwnParamEnd_r5fss0_1: "241",
-        defaultOwnParamStart_r5fss1_0: "242",
-        defaultOwnParamEnd_r5fss1_0: "248",
-        defaultOwnParamStart_r5fss1_1: "249",
-        defaultOwnParamEnd_r5fss1_1: "255",
+        defaultOwnParamEnd_r5fss0_1: "255",
 
     },
 ];
@@ -68,12 +52,6 @@ function getDefaultRegion() {
     let defRegion = 0;
     if (selfCoreName == "r5fss0-1") {
         defRegion = 1;
-    }
-    else if (selfCoreName == "r5fss1-0") {
-        defRegion = 2;
-    }
-    else if (selfCoreName == "r5fss1-1") {
-        defRegion = 3;
     }
     return defRegion;
 }
