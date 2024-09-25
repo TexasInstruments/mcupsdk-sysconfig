@@ -1,11 +1,13 @@
 %%{
     let module = system.modules['/board/pmic/pmic'];
+    let common = system.getScript("/common");
 %%}
 /*
  * PMIC
  */
+% if(common.getSocName() != "am261x"){
 #include <board/pmic.h>
-
+% }
 /* PMIC Instance Macros */
 % for(let i = 0; i < module.$instances.length; i++) {
     % let instance = module.$instances[i];
@@ -13,4 +15,3 @@
 % }
 #define CONFIG_PMIC_NUM_INSTANCES (`module.$instances.length`U)
 
-void  Board_pmicInit();
