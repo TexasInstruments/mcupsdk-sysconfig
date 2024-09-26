@@ -1,0 +1,134 @@
+%%{
+    let common = system.getScript("/common");
+    let filex_module = system.modules['/fs/filex/filex'];
+    let filex_instances = filex_module.$instances;
+    let ramdisk_instances = _.filter(filex_module.$instances, function (inst) { return (inst.media == "RAMDISK");})
+    let flash_instances = _.filter(filex_module.$instances, function (inst) { return (inst.media == "FLASH");})
+    let mmcsd_instances = _.filter(filex_module.$instances, function (inst) { return ((inst.media == "EMMC") || (inst.media == "SD"));})
+%%}
+
+/*
+ * FileX
+ */
+
+% if (ramdisk_instances.length > 0) {
+extern void _fx_ram_driver(FX_MEDIA *);
+% }
+
+% if (flash_instances.length > 0) {
+#include <filex_levelx_nand_driver.h>
+#include <filex_levelx_nor_driver.h>
+% }
+
+% if (mmcsd_instances.length > 0) {
+#include <filex_mmcsd.h>
+% }
+
+FX_MEDIA gt_media[FILEX_NUM_INSTANCES];
+static unsigned char gt_media_memory[FILEX_NUM_INSTANCES][16u * 1024];
+
+
+% for (let k = 0; k < ramdisk_instances.length; k++) {
+static unsigned gt_ramdisk_`k`_mem[`ramdisk_instances[k].ramdisk_size`];
+% }
+
+void EclipseThreadx_FilexOpen(void)
+{
+    UINT status;
+
+    /* Initialize FileX. */
+     _fx_system_initialize();
+
+% let filex_ctr = 0;
+% let ramdisk_ctr = 0;
+% for (let k = 0; k < filex_instances.length; k++) {
+    % let filex_inst = filex_instances[k];
+    {
+        /*************** `filex_inst.$name` *********************/
+        memset(&gt_media[`filex_ctr`], 0, sizeof(FX_MEDIA));
+        /* Try to open the media. If the media is not formatted, format and try again. */
+        % let driver;
+        % let driver_data;
+        % let sec_cnt;
+        % if (filex_inst.media == "RAMDISK") {
+            % driver = '_fx_ram_driver';
+            % driver_data = '(void *)&gt_ramdisk_' + ramdisk_ctr + '_mem[0]';
+            % sec_cnt = filex_inst.ramdisk_size / filex_inst.sector_size;
+            % ramdisk_ctr++;
+        % } else if ((filex_inst.media == "SD" || filex_inst.media == "EMMC")) {
+            % driver = '_fx_mmcsd_driver';
+            % driver_data = '(void *)' + filex_inst.peripheralDriver.$name;
+            % sec_cnt = 'sec_cnt';
+        
+            uint32_t blk_cnt;
+            uint32_t blk_sz;
+            uint32_t sec_cnt;
+            MMCSD_Handle mmcsd_hndl;
+            
+            mmcsd_hndl = MMCSD_getHandle(`filex_inst.peripheralDriver.$name`);
+            if (mmcsd_hndl == NULL) {
+                DebugP_logError("EclipseThreadx_FilexOpen() failed: " "`filex_inst.peripheralDriver.$name`" " not found !!!\r\n");
+            }
+    
+            sec_cnt = MMCSD_getBlockCount(mmcsd_hndl) * MMCSD_getBlockSize(mmcsd_hndl) / `filex_inst.sector_size`U;
+    
+        % } else if (filex_inst.media == "FLASH") {
+            % let flash_module = system.modules['/board/flash/flash'];
+            % let flash_inst = filex_inst.peripheralDriver;
+            % let flash_config = flash_module.getInstanceConfig(flash_inst);
+            % let flash_type = (!flash_config.hasOwnProperty('flashType') || (flash_config.flashType == 'SERIAL_NOR')) ? 'SERIAL_NOR' : 
+            % (flash_config.hasOwnProperty('flashType') && (flash_config.flashType == 'SERIAL_NAND')) ? 'SERIAL_NAND' : 'UNKNOWN';
+            % if (flash_type = 'SERIAL_NOR') {
+            %    driver = '_fx_nor_driver';
+            % } else if (flash_type = 'SERIAL_NAND') {
+            %    driver = '_fx_nand_driver';
+            % }
+            % driver_data = '(void *)' + filex_inst.peripheralDriver.$name;
+            % sec_cnt = 'sec_cnt';
+            Flash_Handle flash_handle;
+            Flash_Attrs *p_attrs;
+            uint32_t sec_cnt;
+
+
+            flash_handle = Flash_getHandle(`filex_inst.peripheralDriver.$name`);
+            if (flash_handle == NULL) {
+                DebugP_logError("EclipseThreadx_FilexOpen() failed: " "`filex_inst.peripheralDriver.$name`" " not found !!!\r\n");
+            }
+            p_attrs = Flash_getAttrs(`filex_inst.peripheralDriver.$name`);
+            sec_cnt = p_attrs->flashSize / `filex_inst.sector_size`U;
+        % }
+
+        status = fx_media_open(&gt_media[`filex_ctr`], "`filex_inst.$name`", `driver`, `driver_data`, gt_media_memory[`filex_ctr`], sizeof(gt_media_memory[`filex_ctr`]));
+        if (status != FX_SUCCESS) {
+        % if (filex_inst.auto_format) {
+            /* Format the media. */
+            status = fx_media_format(&gt_media[`filex_ctr`], `driver`, `driver_data`, gt_media_memory[`filex_ctr`], sizeof(gt_media_memory[`filex_ctr`]), 
+                                 "`filex_inst.$name`", `filex_inst.fat_cnt`, `filex_inst.dir_entry_cnt`, `filex_inst.hidden_sec_cnt`, `sec_cnt`, `filex_inst.sector_size`U, `filex_inst.sectors_per_cluster`, 1, 1);
+            if (status != FX_SUCCESS) {
+                DebugP_logError("EclipseThreadx_FilexOpen() failed: fx_media_format() returned error %d !!!\r\n", status);
+                return;
+            }
+            /* Open the media. */
+            status =  fx_media_open(&gt_media[`filex_ctr`], "`filex_inst.$name`", `driver`, `driver_data`, gt_media_memory[`filex_ctr`], sizeof(gt_media_memory[`filex_ctr`]));
+            if (status != FX_SUCCESS) {
+                DebugP_logError("EclipseThreadx_FilexOpen() failed: fx_media_open() returned error %d !!!\r\n", status);
+                return;
+            }
+        % } else {
+            if (status != FX_SUCCESS) {
+                DebugP_logError("EclipseThreadx_FilexOpen() failed: fx_media_open() returned error %d !!!\r\n", status);
+                return;
+            } 
+        % }
+        }
+    }
+    % filex_ctr++;
+%}
+
+
+}
+
+void EclipseThreadx_FilexClose(void)
+{
+    /* Nothing to do. */
+}

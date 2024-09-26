@@ -1,20 +1,20 @@
 let common = system.getScript("/common");
 
-let filex_module_name = "/eclipse_threadx/filex/filex";
+let filex_module_name = "/fs/filex/filex";
 
 let filex_module = {
 	displayName: "FileX",
     templates: {
-        "/eclipse_threadx/eclipse_threadx/eclipse_threadx_config.h.xdt": {
-            config: "/eclipse_threadx/filex/templates/filex.h.xdt",
+        "/board/board/board_config.h.xdt": {
+            board_config: "/fs/filex/templates/filex.h.xdt",
         },
-        "/eclipse_threadx/eclipse_threadx/eclipse_threadx_open_close.c.xdt": {
-            open_close_config: "/eclipse_threadx/filex/templates/filex_open_close_config.c.xdt",
-            open: "/eclipse_threadx/filex/templates/filex_open.c.xdt",
-            close: "/eclipse_threadx/filex/templates/filex_close.c.xdt",
+        "/board/board/board_open_close.c.xdt": {
+            board_open_close_config: "/fs/filex/templates/filex_open_close_config.c.xdt",
+            board_open: "/fs/filex/templates/filex_open.c.xdt",
+            board_close: "/fs/filex/templates/filex_close.c.xdt",
         },
-        "/eclipse_threadx/eclipse_threadx/eclipse_threadx_open_close.h.xdt": {
-            open_close_config: "/eclipse_threadx/filex/templates/filex_open_close.h.xdt",
+        "/board/board/board_open_close.h.xdt": {
+            board_open_close_config: "/fs/filex/templates/filex_open_close.h.xdt",
         },
     },
 	defaultInstanceName: "FILEX",
@@ -28,6 +28,7 @@ let filex_module = {
                 { name: "RAMDISK"},
 				{ name: "SD" },
                 { name: "EMMC" },
+                { name: "FLASH"}
 			],
             onChange: function (inst, ui) {
                 if(inst.media == "RAMDISK") {
@@ -45,6 +46,18 @@ let filex_module = {
             displayName: "RAM Disk Size",
             description: "Size of the RAM disk in bytes.",
             default: 32768,
+        },
+        {
+            name: "fs_size",
+            displayName: "File System Size",
+            description: "File system size in bytes. -1 to use all available space.",
+            default: -1
+        },
+        {
+            name: "fs_offset",
+            displayName: "File System Offset",
+            description: "File system offset from the start of the media in bytes.",
+            default: 0x200000
         },
         {
             name: "auto_format",
@@ -145,6 +158,14 @@ function moduleInstances(inst) {
                     cardType : "EMMC",
     		    },
     		});
+            break;
+        case "FLASH":
+            modInstances.push({
+                name: "peripheralDriver",
+                displayName: "Flash Configuration",
+                moduleName: '/board/flash/flash',
+                useArray: false,
+            });
             break;
     }
 
