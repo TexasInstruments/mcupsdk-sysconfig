@@ -1,0 +1,145 @@
+%%{
+    let common = system.getScript("/common");
+    let soc = system.getScript(`/drivers/soc/drivers_${common.getSocName()}`);
+    let driverVer = soc.getDriverVer("i2c");
+    let module = system.modules['/drivers/i2c/i2c'];
+%%}
+% let gI2cLldConfigNum = 0;
+% let gI2cConfigNum = 0;
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+    % if (config.sdkInfra == "LLD") {
+        % gI2cLldConfigNum += 1;
+    % }
+    % else {
+        % gI2cConfigNum += 1;
+    % }
+% }
+/*
+ * I2C
+ */
+
+% if(gI2cLldConfigNum != 0) {
+/* I2C Driver handles */
+extern I2CLLD_Object gI2cLldObjects[CONFIG_I2C_LLD_NUM_INSTANCES];
+I2CLLD_Handle gI2cLldHandle[CONFIG_I2C_LLD_NUM_INSTANCES];
+% }
+
+% if(gI2cConfigNum != 0) {
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+    % if (config.sdkInfra == "HLD") {
+        % if(config.transferMode == "CALLBACK" && config.transferCallbackFxn != "NULL") {
+/* I2C Callback */
+void `config.transferCallbackFxn`(I2C_Handle handle, I2C_Transaction *transaction, int32_t transferStatus);
+        % }
+    % }
+% }
+
+/* I2C Driver handles */
+I2C_Handle gI2cHandle[CONFIG_I2C_HLD_NUM_INSTANCES];
+
+/* I2C Driver Parameters */
+I2C_Params gI2cParams[CONFIG_I2C_HLD_NUM_INSTANCES] =
+{
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+    % if (config.sdkInfra == "HLD") {
+    {
+        .transferMode        = I2C_MODE_`config.transferMode`,
+        % if(config.transferMode == "CALLBACK" && config.transferCallbackFxn != "NULL") {
+        .transferCallbackFxn = `config.transferCallbackFxn`,
+        % } else {
+        .transferCallbackFxn = NULL,
+        % }
+        .bitRate             = I2C_`config.bitRate`,
+    },
+    % }
+% }
+};
+% }
+
+void Drivers_i2cOpen(void)
+{
+    int32_t  status = SystemP_SUCCESS;
+% if(gI2cConfigNum != 0) {
+    uint32_t instCnt;
+% }
+
+% if(gI2cLldConfigNum != 0) {
+    % for(let i = 0; i < module.$instances.length; i++) {
+        % let instance = module.$instances[i];
+        % if(instance.sdkInfra == "LLD") {
+    gI2cLldHandle[`instance.$name.toUpperCase()`] = &gI2cLldObjects[`instance.$name.toUpperCase()`];
+        % }
+    % }
+
+    /* Init all instances */
+    % for(let i = 0; i < module.$instances.length; i++) {
+        % let instance = module.$instances[i];
+        % if(instance.sdkInfra == "LLD") {
+    status += I2C_lld_init(gI2cLldHandle[`instance.$name.toUpperCase()`]);
+        % }
+    % }
+% }
+
+% if(gI2cConfigNum != 0) {
+
+    for(instCnt = 0U; instCnt < CONFIG_I2C_HLD_NUM_INSTANCES; instCnt++)
+    {
+        gI2cHandle[instCnt] = NULL;   /* Init to NULL so that we can exit gracefully */
+    }
+
+    /* Open all instances */
+    for(instCnt = 0U; instCnt < CONFIG_I2C_HLD_NUM_INSTANCES; instCnt++)
+    {
+        gI2cHandle[instCnt] = I2C_open(instCnt, &gI2cParams[instCnt]);
+        if(NULL == gI2cHandle[instCnt])
+        {
+            DebugP_logError("I2C open failed for instance %d !!!\r\n", instCnt);
+            status = SystemP_FAILURE;
+            break;
+        }
+    }
+% }
+
+    if(SystemP_SUCCESS != status)
+    {
+        Drivers_i2cClose();   /* Exit gracefully */
+    }
+
+    return;
+}
+
+void Drivers_i2cClose(void)
+{
+% if(gI2cConfigNum != 0) {
+    uint32_t instCnt;
+% }
+
+% if(gI2cLldConfigNum != 0) {
+    /* Deinit all instances that are open */
+    % for(let i = 0; i < module.$instances.length; i++) {
+        % let instance = module.$instances[i];
+        % if(instance.sdkInfra == "LLD") {
+    I2C_lld_deInit(gI2cLldHandle[`instance.$name.toUpperCase()`]);
+        % }
+    % }
+% }
+
+% if(gI2cConfigNum != 0) {
+    /* Close all instances that are open */
+    for(instCnt = 0U; instCnt < CONFIG_I2C_HLD_NUM_INSTANCES; instCnt++)
+    {
+        if(gI2cHandle[instCnt] != NULL)
+        {
+            I2C_close(gI2cHandle[instCnt]);
+            gI2cHandle[instCnt] = NULL;
+        }
+    }
+% }
+    return;
+}

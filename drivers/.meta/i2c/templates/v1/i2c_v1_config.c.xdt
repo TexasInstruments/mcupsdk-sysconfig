@@ -1,0 +1,84 @@
+%%{
+    let module = system.modules['/drivers/i2c/i2c'];
+%%}
+% let gI2cLldConfigNum = 0;
+% let gI2cConfigNum = 0;
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+    % if (config.sdkInfra == "LLD") {
+        % gI2cLldConfigNum += 1;
+    % }
+    % else {
+        % gI2cConfigNum += 1;
+    % }
+% }
+/*
+ * I2C
+ */
+% if(gI2cLldConfigNum != 0) {
+
+/* I2C LLD objects */
+I2CLLD_Object gI2cLldObjects[CONFIG_I2C_LLD_NUM_INSTANCES] =
+{
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+    % if (config.sdkInfra == "LLD") {
+    {
+        .baseAddr       = `config.baseAddr`,
+        .intrNum        = `config.intNum`,
+        .bitRate        = I2C_`config.bitRate`,
+        .funcClk        = `module.getClockRate(instance)`U,
+        .ownTargetAddr  = 0x`config.ownTargetAddr.toString(16).toUpperCase()`,
+        .Clock_getTicks = ClockP_getTicks,
+        .Clock_usecToTicks = ClockP_usecToTicks,
+        .Clock_uSleep = ClockP_usleep,
+    },
+    % }
+    % else {}
+% }
+};
+% }
+% if(gI2cConfigNum != 0) {
+
+/* I2C Attributes */
+static I2C_HwAttrs gI2cHwAttrs[CONFIG_I2C_HLD_NUM_INSTANCES] =
+{
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+    % if (config.sdkInfra == "HLD") {
+    {
+        .baseAddr       = `config.baseAddr`,
+        .intNum         = `config.intNum`,
+        .eventId        = `config.eventId`,
+        .funcClk        = `module.getClockRate(instance)`U,
+        .enableIntr     = `Number(config.enableIntr)`,
+        .ownTargetAddr   = 0x`config.ownTargetAddr.toString(16).toUpperCase()`,
+    },
+    % }
+    % else {}
+% }
+};
+
+/* I2C Objects - Initialized by the Driver */
+static I2C_Object gI2cObjects[CONFIG_I2C_HLD_NUM_INSTANCES];
+
+/* I2C driver configuration */
+I2C_Config gI2cConfig[CONFIG_I2C_HLD_NUM_INSTANCES] =
+{
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+    % if(config.sdkInfra == "HLD") {
+    {
+        .object = &gI2cObjects[`instance.$name.toUpperCase()`],
+        .hwAttrs = &gI2cHwAttrs[`instance.$name.toUpperCase()`]
+    },
+    % }
+% }
+};
+
+uint32_t gI2cConfigNum = CONFIG_I2C_HLD_NUM_INSTANCES;
+% }

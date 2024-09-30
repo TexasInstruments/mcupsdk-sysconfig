@@ -1,0 +1,39 @@
+%%{
+    let module = system.modules['/drivers/i2c/i2c'];
+%%}
+
+/*
+ * I2C
+ */
+% let gI2cLldConfigNum = 0;
+% let gI2cConfigNum = 0;
+
+/* I2C Instance Macros */
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+    % if (config.sdkInfra == "LLD") {
+#define `instance.$name.toUpperCase()` (`gI2cLldConfigNum`U)
+        % gI2cLldConfigNum += 1;
+    % }
+    % else {
+#define `instance.$name.toUpperCase()` (`gI2cConfigNum`U)
+        % gI2cConfigNum += 1;
+    % }
+% }
+
+/* I2C Includes */
+% if(gI2cConfigNum != 0) {
+#include <drivers/i2c.h>
+% }
+% if(gI2cLldConfigNum != 0) {
+#include <drivers/i2c/v1/lld/i2c_lld.h>
+% }
+#include <kernel/dpl/ClockP.h>
+
+% if(gI2cLldConfigNum != 0) {
+#define CONFIG_I2C_LLD_NUM_INSTANCES (`gI2cLldConfigNum`U)
+% }
+% if(gI2cConfigNum != 0) {
+#define CONFIG_I2C_HLD_NUM_INSTANCES (`gI2cConfigNum`U)
+% }

@@ -62,20 +62,11 @@ function getClockEnableIds(inst) {
     return instConfig.clockIds;
 }
 
-let i2c_module_name = "/drivers/i2c/i2c";
+function getConfigurables()
+{
+    let config = [];
 
-let i2c_module = {
-    displayName: "I2C",
-    templates: {
-        "/drivers/pinmux/pinmux_config.c.xdt": {
-            moduleName: i2c_module_name,
-        },
-        "/drivers/system/power_clock_config.c.xdt": {
-            moduleName: i2c_module_name,
-        },
-    },
-    defaultInstanceName: "CONFIG_I2C",
-    config: [
+    config.push (
         {
             name: "bitRate",
             displayName: "Bit Rate",
@@ -150,8 +141,6 @@ let i2c_module = {
             hidden: true,
             description: "Transfer callback function when callback mode is selected",
         },
-        common.getUseMcuDomainPeripheralsConfig(),
-        common.getUseWakeupDomainPeripheralsConfig(),
         {
             name: "advanced",
             displayName: "Show Advanced Config",
@@ -230,7 +219,35 @@ let i2c_module = {
             description: "SDK Infra",
             hidden: (common.getSocName() == "am65x"),
         },
-    ],
+    )
+
+    if(common.isMcuDomainSupported())
+    {
+        config.push(common.getUseMcuDomainPeripheralsConfig());
+    }
+
+    if(common.isWakeupDomainSupported())
+    {
+        config.push(common.getUseWakeupDomainPeripheralsConfig());
+    }
+
+    return config;
+}
+
+let i2c_module_name = "/drivers/i2c/i2c";
+
+let i2c_module = {
+    displayName: "I2C",
+    templates: {
+        "/drivers/pinmux/pinmux_config.c.xdt": {
+            moduleName: i2c_module_name,
+        },
+        "/drivers/system/power_clock_config.c.xdt": {
+            moduleName: i2c_module_name,
+        },
+    },
+    defaultInstanceName: "CONFIG_I2C",
+    config: getConfigurables(),
     validate : validate,
     moduleInstances: moduleInstances,
     moduleStatic: {
@@ -267,22 +284,11 @@ function validate(instance, report) {
 function moduleInstances(inst) {
     let modInstances = new Array();
 
-    if( inst.sdkInfra == "HLD")
-    {
-        modInstances.push({
-            name: "I2C_child",
-            moduleName: '/drivers/i2c/v0/i2c_v0_template',
-            },
-        );
-    }
-    else
-    {
-        modInstances.push({
-            name: "I2C_child",
-            moduleName: '/drivers/i2c/v0/i2c_v0_template_lld',
-            },
-        );
-    }
+    modInstances.push({
+        name: "I2C_child",
+        moduleName: '/drivers/i2c/v0/i2c_v0_template',
+        },
+    );
 
     return (modInstances);
 }

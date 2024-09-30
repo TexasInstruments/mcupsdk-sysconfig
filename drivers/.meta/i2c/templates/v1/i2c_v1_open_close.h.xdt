@@ -1,0 +1,51 @@
+%%{
+    let common = system.getScript("/common");
+    let module = system.modules['/drivers/i2c/i2c'];
+%%}
+/*
+ * I2C
+ */
+
+% let gI2cLldConfigNum = 0;
+% let gI2cConfigNum = 0;
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+    % if (config.sdkInfra == "LLD") {
+        % gI2cLldConfigNum += 1;
+    % }
+    % else {
+        % gI2cConfigNum += 1;
+    % }
+% }
+
+% if(gI2cConfigNum != 0) {
+#include <drivers/i2c.h>
+% }
+% if(gI2cLldConfigNum != 0) {
+#include <drivers/i2c/v1/lld/i2c_lld.h>
+% }
+
+/* I2C Driver handles  */
+% if (gI2cLldConfigNum != 0) {
+extern I2CLLD_Handle gI2cLldHandle[CONFIG_I2C_LLD_NUM_INSTANCES];
+% }
+% if (gI2cConfigNum != 0) {
+extern I2C_Handle gI2cHandle[CONFIG_I2C_HLD_NUM_INSTANCES];
+% }
+
+/*
+ * I2C Driver Advance Parameters - to be used only when Driver_open() and
+ * Driver_close() is not used by the application
+ */
+
+% if (gI2cConfigNum != 0) {
+/* I2C Driver Parameters */
+extern I2C_Params gI2cParams[CONFIG_I2C_HLD_NUM_INSTANCES];
+% }
+
+/* I2C Driver open/close - can be used by application when Driver_open() and
+ * Driver_close() is not used directly and app wants to control the various driver
+ * open/close sequences */
+void Drivers_i2cOpen(void);
+void Drivers_i2cClose(void);

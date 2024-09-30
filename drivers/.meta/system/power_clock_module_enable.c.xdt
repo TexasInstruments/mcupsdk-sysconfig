@@ -1,12 +1,23 @@
 %%{
     let module = system.modules[args[0]];
+    let common = system.getScript("/common");
+    let i2c_module_id_set = 0;
 %%}
 % if (module.getClockEnableIds) {
-    % for(let i = 0; i < module.$instances.length; i++) {
-        % let instance = module.$instances[i];
-        % let moduleIds = module.getClockEnableIds(instance);
-        % moduleIds.forEach( function(moduleId) {
+        % for(let i = 0; i < module.$instances.length; i++) {
+            % let instance = module.$instances[i];
+            % let moduleIds = module.getClockEnableIds(instance);
+            % moduleIds.forEach( function(moduleId) {
+                % if ((common.getSocName() == "am263x" || common.getSocName() == "am263px"  || common.getSocName() == "am261x") && (module.displayName == "I2C")) {
+                    % if(i2c_module_id_set == 0) {
     `moduleId`,
-        % } );
-    % }
+                    % i2c_module_id_set = 1
+                    %}
+                    % else {}
+                % }
+                % else {
+    `moduleId`,
+                % }
+            % } );
+        % }
 % }

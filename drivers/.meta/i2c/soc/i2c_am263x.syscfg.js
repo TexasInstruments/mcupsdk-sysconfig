@@ -1,7 +1,4 @@
-
 let common = system.getScript("/common");
-
-let i2c_func_clk = 96000000;
 
 const staticConfig_r5f = [
     {
@@ -9,60 +6,24 @@ const staticConfig_r5f = [
         baseAddr: "CSL_I2C0_U_BASE",
         intNum: 44,
         eventId: 0,
-        funcClk: i2c_func_clk,
-        clockIds: [ "SOC_RcmPeripheralId_I2C" ],
-        clockFrequencies: [
-            {
-                moduleId: "SOC_RcmPeripheralId_I2C",
-                clkId   : "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT1",
-                clkRate : i2c_func_clk,
-            },
-        ],
     },
     {
         name: "I2C1",
         baseAddr: "CSL_I2C1_U_BASE",
         intNum: 45,
         eventId: 0,
-        funcClk: i2c_func_clk,
-        clockIds: [ "SOC_RcmPeripheralId_I2C" ],
-        clockFrequencies: [
-            {
-                moduleId: "SOC_RcmPeripheralId_I2C",
-                clkId   : "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT1",
-                clkRate : i2c_func_clk,
-            },
-        ],
     },
     {
         name: "I2C2",
         baseAddr: "CSL_I2C2_U_BASE",
         intNum: 46,
         eventId: 0,
-        funcClk: i2c_func_clk,
-        clockIds: [ "SOC_RcmPeripheralId_I2C" ],
-        clockFrequencies: [
-            {
-                moduleId: "SOC_RcmPeripheralId_I2C",
-                clkId   : "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT1",
-                clkRate : i2c_func_clk,
-            },
-        ],
     },
     {
         name: "I2C3",
         baseAddr: "CSL_I2C3_U_BASE",
         intNum: 47,
         eventId: 0,
-        funcClk: i2c_func_clk,
-        clockIds: [ "SOC_RcmPeripheralId_I2C" ],
-        clockFrequencies: [
-            {
-                moduleId: "SOC_RcmPeripheralId_I2C",
-                clkId   : "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT1",
-                clkRate : i2c_func_clk,
-            },
-        ],
     },
 
 ];
@@ -75,6 +36,9 @@ function getStaticConfigArr() {
     return staticConfigArr;
 }
 
+function getDefaultConfig() {
+	return staticConfig_r5f[0];
+}
 
 function getInterfaceName(inst) {
 
@@ -90,12 +54,73 @@ function isFrequencyDefined()
     return true;
 }
 
+function getClockEnableIds(inst) {
+
+    return [ "SOC_RcmPeripheralId_I2C" ];
+}
+
+function getDefaultClkSource() {
+    return "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT1";
+}
+
+function getClockSourceOptions() {
+
+    return [
+        {name: "SOC_RcmPeripheralClockSource_XTALCLK"},
+        {name: "SOC_RcmPeripheralClockSource_SYS_CLK"},
+        {name: "SOC_RcmPeripheralClockSource_RCCLK10M"},
+        {name: "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT0"},
+        {name: "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT1"},
+    ];
+}
+
+function getDefaultClockValue(clkSrc) {
+    return getClockValue("SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT1");
+}
+
+function getClockValue(clkSrc) {
+
+    let clockVal;
+
+    if(clkSrc === "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT1") {
+        clockVal = 96000000;
+    }
+    else if (clkSrc === "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT0") {
+        clockVal = 200000000;
+    }
+    else if (clkSrc === "SOC_RcmPeripheralClockSource_XTALCLK") {
+        clockVal = 25*1000000;
+    }
+    else if (clkSrc === "SOC_RcmPeripheralClockSource_SYS_CLK") {
+        clockVal = 200*1000000;
+    }
+    else if (clkSrc === "SOC_RcmPeripheralClockSource_WUCPUCLK") {
+        clockVal = 25*1000000;
+    }
+    else if (clkSrc === "SOC_RcmPeripheralClockSource_EXT_REFCLK") {
+        clockVal = 100*1000000;
+    }
+    else if (clkSrc === "SOC_RcmPeripheralClockSource_RCCLK10M") {
+        clockVal = 10*1000000;
+    }
+    else {
+        /* Bad clk source */
+    }
+    return clockVal;
+}
+
 let soc = {
 
     getStaticConfigArr,
     getInterfaceName,
     isMakeInstanceRequired,
     isFrequencyDefined,
+    getDefaultConfig,
+    getClockSourceOptions,
+    getClockValue,
+    getDefaultClkSource,
+    getDefaultClockValue,
+    getClockEnableIds,
 };
 
 exports = soc;

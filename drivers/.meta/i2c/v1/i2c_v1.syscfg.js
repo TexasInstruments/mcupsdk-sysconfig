@@ -1,7 +1,10 @@
-
 let common = system.getScript("/common");
 let pinmux = system.getScript("/drivers/pinmux/pinmux");
 let soc = system.getScript(`/drivers/i2c/soc/i2c_${common.getSocName()}`);
+let hwi = system.getScript("/kernel/dpl/hwi.js");
+
+let globalClockId = soc.getDefaultClkSource();
+let globalClockRate = soc.getDefaultClockValue(globalClockId);
 
 function getStaticConfigArr() {
     return system.getScript(`/drivers/i2c/soc/i2c_${common.getSocName()}`).getStaticConfigArr();
@@ -14,7 +17,7 @@ function getInstanceConfig(moduleInstance) {
 
     return {
         ...staticConfig,
-        ...moduleInstance
+        ...moduleInstance,
     }
 };
 
@@ -52,9 +55,13 @@ function getPeripheralPinNames(inst) {
 
 function getClockEnableIds(inst) {
 
-    let instConfig = getInstanceConfig(inst);
-
-    return instConfig.clockIds;
+    if (common.getSocName() == "am273x") {
+        let instConfig = getInstanceConfig(inst);
+        return instConfig.clockIds;
+    }
+    else {
+        return soc.getClockEnableIds(inst);
+    }
 }
 
 function getConfigurables()
@@ -62,7 +69,6 @@ function getConfigurables()
     let config = [];
 
     config.push(
-
         {
             name: "bitRate",
             displayName: "Bit Rate",
@@ -71,11 +77,11 @@ function getConfigurables()
             options: [
                 {
                     name: "100KHZ",
-                    displayName: "100 KHZ"
+                    displayName: "100 KHz"
                 },
                 {
                     name: "400KHZ",
-                    displayName: "400 KHZ"
+                    displayName: "400 KHz"
                 },
             ],
         },
@@ -85,16 +91,34 @@ function getConfigurables()
             default: true,
             hidden: false,
             onChange: function (inst, ui) {
-                let hideConfigs = false;
-                if(inst.enableIntr == false) {
-                    hideConfigs = true;
-                    inst.transferCallbackFxn = "NULL";
-                    inst.transferMode = "BLOCKING";
-                    ui.transferCallbackFxn.hidden = true;
+
+                if(inst.sdkInfra == "HLD") {
+                    let hideConfigs = false;
+                    if(inst.enableIntr == false) {
+                        hideConfigs = true;
+                        inst.transferCallbackFxn = "NULL";
+                        inst.transferMode = "BLOCKING";
+                        ui.transferCallbackFxn.hidden = true;
+                        ui.intrPriority.hidden = true;
+                    }
+                    else {
+                        ui.intrPriority.hidden = false;
+                    }
+                    ui.transferMode.hidden = hideConfigs;
                 }
-                ui.transferMode.hidden = hideConfigs;
+                else {
+                    ui.intrPriority.hidden = true;
+                }
+
             },
-            description: "If enabled interrupt mode otherwise polling mode",
+            description: "If enabled, Interrupt mode otherwise Polling mode",
+        },
+        {
+            name: "intrPriority",
+            displayName: "Interrupt Priority",
+            default: 4,
+            hidden: false,
+            description: `Interrupt Priority: 0 (highest) to ${hwi.getHwiMaxPriority()} (lowest)`,
         },
         {
             name: "transferMode",
@@ -130,22 +154,10 @@ function getConfigurables()
             description: "Transfer callback function when callback mode is selected",
         },
         {
-            name: "advanced",
-            displayName: "Show Advanced Config",
-            default: false,
-            onChange: function (inst, ui) {
-                let hideConfigs = true;
-                if(inst.advanced == true) {
-                    hideConfigs = false;
-                }
-                ui.ownTargetAddr.hidden = hideConfigs;
-            },
-        },
-        {
             name: "ownTargetAddr",
             displayName: "Own Target Address (0x00 - 0x7F)",
             default: 0x1C,
-            hidden: true,
+            hidden: false,
             displayFormat: "hex"
         },
         {
@@ -168,7 +180,8 @@ function getConfigurables()
                     inst.transferCallbackFxn = "NULL";
                     ui.transferCallbackFxn.hidden = true;
                     ui.transferMode.hidden = true;
-                    inst.enableIntr = false;
+
+                    ui.intrPriority.hidden = true;
                     ui.enableIntr.hidden = true;
                     if(inst.enableIntr == "NULL") {
                         /* Clear NULL entry as user need to provide a fxn */
@@ -177,7 +190,13 @@ function getConfigurables()
                 }
                 else {
                     ui.enableIntr.hidden = false;
-                    inst.enableIntr = false;
+                    if(inst.enableIntr == true) {
+                        ui.intrPriority.hidden = false;
+                    }
+                    else {
+                        ui.intrPriority.hidden = false;
+                    }
+                    ui.transferMode.hidden = false;
                 }
             },
             description: "SDK Infra",
@@ -189,11 +208,96 @@ function getConfigurables()
         config.push(common.ui.makeInstanceConfig(getStaticConfigArr()));
     }
 
-    return config;
+    /* Backward Compatibility Configs */
+    config.push(
+        {
+            name: "advanced",
+            displayName: "Show Advanced Config",
+            default: false,
+            hidden: true,
+        },
+    )
 
+    return config;
+}
+
+function getModuleStatic() {
+
+    let config = [];
+
+    config = (
+        {
+            name: "GROUP_GLOBAL_I2C_CLOCK_CONFIGURATION",
+            displayName: "I2C Global Clock Configuration",
+            collapsed:false,
+
+            config : [
+                {
+                    name: "clockSource",
+                    displayName: "Clock Source",
+                    default: soc.getDefaultClkSource(),
+                    description: "Clock Source",
+                    options: gClockSourceOptions,
+                    hidden: false,
+                    onChange: function (inst, ui) {
+                        inst.funcClk = soc.getClockValue(inst.clockSource);
+                        globalClockId = inst.clockSource;
+                        globalClockRate = inst.funcClk;
+                    },
+                },
+                {
+                    name: "funcClk",
+                    displayName: "Input Clock Frequency (Hz)",
+                    default: soc.getDefaultClockValue(),
+                    description: "Source Clock Frequency",
+                    displayFormat: "dec",
+                    hidden: false,
+                    onChange: function (inst, ui) {
+                        globalClockRate = inst.funcClk;
+                    },
+                },
+            ],
+        }
+    )
+
+    return config;
 }
 
 let i2c_module_name = "/drivers/i2c/i2c";
+
+let gClockSourceOptions = soc.getClockSourceOptions();
+
+function getModuleStaticAll(inst) {
+
+    let moduleStatic;
+
+    if (common.getSocName() == "am273x") {
+
+        moduleStatic = {
+            modules: function(inst) {
+                return [{
+                    name: "system_common",
+                    moduleName: "/system_common",
+                }]
+            },
+        }
+    }
+    else {
+
+        moduleStatic = {
+
+            config: [ getModuleStatic() ],
+            modules: function(inst) {
+                return [{
+                    name: "system_common",
+                    moduleName: "/system_common",
+                }]
+            },
+        }
+    }
+
+    return moduleStatic;
+}
 
 let i2c_module = {
     displayName: "I2C",
@@ -205,24 +309,20 @@ let i2c_module = {
             moduleName: i2c_module_name,
         },
     },
-    moduleInstances: moduleInstances,
+    maxInstances: getStaticConfigArr().length,
     defaultInstanceName: "CONFIG_I2C",
-    config:  getConfigurables(),
+    config: getConfigurables(),
+    moduleStatic : getModuleStaticAll(),
     validate : validate,
-    moduleStatic: {
-        modules: function(inst) {
-            return [{
-                name: "system_common",
-                moduleName: "/system_common",
-            }]
-        },
-    },
-    pinmuxRequirements,
+    moduleInstances: moduleInstances,
     validatePinmux: validatePinmux,
+    pinmuxRequirements,
     getInstanceConfig,
     getInterfaceName,
     getPeripheralPinNames,
     getClockEnableIds,
+    getClockFrequencies,
+    getClockRate,
 };
 
 function validate(instance, report) {
@@ -253,41 +353,58 @@ function validatePinmux(instance, report) {
 function moduleInstances(inst) {
     let modInstances = new Array();
 
-    if( inst.sdkInfra == "HLD")
-    {
-        modInstances.push({
-            name: "I2C_child",
-            moduleName: '/drivers/i2c/v1/i2c_v1_template',
-            },
-        );
-    }
-    else
-    {
-        modInstances.push({
-            name: "I2C_child",
-            moduleName: '/drivers/i2c/v1/i2c_v1_template_lld',
-            },
-        );
-    }
+    modInstances.push({
+        name: "I2C_child",
+        moduleName: '/drivers/i2c/v1/i2c_v1_template',
+        },
+    );
 
     return (modInstances);
 }
 
 function getClockFrequencies(inst) {
 
-    let instConfig = getInstanceConfig(inst);
+    if (common.getSocName() != "am273x") {
 
-    return instConfig.clockFrequencies;
+        let clockFrequencies = [
+            {
+                moduleId: "SOC_RcmPeripheralId_I2C",
+                clkId   : globalClockId,
+                clkRate : globalClockRate,
+            },
+        ]
+
+        return clockFrequencies;
+    }
+    else {
+
+        let instConfig = getInstanceConfig(inst);
+        return instConfig.clockFrequencies;
+    }
+}
+
+function getClockRate(inst) {
+    if (common.getSocName() != "am273x") {
+
+        return (globalClockRate);
+    }
+    else {
+        let instConfig = getInstanceConfig(inst);
+        return instConfig.funcClk;
+    }
 }
 
 function getModule()
 {
     let module = i2c_module;
+
     if(soc.isFrequencyDefined())
     {
         module.getClockFrequencies = getClockFrequencies;
     }
+
     return module;
 }
 
 exports = getModule();
+

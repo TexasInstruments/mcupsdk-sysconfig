@@ -139,11 +139,27 @@ function isFrequencyDefined()
     return true;
 }
 
+function getDefaultClkSource() {
+    return "";
+}
+
+function getDefaultClockValue(clkSrc) {
+    return 0;
+}
+
+function getClockSourceOptions() {
+
+    return [];
+}
+
 let soc = {
     getStaticConfigArr,
     getInterfaceName,
     isMakeInstanceRequired,
     isFrequencyDefined,
+    getDefaultClkSource,
+    getDefaultClockValue,
+    getClockSourceOptions,
 };
 
 exports = soc;
