@@ -1,0 +1,46 @@
+%%{
+    let netxduo_module = system.modules["/networking/netxduo/netxduo"];
+    let netxduo_interface_module = system.modules["/networking/netxduo/netxduo_interface"];
+%%}
+
+
+%if(netxduo_module.getIfCount(netxduo_module.$instances[0]) >= 1)
+%{
+/* ========================================================================== */
+/*                             Include Files                                  */
+/* ========================================================================== */
+
+#include <string.h>
+#include <stdint.h>
+#include <stdarg.h>
+
+#include <enet.h>
+
+/* ========================================================================== */
+/*                           Macros & Typedefs                                */
+/* ========================================================================== */
+
+#define NETXDUO_COUNT     (`netxduo_module.$instances.length`u)
+#define NETXDUO_IF_COUNT  (`netxduo_interface_module.getTotalIfCount()`u)
+
+#define ENET_NETX_MAX_RX_CHANNELS_PER_PHERIPHERAL    (2u)
+#define ENET_NETX_MAX_TX_CHANNELS_PER_PHERIPHERAL    (1u)
+
+
+
+/* ========================================================================== */
+/*                         Structure Declarations                             */
+/* ========================================================================== */
+
+
+/* ========================================================================== */
+/*                          Function Declarations                             */
+/* ========================================================================== */
+
+void NetxEnetApp_getRxChIDs(uint32_t netxIx, uint32_t ifIx, uint32_t* pRxChIdCount, uint32_t rxChIdList[ENET_NETX_MAX_RX_CHANNELS_PER_PHERIPHERAL]);
+void NetxEnetApp_getTxChIDs(uint32_t netxIx, uint32_t ifIx, uint32_t* pTxChIdCount, uint32_t txChIdList[ENET_NETX_MAX_TX_CHANNELS_PER_PHERIPHERAL]);
+void NetxEnetApp_getEnetTypeAndIdFromIfIdx(uint32_t netxIx, uint32_t ifIx, Enet_Type *pEnetType, uint32_t *pInstId);
+Enet_MacPort NetxEnetApp_getMacPort(uint32_t netxIx, uint32_t ifIx);
+size_t NetxEnetApp_getDefaultIfIdx();
+
+%}

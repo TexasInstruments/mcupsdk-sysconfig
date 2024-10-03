@@ -1,0 +1,114 @@
+%%{
+    let netxduo_module = system.modules["/networking/netxduo/netxduo"];
+    let netxduo_interface_module = system.modules["/networking/netxduo/netxduo_interface"];
+%%}
+%if(netxduo_module.getIfCount(netxduo_module.$instances[0]) >= 1)
+%{
+/* ========================================================================== */
+/*                             Include Files                                  */
+/* ========================================================================== */
+
+#include <stdio.h>
+#include <stdarg.h>
+#include <string.h>
+
+#include "ti_enet_config.h"
+#include "ti_enet_netxduo.h"
+
+#include <assert.h>
+
+#include <kernel/dpl/TaskP.h>
+#include <kernel/dpl/SemaphoreP.h>
+#include <kernel/dpl/ClockP.h>
+#include <kernel/dpl/SystemP.h>
+
+#include <drivers/udma/udma_priv.h>
+#include <drivers/udma.h>
+
+#include <enet.h>
+#include <networking/enet/utils/include/enet_appmemutils_cfg.h>
+#include <networking/enet/utils/include/enet_apputils.h>
+#include <networking/enet/utils/include/enet_appmemutils.h>
+#include <networking/enet/utils/include/enet_appboardutils.h>
+#include <networking/enet/utils/include/enet_appsoc.h>
+#include <networking/enet/utils/include/enet_apprm.h>
+
+#include <netxduo_enet.h>
+#include <nx_api.h>
+
+
+/* ========================================================================== */
+/*                           Macros & Typedefs                                */
+/* ========================================================================== */
+
+#define ENET_NETX_IP_THREAD_STACK_SIZE   (4096u)
+#define ENET_NETX_IP_THREAD_PRIO            (1u)
+
+
+/*! \brief Enable LC-DMA statically linked Rx scatter-gather. Also need to update scatterSegments
+ * for EnetMem_allocEthPkt while allocating pkts to enable Rx scatter-gather */
+#define UDMA_STATIC_RX_SG_ENABLE       0U
+
+/* ========================================================================== */
+/*                            Global Variables                                */
+/* ========================================================================== */
+
+
+/* ========================================================================== */
+/*                            Function Declaration                            */
+/* ========================================================================== */
+
+
+void NetxEnetApp_getRxChIDs(uint32_t netxIx, uint32_t ifIx, uint32_t* pRxChIdCount, uint32_t rxChIdList[ENET_NETX_MAX_RX_CHANNELS_PER_PHERIPHERAL])
+{
+    int32_t if2ChMap[NETXDUO_COUNT][NETXDUO_IF_COUNT][ENET_NETX_MAX_RX_CHANNELS_PER_PHERIPHERAL] = `netxduo_interface_module.getIfRxCh()`;
+    uint32_t chCount;
+    
+    EnetAppUtils_assert(ifIx < NETXDUO_IF_COUNT);
+    
+    for (chCount = 0U; (chCount < ENET_NETX_MAX_RX_CHANNELS_PER_PHERIPHERAL) && (if2ChMap[netxIx][ifIx][chCount] != -1); chCount++)
+    {
+        rxChIdList[chCount] = if2ChMap[netxIx][ifIx][chCount];
+    }
+    
+   *pRxChIdCount = chCount;
+}
+
+void NetxEnetApp_getTxChIDs(uint32_t netxIx, uint32_t ifIx, uint32_t* pTxChIdCount, uint32_t txChIdList[ENET_NETX_MAX_TX_CHANNELS_PER_PHERIPHERAL])
+{
+    int32_t if2ChMap[NETXDUO_COUNT][NETXDUO_IF_COUNT][ENET_NETX_MAX_TX_CHANNELS_PER_PHERIPHERAL] = `netxduo_interface_module.getIfTxCh()`;
+    uint32_t chCount;
+    
+    EnetAppUtils_assert(ifIx < NETXDUO_IF_COUNT);
+    
+    for (chCount = 0U; (chCount < ENET_NETX_MAX_TX_CHANNELS_PER_PHERIPHERAL) && (if2ChMap[netxIx][ifIx][chCount] != -1); chCount++)
+    {
+        txChIdList[chCount] = if2ChMap[netxIx][ifIx][chCount];
+    }
+
+   *pTxChIdCount = chCount;
+}
+
+void NetxEnetApp_getEnetTypeAndIdFromIfIdx(uint32_t netxIx, uint32_t ifIx, Enet_Type *pEnetType, uint32_t *pInstId) 
+{
+    const uint32_t enetList[NETXDUO_COUNT][NETXDUO_IF_COUNT][2] = `netxduo_interface_module.getIfIdx2EnetMap()`;
+
+    EnetAppUtils_assert(ifIx < NETXDUO_IF_COUNT);
+
+   *pEnetType = (Enet_Type)enetList[netxIx][ifIx][0];
+   *pInstId = enetList[netxIx][ifIx][1];
+}
+
+
+Enet_MacPort NetxEnetApp_getMacPort(uint32_t netxIx, uint32_t ifIx)
+{
+    Enet_MacPort  macports[NETXDUO_COUNT][NETXDUO_IF_COUNT] = `netxduo_interface_module.getIfMacPorts()`;
+    return (macports[netxIx][ifIx]);
+}
+
+size_t NetxEnetApp_getDefaultIfIdx(void)
+{
+    return (`netxduo_interface_module.getDefaultIfIndex()`);  
+}
+
+%}
