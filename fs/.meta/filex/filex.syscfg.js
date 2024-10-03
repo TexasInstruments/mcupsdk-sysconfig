@@ -6,15 +6,15 @@ let filex_module = {
 	displayName: "FileX",
     templates: {
         "/board/board/board_config.h.xdt": {
-            board_config: "/fs/filex/templates/filex.h.xdt",
+            stack_config: "/fs/filex/templates/filex.h.xdt",
         },
         "/board/board/board_open_close.c.xdt": {
-            board_open_close_config: "/fs/filex/templates/filex_open_close_config.c.xdt",
-            board_open: "/fs/filex/templates/filex_open.c.xdt",
-            board_close: "/fs/filex/templates/filex_close.c.xdt",
+            stack_open_close_config: "/fs/filex/templates/filex_open_close_config.c.xdt",
+            stack_open: "/fs/filex/templates/filex_open.c.xdt",
+            stack_close: "/fs/filex/templates/filex_close.c.xdt",
         },
         "/board/board/board_open_close.h.xdt": {
-            board_open_close_config: "/fs/filex/templates/filex_open_close.h.xdt",
+            stack_open_close_config: "/fs/filex/templates/filex_open_close.h.xdt",
         },
     },
 	defaultInstanceName: "FILEX",
@@ -37,6 +37,11 @@ let filex_module = {
                 } else {
                     inst.auto_format = false;
                     ui.ramdisk_size.hidden = true;
+                }
+                if(inst.media == "FLASH") {
+                    inst.fs_offset = 0x200000;
+                } else {
+                    inst.fs_offset = 0;
                 }
             }
 		},

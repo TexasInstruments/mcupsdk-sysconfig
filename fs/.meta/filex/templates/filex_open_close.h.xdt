@@ -8,7 +8,7 @@
 
 #include <fx_api.h>
 
-extern FX_MEDIA gt_media[];
+extern FX_MEDIA gMedia[];
 
-void EclipseThreadx_FilexOpen(void);
+int32_t EclipseThreadx_FilexOpen(void);
 void EclipseThreadx_FilexClose(void);

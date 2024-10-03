@@ -1,1 +1,4 @@
-    EclipseThreadx_FilexOpen();
+    if(status==SystemP_SUCCESS)
+    {
+        status = EclipseThreadx_FilexOpen();
+    }

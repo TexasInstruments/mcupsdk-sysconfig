@@ -43,6 +43,11 @@
 `system.getTemplate(subTemplate.board_config)()`
     % }
 % }
+% for(let subTemplate of args) {
+    % if (subTemplate.stack_config) {
+`system.getTemplate(subTemplate.stack_config)()`
+    % }
+% }
 
 % let cpuName = system.getScript('/common').getSelfSysCfgCoreName();
 void Board_init(void)
@@ -56,6 +61,11 @@ void Board_init(void)
 % for(let subTemplate of args) {
     % if (subTemplate.board_init) {
 `system.getTemplate(subTemplate.board_init)()`
+    % }
+% }
+% for(let subTemplate of args) {
+    % if (subTemplate.stack_init) {
+`system.getTemplate(subTemplate.stack_init)()`
     % }
 % }
 % if(cpuName.match(/a53/)) {
@@ -80,6 +90,11 @@ void Board_deinit(void)
     if(0 == Armv8_getCoreId())
     {
 
+% }
+% for(let subTemplate of args) {
+    % if (subTemplate.stack_deinit) {
+`system.getTemplate(subTemplate.stack_deinit)()`
+    % }
 % }
 % for(let subTemplate of args) {
     % if (subTemplate.board_deinit) {

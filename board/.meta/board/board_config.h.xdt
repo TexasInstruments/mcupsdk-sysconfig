@@ -51,6 +51,11 @@ void Board_deinit(void);
 `system.getTemplate(subTemplate.board_config)(subTemplate.moduleName)`
     % }
 % }
+% for(let subTemplate of args) {
+    % if (subTemplate.stack_config) {
+`system.getTemplate(subTemplate.stack_config)(subTemplate.moduleName)`
+    % }
+% }
 
 #ifdef __cplusplus
 }

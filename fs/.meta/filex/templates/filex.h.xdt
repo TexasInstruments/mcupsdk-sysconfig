@@ -2,6 +2,7 @@
     let filex_module = system.modules['/fs/filex/filex'];
     let mmcsd_instances = _.filter(filex_module.$instances, function (inst) { return (inst.media == "SD" || inst.media == "EMMC");});
     let ramdisk_instances = _.filter(filex_module.$instances, function (inst) { return (inst.media == "RAMDISK");})
+    let nor_instances = _.filter(filex_module.$instances, function (inst) { return (inst.media == "FLASH");})
 %%}
 /*
  * FileX
@@ -14,5 +15,6 @@
 #define `instance.$name.toUpperCase()`               (`k`U)
 % }
 #define FILEX_NUM_INSTANCES (`filex_module.$instances.length`U)
+#define FILEX_NOR_NUM_INSTANCES  (`nor_instances.length`U)
 #define FILEX_RAMDISK_NUM_INSTANCES  (`ramdisk_instances.length`U)
 #define FILEX_MMCSD_NUM_INSTANCES    (`mmcsd_instances.length`U)
