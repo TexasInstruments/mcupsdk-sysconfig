@@ -129,7 +129,6 @@ static Pinmux_PerCfg_t gPinMuxMcuDomainCfg[] = {
 
 void Pinmux_init(void)
 {
-    Pinmux_config(gPinMuxMainDomainCfg, PINMUX_DOMAIN_ID_MAIN);
     %let MSS_CTRL_ICSSM_PRU0_GPIO_OUT_CTRL_VALUE=0x00000000;
     %let MSS_CTRL_ICSSM_PRU1_GPIO_OUT_CTRL_VALUE=0x00000000;
     %for(let subTemplate of args){
@@ -151,6 +150,38 @@ void Pinmux_init(void)
                 %     }
                 %}
             %}
+            %if(module.getPru0MuxMode && module.getPru1MuxMode)
+            %{
+    /*Configure mux mode for PRU0*/
+    HW_WR_FIELD32((CSL_ICSSM0_INTERNAL_U_BASE  + CSL_ICSS_M_PR1_CFG_SLV_REGS_BASE + CSL_ICSS_M_PR1_CFG_SLV_GPCFG0_REG), CSL_ICSS_M_PR1_CFG_SLV_GPCFG0_REG_PR1_PRU0_GP_MUX_SEL, `module.getPru0MuxMode(instance)`);
+    /*Configure mux mode for PRU1*/
+    HW_WR_FIELD32((CSL_ICSSM0_INTERNAL_U_BASE  + CSL_ICSS_M_PR1_CFG_SLV_REGS_BASE + CSL_ICSS_M_PR1_CFG_SLV_GPCFG1_REG), CSL_ICSS_M_PR1_CFG_SLV_GPCFG1_REG_PR1_PRU1_GP_MUX_SEL, `module.getPru1MuxMode(instance)`);
+            %}
+            %if(module.getPruMuxMode)
+            %{
+                %let interfaceName = module.getInterfaceName ? module.getInterfaceName(instance) : module.getInterfaceNameList(instance) ;
+                %let peripheral = instance[interfaceName];
+                %if((peripheral.$solution.peripheralName == "PRU_ICSSG0_PRU0"))
+                %{
+    /*Configure mux mode for PRU0*/
+    HW_WR_FIELD32((CSL_PRU_ICSSG0_PR1_CFG_SLV_BASE + CSL_ICSSCFG_GPCFG0), CSL_ICSSCFG_GPCFG0_PR1_PRU0_GP_MUX_SEL, `module.getPruMuxMode(instance)`);
+                %}
+                %if((peripheral.$solution.peripheralName == "PRU_ICSSG0_PRU1"))
+                %{
+    /*Configure mux mode for PRU1*/
+    HW_WR_FIELD32((CSL_PRU_ICSSG0_PR1_CFG_SLV_BASE + CSL_ICSSCFG_GPCFG1), CSL_ICSSCFG_GPCFG1_PR1_PRU1_GP_MUX_SEL, `module.getPruMuxMode(instance)`);
+                %}
+                %if((peripheral.$solution.peripheralName == "PRU_ICSSG1_PRU0"))
+                %{
+    /*Configure mux mode for PRU0*/
+    HW_WR_FIELD32((CSL_PRU_ICSSG1_PR1_CFG_SLV_BASE + CSL_ICSSCFG_GPCFG0), CSL_ICSSCFG_GPCFG0_PR1_PRU0_GP_MUX_SEL, `module.getPruMuxMode(instance)`);
+                %}
+                %if((peripheral.$solution.peripheralName == "PRU_ICSSG1_PRU1"))
+                %{
+    /*Configure mux mode for PRU1*/
+    HW_WR_FIELD32((CSL_PRU_ICSSG1_PR1_CFG_SLV_BASE + CSL_ICSSCFG_GPCFG1), CSL_ICSSCFG_GPCFG1_PR1_PRU1_GP_MUX_SEL, `module.getPruMuxMode(instance)`);
+                %}
+            %}
         %}
     %}
 
@@ -161,6 +192,8 @@ void Pinmux_init(void)
     CSL_REG32_WR(CSL_MSS_CTRL_U_BASE + CSL_MSS_CTRL_ICSSM_PRU1_GPIO_OUT_CTRL, `MSS_CTRL_ICSSM_PRU1_GPIO_OUT_CTRL_VALUE`);
     
     %}
+
+    Pinmux_config(gPinMuxMainDomainCfg, PINMUX_DOMAIN_ID_MAIN);
     
     % if(common.isMcuDomainSupported()) {
     Pinmux_config(gPinMuxMcuDomainCfg, PINMUX_DOMAIN_ID_MCU);

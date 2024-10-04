@@ -14,6 +14,16 @@ function getInterfaceName(inst, peripheralName)
     return inst.instance;
 }
 
+function getPru0MuxMode(inst)
+{
+    return inst.pru0MuxMode;
+}
+
+function getPru1MuxMode(inst)
+{
+    return inst.pru1MuxMode;
+}
+
 function getInterfacePinList(inst, peripheralName)
 {
     let interfaceName = getInterfaceName(inst, peripheralName);
@@ -100,10 +110,68 @@ let pruicss_top_module = {
                 },
             ],
         },
+        {
+            name: "pru0MuxMode",
+            displayName: "PRU0 Mux Mode",
+            default: "0",
+            description: "PRU ICSS level mux configuration",
+            options: [
+                {
+                    name: "0",
+                    displayName: "GP mode",
+                    description: "General purpose input/output mode"
+                },
+                {
+                    name: "1",
+                    displayName: "3 channel peripheral interface mode",
+                    description: "3 channel peripheral interface mode"
+                },
+                {
+                    name: "2",
+                    displayName: "MII mode",
+                    description: "Media interface mode"
+                },
+                {
+                    name: "3",
+                    displayName: "SD mode",
+                    description: "Sigma delta mode"
+                }
+            ]
+        },
+        {
+            name: "pru1MuxMode",
+            displayName: "PRU1 Mux Mode",
+            default: "0",
+            description: "PRU ICSS level mux configuration",
+            options: [
+                {
+                    name: "0",
+                    displayName: "GP mode",
+                    description: "General purpose input/output mode"
+                },
+                {
+                    name: "1",
+                    displayName: "3 channel peripheral interface mode",
+                    description: "3 channel peripheral interface mode"
+                },
+                {
+                    name: "2",
+                    displayName: "MII mode",
+                    description: "Media interface mode"
+                },
+                {
+                    name: "3",
+                    displayName: "SD mode",
+                    description: "Sigma delta mode"
+                }
+            ]
+        }
     ],
     pinmuxRequirements,
     getInterfaceNameList,
     getPeripheralPinNames,
+    getPru0MuxMode,
+    getPru1MuxMode
 };
 
 function validate(inst, report) {

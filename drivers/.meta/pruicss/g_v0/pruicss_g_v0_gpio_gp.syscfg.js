@@ -7,6 +7,11 @@ function getInterfaceName(inst, peripheralName)
     return `PRU_${inst.instance}_${peripheralName}`;
 }
 
+function getPruMuxMode(inst)
+{
+    return inst.pruMuxMode;
+}
+
 function getInterfacePinList(inst, peripheralName)
 {
     let interfaceName = getInterfaceName(inst, peripheralName);
@@ -138,10 +143,39 @@ let pruicss_top_module = {
                 }
             ],
         },
+        {
+            name: "pruMuxMode",
+            displayName: "PRU Mux Mode",
+            default: "0",
+            description: "PRU ICSS level mux configuration",
+            options: [
+                {
+                    name: "0",
+                    displayName: "GP mode",
+                    description: "General purpose input/output mode"
+                },
+                {
+                    name: "1",
+                    displayName: "3 channel peripheral interface mode",
+                    description: "3 channel peripheral interface mode"
+                },
+                {
+                    name: "2",
+                    displayName: "MII mode",
+                    description: "Media interface mode"
+                },
+                {
+                    name: "3",
+                    displayName: "SD mode",
+                    description: "Sigma delta mode"
+                }
+            ]
+        }
     ],
     pinmuxRequirements,
     getInterfaceNameList,
     getPeripheralPinNames,
+    getPruMuxMode,
 };
 
 function validate(inst, report) {
