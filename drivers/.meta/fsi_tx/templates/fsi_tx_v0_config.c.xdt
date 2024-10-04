@@ -1,0 +1,6 @@
+%%{
+    let common = system.getScript("/common");
+    let soc = system.getScript(`/drivers/soc/drivers_${common.getSocName()}`);
+    let driverVer = soc.getDriverVer("fsi_tx");
+    let module = system.modules['/drivers/fsi_tx/fsi_tx'];
+%%}

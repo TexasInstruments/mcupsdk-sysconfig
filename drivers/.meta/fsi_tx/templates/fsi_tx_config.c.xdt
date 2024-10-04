@@ -1,0 +1,3 @@
+%%{
+    let module = system.modules['/drivers/fsi_tx/fsi_tx'];
+%%}

@@ -58,26 +58,38 @@ function validate(instance, report) {
 
 let fsi_rx_module_name = "/drivers/fsi_rx/fsi_rx";
 
+/*
+ *  ======== addModuleInstances ========
+ */
+function addModuleInstances(instance) {
+    let modInstances = new Array();
+
+    if(instance.sdkInfra == "HLD")
+    {
+        if((instance.operMode == "DMA")) {
+            modInstances.push({
+                name: "edmaDriver",
+                displayName: "EDMA Configuration",
+                moduleName: "/drivers/edma/edma",
+            });
+        }
+     }
+
+    return modInstances;
+}
+
 let fsi_rx_module = {
     displayName: "FSI_RX",
     templates: {
-        "/drivers/system/system_config.h.xdt": {
-            driver_config: "/drivers/fsi_rx/templates/fsi_rx.h.xdt",
+        "/drivers/pinmux/pinmux_config.c.xdt": {
             moduleName: fsi_rx_module_name,
         },
-        "/drivers/pinmux/pinmux_config.c.xdt": {
+        "/drivers/system/power_clock_config.c.xdt": {
             moduleName: fsi_rx_module_name,
         },
     },
     defaultInstanceName: "CONFIG_FSI_RX",
-    config: [
-        {
-            name: "intrEnable",
-            displayName: "Interrupt Mode",
-            description: "Enable Interrupt mode of operation",
-            default: true,
-        },
-    ],
+    config: getConfigurables(),
     validate: validate,
     modules: function(inst) {
         return [{
@@ -85,8 +97,9 @@ let fsi_rx_module = {
             moduleName: "/system_common",
         }]
     },
-    pinmuxRequirements,
+    sharedModuleInstances: addModuleInstances,
     moduleInstances: moduleInstances,
+    pinmuxRequirements,
     getInstanceConfig,
     getInterfaceName,
     getPeripheralPinNames,
@@ -99,27 +112,149 @@ function onMigrate(newInst, oldInst, oldSystem) {
     common.onMigrate(newInst, oldInst, oldSystem, pins, interfaceName)
 }
 
+function getConfigurables()
+{
+    let config = [];
+
+    config.push(
+        {
+            name: "sdkInfra",
+            displayName: "SDK Infra",
+            default: "LLD",
+            options: [
+                {
+                    name: "HLD",
+                    displayName: "HLD"
+                },
+                {
+                    name: "LLD",
+                    displayName: "LLD"
+                },
+            ],
+            description: "SDK Infra",
+            onChange: function (inst, ui) {
+                if(inst.sdkInfra == "LLD")
+                {
+                    ui.intrEnable.hidden = false;
+                    ui.operMode.hidden = true;
+                    ui.intrPriority.hidden = true;
+                }
+                else if(inst.sdkInfra == "HLD")
+                {
+                    ui.intrEnable.hidden = true;
+                    ui.operMode.hidden = false;
+                    ui.intrPriority.hidden = false;
+                }
+            },
+        },
+        {
+            name: "intrEnable",
+            displayName: "Interrupt Mode",
+            description: "Enable Interrupt mode of operation",
+            default: true,
+        },
+        {
+            name: "operMode",
+            displayName: "Operation Mode",
+            default: "INTERRUPT",
+            hidden: true,
+            options: [
+                {
+                    name: "POLLED",
+                    displayName: "Polled Mode"
+                },
+                {
+                    name: "INTERRUPT",
+                    displayName: "Interrupt Mode"
+                },
+                {
+                    name: "DMA",
+                    displayName: "DMA Mode"
+                },
+            ],
+            description: "Opeation Mode",
+            onChange: function (inst, ui) {
+                if((inst.operMode == "DMA")  || (inst.operMode == "POLLED")) {
+                    ui.intrPriority.hidden = true;
+                }
+                if(inst.operMode == "INTERRUPT") {
+                    ui.intrPriority.hidden = false;
+                }
+            },
+        },
+        {
+            name: "intrPriority",
+            displayName: "Interrupt Priority",
+            default: 4,
+            hidden: true,
+            description: `Interrupt Priority: 0 (highest)`,
+        },
+    )
+    return config;
+}
+
 function moduleInstances(inst) {
     let modInstances = new Array();
 
-    if(soc.interruptXbarConfig == true && inst.intrEnable == true)
+    if(inst.sdkInfra == "LLD")
+    {
+        if(soc.interruptXbarConfig == true && inst.intrEnable == true)
+        {
+            modInstances.push({
+                name: "fsiRxIntXbar0",
+                displayName: "FSI RX Interrupt 0 XBAR",
+                moduleName: '/xbar/int_xbar/int_xbar',
+                requiredArgs: {
+                    parentName: "FSI_RX_INT0",
+                },
+            });
+            modInstances.push({
+                name: "fsiRxIntXbar1",
+                displayName: "FSI RX Interrupt 1 XBAR",
+                moduleName: '/xbar/int_xbar/int_xbar',
+                requiredArgs: {
+                    parentName: "FSI_RX_INT1",
+                },
+            });
+        }
+    }
+    else if(inst.sdkInfra == "HLD")
+    {
+        if(soc.interruptXbarConfig == true && inst.operMode == "INTERRUPT")
+        {
+            modInstances.push({
+                name: "fsiRxIntXbar0",
+                displayName: "FSI RX Interrupt 0 XBAR",
+                moduleName: '/xbar/int_xbar/int_xbar',
+                requiredArgs: {
+                    parentName: "FSI_RX_INT0",
+                },
+            });
+            modInstances.push({
+                name: "fsiRxIntXbar1",
+                displayName: "FSI RX Interrupt 1 XBAR",
+                moduleName: '/xbar/int_xbar/int_xbar',
+                requiredArgs: {
+                    parentName: "FSI_RX_INT1",
+                },
+            });
+        }
+    }
+    if( inst.sdkInfra == "HLD")
     {
         modInstances.push({
-            name: "fsiRxIntXbar0",
-            displayName: "FSI RX Interrupt 0 XBAR",
-            moduleName: '/xbar/int_xbar/int_xbar',
-            requiredArgs: {
-                parentName: "FSI_RX_INT0",
+            name: "child",
+            moduleName: '/drivers/fsi_rx/v0/fsi_rx_v0_template_hld',
             },
-        });
+        );
+    }
+    else
+    {
         modInstances.push({
-            name: "fsiRxIntXbar1",
-            displayName: "FSI RX Interrupt 1 XBAR",
-            moduleName: '/xbar/int_xbar/int_xbar',
-            requiredArgs: {
-                parentName: "FSI_RX_INT1",
+            name: "child",
+            moduleName: '/drivers/fsi_rx/v0/fsi_rx_v0_template',
             },
-        });
+        );
     }
 
     return (modInstances);

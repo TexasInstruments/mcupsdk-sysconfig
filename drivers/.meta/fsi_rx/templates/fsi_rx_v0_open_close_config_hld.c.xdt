@@ -1,0 +1,48 @@
+extern FSI_Rx_Params rxParams[CONFIG_FSI_RX_NUM_INSTANCES];
+
+void Drivers_fsiRxOpen(void)
+{
+    uint32_t instCnt;
+    int32_t  status = SystemP_SUCCESS;
+
+    for(instCnt = 0U; instCnt < CONFIG_FSI_RX_NUM_INSTANCES; instCnt++)
+    {
+        gFsiRxHandle[instCnt] = NULL;   /* Init to NULL so that we can exit gracefully */
+    }
+
+    /* Open all instances */
+    for(instCnt = 0U; instCnt < CONFIG_FSI_RX_NUM_INSTANCES; instCnt++)
+    {
+        gFsiRxHandle[instCnt] = FSI_Rx_open(instCnt, &rxParams[instCnt]);
+        if(NULL == gFsiRxHandle[instCnt])
+        {
+            DebugP_logError("FSI Rx open failed for instance %d !!!\r\n", instCnt);
+            status = SystemP_FAILURE;
+            break;
+        }
+    }
+
+    if(SystemP_FAILURE == status)
+    {
+        Drivers_fsiRxClose();   /* Exit gracefully */
+    }
+
+    return;
+}
+
+void Drivers_fsiRxClose(void)
+{
+    uint32_t instCnt;
+
+    /* Close all instances that are open */
+    for(instCnt = 0U; instCnt < CONFIG_FSI_RX_NUM_INSTANCES; instCnt++)
+    {
+        if(gFsiRxHandle[instCnt] != NULL)
+        {
+            FSI_Rx_close(gFsiRxHandle[instCnt]);
+            gFsiRxHandle[instCnt] = NULL;
+        }
+    }
+
+    return;
+}

@@ -1,19 +1,30 @@
 %%{
-    let module = system.modules[args[0]];
     let common = system.getScript("/common");
-    let soc = system.getScript(`/drivers/fsi_rx/soc/fsi_rx_${common.getSocName()}`);
+    let soc = system.getScript(`/drivers/soc/drivers_${common.getSocName()}`);
+    let driverVer = soc.getDriverVer("fsi_rx");
+    let module = system.modules['/drivers/fsi_rx/fsi_rx'];
 %%}
+
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+
+#define `instance.$name.toUpperCase()`              (`i`U)
+#define `instance.$name.toUpperCase()`_BASE_ADDR    (`config.baseAddr`)
+% }
+
 /*
- * FSI RX
+ * FSI_RX
  */
 #include <drivers/fsi.h>
+#include <drivers/fsi/v1/fsi_rx_hld.h>
 
 /* FSI RX Instance Macros */
 % for(let i = 0; i < module.$instances.length; i++) {
     % let instance = module.$instances[i];
     % let config = module.getInstanceConfig(instance);
 #define `instance.$name.toUpperCase()`_BASE_ADDR (`config.baseAddr`)
-% if(instance.intrEnable == true) {
+% if(instance.operMode == "INTERRUPT") {
 % if(soc.interruptXbarConfig == false) {
 #define `instance.$name.toUpperCase()`_INTR1 (`config.intrNum1`)
 #define `instance.$name.toUpperCase()`_INTR2 (`config.intrNum2`)
@@ -31,3 +42,10 @@
 #define `instance.$name.toUpperCase()`_CLK (`config.funcClk`U)
 % }
 #define CONFIG_FSI_RX_NUM_INSTANCES (`module.$instances.length`U)
+
+/*  FSIRx objects - initialized by the driver */
+FSI_Rx_Object gFsiRxObj[CONFIG_FSI_RX_NUM_INSTANCES];
+/*  FSIRx global configuration array */
+extern FSI_Rx_Config gFsiRxConfig[CONFIG_FSI_RX_NUM_INSTANCES];
+/* FSIRx Driver handles */
+FSI_Rx_Handle gFsiRxHandle[CONFIG_FSI_RX_NUM_INSTANCES];

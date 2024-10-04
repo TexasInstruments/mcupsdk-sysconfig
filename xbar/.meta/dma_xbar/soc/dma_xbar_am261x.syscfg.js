@@ -40,6 +40,7 @@ const internal_list = [
     {  name: "FSI0_RX_DMA_EVT", displayName: "FSI0_RX_DMA_EVT", path: "dma_xbar", group: 3 },
     {  name: "FSI0_DMA_TRIG1", displayName: "FSI0_DMA_TRIG1", path: "dma_xbar", group: 3 },
     {  name: "FSI0_DMA_TRIG2", displayName: "FSI0_DMA_TRIG2", path: "dma_xbar", group: 3 },
+    {  name: "FSI0_TX_DMA_EVT", displayName: "FSI0_TX_DMA_EVT", path: "dma_xbar", group: 3 },
     {  name: "SD0_FILT0_DRINT", displayName: "SD0_FILT0_DRINT", path: "dma_xbar", group: 4 },
     {  name: "SD0_FILT1_DRINT", displayName: "SD0_FILT1_DRINT", path: "dma_xbar", group: 4 },
     {  name: "SD0_FILT2_DRINT", displayName: "SD0_FILT2_DRINT", path: "dma_xbar", group: 4 },

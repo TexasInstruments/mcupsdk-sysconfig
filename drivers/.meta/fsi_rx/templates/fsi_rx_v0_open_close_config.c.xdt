@@ -1,0 +1,10 @@
+
+void Drivers_fsiRxOpen(void)
+{
+    return;
+}
+
+void Drivers_fsiRxClose(void)
+{
+    return;
+}

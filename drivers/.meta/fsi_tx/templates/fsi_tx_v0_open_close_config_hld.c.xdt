@@ -1,0 +1,48 @@
+extern FSI_Tx_Params txParams[CONFIG_FSI_TX_NUM_INSTANCES];
+
+void Drivers_fsiTxOpen(void)
+{
+    uint32_t instCnt;
+    int32_t  status = SystemP_SUCCESS;
+
+    for(instCnt = 0U; instCnt < CONFIG_FSI_TX_NUM_INSTANCES; instCnt++)
+    {
+        gFsiTxHandle[instCnt] = NULL;   /* Init to NULL so that we can exit gracefully */
+    }
+
+    /* Open all instances */
+    for(instCnt = 0U; instCnt < CONFIG_FSI_TX_NUM_INSTANCES; instCnt++)
+    {
+        gFsiTxHandle[instCnt] = FSI_Tx_open(instCnt, &txParams[instCnt]);
+        if(NULL == gFsiTxHandle[instCnt])
+        {
+            DebugP_logError("FSI Tx open failed for instance %d !!!\r\n", instCnt);
+            status = SystemP_FAILURE;
+            break;
+        }
+    }
+
+    if(SystemP_FAILURE == status)
+    {
+        Drivers_fsiTxClose();   /* Exit gracefully */
+    }
+
+    return;
+}
+
+void Drivers_fsiTxClose(void)
+{
+    uint32_t instCnt;
+
+    /* Close all instances that are open */
+    for(instCnt = 0U; instCnt < CONFIG_FSI_TX_NUM_INSTANCES; instCnt++)
+    {
+        if(gFsiTxHandle[instCnt] != NULL)
+        {
+            FSI_Tx_close(gFsiTxHandle[instCnt]);
+            gFsiTxHandle[instCnt] = NULL;
+        }
+    }
+
+    return;
+}

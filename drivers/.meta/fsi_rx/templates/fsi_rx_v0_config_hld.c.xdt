@@ -1,0 +1,116 @@
+%%{
+    let common = system.getScript("/common");
+    let soc = system.getScript(`/drivers/soc/drivers_${common.getSocName()}`);
+    let driverVer = soc.getDriverVer("fsi_rx");
+    let module = system.modules['/drivers/fsi_rx/fsi_rx'];
+    let fsi_rxSoc = system.getScript(`/drivers/fsi_rx/soc/fsi_rx_${common.getSocName()}`);
+    let fsiRxEdmaInstances = [];
+    for(let i=0; i < module.$instances.length; i++) {
+        let instance = module.$instances[i];
+        if(instance.operMode == "DMA") {
+            fsiRxEdmaInstances.push(module.getInstanceConfig(instance).edmaDriver);
+        }
+    }
+%%}
+#include <string.h>
+#include <drivers/fsi.h>
+#include <drivers/fsi/v1/fsi_rx_hld.h>
+
+/* FSI Rx atrributes */
+static FSI_Rx_Attrs gFsiRxAttr[CONFIG_FSI_RX_NUM_INSTANCES] =
+{
+    % for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+    {
+        .baseAddr                             = `config.baseAddr`,
+        .operMode                             = FSI_RX_OPER_MODE_`instance.operMode`,
+        % if(instance.operMode == "INTERRUPT"){
+        .intrNum                              = `instance.$name.toUpperCase()`_INTR1,
+        .intrPriority                         = `instance.intrPriority`,
+        % }
+    },
+    % }
+};
+
+FSI_Rx_Params rxParams[CONFIG_FSI_RX_NUM_INSTANCES] =
+{
+    % for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+    {
+        .transferMode = FSI_RX_TRANSFER_MODE_BLOCKING,
+        .transferCallbackFxn = NULL, 
+        .errorCallbackFxn = NULL,
+    },
+    %}
+};
+
+/* driver configuration array size */
+uint32_t    gFsiRxConfigNum = CONFIG_FSI_RX_NUM_INSTANCES;
+
+/* FSI Rx driver configuration */
+FSI_Rx_Config gFsiRxConfig[CONFIG_FSI_RX_NUM_INSTANCES] =
+{
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    {
+        &gFsiRxAttr[`instance.$name.toUpperCase()`],
+        &gFsiRxObj[`instance.$name.toUpperCase()`],
+    },
+% }
+};
+
+#include <drivers/edma.h>
+#include <drivers/fsi/v1/dma/edma/fsi_dma_edma.h>
+
+%if(fsiRxEdmaInstances.length > 0) {
+
+FSI_Rx_EdmaChConfig gFsiRxEdmaDmaChCfg[] =
+{
+    % let j = 0;
+    %  for(let i=0; i < module.$instances.length; i++) {
+        %let instance = module.$instances[i];
+        %if(instance.operMode == "DMA") {
+        {
+            .drvHandle        = (void *)&gEdmaConfig[`j++`],
+            .edmaRxChId[0]       = DMA_TRIG_XBAR_EDMA_MODULE_2,
+            .edmaRxChId[1]       = DMA_TRIG_XBAR_EDMA_MODULE_3
+        },
+        %}
+    %}
+};
+
+FSI_Rx_DmaHandle gFsiRxDmaHandle[`fsiRxEdmaInstances.length.length`] =
+{
+% for(let i = 0; i < fsiRxEdmaInstances.length; i++) {
+    (void *)&gEdmaConfig[CONFIG_EDMA0],
+% }
+};
+% }
+%else {
+FSI_Rx_EdmaChConfig gFsiRxEdmaDmaChCfg =
+{
+    .drvHandle        = NULL,
+};
+
+FSI_Rx_DmaHandle gFsiRxDmaHandle[`fsiRxEdmaInstances.length.length`] =
+{
+    % for(let i = 0; i < fsiRxEdmaInstances.length; i++) {
+        NULL,
+    % }
+};
+%}
+
+FSI_Rx_DmaChConfig gFsiRxDmaChCfg[`module.$instances.length`] =
+{
+    % for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    %if(instance.operMode == "DMA") {
+    &gFsiRxEdmaDmaChCfg,
+    %}
+    % else {
+    NULL,
+    %}
+    %}
+};
