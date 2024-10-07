@@ -112,10 +112,13 @@ function pinmuxRequirements(inst) {
 
     }
 
-    pinResource = pinmux.getPinRequirements(interfaceName, "ECC_FAIL", "OSPI ECC Fail Pin");
-    pinmux.setConfigurableDefault( pinResource, "rx", false );
-    pinResource.used=false;
-    resources.push( pinResource);
+    if(common.getSocName() != "am65x")
+    {
+        pinResource = pinmux.getPinRequirements(interfaceName, "ECC_FAIL", "OSPI ECC Fail Pin");
+        pinmux.setConfigurableDefault( pinResource, "rx", false );
+        pinResource.used=false;
+        resources.push( pinResource);
+    }
 
     let peripheral = {
         name: interfaceName,
