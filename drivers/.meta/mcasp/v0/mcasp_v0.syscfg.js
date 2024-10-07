@@ -394,8 +394,15 @@ let mcasp_module = {
                             name: "txAuxClk",
                             displayName: "McASP AUXCLK Rate",
                             default: soc.mcasp_input_clk_freq,
-                            readOnly: true,
                             displayFormat: "dec",
+                            options: [
+                                { name: 48000000, displayName: "48000000"},
+                                { name: 24576000, displayName: "24576000"},
+                                { name: 12288000, displayName: "12288000"},
+                            ],
+                            onChange: function (inst) {
+                                inst.rxAuxClk = inst.txAuxClk;
+                            },
                         },
                         {
                             name: "afsx",
@@ -719,8 +726,15 @@ let mcasp_module = {
                                 name: "rxAuxClk",
                                 displayName: "McASP AUXCLK Rate",
                                 default: soc.mcasp_input_clk_freq,
-                                readOnly: true,
                                 displayFormat: "dec",
+                                options: [
+                                    { name: 48000000, displayName: "48000000"},
+                                    { name: 24576000, displayName: "24576000"},
+                                    { name: 12288000, displayName: "12288000"},
+                                ],
+                                onChange: function (inst) {
+                                    inst.txAuxClk = inst.rxAuxClk;
+                                },
                             },
                             {
                                 name: "afsr",
@@ -1006,13 +1020,13 @@ function validatePinmux(inst, report) {
     }
     else
     {
-        if ((ahclkr_ext > instConfig.inputClkFreq))
+        if ((ahclkr_ext > inst.rxAuxClk))
         {
             report.logError(`AHCLKR outside scope`, inst,  "controllerClkr");
         }
         else
         {
-            ahclkr = instConfig.inputClkFreq / Math.round(instConfig.inputClkFreq / ahclkr_ext);
+            ahclkr = inst.rxAuxClk / Math.round(inst.rxAuxClk / ahclkr_ext);
             report.logInfo(`Calculated AHCLKR: ${ahclkr} Hz`, inst, "rxHclkSource");
         }
     }
@@ -1046,13 +1060,13 @@ function validatePinmux(inst, report) {
     }
     else
     {
-        if ((ahclkx_ext > instConfig.inputClkFreq))
+        if ((ahclkx_ext > instConfig.txAuxClk))
         {
             report.logError(`AHCLKX outside scope`, inst,  "controllerClkx");
         }
         else
         {
-            ahclkx = instConfig.inputClkFreq / Math.round(instConfig.inputClkFreq / ahclkx_ext);
+            ahclkx = instConfig.txAuxClk / Math.round(instConfig.txAuxClk / ahclkx_ext);
             report.logInfo(`Calculated AHCLKX: ${ahclkx} Hz`, inst, "txHclkSource");
         }
     }
