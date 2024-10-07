@@ -71,6 +71,9 @@ const driverVer = {
     "pruicss": {
         version: "g_v0",
     },
+    "qos": {
+        version: "v0",
+    },
     "sciclient": {
         version: "v0",
     },
@@ -109,6 +112,7 @@ const topModules_main = [
     "/drivers/mcspi/mcspi",
     "/drivers/mmcsd/mmcsd",
     "/drivers/ospi/ospi",
+    "/drivers/qos/qos",
     "/drivers/pcie/pcie",
     "/drivers/pruicss/pruicss",
     "/drivers/uart/uart",
@@ -140,6 +144,7 @@ const topModules_a53 = [
     "/drivers/mcspi/mcspi",
     "/drivers/mmcsd/mmcsd",
 	"/drivers/ospi/ospi",
+    "/drivers/qos/qos",
     "/drivers/uart/uart",
     "/drivers/udma/udma",
     "/drivers/watchdog/watchdog",
