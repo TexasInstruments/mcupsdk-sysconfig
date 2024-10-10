@@ -225,12 +225,12 @@ function getConfigurables()
                 else {
                     ui.initDelay.hidden = true;
                 }
-                /* 3/4 pin mode applicable only in single channel mode */
-                if(inst.mode == "SINGLE_CONTROLLER") {
-                    ui.pinMode.hidden = false;
+                /* 3/4 pin is supported in single channel controller and peripheral mode but not for multi controller*/
+                if(inst.mode == "MULTI_CONTROLLER") {
+                    ui.pinMode.hidden = true;
                 }
                 else {
-                    ui.pinMode.hidden = true;
+                    ui.pinMode.hidden = false;
                 }
             },
         },
