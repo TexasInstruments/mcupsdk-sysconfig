@@ -4,6 +4,7 @@ let common = system.getScript("/common");
 let pmic_devices = [
     {
         name        : "TPS653860xx",
+        device      : "BLACKBIRD",
         type        : "MCSPI",
         instance    : "SPI1",
         deviceType  : "PMIC_DEV_BB_TPS65386X",

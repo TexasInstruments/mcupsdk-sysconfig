@@ -1,1 +1,9 @@
-    Drivers_pmicOpen();
+%%{
+    let common = system.getScript("/common");
+    let module = system.modules['/board/pmic/pmic'];
+%%}
+% let instance = module.$instances[0];
+% let config = module.getInstanceConfig(instance);
+% if (config.device == "DERBY") {
+    status = Board_pmicOpen();
+% }

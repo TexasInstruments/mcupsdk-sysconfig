@@ -2,12 +2,8 @@
     let common = system.getScript("/common");
     let module = system.modules['/board/pmic/pmic'];
 %%}
-
-
 % let instance = module.$instances[0];
 % let config = module.getInstanceConfig(instance);
-
 % if (config.device == "BLACKBIRD") {
-/* Include ti_drivers_open_close.h to call MCSPI open*/
-void Drivers_pmicOpen();
+    Drivers_pmicOpen();
 % }

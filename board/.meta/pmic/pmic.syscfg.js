@@ -1,6 +1,6 @@
 
 let common = system.getScript("/common");
-let soc = system.getScript(`/board/pmic/pmic_${common.getSocName()}`);
+let soc = system.getScript(`/board/pmic/soc/pmic_${common.getSocName()}`);
 
 function getInstanceConfig(moduleInstance) {
     let configArr = soc.getConfigArr();
@@ -20,7 +20,17 @@ function getConfigurables() {
     config.push(
         {
             ...common.ui.makeConfig(staticConfig, "name", "PMIC")
-        }
+        },
+        {
+            name: "deviceName",
+            displayName: "Device Name",
+            default: staticConfig[0].device,
+            description: "Name of the PMIC device",
+            getValue: function(inst) {
+                let config = staticConfig.find(o => o.name === inst.name);
+                return config.device;
+            }
+        },
     );
 
     return config;
@@ -31,46 +41,24 @@ let pmic_module_name = "/board/pmic/pmic";
 function get_templates() {
     let templates = {}
 
-    if(common.getSocName() == "am261x")
-    {
-        templates = {
-            "/board/board/board_open_close.c.xdt": {
-                board_open_close_config: "/board/pmic/templates/pmic_open_close_config_v1.c.xdt",
-                board_close: "/board/pmic/templates/pmic_close.c.xdt",
-            },
-            "/board/board/board_open_close.h.xdt": {
-                board_open_close_config: "/board/pmic/templates/pmic_open_close_v1.h.xdt",
-            },
-            "/board/board/board_config.h.xdt": {
-                board_config: "/board/pmic/templates/pmic.h.xdt",
-            },
-            "/drivers/system/drivers_open_close.c.xdt": {
-                driver_open: "/board/pmic/templates/pmic_open.c.xdt",
-            },
-            "/drivers/system/drivers_open_close.h.xdt": {
-                driver_open_close_config: "/board/pmic/templates/pmic_driver_open_close.h.xdt",
-            },
-        }
-    }
-    else {
-        templates = {
-            "/board/board/board_open_close.c.xdt": {
-                board_open_close_config: "/board/pmic/templates/pmic_open_close_config.c.xdt",
-                board_close: "/board/pmic/templates/pmic_close.c.xdt",
-            },
-            "/board/board/board_open_close.h.xdt": {
-                board_open_close_config: "/board/pmic/templates/pmic_open_close.h.xdt",
-            },
-            "/board/board/board_config.h.xdt": {
-                board_config: "/board/pmic/templates/pmic.h.xdt",
-            },
-            "/drivers/system/drivers_open_close.c.xdt": {
-                driver_open: "/board/pmic/templates/pmic_open.c.xdt",
-            },
-            "/drivers/system/drivers_open_close.h.xdt": {
-                driver_open_close_config: "/board/pmic/templates/pmic_driver_open_close.h.xdt",
-            },
-        }
+    templates = {
+        "/board/board/board_open_close.c.xdt": {
+            board_open: "/board/pmic/templates/pmic_open.c.xdt",
+            board_open_close_config: "/board/pmic/templates/pmic_open_close_config.c.xdt",
+            board_close: "/board/pmic/templates/pmic_close.c.xdt",
+        },
+        "/board/board/board_open_close.h.xdt": {
+            board_open_close_config: "/board/pmic/templates/pmic_open_close.h.xdt",
+        },
+        "/board/board/board_config.h.xdt": {
+            board_config: "/board/pmic/templates/pmic.h.xdt",
+        },
+        "/drivers/system/drivers_open_close.c.xdt": {
+            driver_open: "/board/pmic/templates/pmic_driver_open.c.xdt",
+        },
+        "/drivers/system/drivers_open_close.h.xdt": {
+            driver_open_close_config: "/board/pmic/templates/pmic_driver_open_close.h.xdt",
+        },
     }
 
     return templates;

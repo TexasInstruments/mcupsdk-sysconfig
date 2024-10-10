@@ -38,12 +38,19 @@ PMIC_Params gPmicParams[CONFIG_PMIC_NUM_INSTANCES] =
     % let instance = module.$instances[i];
     % let config = module.getInstanceConfig(instance);
     % let peripheralDriver = instance.peripheralDriver;
+    % if (config.device == "BLACKBIRD") {
     {
         .deviceType  = `config.deviceType`,
         .commMode    = `config.commMode`,
         .instType    = `config.instType`,
         .instance    = `peripheralDriver.$name.toUpperCase()`,
     },
+    % } else{
+    {
+        .i2cAddr     = `config.i2cAddr`,
+        .instance    = `peripheralDriver.$name.toUpperCase()`,
+    },
+    % }
 % }
 };
 
@@ -67,8 +74,15 @@ int32_t Board_pmicOpen()
             status = SystemP_FAILURE;
             break;
         }
-    }
 
+        status = PMIC_configure(gPmicHandle[instCnt]);
+
+        if(status == SystemP_FAILURE)
+        {
+            DebugP_logError("PMIC configure failed for instance %d !!!\r\n", instCnt);
+            break;
+        }
+    }
     if(SystemP_FAILURE == status)
     {
         Board_pmicClose();   /* Exit gracefully */
@@ -94,15 +108,17 @@ void Board_pmicClose(void)
     return;
 }
 
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+    % if (config.device == "BLACKBIRD") {
 void Drivers_pmicOpen()
 {
-    PMIC_Handle pmicHandle = NULL;
-
     Drivers_mcspiOpen();
     Board_pmicOpen();
-    pmicHandle = gPmicHandle[CONFIG_PMIC0];
-    PMIC_configure(pmicHandle);
     Drivers_mcspiClose();
     /*Wait 5ms for LDO rail to get initilized*/
     ClockP_usleep(5000);
 }
+% }
+% }

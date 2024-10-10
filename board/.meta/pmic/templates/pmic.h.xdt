@@ -5,9 +5,10 @@
 /*
  * PMIC
  */
-% if(common.getSocName() != "am261x"){
+% let instance = module.$instances[0];
+% let config = module.getInstanceConfig(instance);
+#define `config.device.toUpperCase()`
 #include <board/pmic.h>
-% }
 /* PMIC Instance Macros */
 % for(let i = 0; i < module.$instances.length; i++) {
     % let instance = module.$instances[i];
