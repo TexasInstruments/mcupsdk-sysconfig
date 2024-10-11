@@ -49,6 +49,28 @@ function getNodePath() {
     return system.getNodePath()
 }
 
+function getSocPackage() {
+    return system.deviceData.package;
+}
+
+// Added in common file to simplify access from other modules.
+// Will be removed once clock tree support is added for AM261x.
+function getR5Freq()
+{
+    let r5Freq = "";
+    let module = system.modules['/kernel/dpl/clock'];
+
+    if(module && getSocName() == "am261x")
+    {
+        let instance = module.$static;
+        let config = module.getInstanceConfig(instance);
+        
+        r5Freq = config.r5ClockFreq;
+    }
+
+    return r5Freq;
+}
+
 function getSocName() {
     if(system.deviceData.device == "AM64x")
         return "am64x";
@@ -404,6 +426,8 @@ exports = {
     getSelfSysCfgCoreName,
     isSciClientSupported,
     getSocName,
+    getSocPackage,
+    getR5Freq,
     getDeviceName,
     camelSentence,
     getStaticModuleForCore,

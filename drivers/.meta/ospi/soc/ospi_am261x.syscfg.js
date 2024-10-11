@@ -1,13 +1,11 @@
 let common = system.getScript("/common");
 
-let ospi_input_clk_freq = 166666666;
-
 const ospi_config_r5fss = [
     {
         name            : "OSPI0",
         baseAddr        : "CSL_FLASH_CONFIG_REG8_U_BASE",
         dataBaseAddr    : "CSL_FLASH_DATA_REG0_U_BASE",
-        inputClkFreq    : ospi_input_clk_freq,
+        inputClkFreq    : getDefaultClkRate(),
         dacEnable       : false,
         baudRateDiv     : 4,
         intrNum         : 171,
@@ -16,7 +14,7 @@ const ospi_config_r5fss = [
             {
                 moduleId: "SOC_RcmPeripheralId_OSPI0",
                 clkId   : "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT3",
-                clkRate : ospi_input_clk_freq,
+                clkRate : getDefaultClkRate(),
             },
         ],
     },
@@ -24,7 +22,7 @@ const ospi_config_r5fss = [
         name            : "OSPI1",
         baseAddr        : "CSL_FLASH_CONFIG_REG8_U_BASE",
         dataBaseAddr    : "CSL_FLASH_DATA_REG0_U_BASE",
-        inputClkFreq    : ospi_input_clk_freq,
+        inputClkFreq    : getDefaultClkRate(),
         dacEnable       : false,
         baudRateDiv     : 4,
         intrNum         : 171,
@@ -33,7 +31,7 @@ const ospi_config_r5fss = [
             {
                 moduleId: "SOC_RcmPeripheralId_OSPI1",
                 clkId   : "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT3",
-                clkRate : ospi_input_clk_freq,
+                clkRate : getDefaultClkRate(),
             },
         ],
     },
@@ -43,6 +41,17 @@ const ospi_dma_restrict_regions = [
     { start : "CSL_MSS_TCMA_RAM_BASE"   , size : "CSL_MSS_TCMA_RAM_SIZE" },
     { start : "CSL_HSM_RAM_U_BASE"      , size : "0x2fffc" }
 ];
+
+function getDefaultClkRate() {
+    let ospi_input_clk_freq = 133333333;
+
+    if(common.getR5Freq() == "500MHz")
+    {
+        ospi_input_clk_freq = 166666666;
+    }
+
+    return ospi_input_clk_freq;
+}
 
 function getDefaultConfig()
 {

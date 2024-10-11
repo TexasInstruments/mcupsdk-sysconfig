@@ -12,7 +12,7 @@ const mcan_config_r5fss = [
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_MCAN0",
-                clkId   : "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT0",
+                clkId   : getDefaultClkSource(),
                 clkRate : mcan_func_clk,
             },
         ],
@@ -26,12 +26,23 @@ const mcan_config_r5fss = [
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_MCAN1",
-                clkId   : "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT0",
+                clkId   : getDefaultClkSource(),
                 clkRate : mcan_func_clk,
             },
         ],
     },
 ];
+
+function getDefaultClkSource() {
+    let mcan_input_clock_source = "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT0";
+
+    if(common.getR5Freq() == "500MHz")
+    {
+        mcan_input_clock_source = "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT0";
+    }
+
+    return mcan_input_clock_source;
+}
 
 function getConfigArr() {
     let mcan_config;

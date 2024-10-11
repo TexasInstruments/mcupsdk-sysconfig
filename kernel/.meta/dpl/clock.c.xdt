@@ -2,6 +2,7 @@
     let module = system.modules['/kernel/dpl/clock'];
     let instance = module.$static;
     let config = module.getInstanceConfig(instance);
+    let common = system.getScript("/common");
 %%}
 /* ----------- ClockP ----------- */
 % if (! config.disableClkSourceConfig) {
@@ -9,6 +10,14 @@
 #define `config.name`_CLOCK_SRC_`config.clkSource` (0x`config.clkSelMuxValue.toString(16).toUpperCase()`u)
 % }
 #define `config.name`_BASE_ADDR     (0x`config.timerBaseAddr.toString(16).toUpperCase()`u)
+% if (common.getSocName() == "am261x"){
+
+% if (config.r5ClockFreq == "400MHz") {
+uint32_t gR5ClockFrequency = SOC_RCM_R5_FREQ_400MHZ;
+% } else {
+uint32_t gR5ClockFrequency = SOC_RCM_R5_FREQ_500MHZ;
+% }
+% }
 
 ClockP_Config gClockConfig = {
     .timerBaseAddr = `config.name`_BASE_ADDR, 

@@ -16,6 +16,24 @@ function getInstanceConfig(moduleInstance) {
     }
 };
 
+function getR5freqDefault() {
+    let defaultVal = "400MHz";
+    if(common.getSocName() == "am261x" && common.getSocPackage() == "ZFG")
+    {   
+        defaultVal = "500MHz";
+    }
+    return defaultVal;
+}
+
+function getR5freqHidden() {
+    let hidden = true;
+    if(common.getSocName() == "am261x")
+    {
+        hidden = false;
+    }
+    return hidden;
+}
+
 let clock_module = {
     displayName: "Clock",
     longDescription: "Make sure one and only one clock instance is added and setup properly to generate timer ticks at required frequency",
@@ -30,6 +48,24 @@ let clock_module = {
 
     moduleStatic : {
         config: [
+            // This config will be removed once clock tree support is added for AM261x.
+            {
+                name: "r5ClockFreq",
+                displayName: "R5 Clock Freqeuncy",
+                default: getR5freqDefault(),
+                hidden: getR5freqHidden(),
+                options: [
+                    {
+                        name: "400MHz",
+                        displayName: "400 MHz"
+                    },
+                    {
+                        name: "500MHz",
+                        displayName: "500 MHz"
+                    },
+                ],
+                description: "Select R5 Clock Frequency"
+            },
             soc.makeInstanceConfig(),
             {
                 name: "timerInputClkHz",
