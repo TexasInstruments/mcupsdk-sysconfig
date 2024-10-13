@@ -1,0 +1,132 @@
+%%{
+    let module = system.modules['/drivers/lin/lin'];
+%%}
+% let gLinConfigNum = 0;
+% let gLinDmaInstanceCount = 0;
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+    % if (config.sdkInfra == "LLD") {}
+    % else {
+        % gLinConfigNum += 1;
+        % if(instance.opModeHLD == "LIN_OPER_MODE_DMA") {
+            % gLinDmaInstanceCount += 1;
+        % }
+    % }
+% }
+/*
+ * LIN HLD
+ */
+% if(gLinConfigNum != 0) {
+%%{
+let linEdmaInstances = [];
+for(let i=0; i < module.$instances.length; i++) {
+    let instance = module.$instances[i];
+    let config = module.getInstanceConfig(instance);
+    linEdmaInstances.push(module.getInstanceConfig(instance).edmaDriver);
+}
+%%}
+
+/* LIN Attributes */
+static LIN_HwAttrs gLinHwAttrs[CONFIG_LIN_HLD_NUM_INSTANCES] =
+{
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+    % if (config.sdkInfra == "HLD") {
+    {
+        .baseAddr         = `config.baseAddr`,
+        .intrNum0         = `config.intrNum0`U,
+        .intrNum1         = `config.intrNum1`U,
+        .opMode           = `config.opModeHLD`,
+        .intrPriority     = `config.intrPriority`U,
+        .debugMode        = `config.debugModeHLD`,
+        .linClk           = `config.inputClkFreqHLD`U,
+        .enableLoopback   = `config.enableLoopbackHLD`,
+        .loopBackMode     = `config.loopBackModeHLD`,
+        .loopBackType     = `config.loopBackTypeHLD`
+    },
+    % }
+    % else {}
+% }
+};
+
+/* LIN Objects - Initialized by the Driver */
+static LIN_Object gLinObjects[CONFIG_LIN_HLD_NUM_INSTANCES];
+
+/* LIN driver Configuration */
+LIN_Config gLinConfig[CONFIG_LIN_HLD_NUM_INSTANCES] =
+{
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+    % if(config.sdkInfra == "HLD") {
+    {
+        .object = &gLinObjects[`instance.$name.toUpperCase()`],
+        .hwAttrs = &gLinHwAttrs[`instance.$name.toUpperCase()`]
+    },
+    % }
+% }
+};
+
+/* Driver Configuration Array Sizes */
+uint32_t gLinConfigNum = CONFIG_LIN_HLD_NUM_INSTANCES;
+%if(gLinDmaInstanceCount > 0) {
+uint32_t gLinDmaConfigNum = CONFIG_LIN_HLD_NUM_DMA_INSTANCES;
+
+#include <drivers/edma.h>
+#include <drivers/lin/v0/dma/edma/sci_lin_dma_edma.h>
+
+/* EDMA Driver handles */
+extern EDMA_Handle gEdmaHandle[CONFIG_EDMA_NUM_INSTANCES];
+
+LIN_EdmaChConfig gLinEdmaChCfg[CONFIG_LIN_HLD_NUM_DMA_INSTANCES] =
+{
+% let j = 0;
+% for(let i=0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % if(instance.sdkInfra == "HLD") {
+        % if(instance.opModeHLD == "LIN_OPER_MODE_DMA") {
+    {
+        .edmaRxChId = `instance.linRxConfigXbar.instance`,
+        .edmaTxChId = `instance.linTxConfigXbar.instance`,
+    },
+        % j++;
+        % }
+    % }
+% }
+};
+% }
+
+LIN_DmaHandle gLinDmaHandle[CONFIG_LIN_HLD_NUM_INSTANCES] =
+{
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % if(instance.sdkInfra == "HLD") {
+        %if(instance.opModeHLD == "LIN_OPER_MODE_DMA") {
+    &gEdmaConfig[CONFIG_EDMA0],
+        % }
+        %else {
+    NULL,
+        %}
+    %}
+% }
+};
+
+LIN_DmaChConfig gLinDmaChCfg[CONFIG_LIN_HLD_NUM_INSTANCES] =
+{
+    % let j = 0;
+    % for(let i = 0; i < module.$instances.length; i++) {
+        % let instance = module.$instances[i]
+        % if(instance.sdkInfra == "HLD") {
+            % if(instance.opModeHLD == "LIN_OPER_MODE_DMA") {
+    &gLinEdmaChCfg[`j`],
+                % j++;
+            % }
+            % else {
+    NULL,
+            % }
+        % }
+    %}
+};
+% }

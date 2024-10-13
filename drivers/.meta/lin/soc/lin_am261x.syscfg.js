@@ -4,7 +4,8 @@ const lin_config_r5fss = [
     {
         name            : "LIN0",
         baseAddr        : "CSL_LIN0_U_BASE",
-        intrNum         : 61,
+        intrNum0        : 61,
+        intrNum1        : 62,
         clockIds        : [ "SOC_RcmPeripheralId_LIN0_UART0" ],
         clockFrequencies: [
             {
@@ -17,7 +18,8 @@ const lin_config_r5fss = [
     {
         name            : "LIN1",
         baseAddr        : "CSL_LIN1_U_BASE",
-        intrNum         : 63,
+        intrNum0        : 63,
+        intrNum1        : 64,
         clockIds        : [ "SOC_RcmPeripheralId_LIN1_UART1" ],
         clockFrequencies: [
             {
@@ -30,7 +32,8 @@ const lin_config_r5fss = [
         {
         name            : "LIN2",
         baseAddr        : "CSL_LIN2_U_BASE",
-        intrNum         : 65,
+        intrNum0        : 65,
+        intrNum1        : 66,
         clockIds        : [ "SOC_RcmPeripheralId_LIN2_UART2" ],
         clockFrequencies: [
             {
@@ -98,9 +101,33 @@ function getInterfaceName(instance) {
     return "LIN";
 }
 
+function getDefaultConfig() {
+    return lin_config_r5fss[0];
+}
+
+function getClockSourceOptions() {
+    let clkSourceOptions =  [];
+    clkSourceOptions.push({name: getDefaultClkSource()});
+    return clkSourceOptions;
+}
+
+function getClockValue(clkSrc) {
+    let clockVal;
+    if(clkSrc === "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT0") {
+        clockVal = 192000000;
+    } else if (clkSrc === "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT2") {
+        clockVal = 160000000;
+    } else {
+        /* Bad clk source */
+    }
+    return clockVal;
+}
+
 exports = {
     getConfigArr,
     getInterfaceName,
-    getClkRate,
-    getClkSource,
+    getDefaultConfig,
+    getClockSourceOptions,
+    getDefaultClkSource,
+    getClockValue,
 };

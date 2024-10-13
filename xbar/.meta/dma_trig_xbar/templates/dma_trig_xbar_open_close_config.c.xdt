@@ -44,6 +44,14 @@ void Drivers_dmaTrigXbarOpen()
         % {
         %   xbarOutput = "DMA_TRIG_XBAR_USART"+(instance.$ownedBy.UART.$solution.peripheralName).replace("UART","")+"_DMA_0";
         % }
+        % else if(config.parentName == "LIN_RXDMA")
+        % {
+        %   xbarOutput = "DMA_TRIG_XBAR_LIN"+(instance.$ownedBy.LIN.$solution.peripheralName).replace("LIN","")+"_RXDMA";
+        % }
+        % else if(config.parentName == "LIN_TXDMA")
+        % {
+        %   xbarOutput = "DMA_TRIG_XBAR_LIN"+(instance.$ownedBy.LIN.$solution.peripheralName).replace("LIN","")+"_TXDMA";
+        % }
         % }
         % let path = OPTION_LIST.find(o => o.name == xbarOutput).path;
         % if (path.search("<-") == -1) {

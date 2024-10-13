@@ -1,0 +1,146 @@
+%%{
+    let common = system.getScript("/common");
+    let soc = system.getScript(`/drivers/soc/drivers_${common.getSocName()}`);
+    let module = system.modules['/drivers/lin/lin'];
+%%}
+% let gLinConfigNum = 0;
+% let gLinDmaInstanceCount = 0;
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+    % if (config.sdkInfra == "LLD") {}
+    % else {
+        % gLinConfigNum += 1;
+        % if(instance.opModeHLD == "LIN_OPER_MODE_DMA") {
+            % gLinDmaInstanceCount += 1;
+        % }
+    % }
+% }
+/*
+ * LIN HLD
+ */
+% if(gLinConfigNum != 0) {
+    % for(let i = 0; i < module.$instances.length; i++) {
+        % let instance = module.$instances[i];
+        % let config = module.getInstanceConfig(instance);
+        % if (config.sdkInfra == "HLD") {
+            % if(config.transferModeHLD == "LIN_TRANSFER_MODE_CALLBACK") {
+                % if(config.moduleModeHLD == "LIN_MODULE_OP_MODE_LIN") {
+/* LIN Callbacks */
+void `config.transferCompleteCallbackFxnHLD`(LIN_Handle handle, LIN_SCI_Frame *frame);
+                % }
+                % else {
+/* SCI Callbacks */
+void `config.writeCallbackFxnHLD`(LIN_Handle handle, LIN_SCI_Frame *frame);
+void `config.readCallbackFxnHLD`(LIN_Handle handle, LIN_SCI_Frame *frame);
+                % }
+            % }
+        % }
+    % }
+
+/* LIN Driver handles */
+LIN_Handle gLinHandle[CONFIG_LIN_HLD_NUM_INSTANCES];
+
+/* LIN Driver Parameters */
+LIN_OpenParams gLinOpenParams[CONFIG_LIN_HLD_NUM_INSTANCES] =
+{
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+    % if (config.sdkInfra == "HLD") {
+    {
+        .transferMode                                   = `config.transferModeHLD`,
+        .moduleMode                                     = `config.moduleModeHLD`,
+        .enableParity                                   = `config.enableParityHLD`,
+        % if(config.moduleModeHLD == "LIN_MODULE_OP_MODE_LIN") {
+        .commMode                                       = `config.commModeLinHLD`,
+        % } else {
+        .commMode                                       = `config.commModeSciHLD`,
+        % }
+        .multiBufferMode                                = `config.multiBufferModeHLD`,
+        .baudConfigParams.preScaler                     = `config.baudPreScalerHLD`,
+        .baudConfigParams.fracDivSel_M                  = `config.fracDivSel_M_HLD`,
+        .baudConfigParams.supFracDivSel_U               = `config.supFracDivSel_U_HLD`,
+        % if(config.moduleModeHLD == "LIN_MODULE_OP_MODE_SCI") {
+        .sciConfigParams.parityType                     = `config.parityTypeHLD`,
+        .sciConfigParams.stopBits                       = `config.stopBitsHLD`,
+        .sciConfigParams.dataBits                       = `config.dataBitsHLD`,
+        .sciConfigParams.transferCompleteCallbackFxn    = `config.transferCompleteCallbackFxnHLD`,
+        % } else {
+        .linConfigParams.linMode                        = `config.linModeHLD`,
+        .linConfigParams.maskFilteringType              = `config.maskFilteringTypeHLD`,
+        .linConfigParams.linTxMask                      = `config.linTxMaskHLD`U,
+        .linConfigParams.linRxMask                      = `config.linRxMaskHLD`U,
+        .linConfigParams.checksumType                   = `config.checksumTypeHLD`,
+        .linConfigParams.adaptModeEnable                = `config.adaptModeEnableHLD`,
+        .linConfigParams.maxBaudRate                    = `config.maxBaudRateHLD`,
+        .linConfigParams.syncDelimiter                  = `config.syncDelimiterHLD`,
+        .linConfigParams.syncBreak                      = `config.syncBreakHLD`,
+            % if(config.transferModeHLD == "LIN_TRANSFER_MODE_CALLBACK") {
+        .linConfigParams.idMatchCallbackFxn             = NULL,
+        .linConfigParams.transferCompleteCallbackFxn    = `config.transferCompleteCallbackFxnHLD`,
+            % } else {
+        .linConfigParams.idMatchCallbackFxn             = NULL,
+        .linConfigParams.transferCompleteCallbackFxn    = NULL,
+            % }
+
+        % }
+    },
+    % }
+% }
+};
+% }
+
+void Drivers_linOpen(void)
+{
+    int32_t  status = SystemP_SUCCESS;
+% if(gLinConfigNum != 0) {
+    uint32_t instCnt;
+% }
+
+% if(gLinConfigNum != 0) {
+
+    for(instCnt = 0U; instCnt < CONFIG_LIN_HLD_NUM_INSTANCES; instCnt++)
+    {
+        gLinHandle[instCnt] = NULL;   /* Init to NULL so that we can exit gracefully */
+    }
+
+    /* Open all Instances */
+    for(instCnt = 0U; instCnt < CONFIG_LIN_HLD_NUM_INSTANCES; instCnt++)
+    {
+        gLinHandle[instCnt] = LIN_open(instCnt, &gLinOpenParams[instCnt]);
+        if(NULL == gLinHandle[instCnt])
+        {
+            DebugP_logError("LIN open failed for HLD instance %d !!!\r\n", instCnt);
+            status = SystemP_FAILURE;
+            break;
+        }
+    }
+% }
+
+    if(SystemP_SUCCESS != status)
+    {
+        Drivers_linClose();   /* Exit gracefully */
+    }
+    return;
+}
+
+void Drivers_linClose(void)
+{
+% if(gLinConfigNum != 0) {
+    uint32_t instCnt;
+% }
+
+% if(gLinConfigNum != 0) {
+    /* Close all Instances that are open */
+    for(instCnt = 0U; instCnt < CONFIG_LIN_HLD_NUM_INSTANCES; instCnt++)
+    {
+        if(gLinHandle[instCnt] != NULL)
+        {
+            LIN_close(gLinHandle[instCnt]);
+            gLinHandle[instCnt] = NULL;
+        }
+    }
+% }
+    return;
+}
