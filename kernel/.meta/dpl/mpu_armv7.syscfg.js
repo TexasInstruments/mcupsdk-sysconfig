@@ -173,7 +173,7 @@ function changeDisplay(inst) {
     }
 }
 
-function checkConflictingConfig(report, instance){
+function checkConflictingConfig(report, mpu_instance){
 
     let selfCoreName = common.getSelfSysCfgCoreName();
     const module = system.modules['/kernel/dpl/mpu_armv7'];
@@ -184,52 +184,51 @@ function checkConflictingConfig(report, instance){
     let region_config_violation = false;
     let mpu_set = ""
 
-    if ( instance.$ownedBy ){
+    if ( mpu_instance.$ownedBy ){
         mpu_set = "_mpu"
     }
-    _.each(module_instances, mpu_instance => {
 
-        let mr_list = memoryRegs.memoryRegionInformation(mpu_instance, mpu_set)
-        let mpu_accessPermissions = mpu_instance.accessPermissions
-        let mpu_attributes = mpu_instance.attributes
 
-        for(let i = 0; i < mr_list.name.length; i++ ){
-            if( mpu_attributes == "Cached" || mpu_attributes == "Cached+Sharable"){
-                if(mr_list.shared[i] == true){
-                    shareable_cacheable_conflict = true;
-                }
-            }
+    let mr_list = memoryRegs.memoryRegionInformation(mpu_instance, mpu_set)
+    let mpu_accessPermissions = mpu_instance.accessPermissions
+    let mpu_attributes = mpu_instance.attributes
 
-            if( mpu_accessPermissions.includes("RD+WR") && !mr_list.permissions[i].includes("W")){
-                access_permission_conflict = true;
-            }
-
-            if( mpu_instance.allowExecute && !mr_list.permissions[i].includes("X")){
-                excute_permission_conflict = true;
-            }
-
-            if( mr_list.cores[i] != selfCoreName && mr_list.shared[i] == false){
-                if(physicalLayout[mr_list.type[i]].access == "all"){ // Had "access" been "individual", it would mean it's specific to this core
-                    region_config_violation = true;
-                }
+    for(let i = 0; i < mr_list.name.length; i++ ){
+        if( mpu_attributes == "Cached" || mpu_attributes == "Cached+Sharable"){
+            if(mr_list.shared[i] == true){
+                shareable_cacheable_conflict = true;
             }
         }
-    })
+
+        if( mpu_accessPermissions.includes("RD+WR") && !mr_list.permissions[i].includes("W")){
+            access_permission_conflict = true;
+        }
+
+        if( mpu_instance.allowExecute && !mr_list.permissions[i].includes("X")){
+            excute_permission_conflict = true;
+        }
+
+        if( mr_list.cores[i] != selfCoreName && mr_list.shared[i] == false){
+            if(physicalLayout[mr_list.type[i]].access == "all"){ // Had "access" been "individual", it would mean it's specific to this core
+                region_config_violation = true;
+            }
+        }
+    }
 
     if( shareable_cacheable_conflict ) {
-        report.logInfo( `Some memory region(s) within this range is Shared among cores. `, instance, "attributes");
+        report.logInfo( `Some memory region(s) within this range is Shared among cores. `, mpu_instance, "attributes");
     }
 
     if( access_permission_conflict ) {
-        report.logInfo( `Some memory region(s) within this range might not have the correct access permissions. `, instance, "accessPermissions");
+        report.logInfo( `Some memory region(s) within this range might not have the correct access permissions. `, mpu_instance, "accessPermissions");
     }
 
     if( excute_permission_conflict ) {
-        report.logInfo( `Some memory region(s) within this range might not have execute permissions. `, instance, "allowExecute");
+        report.logInfo( `Some memory region(s) within this range might not have execute permissions. `, mpu_instance, "allowExecute");
     }
 
     if( region_config_violation ) {
-        report.logInfo( `This MPU region includes other cores' memory regions as well. Pl. make sure what you configure.`, instance, "$name");
+        report.logInfo( `This MPU region includes other cores' memory regions as well. Pl. make sure what you configure.`, mpu_instance, "$name");
     }
 }
 
