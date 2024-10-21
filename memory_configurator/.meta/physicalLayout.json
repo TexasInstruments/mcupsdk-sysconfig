@@ -234,12 +234,12 @@
 		},
         "TCMA": {
 			"start": 0x00000000,
-			"size": 0x00010000,
+			"size": 0x00040000,
             "access": "individual"
 		},
         "TCMB": {
 			"start": 0x00080000,
-			"size": 0x00030000,
+			"size": 0x00040000,
             "access": "individual"
 		},
         "CUSTOM": {
@@ -261,12 +261,12 @@
 		},
         "TCMA": {
 			"start": 0x00000000,
-			"size": 0x00010000,
+			"size": 0x00040000,
             "access": "individual"
 		},
         "TCMB": {
 			"start": 0x00080000,
-			"size": 0x00030000,
+			"size": 0x00040000,
             "access": "individual"
 		},
         "CUSTOM": {
