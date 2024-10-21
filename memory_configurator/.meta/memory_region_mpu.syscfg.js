@@ -87,6 +87,7 @@ let config = [
     default: 0x0,
     displayFormat: "hex",
     getValue: (inst) => {
+        if(!inst.auto) return 0x0
         return getMemoryLayout()?.[system.context]?.[inst.$name] ?? 0;
     },
     longDescription:'This is auto calculated start address. User may uncheck the auto option if manual start address needs to be put.'
