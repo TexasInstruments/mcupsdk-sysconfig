@@ -17,11 +17,9 @@ extern void _fx_ram_driver(FX_MEDIA *);
 
 % if (nor_instances.length > 0) {
 #include <filex_levelx_nor_driver.h>
-#include <filex_levelx_nand_driver.h>
 #include <lx_nor_flash_driver.h>
 #include <lx_api.h>
 % }
-
 % if (mmcsd_instances.length > 0) {
 #include <filex_mmcsd.h>
 % }
@@ -29,12 +27,9 @@ extern void _fx_ram_driver(FX_MEDIA *);
 FX_MEDIA gMedia[FILEX_NUM_INSTANCES];
 
 % if (nor_instances.length > 0) {
-LX_NOR_FLASH gNor[FILEX_NOR_NUM_INSTANCES];
+static LX_NOR_FLASH gNor[FILEX_NOR_NUM_INSTANCES];
 % }
-
 static unsigned char gMediaMem[FILEX_NUM_INSTANCES][16u * 1024];
-
-
 % for (let k = 0; k < ramdisk_instances.length; k++) {
 static unsigned gRamDisk`k`_mem[`ramdisk_instances[k].ramdisk_size`];
 % }
@@ -88,19 +83,12 @@ int32_t EclipseThreadx_FilexOpen(void)
             % let flash_module = system.modules['/board/flash/flash'];
             % let flash_inst = filex_inst.peripheralDriver;
             % let flash_config = flash_module.getInstanceConfig(flash_inst);
-            % let flash_type = (!flash_config.hasOwnProperty('flashType') || (flash_config.flashType == 'SERIAL_NOR')) ? 'SERIAL_NOR' : 
-            % (flash_config.hasOwnProperty('flashType') && (flash_config.flashType == 'SERIAL_NAND')) ? 'SERIAL_NAND' : 'UNKNOWN';
-            % if (flash_type = 'SERIAL_NOR') {
-            %    driver = '_fx_nor_driver';
-            % } else if (flash_type = 'SERIAL_NAND') {
-            %    driver = '_fx_nand_driver';
-            % }
-            % driver_data = '(void *)' + filex_inst.peripheralDriver.$name;
+            % driver = '_fx_nor_driver';
+            % driver_data = '(void *)&gNor[' + nor_ctr + ']';
             % sec_cnt = 'sec_cnt';
         uint32_t sec_cnt;
         uint64_t flash_size;
     
-            % if (flash_type = 'SERIAL_NOR') {
         /* Create a LevelX NOR driver instance and attach it to a flash configuration. */
         status = lx_nor_driver_create(&gNor[`nor_ctr`], `filex_inst.peripheralDriver.$name`, `filex_inst.fs_offset`, `filex_inst.fs_size`);
         if (status != FX_SUCCESS) {
@@ -120,7 +108,6 @@ int32_t EclipseThreadx_FilexOpen(void)
         sec_cnt = flash_size / `filex_inst.sector_size`U;
 
             % nor_ctr++;
-            % }
         % }
 
         /* Try to open the media. If the media is not formatted, format and try again. */
