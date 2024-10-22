@@ -131,8 +131,18 @@ function isFrequencyDefined()
     return true;
 }
 
+function getClkRate() {
+    return mcspi_input_clk_freq;
+}
+
+function getClkSource() {
+    return "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT0";
+}
+
 exports = {
     getConfigArr,
     getMaxChannels,
     isFrequencyDefined,
+    getClkRate,
+    getClkSource,
 };

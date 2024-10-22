@@ -62,7 +62,7 @@ const mcspi_config_r5fss = [
 function getDefaultClkRate() {
     let mcspi_input_clk_freq = 48000000;
 
-    if(common.getR5Freq() == "500MHz")
+    if(common.getDefaultR5Freq() == "500MHz")
     {
         mcspi_input_clk_freq = 50000000;
     }
@@ -71,6 +71,28 @@ function getDefaultClkRate() {
 }
 
 function getDefaultClkSource() {
+    let mcspi_input_clock_source = "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT0";
+
+    if(common.getDefaultR5Freq() == "500MHz")
+    {
+        mcspi_input_clock_source = "SOC_RcmPeripheralClockSource_SYS_CLK";
+    }
+
+    return mcspi_input_clock_source;
+}
+
+function getClkRate() {
+    let mcspi_input_clk_freq = 48000000;
+
+    if(common.getR5Freq() == "500MHz")
+    {
+        mcspi_input_clk_freq = 50000000;
+    }
+
+    return mcspi_input_clk_freq;
+}
+
+function getClkSource() {
     let mcspi_input_clock_source = "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT0";
 
     if(common.getR5Freq() == "500MHz")
@@ -98,4 +120,6 @@ exports = {
     getConfigArr,
     getMaxChannels,
     isFrequencyDefined,
+    getClkRate,
+    getClkSource,
 };

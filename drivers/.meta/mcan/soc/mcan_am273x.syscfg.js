@@ -47,7 +47,12 @@ function getInterfaceName(inst) {
     return "MSS_MCAN";
 }
 
+function getClkSource() {
+    return "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT2";
+}
+
 exports = {
     getConfigArr,
     getInterfaceName,
+    getClkSource,
 };

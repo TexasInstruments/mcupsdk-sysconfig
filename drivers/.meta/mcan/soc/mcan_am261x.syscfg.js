@@ -36,6 +36,17 @@ const mcan_config_r5fss = [
 function getDefaultClkSource() {
     let mcan_input_clock_source = "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT0";
 
+    if(common.getDefaultR5Freq() == "500MHz")
+    {
+        mcan_input_clock_source = "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT0";
+    }
+
+    return mcan_input_clock_source;
+}
+
+function getClkSource() {
+    let mcan_input_clock_source = "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT0";
+
     if(common.getR5Freq() == "500MHz")
     {
         mcan_input_clock_source = "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT0";
@@ -58,5 +69,6 @@ function getInterfaceName(instance) {
 
 exports = {
     getConfigArr,
+    getClkSource,
     getInterfaceName,
 };

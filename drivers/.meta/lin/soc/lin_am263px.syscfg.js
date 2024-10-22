@@ -82,7 +82,17 @@ function getInterfaceName(instance) {
     return "LIN";
 }
 
+function getDefaultClkSource() {
+    return "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT1";
+}
+
+function getClkRate() {
+    return lin_func_clk;
+}
+
 exports = {
     getConfigArr,
     getInterfaceName,
+    getClkRate,
+    getClkSource,
 };

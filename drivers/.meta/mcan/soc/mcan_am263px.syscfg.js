@@ -133,8 +133,13 @@ function getDmaType() {
     return "EDMA";
 }
 
+function getClkSource() {
+    return "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT0";
+}
+
 exports = {
     getConfigArr,
     getInterfaceName,
     getDmaType,
+    getClkSource,
 };

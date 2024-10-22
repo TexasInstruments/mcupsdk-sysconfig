@@ -55,6 +55,16 @@ function getSocPackage() {
 
 // Added in common file to simplify access from other modules.
 // Will be removed once clock tree support is added for AM261x.
+function getDefaultR5Freq()
+{
+    let defaultVal = "400MHz";
+    if(getSocName() == "am261x" && getSocPackage() == "ZFG")
+    {   
+        defaultVal = "500MHz";
+    }
+    return defaultVal;
+}
+
 function getR5Freq()
 {
     let r5Freq = "";
@@ -428,6 +438,7 @@ exports = {
     getSocName,
     getSocPackage,
     getR5Freq,
+    getDefaultR5Freq,
     getDeviceName,
     camelSentence,
     getStaticModuleForCore,

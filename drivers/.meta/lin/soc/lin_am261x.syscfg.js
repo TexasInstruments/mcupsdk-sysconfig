@@ -45,7 +45,7 @@ const lin_config_r5fss = [
 function getDefaultClkRate() {
     let lin_input_clk_freq = 192000000;
 
-    if(common.getR5Freq() == "500MHz")
+    if(common.getDefaultR5Freq() == "500MHz")
     {
         lin_input_clk_freq = 160000000;
     }
@@ -54,6 +54,28 @@ function getDefaultClkRate() {
 }
 
 function getDefaultClkSource() {
+    let lin_input_clock_source = "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT0";
+
+    if(common.getDefaultR5Freq() == "500MHz")
+    {
+        lin_input_clock_source = "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT2";
+    }
+
+    return lin_input_clock_source;
+}
+
+function getClkRate() {
+    let lin_input_clk_freq = 192000000;
+
+    if(common.getR5Freq() == "500MHz")
+    {
+        lin_input_clk_freq = 160000000;
+    }
+
+    return lin_input_clk_freq;
+}
+
+function getClkSource() {
     let lin_input_clock_source = "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT0";
 
     if(common.getR5Freq() == "500MHz")
@@ -79,4 +101,6 @@ function getInterfaceName(instance) {
 exports = {
     getConfigArr,
     getInterfaceName,
+    getClkRate,
+    getClkSource,
 };

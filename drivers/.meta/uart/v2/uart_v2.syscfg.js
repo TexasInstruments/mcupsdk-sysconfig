@@ -91,8 +91,6 @@ function getActualBaudrateError(inst) {
     return [actualBaud, errorP];
 }
 
-let gClockSourceOptions = soc.getClockSourceOptions();
-
 let uart_module_name = "/drivers/uart/uart";
 
 let uart_module = {
@@ -199,7 +197,9 @@ function getConfigurables()
             displayName: "Clock Source",
             default: soc.getDefaultClkSource(),
             description: "Clock Source",
-            options: gClockSourceOptions
+            options: function(inst) {
+                return soc.getClockSourceOptions();
+            }
         },
         {
             name: "inputClkFreq",

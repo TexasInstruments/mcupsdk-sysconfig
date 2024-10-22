@@ -13,6 +13,9 @@ function getInstanceConfig(moduleInstance) {
     let configArr = getConfigArr();
     let config = configArr.find(o => o.name === solution.peripheralName);
 
+    config.clockFrequencies[0].clkRate = soc.getClkRate();
+    config.clockFrequencies[0].clkId = soc.getClkSource();
+
     return {
         ...config,
         ...moduleInstance,

@@ -43,12 +43,7 @@ const ospi_dma_restrict_regions = [
 ];
 
 function getDefaultClkRate() {
-    let ospi_input_clk_freq = 133333333;
-
-    if(common.getR5Freq() == "500MHz")
-    {
-        ospi_input_clk_freq = 166666666;
-    }
+    let ospi_input_clk_freq = 166666666;
 
     return ospi_input_clk_freq;
 }

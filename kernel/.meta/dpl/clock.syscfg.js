@@ -16,15 +16,6 @@ function getInstanceConfig(moduleInstance) {
     }
 };
 
-function getR5freqDefault() {
-    let defaultVal = "400MHz";
-    if(common.getSocName() == "am261x" && common.getSocPackage() == "ZFG")
-    {   
-        defaultVal = "500MHz";
-    }
-    return defaultVal;
-}
-
 function getR5freqHidden() {
     let hidden = true;
     if(common.getSocName() == "am261x")
@@ -52,7 +43,7 @@ let clock_module = {
             {
                 name: "r5ClockFreq",
                 displayName: "R5 Clock Freqeuncy",
-                default: getR5freqDefault(),
+                default: common.getDefaultR5Freq(),
                 hidden: getR5freqHidden(),
                 options: [
                     {
