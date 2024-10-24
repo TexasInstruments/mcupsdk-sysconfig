@@ -68,6 +68,9 @@ const driverVer = {
     "pruicss": {
         version: "g_v0",
     },
+    "qos": {
+        version: "v0",
+    },
     "sciclient": {
         version: "v0",
     },
@@ -108,6 +111,7 @@ const topModules_main = [
     "/drivers/ospi/ospi",
     "/drivers/pcie/pcie",
     "/drivers/pruicss/pruicss",
+    "/drivers/qos/qos",
     "/drivers/uart/uart",
     "/drivers/udma/udma",
     "/drivers/watchdog/watchdog",
