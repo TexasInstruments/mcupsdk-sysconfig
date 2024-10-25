@@ -1,1 +1,3 @@
+% let soc_ctrl_adc_template = '/drivers/soc_ctrl/templates/soc_ctrl_adc_config.c.xdt'
+`system.getTemplate(soc_ctrl_adc_template)("/drivers/adc/adc")`
     Drivers_adcOpen();

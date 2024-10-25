@@ -4,6 +4,7 @@
     let soc_ctrl_adc = system.modules["/drivers/soc_ctrl/v0/subModules/soc_ctrl_adc"];
     let soc_ctrl_adc_scripts = system.getScript["/drivers/soc_ctrl/v0/subModules/soc_ctrl_adc"];
 
+    let arg = args;
 
     let instance = soc_ctrl_adc.$instances[0];
     let RefcontrolEnList = instance.enableAdcReferenceGui
@@ -14,22 +15,22 @@
     let modules = soc_ctrl_adc.usedModules
     let adcStaticConfigArray = soc_ctrl_adc.adcStaticConfigArray
 
-    let adcModules = [];
-    for(let mod of modules){
-        if(system.modules[mod] && (system.modules[mod].$instances.length > 0)){
-            adcModules.push(system.modules[mod])
-        }
-    }
     // console.log(adcStaticConfigArray)
 
     let adcInstAdded = []
     let requiredRefBuf = []
+    let requiredmontior = []
 
     let refBuf2AdcMap = {}
+    let montior2AdcMap = {}
+
     for (let module of modules)
-    {
-        adcInstAdded = adcInstAdded.concat(getAddedInstances(module))
+    {   
+        if(module == arg){
+            adcInstAdded = adcInstAdded.concat(getAddedInstances(module))
+        }
     }
+
     // console.log(adcInstAdded)
 
     for(let adcInst of adcInstAdded){
@@ -49,6 +50,23 @@
             requiredRefBuf.push(adcCfg.refBuf)
         }
     }
+    for(let adcInst of adcInstAdded){
+        let adcCfg = adcStaticConfigArray.find(o => o.name === adcInst)
+        if(montior2AdcMap[adcCfg.monitor]){
+            montior2AdcMap[adcCfg.monitor].push(adcCfg.instanceNumber)
+        }
+        else{
+            montior2AdcMap[adcCfg.monitor] = [adcCfg.instanceNumber]
+        }
+        // console.log(montior2AdcMap)
+
+        if (requiredmontior.includes(adcCfg.monitor)){
+            continue;
+        }
+        else{
+            requiredmontior.push(adcCfg.monitor)
+        }
+    }
 %%}
 %if(soc_ctrl_adc && (adcInstAdded.length>0))
 %{
@@ -60,19 +78,34 @@
         % for (let buffer of requiredRefBuf){
             % if(!(RefcontrolEnList.includes(buffer) && instance["adc_ref"+buffer+"_disable"])){
                 % // this case is evaded only if the controls are used and then reference buffer is disabled. hence by default its always enabled.
-            /* Internal Reference Buffer `buffer`, corresponds to ADC instance `refBuf2AdcMap[buffer]` is enabled */
+            /* Internal Reference Buffer `buffer`, 
+               corresponds to ADC instance `refBuf2AdcMap[buffer]` is enabled */
             SOC_enableAdcInternalReference(`refBuf2AdcMap[buffer][0]`, TRUE);
-            ClockP_usleep(800);
             % } else {
             /* Internal Reference Buffer `buffer`, corresponds to ADC instance `refBuf2AdcMap[buffer]` is disabled */
             SOC_enableAdcInternalReference(`refBuf2AdcMap[buffer][0]`, FALSE);
             %}
-            /* Monitor control is enabled for buffer `buffer` */
-            SOC_enableAdcReferenceMonitor(`refBuf2AdcMap[buffer][0]`, TRUE);
+        % }
+        % for (let buffer of requiredRefBuf){
+            % if(!(RefcontrolEnList.includes(buffer) && instance["adc_ref"+buffer+"_disable"])){
+                % // this case is evaded only if the controls are used and then reference buffer is disabled. hence by default its always enabled.
+            /* Delay after the buffers have been enabled */
+            ClockP_usleep(800);
+            % break;
+            % } 
+        % }
+
+        % for (let monitor of requiredmontior){
+            /* Monitor control is enabled for refernece monitor `monitor` */
+            SOC_enableAdcReferenceMonitor(`montior2AdcMap[monitor][0]`, TRUE);
+        % }
+
             /* Wait for  ClockP_sleep */
             ClockP_usleep(1);
-             /* Assert the monitor status! */
-            DebugP_assert(SOC_getAdcReferenceStatus(`refBuf2AdcMap[buffer][0]`) == true);
+        
+        % for (let monitor of requiredmontior){
+            /* Assert the monitor status for monitor `monitor` */
+            DebugP_assert(SOC_getAdcReferenceStatus(`montior2AdcMap[monitor][0]`) == true);
         % }
         }
         % if(instance["adcLoopBackEn"] != null){
@@ -100,5 +133,4 @@
         }
         %}
     }
-
 %}

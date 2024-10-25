@@ -55,19 +55,19 @@ for (let core of common.getSysCfgCoreNames()){
 }
 // console.log(coreList)
 let cfgCoreConfig = [
-    {
-        name : "cfgCore",
-        displayName : "Core to Configure",
-        description : "This option migrates the generated code from this Core to selected core if any.",
-        options : coreList,
-        default : common.getSelfSysCfgCoreName(),
-        onChange : (inst, ui)=>{
-            if(soc.isLoopBackAvailable()){
-                ui.adcLoopBackEn.readOnly = !(inst.cfgCore === common.getSelfSysCfgCoreName())
-            }
-        },
-        // TODO : add onChange
-    }
+    // {
+    //     name : "cfgCore",
+    //     displayName : "Core to Configure",
+    //     description : "This option migrates the generated code from this Core to selected core if any.",
+    //     options : coreList,
+    //     default : common.getSelfSysCfgCoreName(),
+    //     onChange : (inst, ui)=>{
+    //         if(soc.isLoopBackAvailable()) {
+    //             ui.adcLoopBackEn.readOnly = !(inst.cfgCore === common.getSelfSysCfgCoreName())
+    //         }
+    //     },
+    //     // TODO : add onChange
+    // }
 ]
 
 let listConfig = [
@@ -222,9 +222,9 @@ let soc_ctrl_sub = {
     config : config,
     validate : onValidate,
     templates: {
-        "/drivers/system/system_config.c.xdt": {
-            driver_init: "/drivers/soc_ctrl/templates/soc_ctrl_adc_config.c.xdt",
-        },
+        // "/drivers/system/system_config.c.xdt": {
+        //     driver_init: "/drivers/soc_ctrl/templates/soc_ctrl_adc_config.c.xdt",
+        // },
             // "/drivers/system/system_config.h.xdt": {
         //     driver_config: "/drivers/sdfm/templates/sdfm.h.xdt",
         // },
