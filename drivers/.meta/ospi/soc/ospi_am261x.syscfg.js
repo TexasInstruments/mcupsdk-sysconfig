@@ -20,7 +20,7 @@ const ospi_config_r5fss = [
     },
     {
         name            : "OSPI1",
-        baseAddr        : "CSL_FSS_UL_128_FSS_OF_UL_OSPI0_OSPI_CFG_VBUSP_OSPI_WRAP_ECC_AGG_VBP_U_BASE",
+        baseAddr        : "CSL_FSS_UL_128_FSS_OF_UL_OSPI0_OSPI_CFG_VBUSP_VBP2APB_WRAP_OSPI_CFG_VBP_OSPI_FLASH_APB_U_BASE",
         dataBaseAddr    : "CSL_FSS_UL_128_FSS_OF_UL_DAT_REG0_U_BASE",
         inputClkFreq    : getDefaultClkRate(),
         dacEnable       : false,
