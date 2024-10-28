@@ -62,7 +62,7 @@ let cfgCoreConfig = [
         options : coreList,
         default : common.getSelfSysCfgCoreName(),
         onChange : (inst, ui)=>{
-            if(soc.isLoopBackAvailable()) {
+            if(soc.isLoopBackAvailable()){
                 ui.adcLoopBackEn.readOnly = !(inst.cfgCore === common.getSelfSysCfgCoreName())
             }
         },

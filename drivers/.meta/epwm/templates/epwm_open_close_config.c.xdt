@@ -1,3 +1,5 @@
+uint32_t gEpwmTbClkSyncEnableMask;
+uint32_t gEpwmTbClkSyncDisableMask;
 void Drivers_epwmOpen(void)
 {
 % let module = system.modules["/drivers/epwm/epwm"];

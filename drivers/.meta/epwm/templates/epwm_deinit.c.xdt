@@ -6,8 +6,8 @@
     {
         /* Disable time base clock for the selected ePWM */
     % if(["am261x","am263x", "am263px"].includes(common.getSocName())) {
-    extern uint32_t epwmTbClkSyncDisableMask;
-    SOC_setMultipleEpwmTbClk(epwmTbClkSyncDisableMask, FALSE);
+    extern uint32_t gEpwmTbClkSyncDisableMask;
+    SOC_setMultipleEpwmTbClk(gEpwmTbClkSyncDisableMask, FALSE);
     % } else {
         % for(let i = 0; i < module.$instances.length; i++) {
             % let instance = module.$instances[i];

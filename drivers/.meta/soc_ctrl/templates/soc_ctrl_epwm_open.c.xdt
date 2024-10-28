@@ -50,18 +50,19 @@
     % switch (arg[0])
     % {
     % case "header_file":
-
-uint32_t epwmTbClkSyncDisableMask;
-uint32_t epwmTbClkSyncEnableMask;
+/* 
+ * EPWM tbclk enable/disable configs get stored in the following macros. 
+ * These may be used in the Application to enable/disable the tbclksync
+ */
+extern uint32_t gEpwmTbClkSyncDisableMask, gEpwmTbClkSyncEnableMask;
         % break;
     % case "begin":
         % /* code */
         % if(epwmArgStr != ""){
-// this may be used in the application by an extern definition.
-    extern uint32_t epwmTbClkSyncDisableMask;
-    epwmTbClkSyncDisableMask = `epwmArgStr`;
+    // this may be used in the application by an definition.
+    gEpwmTbClkSyncDisableMask = `epwmArgStr`;
     /* Disabling the TBCLK SYNC for the EPWM configurations */
-    SOC_setMultipleEpwmTbClk(epwmTbClkSyncDisableMask, FALSE);
+    SOC_setMultipleEpwmTbClk(gEpwmTbClkSyncDisableMask, FALSE);
         % }
 
     /* Halt Controls for EPWM */
@@ -79,10 +80,9 @@ uint32_t epwmTbClkSyncEnableMask;
         % /* code */
         % if((tbClkSynArgStr !== "") && (tbClkSynArgStr !== "()")){
 /* Enabling the TBCLK SYNC after the EPWM configurations */
-    // this may be used in the application by an extern definition.
-    extern uint32_t epwmTbClkSyncEnableMask;
-    epwmTbClkSyncEnableMask = `tbClkSynArgStr`;
-    SOC_setMultipleEpwmTbClk(epwmTbClkSyncEnableMask, TRUE);
+    // this may be used in the application by an definition.
+    gEpwmTbClkSyncEnableMask = `tbClkSynArgStr`;
+    SOC_setMultipleEpwmTbClk(gEpwmTbClkSyncEnableMask, TRUE);
         % }
         % break;
     % default:
