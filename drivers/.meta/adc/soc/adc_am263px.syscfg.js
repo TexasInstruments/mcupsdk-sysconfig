@@ -132,6 +132,7 @@ let ADC_Channel = [
 	{ name: "ADC_CH_ADCIN4_ADCIN5", displayName: "differential, ADCIN4 and ADCIN5" },
     { name: "ADC_CH_ADCIN5_ADCIN4", displayName: "differential, ADCIN5 and ADCIN4" },
     { name: "ADC_CH_CAL0_CAL1", displayName: "single-ended, CAL0 and CAL1" },
+    { name: "ADC_CH_CAL1_CAL0", displayName: "single-ended, CAL1 and CAL0" },
 ]
 let ADC_R_Channel = [
 	{ name: "ADC_CH_ADCIN0", displayName: "single-ended, ADC_R_IN0" },

@@ -79,7 +79,8 @@ let ADC_Channel = [
 	{ name: "ADC_CH_ADCIN3_ADCIN2", displayName: "differential, ADCIN3 and ADCIN2" },
 	{ name: "ADC_CH_ADCIN4_ADCIN5", displayName: "differential, ADCIN4 and ADCIN5" },
     { name: "ADC_CH_ADCIN5_ADCIN4", displayName: "differential, ADCIN5 and ADCIN4" },
-    // { name: "ADC_CH_CAL0_CAL1", displayName: "single-ended, CAL0 and CAL1" },
+    { name: "ADC_CH_CAL0_ADCIN6", displayName: "differential, CAL0 and ADCIN6" },
+    { name: "ADC_CH_ADCIN6_CAL0", displayName: "differential, ADCIN6 and CAL0" },
 ]
 let ADC_PulseMode = [
 	{ name: "ADC_PULSE_END_OF_ACQ_WIN", displayName: "Occurs at the end of the acquisition window" },
