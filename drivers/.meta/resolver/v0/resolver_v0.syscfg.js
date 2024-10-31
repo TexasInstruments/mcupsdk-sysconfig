@@ -773,6 +773,38 @@ for( let core = 0; core <= 1; core++)
                     options         :   device_peripheral.RESOLVER_pgEstimationTrainLimitOptions,
                 },
                 {
+                    name            :   "core"+core.toString()+"PgAutoPhaseGainCorrectionAdv",
+                    displayName     :   "Auto Phase Gain Correction",
+                    description     :   "Enable Advanced Configurations to edit this feild. Auto Phase and Gain Correction is enabled, the estimated Phase Correction Value will be used for the Phase Correction.",
+                    hidden          :   true,
+                    readOnly        :   true,
+                    default         :   false,
+                    onChange        :   (inst, ui) => {
+                        if (inst["core"+core.toString()+"PgAutoPhaseGainCorrectionAdv"] == true)
+                        {
+                            ui["core"+core.toString()+"PgSinGainBypassValueAdv"].hidden = true
+                            ui["core"+core.toString()+"PgSinGainBypassValueAdvValue"].hidden = true
+
+                            ui["core"+core.toString()+"PgCosGainBypassValueAdv"].hidden = true
+                            ui["core"+core.toString()+"PgCosGainBypassValueAdvValue"].hidden = true
+
+                            ui["core"+core.toString()+"PgCosPhaseBypassValueAdv"].hidden = true
+                            ui["core"+core.toString()+"PgCosPhaseBypassValueAdvValue"].hidden = true
+                        }
+                        else
+                        {
+                            ui["core"+core.toString()+"PgSinGainBypassValueAdv"].hidden = false
+                            ui["core"+core.toString()+"PgSinGainBypassValueAdvValue"].hidden = false
+
+                            ui["core"+core.toString()+"PgCosGainBypassValueAdv"].hidden = false
+                            ui["core"+core.toString()+"PgCosGainBypassValueAdvValue"].hidden = false
+
+                            ui["core"+core.toString()+"PgCosPhaseBypassValueAdv"].hidden = false
+                            ui["core"+core.toString()+"PgCosPhaseBypassValueAdvValue"].hidden = false
+                        }
+                    }
+                },
+                {
                     name            :   "core"+core.toString()+"PgCorrectionEnableAdv",
                     displayName     :   "Enable Phase Gain Correction",
                     description     :   "Enable Advanced Configurations to edit this feild. The Phase Gain Correction will be enabled",
@@ -813,38 +845,6 @@ for( let core = 0; core <= 1; core++)
                             ui["core"+core.toString()+"PgCosPhaseBypassValueAdv"].hidden = true
                             ui["core"+core.toString()+"PgCosPhaseBypassValueAdvValue"].hidden = true
 
-                        }
-                    }
-                },
-                {
-                    name            :   "core"+core.toString()+"PgAutoPhaseGainCorrectionAdv",
-                    displayName     :   "Auto Phase Gain Correction",
-                    description     :   "Enable Advanced Configurations to edit this feild. Auto Phase and Gain Correction is enabled, the estimated Phase Correction Value will be used for the Phase Correction.",
-                    hidden          :   true,
-                    readOnly        :   true,
-                    default         :   false,
-                    onChange        :   (inst, ui) => {
-                        if (inst["core"+core.toString()+"PgAutoPhaseGainCorrectionAdv"] == true)
-                        {
-                            ui["core"+core.toString()+"PgSinGainBypassValueAdv"].hidden = true
-                            ui["core"+core.toString()+"PgSinGainBypassValueAdvValue"].hidden = true
-
-                            ui["core"+core.toString()+"PgCosGainBypassValueAdv"].hidden = true
-                            ui["core"+core.toString()+"PgCosGainBypassValueAdvValue"].hidden = true
-
-                            ui["core"+core.toString()+"PgCosPhaseBypassValueAdv"].hidden = true
-                            ui["core"+core.toString()+"PgCosPhaseBypassValueAdvValue"].hidden = true
-                        }
-                        else
-                        {
-                            ui["core"+core.toString()+"PgSinGainBypassValueAdv"].hidden = false
-                            ui["core"+core.toString()+"PgSinGainBypassValueAdvValue"].hidden = false
-
-                            ui["core"+core.toString()+"PgCosGainBypassValueAdv"].hidden = false
-                            ui["core"+core.toString()+"PgCosGainBypassValueAdvValue"].hidden = false
-
-                            ui["core"+core.toString()+"PgCosPhaseBypassValueAdv"].hidden = false
-                            ui["core"+core.toString()+"PgCosPhaseBypassValueAdvValue"].hidden = false
                         }
                     }
                 },

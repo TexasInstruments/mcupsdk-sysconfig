@@ -1,3 +1,4 @@
+RDC_configParams gRdcParams;
 void Drivers_resolverOpen()
 {
 % let module = system.modules['/drivers/resolver/resolver'];
@@ -10,45 +11,44 @@ void Drivers_resolverOpen()
 	    % let instance = module.$instances[i];
 		% let baseName = instance.$name + "_BASE_ADDR";
     /* setting up the Params */
-    RDC_configParams params;
-    RDC_paramsInit(&params);
+    RDC_paramsInit(&gRdcParams);
 
-    params.Input_signalMode = `instance.resolverSignalMode`;
-    params.Input_socWidth = `instance.adcSocWidth`;
-    params.Input_adcBurstCount = `instance.adcBurstCount`;
-    params.Input_resolverSequencerMode = `instance.resolverSequencerMode`;
+    gRdcParams.Input_signalMode = `instance.resolverSignalMode`;
+    gRdcParams.Input_socWidth = `instance.adcSocWidth`;
+    gRdcParams.Input_adcBurstCount = `instance.adcBurstCount`;
+    gRdcParams.Input_resolverSequencerMode = `instance.resolverSequencerMode`;
 
-    params.ExcFrq_freqSel = `instance.resolverExcitationFrequencySelect`;
-    params.ExcFrq_phase = `instance.resolverExcitationFrequencyPhase`;
-    params.ExcFrq_amplitude = `instance.resolverExcitationFrequencyAmplitudeAdv`;
-    params.ExcFrq_enableSyncIn = `instance.syncInEnable`;
-    params.ExcFrq_socDelay = `instance.socDelayAdv`;
+    gRdcParams.ExcFrq_freqSel = `instance.resolverExcitationFrequencySelect`;
+    gRdcParams.ExcFrq_phase = `instance.resolverExcitationFrequencyPhase`;
+    gRdcParams.ExcFrq_amplitude = `instance.resolverExcitationFrequencyAmplitudeAdv`;
+    gRdcParams.ExcFrq_enableSyncIn = `instance.syncInEnable`;
+    gRdcParams.ExcFrq_socDelay = `instance.socDelayAdv`;
 
     %for(let core = 0; core <= 1; core++)
         %{
-    params.core`core`.BpfDc_bpfEnable = `instance["core"+core+"bandPassFilterEnable"]`;
-    params.core`core`.BpfDc_offsetCorrectionEnable = `instance["core"+core+"dcOffsetCorrectionEnable"]`;
-    params.core`core`.BpfDc_dcOffCal1 = `instance["core"+core+"dcOffsetCalCoef1Adv"]`;
-    params.core`core`.BpfDc_dcOffCal2 = `instance["core"+core+"dcOffsetCalCoef2Adv"]`;
-    params.core`core`.BpfDc_manualSin = `instance["core"+core+"sinDcOffset"]`;
-    params.core`core`.BpfDc_manualCos = `instance["core"+core+"cosDcOffset"]`;
+    gRdcParams.core`core`.BpfDc_bpfEnable = `instance["core"+core+"bandPassFilterEnable"]`;
+    gRdcParams.core`core`.BpfDc_offsetCorrectionEnable = `instance["core"+core+"dcOffsetCorrectionEnable"]`;
+    gRdcParams.core`core`.BpfDc_dcOffCal1 = `instance["core"+core+"dcOffsetCalCoef1Adv"]`;
+    gRdcParams.core`core`.BpfDc_dcOffCal2 = `instance["core"+core+"dcOffsetCalCoef2Adv"]`;
+    gRdcParams.core`core`.BpfDc_manualSin = `instance["core"+core+"sinDcOffset"]`;
+    gRdcParams.core`core`.BpfDc_manualCos = `instance["core"+core+"cosDcOffset"]`;
 
-    params.core`core`.IdealSample_overrideValue = `instance["core"+core+"IdealSampleOverrideValueAdv"]`;
-    params.core`core`.IdealSample_absThresholdValue = `instance["core"+core+"IdealSampleDetectionThresholdAdv"]`;
-    params.core`core`.IdealSample_sampleAdjustCount = `instance["core"+core+"IdealSampleBpfAdjustAdv"]`;
-    params.core`core`.IdealSample_mode = `instance["core"+core+"IdealSampleModeAdv"]`;
-    params.core`core`.IdealSample_bottomSampleEnable = `instance["core"+core+"IdealSampleBottomSamplingAdv"]`;
+    gRdcParams.core`core`.IdealSample_overrideValue = `instance["core"+core+"IdealSampleOverrideValueAdv"]`;
+    gRdcParams.core`core`.IdealSample_absThresholdValue = `instance["core"+core+"IdealSampleDetectionThresholdAdv"]`;
+    gRdcParams.core`core`.IdealSample_sampleAdjustCount = `instance["core"+core+"IdealSampleBpfAdjustAdv"]`;
+    gRdcParams.core`core`.IdealSample_mode = `instance["core"+core+"IdealSampleModeAdv"]`;
+    gRdcParams.core`core`.IdealSample_bottomSampleEnable = `instance["core"+core+"IdealSampleBottomSamplingAdv"]`;
 
-    params.core`core`.Pg_estimationEnable = `instance["core"+core+"PgEstimationEnableAdv"]`;
-    params.core`core`.Pg_estimationLimit = `instance["core"+core+"PgEstimationTrainLimitAdv"]`;
+    gRdcParams.core`core`.Pg_estimationEnable = `instance["core"+core+"PgEstimationEnableAdv"]`;
+    gRdcParams.core`core`.Pg_estimationLimit = `instance["core"+core+"PgEstimationTrainLimitAdv"]`;
 
-    params.core`core`.Pg_correctionEnable = `instance["core"+core+"PgCorrectionEnableAdv"]`;
-    params.core`core`.Pg_autoCorrectionEnable = `instance["core"+core+"PgAutoPhaseGainCorrectionAdv"]`;
-    params.core`core`.Pg_sinGainBypassValue = `instance["core"+core+"PgSinGainBypassValueAdv"]`;
-    params.core`core`.Pg_cosGainBypassValue = `instance["core"+core+"PgCosGainBypassValueAdv"]`;
-    params.core`core`.Pg_cosPhaseBypassValue = `instance["core"+core+"PgCosPhaseBypassValueAdv"]`;
+    gRdcParams.core`core`.Pg_correctionEnable = `instance["core"+core+"PgCorrectionEnableAdv"]`;
+    gRdcParams.core`core`.Pg_autoCorrectionEnable = `instance["core"+core+"PgAutoPhaseGainCorrectionAdv"]`;
+    gRdcParams.core`core`.Pg_sinGainBypassValue = `instance["core"+core+"PgSinGainBypassValueAdv"]`;
+    gRdcParams.core`core`.Pg_cosGainBypassValue = `instance["core"+core+"PgCosGainBypassValueAdv"]`;
+    gRdcParams.core`core`.Pg_cosPhaseBypassValue = `instance["core"+core+"PgCosPhaseBypassValueAdv"]`;
 
-    ((params.core`core`).track2Constants).kvelfilt = `instance["core"+core+"track2kvelfiltAdv"]`;
+    ((gRdcParams.core`core`).track2Constants).kvelfilt = `instance["core"+core+"track2kvelfiltAdv"]`;
 %%{
 let IntOptions  = [
     "RDC_INTERRUPT_SOURCE_LOWAMPLITUDE_ERR",
@@ -117,17 +117,17 @@ let IntOptions  = [
 %%}
     %if(enableIntCount > 0)
     %{
-    params.Int_core`core`Interrupts = `IntsToEnableOR`;
+    gRdcParams.Int_core`core`Interrupts = `IntsToEnableOR`;
     %}
     %else
     %{
-    params.Int_core`core`Interrupts = 0;
+    gRdcParams.Int_core`core`Interrupts = 0;
     %}
 
         %}
-    params.Int_seqEnable = `instance.SequencerInterrupt`;
+    gRdcParams.Int_seqEnable = `instance.SequencerInterrupt`;
 
-    RDC_init(`baseName`, &params);
+    RDC_init(`baseName`, &gRdcParams);
     %}
 %}
 }
