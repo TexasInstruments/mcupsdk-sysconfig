@@ -1,0 +1,71 @@
+% const device = system.deviceData.device;
+% const devicePins = system.deviceData.devicePins;
+% let output = {};
+% let printThis = "";
+% Object.entries(devicePins).forEach(([devPin, info]) => {
+%  
+%         let ball = info.ball;
+%         let name = info.designSignalName;
+%         let muxSetting = info.mux?.muxSetting;
+%         let arr = new Array(15).fill("");
+%         let obj = {ball: "", name: "", selectedMode: "", pinInfo: []};
+%         if (muxSetting) {
+%         Object.keys(muxSetting).forEach(item => {
+%                 let mode = muxSetting[item].mode;
+%                 let peripheralName = muxSetting[item].peripheralPin.name;
+%                 arr[mode] = peripheralName;
+%             })
+%         }
+%         obj.ball = ball
+%         obj.name = name
+%         obj.pinInfo = arr
+%         output[ball] = obj;
+% })
+% Object.keys(output).sort();
+% let modulesList = system.modules;
+% 
+% Object.keys(modulesList).forEach( (item) => {
+%     let moduleDefinition = modulesList[item];
+%     let instances = moduleDefinition.$instances;
+% 
+%     instances.forEach(inst => {
+%           let arr = moduleDefinition.pinmuxRequirements?.(inst)
+%            arr?.forEach( ele => {
+%                let peripheralName = ele.name // ADC_EXTCH_XBAR
+%                let instanceInterface = inst[peripheralName] 
+%
+%                ele?.resources?.forEach(res => {
+%                    let pinName = res.name
+%                    let devicePinName = instanceInterface[pinName]?.$solution?.devicePinName
+%                    let packagePinName = instanceInterface[pinName]?.$solution?.packagePinName
+%                    if(devicePinName && packagePinName){
+%                        output[packagePinName].selectedMode = devicePinName
+%                    }
+%                })
+%                if(ele.resources === undefined){  // for mcspi_channel
+%                    let devicePinName = instanceInterface.$solution?.devicePinName
+%                    let packagePinName = instanceInterface.$solution?.packagePinName
+%                    if(devicePinName && packagePinName){
+%                        output[packagePinName].selectedMode = devicePinName
+%                    }
+%                }
+%            })      
+%     })
+% })
+
+% Object.keys(output).forEach( ball => {
+% 
+%     let val = output[ball]
+%     printThis += val.ball + ",";
+%     printThis += val.name + ",";
+%     printThis += val.selectedMode + ",";
+%     let arr = val.pinInfo;
+%     for(let j = 0; j < arr.length; j++){
+%         printThis += arr[j] + ",";
+%     }
+%     printThis += "\n";
+% })
+All device pins and their pinmux options
+
+Pin,Name,Selected Mode,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+`printThis`
