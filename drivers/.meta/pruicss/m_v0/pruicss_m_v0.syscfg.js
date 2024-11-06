@@ -62,7 +62,7 @@ function getConfigurables()
         )
     }
 
-    if(is_am263x_soc || is_am263px_soc){
+    if(is_am263x_soc || is_am263px_soc || is_am261x_soc){
         config.push(
             {
                 name: "INTC MODE",
@@ -111,7 +111,7 @@ let pruicss_top_module = {
 };
 function moduleInstances(instance) {
     let modInstances = new Array();
-    if(is_am263x_soc || is_am263px_soc){
+    if(is_am263x_soc || is_am263px_soc || is_am261x_soc){
         modInstances.push({
             name: "AdditionalICSSSettings",
             displayName: "Additional ICSS Settings",
@@ -120,15 +120,30 @@ function moduleInstances(instance) {
             minInstanceCount: 1,
             defaultInstanceCount: 1,
             maxInstanceCount: 1,
+            requiredArgs: {
+                instance: instance["instance"],
+            }
         });
         // Interrupt Mapping:
         let submodule = "/drivers/pruicss/m_v0/icss_intc/";
-        if(instance["INTC MODE"] === "mode1")
-        submodule += "icss0_m_v0_mode1_intc_mapping";
-        else if(instance["INTC MODE"] === "mode0")
-        submodule += "icss0_m_v0_mode0_intc_mapping";
-        else
-        submodule += "icss0_m_v0_mode1_intc_mapping";
+        if(instance["instance"] == "ICSSM0")
+        {
+            if(instance["INTC MODE"] === "mode1")
+                submodule += "icss0_m_v0_mode1_intc_mapping";
+            else if(instance["INTC MODE"] === "mode0")
+                submodule += "icss0_m_v0_mode0_intc_mapping";
+            else
+                submodule += "icss0_m_v0_mode1_intc_mapping";
+        }
+        if(instance["instance"] == "ICSSM1")
+        {
+            if(instance["INTC MODE"] === "mode1")
+                submodule += "icss1_m_v0_mode1_intc_mapping";
+            else if(instance["INTC MODE"] === "mode0")
+                submodule += "icss1_m_v0_mode0_intc_mapping";
+            else
+                submodule += "icss1_m_v0_mode1_intc_mapping";
+        }
         modInstances.push({
             name: "intcMapping",
             displayName: instance.instance + " INTC Internal Signals Mapping",

@@ -151,23 +151,23 @@ let pruicss_top_module = {
             options: [
                 {
                     name: "0",
-                    displayName: "GP mode",
-                    description: "General purpose input/output mode"
+                    displayName: "GP Mode",
+                    description: "General Purpose Input/Output Mode"
                 },
                 {
                     name: "1",
-                    displayName: "3 channel peripheral interface mode",
-                    description: "3 channel peripheral interface mode"
+                    displayName: "3 Channel Peripheral Interface Mode",
+                    description: "3 Channel Peripheral Interface Mode"
                 },
                 {
                     name: "2",
                     displayName: "MII mode",
-                    description: "Media interface mode"
+                    description: "Media Interface Mode"
                 },
                 {
                     name: "3",
                     displayName: "SD mode",
-                    description: "Sigma delta mode"
+                    description: "Sigma Delta Mode"
                 }
             ]
         }

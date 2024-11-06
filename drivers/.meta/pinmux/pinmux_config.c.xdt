@@ -34,6 +34,10 @@
  * Auto generated file
  */
 % let common = system.getScript("/common");
+% let device = common.getDeviceName();
+% let is_am263x_soc = (device === "am263x-cc") ? true : false;
+% let is_am263px_soc = (device === "am263px-cc") ? true : false;
+% let is_am261x_soc = (device === "am261x-lp") ? true : false;
 #include "ti_drivers_config.h"
 #include <drivers/pinmux.h>
 
@@ -125,37 +129,65 @@ static Pinmux_PerCfg_t gPinMuxMcuDomainCfg[] = {
  * Pinmux
  */
 
-%let flag=0;
+%let configIcssm0Pinmux=0;
+%let configIcssm1Pinmux=0;
 
 void Pinmux_init(void)
 {
-    %let MSS_CTRL_ICSSM_PRU0_GPIO_OUT_CTRL_VALUE=0x00000000;
-    %let MSS_CTRL_ICSSM_PRU1_GPIO_OUT_CTRL_VALUE=0x00000000;
+    %let MSS_CTRL_ICSSM0_PRU0_GPIO_OUT_CTRL_VALUE=0x00000000;
+    %let MSS_CTRL_ICSSM0_PRU1_GPIO_OUT_CTRL_VALUE=0x00000000;
+    %let MSS_CTRL_ICSSM1_PRU0_GPIO_OUT_CTRL_VALUE=0x00000000;
+    %let MSS_CTRL_ICSSM1_PRU1_GPIO_OUT_CTRL_VALUE=0x00000000;
     %for(let subTemplate of args){
         %let module=system.modules[subTemplate.moduleName];
         % for(let i = 0; i < module.$instances.length; i++) {
             %let instance = module.$instances[i];
-            %if((module.getInterfaceName && (module.getInterfaceName(instance)=="ICSSM" || module.getInterfaceName(instance)=="PRU-ICSS")) || (module.getInterfaceNameList && (module.getInterfaceNameList(instance)=="ICSSM" || module.getInterfaceNameList(instance)=="PRU-ICSS"))){
-                %flag=1;
+            %if((module.getInterfaceName && (module.getInterfaceName(instance)=="ICSSM" || module.getInterfaceName(instance)=="PRU-ICSS" || module.getInterfaceName(instance)=="PRU-ICSS0")) || (module.getInterfaceNameList && (module.getInterfaceNameList(instance)=="ICSSM" || module.getInterfaceNameList(instance)=="PRU-ICSS" || module.getInterfaceNameList(instance)=="PRU-ICSS0"))){
+                %configIcssm0Pinmux=1;
                 %let interfaceName = module.getInterfaceName ? module.getInterfaceName(instance) : module.getInterfaceNameList(instance) ;
                 % let peripheral = instance[interfaceName];
                 % let pinNames = module.getPeripheralPinNames(instance);
                 % for (let pinName of pinNames) {
                 %     let peripheralPin = peripheral[pinName];
                 %     if (peripheralPin && peripheralPin.rx && peripheralPin.$solution.peripheralPinName && peripheralPin.$solution.peripheralPinName.substr(4,4)==="PRU0" && peripheralPin.$solution.peripheralPinName.substr(9,4)==="GPIO") {
-                %            MSS_CTRL_ICSSM_PRU0_GPIO_OUT_CTRL_VALUE|=1<<parseInt(peripheralPin.$solution.peripheralPinName.slice(13,15));
+                %            MSS_CTRL_ICSSM0_PRU0_GPIO_OUT_CTRL_VALUE|=1<<parseInt(peripheralPin.$solution.peripheralPinName.slice(13,15));
                 %     }
                 %     if (peripheralPin && peripheralPin.rx && peripheralPin.$solution.peripheralPinName && peripheralPin.$solution.peripheralPinName.substr(4,4)==="PRU1" && peripheralPin.$solution.peripheralPinName.substr(9,4)==="GPIO") {
-                %            MSS_CTRL_ICSSM_PRU1_GPIO_OUT_CTRL_VALUE|=1<<parseInt(peripheralPin.$solution.peripheralPinName.slice(13,15));
+                %            MSS_CTRL_ICSSM0_PRU1_GPIO_OUT_CTRL_VALUE|=1<<parseInt(peripheralPin.$solution.peripheralPinName.slice(13,15));
+                %     }
+                %}
+            %}
+            %if((module.getInterfaceName && (module.getInterfaceName(instance)=="PRU-ICSS1")) || (module.getInterfaceNameList && (module.getInterfaceNameList(instance)=="PRU-ICSS1"))){
+                %configIcssm1Pinmux=1;
+                %let interfaceName = module.getInterfaceName ? module.getInterfaceName(instance) : module.getInterfaceNameList(instance) ;
+                % let peripheral = instance[interfaceName];
+                % let pinNames = module.getPeripheralPinNames(instance);
+                % for (let pinName of pinNames) {
+                %     let peripheralPin = peripheral[pinName];
+                %     if (peripheralPin && peripheralPin.rx && peripheralPin.$solution.peripheralPinName && peripheralPin.$solution.peripheralPinName.substr(4,4)==="PRU0" && peripheralPin.$solution.peripheralPinName.substr(9,4)==="GPIO") {
+                %            MSS_CTRL_ICSSM1_PRU0_GPIO_OUT_CTRL_VALUE|=1<<parseInt(peripheralPin.$solution.peripheralPinName.slice(13,15));
+                %     }
+                %     if (peripheralPin && peripheralPin.rx && peripheralPin.$solution.peripheralPinName && peripheralPin.$solution.peripheralPinName.substr(4,4)==="PRU1" && peripheralPin.$solution.peripheralPinName.substr(9,4)==="GPIO") {
+                %            MSS_CTRL_ICSSM1_PRU1_GPIO_OUT_CTRL_VALUE|=1<<parseInt(peripheralPin.$solution.peripheralPinName.slice(13,15));
                 %     }
                 %}
             %}
             %if(module.getPru0MuxMode && module.getPru1MuxMode)
             %{
-    /*Configure mux mode for PRU0*/
+            %if(instance["instance"]=="ICSSM0")
+            %{
+             /*Configure mux mode for PRU0*/
     HW_WR_FIELD32((CSL_ICSSM0_INTERNAL_U_BASE  + CSL_ICSS_M_PR1_CFG_SLV_REGS_BASE + CSL_ICSS_M_PR1_CFG_SLV_GPCFG0_REG), CSL_ICSS_M_PR1_CFG_SLV_GPCFG0_REG_PR1_PRU0_GP_MUX_SEL, `module.getPru0MuxMode(instance)`);
     /*Configure mux mode for PRU1*/
     HW_WR_FIELD32((CSL_ICSSM0_INTERNAL_U_BASE  + CSL_ICSS_M_PR1_CFG_SLV_REGS_BASE + CSL_ICSS_M_PR1_CFG_SLV_GPCFG1_REG), CSL_ICSS_M_PR1_CFG_SLV_GPCFG1_REG_PR1_PRU1_GP_MUX_SEL, `module.getPru1MuxMode(instance)`);
+            %}
+             %if(instance["instance"]=="ICSSM1")
+            %{
+             /*Configure mux mode for PRU0*/
+    HW_WR_FIELD32((CSL_ICSSM1_INTERNAL  + CSL_ICSS_M_PR1_CFG_SLV_REGS_BASE + CSL_ICSS_M_PR1_CFG_SLV_GPCFG0_REG), CSL_ICSS_M_PR1_CFG_SLV_GPCFG0_REG_PR1_PRU0_GP_MUX_SEL, `module.getPru0MuxMode(instance)`);
+    /*Configure mux mode for PRU1*/
+    HW_WR_FIELD32((CSL_ICSSM1_INTERNAL  + CSL_ICSS_M_PR1_CFG_SLV_REGS_BASE + CSL_ICSS_M_PR1_CFG_SLV_GPCFG1_REG), CSL_ICSS_M_PR1_CFG_SLV_GPCFG1_REG_PR1_PRU1_GP_MUX_SEL, `module.getPru1MuxMode(instance)`);
+            %}
             %}
             %if(module.getPruMuxMode)
             %{
@@ -185,12 +217,25 @@ void Pinmux_init(void)
         %}
     %}
 
-    %if(flag===1){
-
+    %if(configIcssm0Pinmux===1){
+    %if(is_am263x_soc || is_am263px_soc)
+    %{
     /* Set bits for input pins in ICSSM_PRU0_GPIO_OUT_CTRL and ICSSM_PRU1_GPIO_OUT_CTRL registers */
-    CSL_REG32_WR(CSL_MSS_CTRL_U_BASE + CSL_MSS_CTRL_ICSSM_PRU0_GPIO_OUT_CTRL, `MSS_CTRL_ICSSM_PRU0_GPIO_OUT_CTRL_VALUE`);
-    CSL_REG32_WR(CSL_MSS_CTRL_U_BASE + CSL_MSS_CTRL_ICSSM_PRU1_GPIO_OUT_CTRL, `MSS_CTRL_ICSSM_PRU1_GPIO_OUT_CTRL_VALUE`);
-    
+    CSL_REG32_WR(CSL_MSS_CTRL_U_BASE + CSL_MSS_CTRL_ICSSM_PRU0_GPIO_OUT_CTRL, `MSS_CTRL_ICSSM0_PRU0_GPIO_OUT_CTRL_VALUE`);
+    CSL_REG32_WR(CSL_MSS_CTRL_U_BASE + CSL_MSS_CTRL_ICSSM_PRU1_GPIO_OUT_CTRL, `MSS_CTRL_ICSSM0_PRU1_GPIO_OUT_CTRL_VALUE`);
+    %}
+    %else
+    %{
+    /* Set bits for input pins in ICSSM0_PRU0_GPIO_OUT_CTRL and ICSSM0_PRU1_GPIO_OUT_CTRL registers */
+    CSL_REG32_WR(CSL_MSS_CTRL_U_BASE + CSL_MSS_CTRL_ICSSM0_PRU0_GPIO_OUT_CTRL, `MSS_CTRL_ICSSM0_PRU0_GPIO_OUT_CTRL_VALUE`);
+    CSL_REG32_WR(CSL_MSS_CTRL_U_BASE + CSL_MSS_CTRL_ICSSM0_PRU1_GPIO_OUT_CTRL, `MSS_CTRL_ICSSM0_PRU1_GPIO_OUT_CTRL_VALUE`);
+    %}
+    %}
+
+    %if(configIcssm1Pinmux===1){ 
+    /* Set bits for input pins in ICSSM1_PRU0_GPIO_OUT_CTRL and ICSSM1_PRU1_GPIO_OUT_CTRL registers */
+    CSL_REG32_WR(CSL_MSS_CTRL_U_BASE + CSL_MSS_CTRL_ICSSM1_PRU0_GPIO_OUT_CTRL, `MSS_CTRL_ICSSM1_PRU0_GPIO_OUT_CTRL_VALUE`);
+    CSL_REG32_WR(CSL_MSS_CTRL_U_BASE + CSL_MSS_CTRL_ICSSM1_PRU1_GPIO_OUT_CTRL, `MSS_CTRL_ICSSM1_PRU1_GPIO_OUT_CTRL_VALUE`);
     %}
 
     Pinmux_config(gPinMuxMainDomainCfg, PINMUX_DOMAIN_ID_MAIN);

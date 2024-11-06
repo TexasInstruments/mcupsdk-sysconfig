@@ -19,7 +19,7 @@ function onValidate(inst, validation) {
             validation.logError(
                 "The same event number/signal can't be remapped",
                 inst, "event");
-                /* TODO: Will there be a case that we want to use same event number from 2 PRU cores */
+               /* TODO: Will there be a case that we want to do multiple event -> one channel mapping for same event number */
         else
             events.push(instance.event);
 

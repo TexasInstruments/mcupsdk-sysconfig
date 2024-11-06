@@ -33,10 +33,10 @@ function onValidate(inst, validation) {
     }
 }
 
-let icss_intc_mapping_top_module_name = "/drivers/pruicss/m_v0/icss_intc/icss0_m_v0_mode1_intc_mapping";
+let icss_intc_mapping_top_module_name = "/drivers/pruicss/m_v0/icss_intc/icss1_m_v0_mode1_intc_mapping";
 
 let icss_intc_mapping_top_module = {
-    displayName: "ICSSM0 INTC MODE1 Signals Mapping",
+    displayName: "ICSSM1 INTC MODE1 Signals Mapping",
 
     templates: {
         "/drivers/system/system_config.h.xdt": {
@@ -49,25 +49,25 @@ let icss_intc_mapping_top_module = {
         },
     },
 
-    defaultInstanceName: "CONFIG_ICSS0_INTC_MODE1_MAPPING",
+    defaultInstanceName: "CONFIG_ICSS1_INTC_MODE1_MAPPING",
     config: [
         {
             name: "icssInstance",
             displayName: "ICSSM Instance",
-            default: "ICSSM0",
+            default: "ICSSM1",
             readOnly: true,
         },
         {
             name: "INTC MODE",
             displayName: "INTC MODE",
-            default:"ICSSM0_MII_RT_EVENT_ENABLE",
+            default:"ICSSM1_MII_RT_EVENT_ENABLE",
             readOnly: true,
         },
         {
             name: "event",
             displayName: "INTC Event Signal",
             default: "16",
-            options: soc.getEventConfigOptions("ICSSM0_MODE1"),
+            options: soc.getEventConfigOptions("ICSSM1_MODE1"),
             hidden:false,
             getDisabledOptions: (inst) => JSON.parse(inst.eventDisabledOptions),
         },

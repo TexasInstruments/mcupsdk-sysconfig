@@ -2,16 +2,31 @@
 let common = system.getScript("/common");
 let pinmux = system.getScript("/drivers/pinmux/pinmux");
 
+let device = common.getDeviceName();
+let is_am263x_soc = (device === "am263x-cc") ? true : false;
+let is_am263px_soc = (device === "am263px-cc") ? true : false;
+let is_am261x_soc = (device === "am261x-lp") ? true : false;
+
 function getInterfaceName(inst, peripheralName)
 {
-    let device = common.getDeviceName();
-    if(device === "am263px-cc")
+    if(is_am263px_soc)
     {
         return "PRU-ICSS";
     }
+    else if(is_am261x_soc)
+    {
+        if(inst.instance == "ICSSM0")
+        {
+            return "PRU-ICSS0"
+        }
+        if(inst.instance == "ICSSM1")
+        {
+            return "PRU-ICSS1"
+        }
+    }
     //assuming default device as am263x
-    //NOTE: when am261x is supported, logic should be changed
-    return inst.instance;
+    //NOTE: when new device is supported, logic should be changed
+    return "ICSSM";
 }
 
 function getPru0MuxMode(inst)
@@ -102,12 +117,16 @@ let pruicss_top_module = {
         {
             name: "instance",
             displayName: "Instance",
-            default: "ICSSM",
+            default: "ICSSM0",
             options: [
                 {
-                    name: "ICSSM",
+                    name: "ICSSM0",
                     displayName:"ICSSM0"
                 },
+                {
+                    name: "ICSSM1",
+                    displayName:"ICSSM1"
+                }
             ],
         },
         {
@@ -118,23 +137,23 @@ let pruicss_top_module = {
             options: [
                 {
                     name: "0",
-                    displayName: "GP mode",
-                    description: "General purpose input/output mode"
+                    displayName: "GP Mode",
+                    description: "General Purpose Input/Output Mode"
                 },
                 {
                     name: "1",
-                    displayName: "3 channel peripheral interface mode",
-                    description: "3 channel peripheral interface mode"
+                    displayName: "3 Channel Peripheral Interface Mode",
+                    description: "3 Channel Peripheral Interface Mode"
                 },
                 {
                     name: "2",
                     displayName: "MII mode",
-                    description: "Media interface mode"
+                    description: "Media Interface Mode"
                 },
                 {
                     name: "3",
                     displayName: "SD mode",
-                    description: "Sigma delta mode"
+                    description: "Sigma Delta Mode"
                 }
             ]
         },
@@ -146,23 +165,23 @@ let pruicss_top_module = {
             options: [
                 {
                     name: "0",
-                    displayName: "GP mode",
-                    description: "General purpose input/output mode"
+                    displayName: "GP Mode",
+                    description: "General Purpose Input/Output Mode"
                 },
                 {
                     name: "1",
-                    displayName: "3 channel peripheral interface mode",
-                    description: "3 channel peripheral interface mode"
+                    displayName: "3 Channel Peripheral Interface Mode",
+                    description: "3 Channel Peripheral Interface Mode"
                 },
                 {
                     name: "2",
                     displayName: "MII mode",
-                    description: "Media interface mode"
+                    description: "Media Interface Mode"
                 },
                 {
                     name: "3",
                     displayName: "SD mode",
-                    description: "Sigma delta mode"
+                    description: "Sigma Delta Mode"
                 }
             ]
         }

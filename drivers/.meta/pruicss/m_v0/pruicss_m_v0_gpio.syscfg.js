@@ -3,6 +3,11 @@ let common = system.getScript("/common");
 
 let pruicss_top_module_name = "/drivers/pruicss/m_v0/pruicss_m_v0_gpio";
 
+let device = common.getDeviceName();
+let is_am263x_soc = (device === "am263x-cc") ? true : false;
+let is_am263px_soc = (device === "am263px-cc") ? true : false;
+let is_am261x_soc = (device === "am261x-lp") ? true : false;
+
 let pruicss_top_module = {
     displayName: "PRU (ICSS) IO Settings",
 
@@ -11,6 +16,25 @@ let pruicss_top_module = {
             moduleName: pruicss_top_module_name,
         },
     },
+
+    config: [
+        {
+            name: "instance",
+            displayName: "Instance",
+            default: "ICSSM0",
+            options: [
+                {
+                    name: "ICSSM0",
+                    displayName:"ICSSM0"
+                },
+                {
+                    name: "ICSSM1",
+                    displayName:"ICSSM1"
+                }
+            ],
+            hidden:true
+        },
+    ],
 
     defaultInstanceName: "CONFIG_PRU_ICSS_IO",
     moduleInstances,
@@ -21,9 +45,8 @@ function validate(inst, report) {
 }
 
 function moduleInstances(instance) {
-    let device = common.getDeviceName();
     let modInstances = new Array();
-    if(device==="am263x-cc" || device==="am263-lp" || device==="am263px-cc" || device==="am263px-lp"){
+    if(is_am263x_soc || is_am263px_soc || is_am261x_soc){
         modInstances.push({
             name: "PruGPIO",
             displayName: "PRU (ICSS) GPIO",
@@ -31,6 +54,9 @@ function moduleInstances(instance) {
             useArray: true,
             minInstanceCount: 0,
             defaultInstanceCount: 0,
+            requiredArgs: {
+                instance: instance["instance"],
+            }
         });
         modInstances.push({
             name: "PruIepIO",
@@ -39,6 +65,9 @@ function moduleInstances(instance) {
             useArray: true,
             minInstanceCount: 0,
             defaultInstanceCount: 0,
+            requiredArgs: {
+                instance: instance["instance"],
+            }
         });
         modInstances.push({
             name: "PruUartIO",
@@ -47,6 +76,9 @@ function moduleInstances(instance) {
             useArray: true,
             minInstanceCount: 0,
             defaultInstanceCount: 0,
+            requiredArgs: {
+                instance: instance["instance"],
+            }
         });
     }
     return (modInstances);

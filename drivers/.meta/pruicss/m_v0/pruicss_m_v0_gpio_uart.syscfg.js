@@ -2,16 +2,30 @@
 let common = system.getScript("/common");
 let pinmux = system.getScript("/drivers/pinmux/pinmux");
 
+let device = common.getDeviceName();
+let is_am263x_soc = (device === "am263x-cc") ? true : false;
+let is_am263px_soc = (device === "am263px-cc") ? true : false;
+let is_am261x_soc = (device === "am261x-lp") ? true : false;
 function getInterfaceName(inst, peripheralName)
 {
-    let device = common.getDeviceName();
-    if(device === "am263px-cc")
+    if(is_am263px_soc)
     {
         return "PRU-ICSS_"+peripheralName;
     }
+    else if(is_am261x_soc)
+    {
+        if(inst.instance == "ICSSM0")
+        {
+            return "PRU-ICSS0-"+peripheralName;
+        }
+        if(inst.instance == "ICSSM1")
+        {
+            return "PRU-ICSS1-"+peripheralName;
+        }
+    }
     //assuming default device as am263x
-    //NOTE: when am261x is supported, logic should be changed
-    return `${inst.instance}_${peripheralName}`;
+    //NOTE: when new device is supported, logic should be changed
+    return "ICSSM_"+peripheralName;
 }
 
 function getInterfacePinList(inst, peripheralName)
@@ -89,12 +103,16 @@ let pruicss_top_module = {
         {
             name: "instance",
             displayName: "Instance",
-            default: "ICSSM",
+            default: "ICSSM0",
             options: [
                 {
-                    name: "ICSSM",
-                    displayName: "ICSSM0"
+                    name: "ICSSM0",
+                    displayName:"ICSSM0"
                 },
+                {
+                    name: "ICSSM1",
+                    displayName:"ICSSM1"
+                }
             ],
         },
     ],
