@@ -194,6 +194,18 @@ Board_open()
 ~~~
 
 `
+
+let skipInitDesc = `
+In some cases, a HW initialization of the flash device in the application may not be
+favourable. Typical example is an application with some code eXecuting In Place (XIP).
+In these cases, the flash will be configured and initialized by the bootloader and the
+application need not initialize it again. If this is the case in your application, please
+use this option to skip the HW init in the application.
+
+If this option is ticked, the Board_flashOpen ***will not*** initialize the flash HW.
+It will only update the book keeping structures in the software.
+`
+
 /* Protocol Configs */
 /* 1-1-1 */
 let protoToCfgMap = {
@@ -266,6 +278,7 @@ function changeFlashType(inst, ui)
     if(inst.flashType == "SERIAL_NOR")
     {
         ui.cmdWrsr.hidden = true;
+        ui.skipHwInit.hidden = false;
         ui.cmdPageLoad.hidden = true;
         ui.cmdPageProg.hidden = true;
         ui.srWriteProtectReg.hidden = true;
@@ -308,6 +321,7 @@ function changeFlashType(inst, ui)
         ui.badBlockCheck.hidden = true;
     } else if(inst.flashType == "SERIAL_NAND") {
         ui.cmdWrsr.hidden = false;
+        ui.skipHwInit.hidden = true;
         ui.cmdPageLoad.hidden = false;
         ui.cmdPageProg.hidden = false;
         ui.srWriteProtectReg.hidden = false;
@@ -352,6 +366,7 @@ function changeFlashType(inst, ui)
         ui.badBlockCheck.hidden = false;
     } else {
         ui.cmdWrsr.hidden = true;
+        ui.skipHwInit.hidden = false;
         ui.cmdPageLoad.hidden = true;
         ui.cmdPageProg.hidden = true;
         ui.srWriteProtectReg.hidden = true;
@@ -448,6 +463,12 @@ function getConfigurables()
                     inst.fname = "";
                 }
             }
+        },
+        {
+            name: "skipHwInit",
+            displayName: "Skip HW Init",
+            longDescription: skipInitDesc,
+            default: false,
         },
         {
             name: "flashType",
