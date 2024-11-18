@@ -1055,23 +1055,23 @@ let config = [
         {
             name: "nomBrp",
             displayName: "Nominal Baud Rate Pre-scaler",
-            default: 4,
+            default: 3,
             displayFormat: "dec",
             hidden: true,
             onChange: function (inst, ui) {
-                inst.canfdNomBitRate = (80000 / (inst.nomBrp) / (1 + (inst.nomPropSeg + inst.nomPseg1) + inst.nomPseg2))
-                inst.canfdSamplingNomBitRate = (100 * (1 + (inst.nomPropSeg + inst.nomPseg1)) / (1 + (inst.nomPropSeg + inst.nomPseg1) + inst.nomPseg2))
+                inst.canfdNomBitRate = (80000 / (1 + inst.nomBrp) / (1 + (1 + inst.nomPropSeg + inst.nomPseg1) + (1 + inst.nomPseg2)))
+                inst.canfdSamplingNomBitRate = (100 * (1 + (1 + inst.nomPropSeg + inst.nomPseg1)) / (1 + (1 + inst.nomPropSeg + inst.nomPseg1) + (1 + inst.nomPseg2)))
             }
         },
         {
             name: "nomPropSeg",
             displayName: "NominalProp Segment Value",
-            default: 8,
+            default: 7,
             displayFormat: "dec",
             hidden: true,
             onChange: function (inst, ui) {
-                inst.canfdNomBitRate = (80000 / (inst.nomBrp) / (1 + (inst.nomPropSeg + inst.nomPseg1) + inst.nomPseg2))
-                inst.canfdSamplingNomBitRate = (100 * (1 + (inst.nomPropSeg + inst.nomPseg1)) / (1 + (inst.nomPropSeg + inst.nomPseg1) + inst.nomPseg2))
+                inst.canfdNomBitRate = (80000 / (1 + inst.nomBrp) / (1 + (1 + inst.nomPropSeg + inst.nomPseg1) + (1 + inst.nomPseg2)))
+                inst.canfdSamplingNomBitRate = (100 * (1 + (1 + inst.nomPropSeg + inst.nomPseg1)) / (1 + (1 + inst.nomPropSeg + inst.nomPseg1) + (1 + inst.nomPseg2)))
             }
         },
         {
@@ -1081,26 +1081,26 @@ let config = [
             displayFormat: "dec",
             hidden: true,
             onChange: function (inst, ui) {
-                inst.canfdNomBitRate = (80000 / (inst.nomBrp) / (1 + (inst.nomPropSeg + inst.nomPseg1) + inst.nomPseg2))
-                inst.canfdSamplingNomBitRate = (100 * (1 + (inst.nomPropSeg + inst.nomPseg1)) / (1 + (inst.nomPropSeg + inst.nomPseg1) + inst.nomPseg2))
+                inst.canfdNomBitRate = (80000 / (1 + inst.nomBrp) / (1 + (1 + inst.nomPropSeg + inst.nomPseg1) + (1 + inst.nomPseg2)))
+                inst.canfdSamplingNomBitRate = (100 * (1 + (1 + inst.nomPropSeg + inst.nomPseg1)) / (1 + (1 + inst.nomPropSeg + inst.nomPseg1) + (1 + inst.nomPseg2)))
             }
         },
         {
             name: "nomPseg2",
             displayName: "NominalPhase Segment2 Value",
-            default: 5,
+            default: 4,
             displayFormat: "dec",
             hidden: true,
             onChange: function (inst, ui) {
-                inst.canfdNomBitRate = (80000 / (inst.nomBrp) / (1 + (inst.nomPropSeg + inst.nomPseg1) + inst.nomPseg2))
-                inst.canfdSamplingNomBitRate = (100 * (1 + (inst.nomPropSeg + inst.nomPseg1)) / (1 + (inst.nomPropSeg + inst.nomPseg1) + inst.nomPseg2))
-}
+                inst.canfdNomBitRate = (80000 / (1 + inst.nomBrp) / (1 + (1 + inst.nomPropSeg + inst.nomPseg1) + (1 + inst.nomPseg2)))
+                inst.canfdSamplingNomBitRate = (100 * (1 + (1 + inst.nomPropSeg + inst.nomPseg1)) / (1 + (1 + inst.nomPropSeg + inst.nomPseg1) + (1 + inst.nomPseg2)))
+            }
         },
         {
             name: "nomSjw",
             displayName: "Nominal (Re)Sync Jump Width",
             description: "Nominal (Re)Synchronization Jump Width",
-            default: 1,
+            default: 0,
             hidden: true,
             displayFormat: "dec",
         },
@@ -1132,11 +1132,11 @@ let config = [
             name: "dataBrp",
             displayName: "Prescalar Value for Data Bitrate",
             description: "Prescalar Value for Data Bitrate",
-            default: 2,
+            default: 1,
             hidden: true,
             displayFormat: "dec",
             onChange: function (inst, ui) {
-                inst.canfdDataBitRate = (80000 / (inst.dataBrp) / (1 + (inst.dataPropSeg + inst.dataPseg1) + inst.dataPseg2))
+                inst.canfdDataBitRate = (80000 / (inst.dataBrp + 1) / (1 + (1 + inst.dataPropSeg + inst.dataPseg1) + (1 + inst.dataPseg2)))
             }
         },
         {
@@ -1147,39 +1147,39 @@ let config = [
             hidden: true,
             displayFormat: "dec",
             onChange: function (inst, ui) {
-                inst.canfdDataBitRate = (80000 / (inst.dataBrp) / (1 + (inst.dataPropSeg + inst.dataPseg1) + inst.dataPseg2))
-                inst.canfdSamplingDataBitRate = (100 * (1 + (inst.dataPropSeg + inst.dataPseg1)) / (1 + (inst.dataPropSeg + inst.dataPseg1) + inst.dataPseg2))
+                inst.canfdDataBitRate = (80000 / (inst.dataBrp + 1) / (1 + (1 + inst.dataPropSeg + inst.dataPseg1) + (1 + inst.dataPseg2)))
+                inst.canfdSamplingDataBitRate = (100 * (1 + (1 + inst.dataPropSeg + inst.dataPseg1)) / (1 + (1 + inst.dataPropSeg + inst.dataPseg1) + (1 + inst.dataPseg2)))
             }
         },
         {
             name: "dataPseg1",
             displayName: "Phase Segment1 Value",
             description: "Phase Segment1 value for Data Bitrate",
-            default: 2,
+            default: 3,
             hidden: true,
             displayFormat: "dec",
             onChange: function (inst, ui) {
-                inst.canfdDataBitRate = (80000 / (inst.dataBrp) / (1 + (inst.dataPropSeg + inst.dataPseg1) + inst.dataPseg2))
-                inst.canfdSamplingDataBitRate = (100 * (1 + (inst.dataPropSeg + inst.dataPseg1)) / (1 + (inst.dataPropSeg + inst.dataPseg1) + inst.dataPseg2))
+                inst.canfdDataBitRate = (80000 / (inst.dataBrp + 1) / (1 + (1 + inst.dataPropSeg + inst.dataPseg1) + (1 + inst.dataPseg2)))
+                inst.canfdSamplingDataBitRate = (100 * (1 + (1 + inst.dataPropSeg + inst.dataPseg1)) / (1 + (1 + inst.dataPropSeg + inst.dataPseg1) + (1 + inst.dataPseg2)))
             }
         },
         {
             name: "dataPseg2",
             displayName: "Phase Segment2 Value",
             description: "Phase Segment2 value for Data Bitrate",
-            default: 3,
+            default: 0,
             hidden: true,
             displayFormat: "dec",
             onChange: function (inst, ui) {
-                inst.canfdDataBitRate = (80000 / (inst.dataBrp) / (1 + (inst.dataPropSeg + inst.dataPseg1) + inst.dataPseg2))
-                inst.canfdSamplingDataBitRate = (100 * (1 + (inst.dataPropSeg + inst.dataPseg1)) / (1 + (inst.dataPropSeg + inst.dataPseg1) + inst.dataPseg2))
+                inst.canfdDataBitRate = (80000 / (inst.dataBrp + 1) / (1 + (1 + inst.dataPropSeg + inst.dataPseg1) + (1 + inst.dataPseg2)))
+                inst.canfdSamplingDataBitRate = (100 * (1 + (1 + inst.dataPropSeg + inst.dataPseg1)) / (1 + (1 + inst.dataPropSeg + inst.dataPseg1) + (1 + inst.dataPseg2)))
             }
         },
         {
             name: "dataSjw",
             displayName: "Data Sync Jump Width",
             description: "(Re)Synchronization Jump Width for Data Bitrate ",
-            default: 1,
+            default: 0,
             hidden: true,
             displayFormat: "dec",
         },
