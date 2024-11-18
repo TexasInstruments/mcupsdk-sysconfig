@@ -127,7 +127,7 @@ function getConfigurables()
 let ethphy_module_name = "/board/ethphy/ethphy";
 
 let ethphy_module = {
-    displayName: "ETHPHY",
+    displayName: "ETHPHY (ICSS-EMAC)",
 
     templates: {
         "/board/board/board_open_close.c.xdt": {

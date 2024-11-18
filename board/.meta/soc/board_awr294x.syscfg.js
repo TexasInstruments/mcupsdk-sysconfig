@@ -4,12 +4,16 @@ const driverVer = {
     "flash": {
         version: "v1",
     },
+    "ethphy": {
+        version: "awr294x",
+    },
 };
 
 const topModules_r5f = [
     "/board/led/led",
     "/board/eeprom/eeprom",
     "/board/flash/flash",
+    "/board/ethphy_cpsw_icssg/ethphy_cpsw_icssg",
 ];
 
 const topModules_c66 = [

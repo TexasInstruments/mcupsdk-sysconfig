@@ -13,13 +13,17 @@ const driverVer = {
     },
     "ram": {
         version: "v0",
-    }
+    },
+    "ethphy": {
+        version: "am263x",
+    },
 };
 
 const topModules_main = [
       "/board/eeprom/eeprom",
       "/board/led/led",
       "/board/flash/flash",
+      "/board/ethphy_cpsw_icssg/ethphy_cpsw_icssg",
       "/board/ethphy/ethphy",
       "/board/ram/ram",
 ];

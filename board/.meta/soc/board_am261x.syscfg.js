@@ -5,12 +5,16 @@ const driverVer = {
     "flash": {
         version: "v2",
     },
+    "ethphy": {
+        version: "am261x",
+    },
 };
 
 const topModules_main = [
       "/board/eeprom/eeprom",
       "/board/led/led",
       "/board/flash/flash",
+      "/board/ethphy_cpsw_icssg/ethphy_cpsw_icssg",
       "/board/ethphy/ethphy",
       "/board/pmic/pmic",
       "/board/ioexp/ioexp"

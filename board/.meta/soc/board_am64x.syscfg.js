@@ -11,10 +11,14 @@ const driverVer = {
     "ram": {
         version: "v0",
     },
+    "ethphy": {
+        version: "am64x",
+    },
 };
 
 const topModules = [
     "/board/eeprom/eeprom",
+    "/board/ethphy_cpsw_icssg/ethphy_cpsw_icssg",
     "/board/ethphy/ethphy",
     "/board/flash/flash",
     "/board/ram/ram",
