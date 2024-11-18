@@ -14,6 +14,7 @@
     SOC_controlModuleLockMMR(`config.lockUnlockDomain`, `config.lockUnlockPartition`);
 % }
 % if(cpuName.match(/a53/)) {
+#if defined(SMP_FREERTOS)
     /* Initialize Clock from Core0 only */
     if(0 == Armv8_getCoreId())
     {
@@ -32,4 +33,10 @@
 % if(cpuName.match(/a53/)) {
 
     }
+#else
+
+    /* initialize Clock */
+    ClockP_init();
+
+#endif
 % }

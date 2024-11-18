@@ -48,7 +48,7 @@
 void Board_init(void)
 {
 % if(cpuName.match(/a53/)) {
-
+#if defined(SMP_FREERTOS)
     if(0 == Armv8_getCoreId())
     {
 
@@ -61,13 +61,22 @@ void Board_init(void)
 % if(cpuName.match(/a53/)) {
 
     }
+#else
+% for(let subTemplate of args) {
+    % if (subTemplate.board_init) {
+`system.getTemplate(subTemplate.board_init)()`
+    % }
 % }
+#endif 
+% }
+
 }
 
 void Board_deinit(void)
 {
-% if(cpuName.match(/a53/)) {
 
+% if(cpuName.match(/a53/)) {
+#if defined(SMP_FREERTOS)
     if(0 == Armv8_getCoreId())
     {
 
@@ -80,5 +89,13 @@ void Board_deinit(void)
 % if(cpuName.match(/a53/)) {
 
     }
+#else
+% for(let subTemplate of args) {
+    % if (subTemplate.board_deinit) {
+`system.getTemplate(subTemplate.board_deinit)()`
+    % }
 % }
+#endif
+% }
+
 }

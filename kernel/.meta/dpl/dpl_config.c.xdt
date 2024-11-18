@@ -32,11 +32,22 @@
 /*
  * Auto generated file
  */
+%%{
+    let socName = system.getScript('/common').getSocName();
+    let cpuName = system.getScript('/common').getSelfSysCfgCoreName();
+%%}
 #include <stdio.h>
 #include <drivers/soc.h>
 #include <kernel/dpl/AddrTranslateP.h>
 #include "ti_dpl_config.h"
 #include "ti_drivers_config.h"
+
+% if(socName == "am64x") {
+    % if(cpuName.match(/a53/)) {
+#include <kernel/nortos/dpl/a53/SpinlockP_armv8.h>
+uint32_t gSwSpinLockBuff[NO_OF_SW_SPIN_LOCKS] __attribute__((aligned(128), section(".bss.amp_shared_mem")));
+    % }
+% }
 
 `system.getTemplate("/kernel/dpl/hwi.c.xdt")()`
 % for(let subTemplate of args) {

@@ -11,7 +11,7 @@
     let cpuName = system.getScript('/common').getSelfSysCfgCoreName();
 %%}
 % if(cpuName.match(/a53/)) {
-
+#if defined(SMP_FREERTOS)
     /* Initialize Debug module from Core0 only */
     if(0 == Armv8_getCoreId())
     {
@@ -56,4 +56,42 @@
 
 % if(cpuName.match(/a53/)) {
     }
+#else
+    /* Debug log init */
+% if((instance.enableLogZoneError) && (soc != "f29h85x") && (cpuName.match(/hsm/))) {
+    DebugP_logZoneEnable(DebugP_LOG_ZONE_ERROR);
+% }
+% if((instance.enableLogZoneWarning) && (soc != "f29h85x") && (cpuName.match(/hsm/))) {
+    DebugP_logZoneEnable(DebugP_LOG_ZONE_WARN);
+% }
+% if((instance.enableLogZoneInfo) && (soc != "f29h85x") && (cpuName.match(/hsm/))) {
+    DebugP_logZoneEnable(DebugP_LOG_ZONE_INFO);
+% }
+% if(instance.enableSharedMemLog && !instance.enableSharedMemLogReader) {
+    /* Initialize shared memory writer on this CPU */
+    DebugP_shmLogWriterInit(&gDebugShmLog[`module.getCpuID()`], `module.getCpuID()`);
+% }
+% if(((ipc_instance && ipc_instance.enableLinuxIpc === true) || instance.enableMemLog) && (soc != "f29h85x")) {
+    /* Initialize linux trace log writer */
+    DebugP_memLogWriterInit(`module.getCpuID()`);
+% }
+% if (instance.enableMemLog && (soc == "f29h85x") && (cpuName.match(/hsm/))){
+    (void) memset((void *)MEMLOG_BASE_ADDRESS, 0x0U, MEMLOG_BUFFER_LENGTH);
+    gMemLogAddress = MEMLOG_BASE_ADDRESS;
+    memLogInit();
+%}
+% if(instance.enableSharedMemLog && instance.enableSharedMemLogReader) {
+    /* Shared memory reader is enabled on this core, in this case, logs go straight to
+     * to the enabled console (e.g CCS or UART), instead of shared memory
+     */
+% }
+% if(instance.enableSharedMemLogReader) {
+    /* Initialize shared memory reader on this CPU */
+    DebugP_shmLogReaderInit(gDebugShmLog, CSL_CORE_ID_MAX);
+% }
+% if(instance.enableUartLog) {
+    /* UART console to use for reading input */
+    DebugP_uartSetDrvIndex(`instance.uartLog.$name`);
+% }
+#endif
 % }

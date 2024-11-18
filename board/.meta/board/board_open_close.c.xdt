@@ -41,7 +41,7 @@ int32_t Board_driversOpen(void)
 {
     int32_t status = SystemP_SUCCESS;
 % if(cpuName.match(/a53/)) {
-
+#if defined(SMP_FREERTOS)
     if(0 == Armv8_getCoreId())
     {
 
@@ -54,15 +54,23 @@ int32_t Board_driversOpen(void)
 % if(cpuName.match(/a53/)) {
 
     }
-
+#else
+% for(let subTemplate of args) {
+    % if (subTemplate.board_open) {
+`system.getTemplate(subTemplate.board_open)()`
+    % }
 % }
+#endif
+% }
+
     return status;
 }
 
 void Board_driversClose(void)
 {
-% if(cpuName.match(/a53/)) {
 
+% if(cpuName.match(/a53/)) {
+#if defined(SMP_FREERTOS)
     if(0 == Armv8_getCoreId())
     {
 
@@ -75,7 +83,13 @@ void Board_driversClose(void)
 % if(cpuName.match(/a53/)) {
 
     }
-
+#else
+% for(let subTemplate of args) {
+    % if (subTemplate.board_close) {
+`system.getTemplate(subTemplate.board_close)()`
+    % }
+% }
+#endif
 % }
 }
 

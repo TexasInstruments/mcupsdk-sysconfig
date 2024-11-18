@@ -140,6 +140,7 @@ else{
         "r5fss1-0": "TISCI_HOST_ID_MAIN_1_R5_1",
         "r5fss1-1": "TISCI_HOST_ID_MAIN_1_R5_3",
         "a53ss0-0": "TISCI_HOST_ID_A53_2",
+        "a53ss0-1": "TISCI_HOST_ID_A53_2",
     };
 }
 
