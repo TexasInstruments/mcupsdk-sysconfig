@@ -3,7 +3,7 @@
     "flashSize": 8388608,
     "flashPageSize": 256,
     "flashManfId": "0x9D",
-    "flashDeviceId": "0x5B17",
+    "flashDeviceId": "0x5A17",
     "flashBlockSize": 131072,
     "flashSectorSize": 4096,
     "cmdBlockErase3B": "0xD8",
