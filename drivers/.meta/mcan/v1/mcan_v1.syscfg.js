@@ -106,6 +106,34 @@ function onChangeUseAddCon(inst, ui)
     }
 }
 
+function onChangeFilterConfig(inst, ui)
+{
+    if((inst.fdMode == true))
+    {
+        ui.standardFilterID1.hidden = true; 
+        ui.standardFilterID2.hidden = true;
+        ui.standardFilterEleConfig.hidden = true;
+        ui.standardFilterType.hidden = true;
+
+        ui.extendedFilterID1.hidden = false; 
+        ui.extendedFilterID2.hidden = false;
+        ui.extendedFilterEleConfig.hidden = false;
+        ui.extendedFilterType.hidden = false;
+    }
+    else
+    {
+        ui.standardFilterID1.hidden = false; 
+        ui.standardFilterID2.hidden = false;
+        ui.standardFilterEleConfig.hidden = false;
+        ui.standardFilterType.hidden = false;
+
+        ui.extendedFilterID1.hidden = true; 
+        ui.extendedFilterID2.hidden = true;
+        ui.extendedFilterEleConfig.hidden = true;
+        ui.extendedFilterType.hidden = true;
+    }
+}
+
 function onChangeMsgRamConfig(inst, ui)
 {
     if (inst.msgRamConfig) {
@@ -248,6 +276,18 @@ function onChangeHideHLDParams(inst, ui)
         ui.samplingNomBitRate.hidden = false;
         ui.dataBitRate.hidden = false;
         ui.samplingDataBitRate.hidden = false;
+
+        ui.extendedFilterID1.hidden = true; 
+        ui.extendedFilterID2.hidden = true;
+        ui.extendedFilterEleConfig.hidden = true;
+        ui.extendedFilterType.hidden = true;
+
+        ui.standardFilterID1.hidden = true; 
+        ui.standardFilterID2.hidden = true;
+        ui.standardFilterEleConfig.hidden = true;
+        ui.standardFilterType.hidden = true;
+        ui.txMemType.hidden = true;
+        ui.rxMemType.hidden = true;
     }
     else {
         ui.operMode.hidden = false;
@@ -351,6 +391,23 @@ function onChangeHideHLDParams(inst, ui)
         ui.samplingNomBitRate.hidden = true;
         ui.dataBitRate.hidden = true;
         ui.samplingDataBitRate.hidden = true;
+
+        if(inst.fdMode == true)
+        {
+            ui.extendedFilterID1.hidden = false; 
+            ui.extendedFilterID2.hidden = false;
+            ui.extendedFilterEleConfig.hidden = false;
+            ui.extendedFilterType.hidden = false;
+        }
+        else
+        {
+            ui.standardFilterID1.hidden = false; 
+            ui.standardFilterID2.hidden = false;
+            ui.standardFilterEleConfig.hidden = false;
+            ui.standardFilterType.hidden = false;
+        }
+        ui.txMemType.hidden = false;
+        ui.rxMemType.hidden = false;
     }
 }
 
@@ -514,6 +571,7 @@ let config = [
                 description : 'Whether CAN flexible data mode to be enabled.',
                 hidden      : true,
                 default     : true,
+                onChange    : onChangeFilterConfig,
             },
             {
                 name: "brsEnable",
@@ -694,6 +752,7 @@ let config = [
                 description : 'Message RAM Watchdog Counter preload Value.',
                 hidden      : true,
                 default     : 0xFF,
+                displayFormat: "hex",
             },
             {
                 name            : "errInterruptEnable",
@@ -729,6 +788,7 @@ let config = [
                 description : 'Transmitter Delay Compensation Filter Window Length (CAN Module Clk Cycles).',
                 hidden      : true,
                 default     : 0xA,
+                displayFormat: "hex",
             },
             {
                 name        : "tdcConfig_tdco",
@@ -736,6 +796,7 @@ let config = [
                 description : 'Transmitter Delay Compensation Offset (CAN Module Clk Cycles).',
                 hidden      : true,
                 default     : 0x6,
+                displayFormat: "hex",
             },
         ]
     },
@@ -771,6 +832,7 @@ let config = [
                 description : 'Time stamp Prescaler Value.',
                 hidden      : true,
                 default     : 0xF,
+                displayFormat: "hex",
             },
             {
                 name        : "tsSelect",
@@ -803,6 +865,7 @@ let config = [
                 description : 'Start value of the Timeout Counter.',
                 hidden      : true,
                 default     : 0xFFFF,
+                displayFormat: "hex",
             },
             {
                 name        : "timeoutCntEnable",
@@ -852,6 +915,154 @@ let config = [
         ]
     },
     {
+        name: "GROUP_STANDARDFILTERCONFIG",
+        displayName: "Standard Message ID Filter Configuration",
+        longDescription: "These parameters configure the MCAN Standard message ID filter element.",
+        config: [
+            {
+                name        : "standardFilterID1",
+                displayName : "Standard Filter ID 1",
+                description : 'Standard Filter ID 1.',
+                hidden      : true,
+                default     : 0x29E,
+                displayFormat: "hex",
+            },
+            {
+                name        : "standardFilterID2",
+                displayName : "Standard Filter ID 2",
+                description : 'Standard Filter ID 2.',
+                hidden      : true,
+                default     : 0x29E,
+                displayFormat: "hex",
+            },
+            {
+                name        : "standardFilterEleConfig",
+                displayName : "Standard Filter Element Configuration",
+                description : 'Standard Filter Element Configuration.',
+                hidden      : true,
+                default     : "MCAN_STD_FILT_ELEM_BUFFER",
+                options     : [
+                    {name: "MCAN_STD_FILT_ELEM_DISABLE",            displayName : "Disable filter element"},
+                    {name: "MCAN_STD_FILT_ELEM_FIFO0",              displayName : "Store in Rx FIFO 0 if filter matches"},
+                    {name: "MCAN_STD_FILT_ELEM_FIFO1",              displayName : "Store in Rx FIFO 1 if filter matches"},
+                    {name: "MCAN_STD_FILT_ELEM_REJECT",             displayName : "Reject ID if filter matches"},
+                    {name: "MCAN_STD_FILT_ELEM_SET_PRIORITY",       displayName : "Set priority if filter matches"},
+                    {name: "MCAN_STD_FILT_ELEM_SET_PRIORITY_FIFO0", displayName : "Set priority and store in FIFO 0 if filter matches"},
+                    {name: "MCAN_STD_FILT_ELEM_SET_PRIORITY_FIFO1", displayName : "Set priority and store in FIFO 1 if filter matches"},
+                    {name: "MCAN_STD_FILT_ELEM_BUFFER",             displayName : "Store into Rx Buffer or as debug message"},
+                ],
+            },
+            {
+                name        : "standardFilterType",
+                displayName : "Standard Filter Type",
+                description : 'Standard Filter Type.',
+                hidden      : true,
+                default     : "MCAN_STD_FILT_TYPE_RANGE",
+                options     : [
+                    {name: "MCAN_STD_FILT_TYPE_RANGE",   displayName : "Range filter from SFID1 to SFID2 (SFID2 ≥ SFID1)"},
+                    {name: "MCAN_STD_FILT_TYPE_DUAL",    displayName : "Dual ID filter for SFID1 or SFID2"},
+                    {name: "MCAN_STD_FILT_TYPE_CLASSIC", displayName : "Classic filter: SFID1 = filter, SFID2 = mask"},
+                    {name: "MCAN_STD_FILT_TYPE_DISABLE", displayName : "Filter element disabled"},
+                ],
+            },
+
+        ],
+    },
+    {
+        name: "GROUP_EXTENDEDFILTERCONFIG",
+        displayName: "Extended Message ID Filter Configuration",
+        longDescription: "These parameters configure the MCAN Extended message ID filter element.",
+        config: [
+            {
+                name        : "extendedFilterID1",
+                displayName : "Extended Filter ID 1",
+                description : 'Extended Filter ID 1.',
+                hidden      : true,
+                default     : 0x29E,
+                displayFormat: "hex",
+            },
+            {
+                name        : "extendedFilterID2",
+                displayName : "Extended Filter ID 2",
+                description : 'Extended Filter ID 2.',
+                hidden      : true,
+                default     : 0x29E,
+                displayFormat: "hex",
+            },
+            {
+                name        : "extendedFilterEleConfig",
+                displayName : "Extended Filter Element Configuration",
+                description : 'Extended Filter Element Configuration.',
+                hidden      : true,
+                default     : "MCAN_EXT_FILT_ELEM_BUFFER",
+                options     : [
+                    {name: "MCAN_EXT_FILT_ELEM_DISABLE",            displayName : "Disable filter element"},
+                    {name: "MCAN_EXT_FILT_ELEM_FIFO0",              displayName : "Store in Rx FIFO 0 if filter matches"},
+                    {name: "MCAN_EXT_FILT_ELEM_FIFO1",              displayName : "Store in Rx FIFO 1 if filter matches"},
+                    {name: "MCAN_EXT_FILT_ELEM_REJECT",             displayName : "Reject ID if filter matches"},
+                    {name: "MCAN_EXT_FILT_ELEM_SET_PRIORITY",       displayName : "Set priority if filter matches"},
+                    {name: "MCAN_EXT_FILT_ELEM_SET_PRIORITY_FIFO0", displayName : "Set priority and store in FIFO 0 if filter matches"},
+                    {name: "MCAN_EXT_FILT_ELEM_SET_PRIORITY_FIFO1", displayName : "Set priority and store in FIFO 1 if filter matches"},
+                    {name: "MCAN_EXT_FILT_ELEM_BUFFER",             displayName : "Store into Rx Buffer or as debug message"},
+                ],
+            },
+            {
+                name        : "extendedFilterType",
+                displayName : "Extended Filter Type",
+                description : 'Extended Filter Type.',
+                hidden      : true,
+                default     : "MCAN_EXT_FILT_TYPE_RANGE",
+                options     : [
+                    {name: "MCAN_EXT_FILT_TYPE_RANGE",   displayName : "Range filter from EFID1 to EFID2 (EFID2 ≥ EFID1)"},
+                    {name: "MCAN_EXT_FILT_TYPE_DUAL",    displayName : "Dual ID filter for EFID1 or EFID2"},
+                    {name: "MCAN_EXT_FILT_TYPE_CLASSIC", displayName : "Classic filter: EFID1 = filter, EFID2 = mask"},
+                    {name: "MCAN_EXT_FILT_TYPE_DISABLE", displayName : "Filter element disabled"},
+                ],
+            },
+        ],
+    },
+    {
+        name: "GROUP_TXRXMEMTYPE",
+        displayName: "Tx/Rx Msg Storage type",
+        longDescription: "These parameters configure the MCAN Tx/RX Message Storage Type. Refer MCAN_MemType",
+        config: [
+            {
+                name        : "txMemType",
+                displayName : "Tx Message Storage Type",
+                description : 'Tx Message Storage Type. BUFFER Or FIFO',
+                hidden      : true,
+                options     : [
+                    {
+                        name: "BUF",
+                        displayName: "BUFFER",
+                    },
+                    {
+                        name: "FIFO",
+                        displayName: "FIFO",
+                    },
+                ],
+                default     : "BUF",
+            },
+            {
+                name        : "rxMemType",
+                displayName : "Rx Message Storage Type",
+                description : 'Rx Message Storage Type. BUFFER Or FIFO',
+                hidden      : true,
+                options     : [
+                    {
+                        name: "BUF",
+                        displayName: "BUFFER",
+                    },
+                    {
+                        name: "FIFO",
+                        displayName: "FIFO",
+                    },
+                ],
+                default     : "BUF",
+            }
+        ],
+    },
+    {
         name: "GROUP_MSGRAMCONFIG",
         displayName: "Message RAM Configuration",
         longDescription: "These parameters configure the MCAN Message RAM for multiple sections. Make sure that none of the sections are overlapping by comparing their start address and end address with each other.",
@@ -870,6 +1081,7 @@ let config = [
                 description : 'Standard ID Filter List Start Address.',
                 hidden      : true,
                 default     : 0x0,
+                displayFormat: "hex",
             },
             {
                 name        : "lss",
@@ -877,6 +1089,7 @@ let config = [
                 description : 'No of Standard ID Filters.',
                 hidden      : true,
                 default     : 0x1,
+                displayFormat: "hex",
             },
             {
                 name        : "flesa",
@@ -884,6 +1097,7 @@ let config = [
                 description : 'Extended ID Filter List Start Address.',
                 hidden      : true,
                 default     : 48,
+                displayFormat: "hex",
             },
             {
                 name        : "lse",
