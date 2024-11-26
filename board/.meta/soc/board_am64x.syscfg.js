@@ -31,6 +31,7 @@ const topModules_a53 = [
     "/board/led/led",
 	"/board/flash/flash",
     "/board/eeprom/eeprom",
+    "/board/ethphy_cpsw_icssg/ethphy_cpsw_icssg",
 ];
 
 exports = {
