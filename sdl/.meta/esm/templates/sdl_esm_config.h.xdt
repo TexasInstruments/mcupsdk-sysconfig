@@ -1,0 +1,6 @@
+/*
+ * ESM
+ */
+#include <sdl/sdl_esm.h>
+
+int32_t SDL_esmSetup(void);

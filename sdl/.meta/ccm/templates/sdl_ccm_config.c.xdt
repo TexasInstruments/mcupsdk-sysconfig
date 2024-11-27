@@ -1,0 +1,30 @@
+%%{
+    let module = system.modules['/sdl/ccm/ccm'];
+%%}
+/*
+ * CCM
+ */
+
+int32_t SDL_ccmSetup()
+{
+    int32_t retValue = 0;
+    SDL_ErrType_t result;
+
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+
+    /* Initialize CCM */
+    result = SDL_CCM_init(`config.ccmInst`,0);
+    if (result != SDL_PASS) {
+        retValue = -1;
+    }
+    /* Verify the config */
+    result = SDL_CCM_verifyConfig(`config.ccmInst`);
+    if (result != SDL_PASS) {
+        retValue = -1;
+    }
+% }
+
+    return retValue;
+}

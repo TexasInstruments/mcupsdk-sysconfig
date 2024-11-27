@@ -1,0 +1,116 @@
+%%{
+    let module = system.modules['/sdl/dcc/dcc'];
+%%}
+/*
+ * DCC
+ */
+#include <kernel/dpl/HwiP.h>
+
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+    % if (instance.mode == "Single-shot") {
+        % let voidType = "void";
+HwiP_Object gDCC_`config.name`_HwiObj;
+extern void `instance.callback`(void *arg);
+    % }
+% }
+
+/*
+ * Set up DCC Continuous Mode Instances and Common Config for Single-shot Instances.
+ * After calling this, SDL_DCC_enable should be used to start the DCC for continuous instances.
+ */
+int32_t SDL_dccSetup()
+{
+    int32_t retVal = 0;
+    SDL_DCC_config configParams;
+    HwiP_Params hwipParams;
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+    % if (instance.mode == "Continuous") {
+
+    /* Configure `config.name` for `instance.mode` Mode */
+    configParams.mode = SDL_DCC_MODE_CONTINUOUS;
+    % let clkSrcs = instance["clkSrc0"];
+    configParams.clk0Seed = `clkSrcs.clkSrc0Seed`;
+    configParams.clk1Seed = `clkSrcs.clkSrc1Seed`;
+    configParams.clk0ValidSeed = `clkSrcs.clkSrc0ValidSeed`;
+    configParams.clk0Src = `clkSrcs.input0Src`;
+    configParams.clk1Src = `clkSrcs.input1Src`;
+
+    retVal = SDL_DCC_configure(SDL_DCC_INST_`config.name`, &configParams);
+    if (SDL_PASS == retVal)
+    {
+        retVal = SDL_DCC_verifyConfig(SDL_DCC_INST_`config.name`, &configParams);
+    }
+    else
+    {
+        retVal = SDL_EFAIL;
+    }
+    % }
+
+    % if (instance.mode == "Single-shot") {
+    /* Configure the interrupt for `config.name`, used for DONE interrupt in Single-shot Mode */
+    HwiP_Params_init(&hwipParams);
+
+    hwipParams.args = (void *)`instance.callbackArg`;
+    hwipParams.intNum = `config.dccDoneIntr`;
+
+    hwipParams.callback = `instance.callback`;
+
+    HwiP_construct(&gDCC_`config.name`_HwiObj, &hwipParams);
+    % }
+    % else {
+    /* Enable ERROR interrupt */
+    SDL_DCC_enableIntr(SDL_DCC_INST_`config.name`, SDL_DCC_INTERRUPT_ERR);
+    % }
+% }
+
+    return retVal;
+}
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+    % if (instance.mode == "Single-shot") {
+
+/*
+ * Configure `config.name` for `instance.mode` Mode - After calling one of these APIs, SDL_DCC_enable should be used to start the DCC.
+ * SDL_dccSetup() should be called also before enabling the DCC.
+ */
+        % for (let j = 0; j < instance.oneShotInsts; j++) {
+            % let clkSrcs = instance["clkSrc"+j];
+
+int32_t SDL_dccSingleShot`config.name`Setup`j`()
+{
+    int32_t retVal = 0;
+    SDL_DCC_config configParams;
+
+    configParams.mode = SDL_DCC_MODE_SINGLE_SHOT;
+    configParams.clk0Seed = `clkSrcs.clkSrc0Seed`;
+    configParams.clk1Seed = `clkSrcs.clkSrc1Seed`;
+    configParams.clk0ValidSeed = `clkSrcs.clkSrc0ValidSeed`;
+    configParams.clk0Src = `clkSrcs.input0Src`;
+    configParams.clk1Src = `clkSrcs.input1Src`;
+
+    retVal = SDL_DCC_configure(SDL_DCC_INST_`config.name`, &configParams);
+    if (SDL_PASS == retVal)
+    {
+        retVal = SDL_DCC_verifyConfig(SDL_DCC_INST_`config.name`, &configParams);
+    }
+    else
+    {
+        retVal = SDL_EFAIL;
+    }
+
+    /* Enable ERROR interrupt */
+    SDL_DCC_enableIntr(SDL_DCC_INST_`config.name`, SDL_DCC_INTERRUPT_ERR);
+
+    /* Enable DONE interrupt(only for single shot mode) */
+    SDL_DCC_enableIntr(SDL_DCC_INST_`config.name`, SDL_DCC_INTERRUPT_DONE);
+
+    return retVal;
+}
+        % }
+    % }
+% }

@@ -1,0 +1,20 @@
+%%{
+    let module = system.modules['/sdl/dcc/dcc'];
+%%}
+/*
+ * DCC
+ */
+#include <sdl/sdl_dcc.h>
+
+int32_t SDL_dccSetup(void);
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+    % if (instance.mode == "Single-shot") {
+        % for (let j = 0; j < instance.oneShotInsts; j++) {
+            % let clkSrcs = instance["clkSrc"+j];
+
+int32_t SDL_dccSingleShot`config.name`Setup`j`(void);
+        % }
+    % }
+% }

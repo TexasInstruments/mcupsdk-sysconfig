@@ -1,0 +1,9 @@
+%%{
+    let module = system.modules['/sdl/stc/stc'];
+%%}
+/*
+ * STC
+ */
+#include <sdl/sdl_stc.h>
+
+int32_t SDL_stcRun(void);

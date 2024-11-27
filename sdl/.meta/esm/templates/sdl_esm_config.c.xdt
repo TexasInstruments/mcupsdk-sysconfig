@@ -1,0 +1,96 @@
+%%{
+    let module = system.modules['/sdl/esm/esm'];
+%%}
+/*
+ * ESM
+ */
+/* ESM atrributes */
+
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+SDL_ESM_config esmInitConfig_`config.name` =
+{
+    % let esmEvents = config.esmEvents;
+    % let enableConfig = new Array();
+    % let enableConfigPrio = new Array();
+    % let enableConfigPin = new Array();
+    % let groupConfig = 0;
+    % let groupConfigPrio = 0;
+    % let groupConfigPin = 0;
+    % let last_grp_num = 0;
+    % for(let j = 0; j < config.esmEvents.length; j++) {
+        % let evt = config.esmEvents[j].eventNum;
+        % let grp_num = Math.floor(evt / 32);
+        % if (grp_num > last_grp_num) {
+            % enableConfig.push("0x"+(groupConfig >>> 0).toString(16).toUpperCase().padStart(8,"0")+"U");
+            % enableConfigPrio.push("0x"+(groupConfigPrio >>> 0).toString(16).toUpperCase().padStart(8,"0")+"U");
+            % enableConfigPin.push("0x"+(groupConfigPin >>> 0).toString(16).toUpperCase().padStart(8,"0")+"U");
+            % groupConfig = 0;
+            % groupConfigPrio = 0;
+            % groupConfigPin = 0;
+            % last_grp_num = grp_num;
+        % }
+        % for (let k = 0; k < instance.hiPrioEvts.length; k++) {
+            % if (instance.hiPrioEvts[k] == config.esmEvents[j].name) {
+                % groupConfig = groupConfig | (1 << config.esmEvents[j].eventNum);
+                % groupConfigPrio = groupConfigPrio | (1 << config.esmEvents[j].eventNum);
+            % }
+        % }
+        % for (let k = 0; k < instance.loPrioEvts.length; k++) {
+            % if (instance.loPrioEvts[k] == config.esmEvents[j].name) {
+                % groupConfig = groupConfig | (1 << config.esmEvents[j].eventNum);
+                % groupConfigPrio = groupConfigPrio & (~(1 << config.esmEvents[j].eventNum));
+            % }
+        % }
+        % for (let k = 0; k < instance.errPinEvts.length; k++) {
+            % if (instance.errPinEvts[k] == config.esmEvents[j].name) {
+                % groupConfigPin = groupConfigPin | (1 << config.esmEvents[j].eventNum);
+            % }
+        % }
+    % }
+    % enableConfig.push("0x"+(groupConfig >>> 0).toString(16).toUpperCase().padStart(8,"0")+"U");
+    % enableConfigPrio.push("0x"+(groupConfigPrio >>> 0).toString(16).toUpperCase().padStart(8,"0")+"U");
+    % enableConfigPin.push("0x"+(groupConfigPin >>> 0).toString(16).toUpperCase().padStart(8,"0")+"U");
+
+    /* Self test error config */
+    .esmErrorConfig = {1u, 8u},
+    /* Enabled ESM Events (0: disabled, 1: enabled) */
+    .enableBitmap = {`enableConfig`},
+    /* Priority of Enabled Events (0: low, 1: high) */
+    .priorityBitmap = {`enableConfigPrio`},
+    /* Error Pin Configuration (0: Event Does not trigger pin,
+     *                          1: Event Does trigger pin */
+    .errorpinBitmap = {`enableConfigPin`},
+};
+%}
+
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+extern int32_t `instance.esmCallback`(SDL_ESM_Inst esmInst,
+                                      SDL_ESM_IntType esmIntrType,
+                                      uint32_t grpChannel,
+                                      uint32_t index,
+                                      uint32_t intSrc,
+                                      void *arg);
+% }
+
+int32_t SDL_esmSetup()
+{
+    int32_t retVal;
+    int32_t status = SDL_PASS;
+
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+    retVal = SDL_ESM_init(`config.esmInst`, &esmInitConfig_`config.name`,
+                          `instance.esmCallback`, `instance.esmCallbackArgs`);
+    if (retVal != SDL_PASS)
+    {
+        status = SDL_EFAIL;
+    }
+%}
+
+    return status;
+}

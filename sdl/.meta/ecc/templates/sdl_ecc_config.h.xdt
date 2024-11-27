@@ -1,0 +1,6 @@
+/*
+ * ECC
+ */
+#include <sdl/sdl_ecc.h>
+
+int32_t SDL_eccSetup(void);

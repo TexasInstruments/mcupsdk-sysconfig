@@ -1,0 +1,78 @@
+%%{
+    let module = system.modules['/sdl/ecc/ecc'];
+    let module_esm = system.modules['/sdl/esm/esm'];
+%%}
+/*
+ * ECC
+ */
+/* ECC atrributes */
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+    % let subtypeList = new Array();
+    % for(let j = 0; j < config.eccEndpts.length; j++) {
+        % let eptNum = config.eccEndpts[j].endptNum;
+        % let ept_inst = instance["eccEpt"+eptNum]
+        % if (ept_inst.ena_dis == true) {
+            % subtypeList.push(config.eccEndpts[j].name);
+        % }
+    % }
+    % if (subtypeList.length != 0) {
+static SDL_ECC_MemSubType eccSubTypeList_`config.name`[`subtypeList.length`] =
+{
+    `subtypeList.join(',\n    ')`
+};
+
+static SDL_ECC_InitConfig_t eccInitConfig_`config.name` =
+{
+    .numRams = `subtypeList.length`,
+    /**< Number of Rams ECC is enabled */
+    .pMemSubTypeList = &(eccSubTypeList_`config.name`[0]),
+    /**< Sub type list */
+};
+    % }
+% }
+
+int32_t SDL_eccSetup()
+{
+    int32_t retValue = 0;
+    SDL_ErrType_t result;
+
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+    % let config_esm = module_esm.getInstanceConfig(instance.esmConfig);
+
+    if (retValue == 0) {
+        /* Initialize ECC */
+        result = SDL_ECC_init(`config.eccInst`, &eccInitConfig_`config.name`);
+        if (result != SDL_PASS) {
+            /* print error and quit */
+            DebugP_log("\r\nSDL_eccSetup: Error initializing `config.eccInst` ECC: result = %d\r\n", result);
+
+            retValue = -1;
+        }
+    }
+% }
+% for(let i = 0; i < module_esm.$instances.length; i++) {
+    % let esm_instance = module_esm.$instances[i];
+    % for(let j = 0; j < module.$instances.length; j++) {
+        % let instance = module.$instances[j];
+        % let config_esm = module_esm.getInstanceConfig(instance.esmConfig);
+        % if(config_esm.inst == esm_instance.inst) {
+
+    /* Initialize ECC callbacks within `config_esm.esmInst` */
+    result = SDL_ECC_initEsm(`config_esm.esmInst`);
+    if (result != SDL_PASS) {
+        /* print error and quit */
+        DebugP_log("sdl_eccSetup: Error initializing ECC callback for `config_esm.esmInst`: result = %d\r\n", result);
+
+        retValue = -1;
+    }
+            % break;
+        % }
+    % }
+% }
+
+    return retValue;
+}
