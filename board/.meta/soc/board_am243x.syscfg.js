@@ -21,14 +21,21 @@ const topModules = [
     "/board/ethphy_cpsw_icssg/ethphy_cpsw_icssg",
     "/board/ethphy/ethphy",
     "/board/flash/flash",
-    "/board/ram/ram",
     "/board/led/led",
+];
 
+const topModules_alv = [
+    "/board/ram/ram",
 ];
 
 exports = {
     getTopModules: function() {
-        return topModules;
+
+        let topModules_main = topModules;
+        if(common.getSocPackage() == "ALV") {
+            topModules_main = topModules_main.concat(topModules_alv);
+        }
+        return topModules_main;
     },
     getDriverVer: function(driverName) {
         return driverVer[driverName].version;

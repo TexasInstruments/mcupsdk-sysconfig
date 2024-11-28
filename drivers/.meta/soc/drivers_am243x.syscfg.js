@@ -92,7 +92,6 @@ const topModules_main = [
     "/drivers/adc/adc",
     "/drivers/bootloader/bootloader",
     "/drivers/crc/crc",
-    "/drivers/ddr/ddr",
     "/drivers/ecap/ecap",
     "/drivers/epwm/epwm",
     "/drivers/eqep/eqep",
@@ -101,7 +100,6 @@ const topModules_main = [
     "/drivers/fsi_rx/fsi_rx",
     "/drivers/fsi_tx/fsi_tx",
     "/drivers/gpio/gpio",
-    "/drivers/gpmc/gpmc",
     "/drivers/gtc/gtc",
     "/drivers/i2c/i2c",
     "/drivers/ipc/ipc",
@@ -109,13 +107,18 @@ const topModules_main = [
     "/drivers/mcspi/mcspi",
     "/drivers/mmcsd/mmcsd",
     "/drivers/ospi/ospi",
-    "/drivers/pcie/pcie",
     "/drivers/pruicss/pruicss",
     "/drivers/qos/qos",
     "/drivers/uart/uart",
     "/drivers/udma/udma",
     "/drivers/watchdog/watchdog",
     "/drivers/gp_timer/gp_timer",
+];
+
+const topModules_main_alv = [
+    "/drivers/ddr/ddr",
+    "/drivers/gpmc/gpmc",
+    "/drivers/pcie/pcie",
 ];
 
 const topModules_mcu = [
@@ -158,7 +161,9 @@ exports = {
         if(common.getSelfSysCfgCoreName().includes("m4f")) {
             topModules = topModules_mcu;
         }
-
+        else if(common.getSocPackage() == "ALV") {
+            topModules = topModules.concat(topModules_main_alv);
+        }
         return topModules;
     },
     getDriverVer: function(driverName) {
