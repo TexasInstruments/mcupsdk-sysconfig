@@ -105,17 +105,6 @@ for (let aqOutputIndex in device_peripheral.EPWM_ActionQualifierOutputModule)
             default     : device_peripheral.EPWM_ActionQualifierSWOutput[0].name,
             options     : device_peripheral.EPWM_ActionQualifierSWOutput,
         },
-        {
-            name: "epwmActionQualifier_" + aqOutput.name + "_usedEvents",
-            displayName : "Events Configured For " + aqOutput.displayName,
-            description : '',
-            hidden      : false,
-            default     : [],
-            minSelections: 0,
-            options     : device_peripheral.EPWM_ActionQualifierOutputEvent,
-            onChange    : onChangeUsedOutputs,
-        }
-
     ]
 
     for (let aqEventIndex in device_peripheral.EPWM_ActionQualifierOutputEvent)
