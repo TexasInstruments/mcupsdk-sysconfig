@@ -70,26 +70,14 @@ const mpu_firewall_config = [
         name: "OSPI0_CFG_SLV",
         regionCount: 4,
         memSpace : [
-            { startAddr: 0x53800000, size: 0x1000 },
-            { startAddr: 0x53801000, size: 0x1000 },
-            { startAddr: 0x53802000, size: 0x1000 },
-            { startAddr: 0x53806000, size: 0x1000 },
-            { startAddr: 0x53807000, size: 0x1000 },
-            { startAddr: 0x53808000, size: 0x1000 },
-            { startAddr: 0x5380B000, size: 0x1000 },
-            { startAddr: 0x5380C000, size: 0x1000 },
-            { startAddr: 0x5380D000, size: 0x1000 },
-            { startAddr: 0x5380E000, size: 0x1000 },
-            { startAddr: 0x5380F000, size: 0x1000 },
+            { startAddr: 0x53800000, size: 0x10000 },
         ]
     },
     {
         name: "OSPI1_CFG_SLV",
         regionCount: 4,
         memSpace : [
-            { startAddr: 0x53A00000, size: 0x1000 },
-            { startAddr: 0x53A01000, size: 0x1000 },
-            { startAddr: 0x53A02000, size: 0x1000 },
+            { startAddr: 0x53A00000, size: 0x3000 },
         ]
     },
     {
@@ -121,17 +109,10 @@ const mpu_firewall_config = [
         ]
     },
     {
-        name: "R5SS0_SLV",
+        name: "R5SS0_CONFIG_SLV",
         regionCount: 8,
         memSpace : [
-            { startAddr: 0x53000000, size: 0x210 },
-            { startAddr: 0x53003000, size: 0x210 },
-            { startAddr: 0x53210000, size: 0x3C },
-            { startAddr: 0x53500000, size: 0xAC },
-            { startAddr: 0x53020000, size: 0x2000 },
-            { startAddr: 0x53024000, size: 0x2000 },
-            { startAddr: 0x53212000, size: 0x400 },
-            { startAddr: 0x53213000, size: 0x400 },
+            { startAddr: 0x53000000, size: 0x300000 },
         ]
     },
 ];
