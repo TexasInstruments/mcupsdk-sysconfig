@@ -45,7 +45,7 @@ MCAN_ExtMsgIDFilterElement exFilterConfig`i` =
 %}
 % else
 %{
-MCAN_ExtMsgIDFilterElement standFilterConfig`i` =
+MCAN_StdMsgIDFilterElement standFilterConfig`i` =
 {
     .sfid1  = `config.standardFilterID1`U,
     .sfec   = `config.standardFilterEleConfig`,
