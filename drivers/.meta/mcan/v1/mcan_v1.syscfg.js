@@ -937,7 +937,7 @@ let config = [
             },
             {
                 name        : "standardFilterEleConfig",
-                displayName : "Standard Filter Element Configuration",
+                displayName : "Standard Filter Element Config",
                 description : 'Standard Filter Element Configuration.',
                 hidden      : true,
                 default     : "MCAN_STD_FILT_ELEM_BUFFER",
@@ -991,7 +991,7 @@ let config = [
             },
             {
                 name        : "extendedFilterEleConfig",
-                displayName : "Extended Filter Element Configuration",
+                displayName : "Extended Filter Element Config",
                 description : 'Extended Filter Element Configuration.',
                 hidden      : true,
                 default     : "MCAN_EXT_FILT_ELEM_BUFFER",
