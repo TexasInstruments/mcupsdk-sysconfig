@@ -103,7 +103,7 @@ function getConfigArr() {
 function getDefaultClkRate() {
     let uart_input_clk_freq = 192000000;
 
-    if(common.getR5Freq() == "500MHz")
+    if(common.getDefaultR5Freq() == "500MHz")
     {
         uart_input_clk_freq = 160000000;
     }
@@ -114,7 +114,7 @@ function getDefaultClkRate() {
 function getDefaultClkSource() {
     let uart_input_clock_source = "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT0";
 
-    if(common.getR5Freq() == "500MHz")
+    if(common.getDefaultR5Freq() == "500MHz")
     {
         uart_input_clock_source = "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT2";
     }
