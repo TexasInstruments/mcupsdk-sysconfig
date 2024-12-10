@@ -3,8 +3,6 @@ let pinmux = system.getScript("/drivers/pinmux/pinmux");
 let hwi    = system.getScript("/kernel/dpl/hwi.js");
 let soc    = system.getScript(`/drivers/mmcsd/soc/mmcsd_${common.getSocName()}`);
 
-let gInputClkFreq = soc.getDefaultConfig().inputClkFreq;
-
 function getConfigArr() {
 	return soc.getConfigArr();
 }
@@ -103,8 +101,6 @@ function getClockFrequencies(inst) {
 
 let mmcsd_module_name = "/drivers/mmcsd/mmcsd";
 
-let gClockSourceOptions = soc.getClockSourceOptions();
-
 let mmcsd_module = {
 	displayName: "MMCSD",
 	templates: {
@@ -140,21 +136,16 @@ let mmcsd_module = {
             displayName: "Clock Source",
             default: "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT1",
             description: "Clock Source",
-            options: gClockSourceOptions,
+            options: soc.getClockSourceOptions(),
             onChange: function (inst, ui) {
-                // if(inst.inputClkFreq == "MMC") {
                 inst.inputClkFreq = soc.getClockValue(inst.clockSource);
-                // }
             },
         },
 		{
 			name: "inputClkFreq",
 			displayName: "Input Clock Frequency (Hz)",
-			default: gInputClkFreq,
-            // options: function(inst) {
-            //     return soc.getClockValue(inst.clockSource);
-            // },
-            hidden: true,
+			default: soc.getDefaultConfig().inputClkFreq,
+            hidden: false,
 		},
 		{
 			name: "cardType",
@@ -328,10 +319,6 @@ let mmcsd_module = {
             description: "SDK Infra",
             hidden: false,
         },
-
-
-
-
 	],
     moduleInstances: moduleInstances,
 	getInstanceConfig,
