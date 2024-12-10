@@ -17,8 +17,6 @@
     % let instance = module.$instances[i];
     % let period;
 #define `instance.$name.toUpperCase()` (`i`U)
-%if((device === "am64x-evm") || (device === "am243x-evm") || (device === "am243x-lp"))
-%{
 %%{
     if(instance.coreClk == 333333333)
     {
@@ -43,6 +41,11 @@
 %%}
 #define `instance.$name.toUpperCase()`_IEP_CLK_FREQ_HZ      (`instance.iepClk`U)
 #define `instance.$name.toUpperCase()`_IEP_CLK_PERIOD_NSEC  (`period`)
-%}
+%%{
+
+    period = (1000000000/instance.uartClk)
+%%}
+#define `instance.$name.toUpperCase()`_UART_CLK_FREQ_HZ      (`instance.uartClk`U)
+#define `instance.$name.toUpperCase()`_UART_CLK_PERIOD_NSEC  (`period`)
 %}
 #define CONFIG_PRUICSS_NUM_INSTANCES (`module.$instances.length`U)

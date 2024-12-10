@@ -13,12 +13,44 @@ function getConfigArr() {
 function getInstanceConfig(moduleInstance) {
     let configArr = getConfigArr();
     let config = configArr.find(o => o.name === moduleInstance.instance);
-
+    if(is_am261x_soc)
+    {
+        /*am261x: changing Core clock id based on user selection*/
+        if(moduleInstance.coreClk == 200*1000000)
+        {
+            config.clockFrequencies[0].clkId = "SOC_RcmPeripheralClockSource_SYS_CLK";
+            config.clockFrequencies[0].clkRate = 200*1000000
+        }
+        else
+        {
+            config.clockFrequencies[0].clkId = "SOC_RcmPeripheralClockSource_DPLL_ETH_HSDIV0_CLKOUT0";  
+            config.clockFrequencies[0].clkRate = 225*1000000  
+        }
+    }else{       
+       /*am263x/am263px : changing Uart clock id based on user selection*/
+       if(moduleInstance.uartClk == 192*1000000)
+       {
+           config.clockFrequencies[0].clkId = "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT1";
+           config.clockFrequencies[0].clkRate = 192*1000000
+       }
+       else
+       {
+           config.clockFrequencies[0].clkId = "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT0";  
+           config.clockFrequencies[0].clkRate = 160*1000000  
+       }  
+    }
     return {
         ...config,
         ...moduleInstance,
     };
 };
+
+function getClockFrequencies(inst) {
+
+    let instConfig = getInstanceConfig(inst);
+
+    return instConfig.clockFrequencies;
+}
 
 function getMdioBaseAddr(pruicssInstance)
 {
@@ -43,6 +75,50 @@ function getConfigurables()
                     },
                 ],
             },
+            {
+                name: "coreClk",
+                displayName: "Core Clk (Hz)",
+                default: 200*1000000,
+                options: [
+                    {
+                        name: 200*1000000,
+                        description: "ICSS core clock is derived from SYS_CLK(200 MHz)"
+                    }
+                ],
+            }, 
+            {
+                name: "iepClk",
+                displayName: "IEP Clk (Hz)",
+                default: 200*1000000,
+                options: [
+                    {
+                        name: 200*1000000,
+                        description: "ICSS iep clock is derived from SYS_CLK(200 MHz or 250 MHz)"
+                    }
+                ],
+            }, 
+            {
+                name: "uartClk",
+                displayName: "Uart Clk (Hz)",
+                default: 192*1000000,
+                options: [
+                    {
+                        name: 160*1000000,
+                        description: "UART clock is derived from DPLL_PER_HSDIV0_CLKOUT0(160 MHz)"
+                    },
+                    {
+                        name: 192*1000000,
+                        description: "UART clock is derived from DPLL_PER_HSDIV0_CLKOUT1(192 MHz)"
+                    }
+                ],
+            },  
+            {
+                name: "iepSyncMode",
+                displayName: "IEP Clk Sync Mode",
+                longDescription: "In this mode the async IEP bridge is bypassed and the source of IEP CLK is ICSSM0_CORE_CLK. This means all PRU-ICSSM0 IOs which use internal IEP clock will use internal core clock.",
+                default: false,
+            },
+            
         )
     } else {
         config.push(
@@ -58,6 +134,86 @@ function getConfigurables()
                         name: "ICSSM1",
                     },
                 ],
+            },
+            {
+                name: "coreClk",
+                displayName: "Core Clk (Hz)",
+                default: 225*1000000,
+                options: [
+                    {
+                        name: 200*1000000,
+                        description: "ICSS core clock is derived from SYS_CLK(200 MHz or 250 MHz) but 250 MHz is not supported with ICSSMn"
+                    },
+                    {
+                        name: 225*1000000,
+                        description: "ICSS core clock is derived from DPLL_ETH_HSDIV0_CLKOUT0(450 MHz) with divider 2"
+                    }
+                ],
+            }, 
+            {
+                name: "iepClk",
+                displayName: "IEP Clk (Hz)",
+                default: 250*1000000,
+                options: [
+                    {
+                        name: 200*1000000,
+                        description: "ICSS iep clock is derived from SYS_CLK(200 MHz or 250 MHz)"
+                    },
+                    {
+                        name: 250*1000000,
+                        description: "ICSS iep clock is derived from SYS_CLK(200 MHz or 250 MHz)"
+                    },
+                    {
+                        name: 225*1000000,
+                        description: "ICSS iep clock is derived from Core Clk in IEP Clk sync mode"
+                    }
+                ],
+                onChange: (inst, ui) => {
+                    if(inst.iepClk == 225*1000000)
+                    {
+                        inst.iepSyncMode = true,
+                        inst.coreClk = 225*1000000,
+                        ui.iepClk.readOnly =  true,
+                        ui.coreClk.readOnly =  true
+                    }
+                    if(inst.iepClk == 250*1000000)
+                    {
+                        /*changing the core clock to 225 MHz, when iep clock is 250 MHz*/
+                        inst.coreClk = 225*1000000
+                        ui.coreClk.readOnly = true
+                    }
+                },
+            }, 
+            {
+                name: "uartClk",
+                displayName: "Uart Clk (Hz)",
+                default: 160*1000000,
+                options: [
+                    {
+                        name: 160*1000000,
+                        description: "UART clock is derived from DPLL_PER_HSDIV0_CLKOUT2(160 MHz)"
+                    }
+                ],
+            }, 
+            {
+                name: "iepSyncMode",
+                displayName: "IEP Clk Sync Mode",
+                longDescription: "In this mode the async IEP bridge is bypassed and the source of IEP CLK is ICSSMn_CORE_CLK. This means all PRU-ICSSMn IOs which use internal IEP clock will use internal core clock.",
+                default: false,
+                onChange: (inst, ui) => {
+                    if(inst.iepSyncMode)
+                    {
+                        inst.iepClk = 225*1000000,
+                        inst.coreClk = 225*1000000,
+                        ui.iepClk.readOnly =  true,
+                        ui.coreClk.readOnly =  true
+                    }
+                    else
+                    {
+                        ui.iepClk.readOnly =  false,
+                        ui.coreClk.readOnly =  false
+                    }     
+                },
             },
         )
     }
@@ -100,6 +256,9 @@ let pruicss_top_module = {
         "/drivers/system/system_config.h.xdt": {
             driver_config: "/drivers/pruicss/templates/pruicss.h.xdt",
         },
+        "/drivers/system/power_clock_config.c.xdt": {
+            moduleName: pruicss_top_module_name,
+        }
     },
 
     defaultInstanceName: "CONFIG_PRU_ICSS",
@@ -108,6 +267,7 @@ let pruicss_top_module = {
     validate: validate,
     getInstanceConfig,
     getMdioBaseAddr,
+    getClockFrequencies
 };
 function moduleInstances(instance) {
     let modInstances = new Array();
@@ -156,6 +316,37 @@ function moduleInstances(instance) {
 }
 function validate(inst, report) {
     common.validate.checkSameInstanceName(inst, report);
+    if(is_am261x_soc){
+        let r5ClockmoduleInstance = system.modules["/kernel/dpl/clock"].$static
+        let r5ClockFreqInMHz = r5ClockmoduleInstance.r5ClockFreq, tempr5ClockFreqInMHz; 
+        let r5ClockFreqInHz,errorMsg;
+        if(r5ClockFreqInMHz == "400MHz")
+        {
+            r5ClockFreqInHz = 400*1000000;
+            tempr5ClockFreqInMHz = "500MHz"
+        }
+        else
+        {
+            r5ClockFreqInHz = 500*1000000;
+            tempr5ClockFreqInMHz = "400MHz"
+        }
+
+        if((((r5ClockFreqInHz/2)!=inst.coreClk) && inst.coreClk != 225*1000000 ))
+        {
+           errorMsg = "change R5F clock frequency to " + tempr5ClockFreqInMHz + " to configure Core Clock at " + inst.coreClk + " in Syconfig Clock module"
+           /*report error on icss and r5f clock modules*/
+           report.logError(errorMsg, r5ClockmoduleInstance);
+           report.logError(errorMsg, inst); 
+        } 
+
+        if(((r5ClockFreqInHz/2)!=inst.iepClk && inst.iepClk!=225*1000000))
+        {
+            errorMsg = "change R5F clock frequency to " + tempr5ClockFreqInMHz + " to configure IEP Clock at " + inst.iepClk + " in Syconfig Clock module"
+            /*report error on icss and r5f clock modules*/
+            report.logError(errorMsg, r5ClockmoduleInstance);
+            report.logError(errorMsg, inst);    
+        }
+    }
 }
 
 exports = pruicss_top_module;

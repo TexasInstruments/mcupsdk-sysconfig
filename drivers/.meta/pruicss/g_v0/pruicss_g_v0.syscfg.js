@@ -112,6 +112,16 @@ let pruicss_top_module = {
             },
         },
         {
+            name: "uartClk",
+            displayName: "Uart Clk (Hz)",
+            default: 192*1000000,
+            options: [
+                {
+                    name: 192*1000000
+                }
+            ],
+        }, 
+        {
             name: "pruclkParentId",
             default: 1,
             hidden: true,
