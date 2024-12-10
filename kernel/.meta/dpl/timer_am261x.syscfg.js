@@ -102,7 +102,7 @@ function getTimerClockSourceHz(clkSource) {
         break;
         case "SYS_CLK":
             clkSourceHz = 200*1000000;
-            if(common.getR5Freq() == "500MHz")
+            if(common.getDefaultR5Freq() == "500MHz")
             {
                 clkSourceHz = 250*1000000;
             }
@@ -121,7 +121,7 @@ function getTimerClockSourceHz(clkSource) {
         break;
         case "DPLL_PER_HSDIV0_CLKOUT0":
             clkSourceHz = 192*1000000;
-            if(common.getR5Freq() == "500MHz")
+            if(common.getDefaultR5Freq() == "500MHz")
             {
                 clkSourceHz = 240*1000000;
             }

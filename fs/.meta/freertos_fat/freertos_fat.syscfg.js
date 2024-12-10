@@ -58,7 +58,7 @@ function moduleInstances(inst) {
     		break;
     	case "EMMC":
             moduleSelectName = "MMC0";
-            if ((common.getSocName() == "am263x") || (common.getSocName() == "am263px") || (common.getSocName() == "am65x"))
+            if ((common.getSocName() == "am263x") || (common.getSocName() == "am263px") || (common.getSocName() == "am261x") || (common.getSocName() == "am65x"))
             {
                 moduleSelectName = "MMC";
             }
