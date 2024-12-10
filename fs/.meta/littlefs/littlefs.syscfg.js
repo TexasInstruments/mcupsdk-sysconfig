@@ -41,7 +41,7 @@ let littlefs_module = {
             name: "blockCount",
             displayName: "Block Count",
             description: "Number of erasable blocks on the device.",
-            default: 64,
+            default: getDefaultBlockCount(),
             hidden: false,
         },
         {
@@ -121,6 +121,19 @@ function moduleInstances(inst) {
     }
 
     return (modInstances);
+}
+
+function getDefaultBlockCount() {
+    let defaultBlockCount = 64;
+    
+    if(system.deviceData.device == "AM263Px") {
+        if(system.deviceData.package == "ZCZ_F")
+        {
+            defaultBlockCount = 32;
+        }
+    }
+
+    return defaultBlockCount;
 }
 
 function hexValidate(myStr) {
