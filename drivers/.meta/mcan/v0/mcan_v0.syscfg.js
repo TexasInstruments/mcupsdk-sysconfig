@@ -1269,6 +1269,7 @@ let config = [
         {
             name: "nomBrp",
             displayName: "Nominal Baud Rate Pre-scaler",
+            description: "To get Actual prescaler value add 1 to Nominal Baud Rate Pre-scaler.",
             default: 3,
             displayFormat: "dec",
             hidden: true,
@@ -1280,6 +1281,7 @@ let config = [
         {
             name: "nomPropSeg",
             displayName: "NominalProp Segment Value",
+            description: "TSEG1 = 1 + NominalProp Segment Value + NominalPhase Segment1 Value",
             default: 7,
             displayFormat: "dec",
             hidden: true,
@@ -1291,6 +1293,7 @@ let config = [
         {
             name: "nomPseg1",
             displayName: "NominalPhase Segment1 Value",
+            description: "TSEG1 = 1 + NominalProp Segment Value + NominalPhase Segment1 Value",
             default: 6,
             displayFormat: "dec",
             hidden: true,
@@ -1302,6 +1305,7 @@ let config = [
         {
             name: "nomPseg2",
             displayName: "NominalPhase Segment2 Value",
+            description: "To get Actual nomPseg2 value add 1 to NominalPhase Segment2 Value. TSEG2 = 1 + NominalPhase Segment2 Value",
             default: 4,
             displayFormat: "dec",
             hidden: true,
@@ -1313,7 +1317,7 @@ let config = [
         {
             name: "nomSjw",
             displayName: "Nominal (Re)Sync Jump Width",
-            description: "Nominal (Re)Synchronization Jump Width",
+            description: "Nominal (Re)Synchronization Jump Width. To get actual Data Sync jump Width add 1 to Nominal Sync Jump Width",
             default: 0,
             hidden: true,
             displayFormat: "dec",
@@ -1330,8 +1334,8 @@ let config = [
                               CAN clock is functional clock of CAN module (80MHz by default in TDA4) \t
                               BRP: Bit rate pre-scalar value. \t
                               TSEG1, TSEG2: Time segments used to define sampling point for the bit \t
-                              TSEG1: Time before the sampling point = Prop_Seg + Phase_Seg1 \t
-                              TSEG2: Time after the sampling point = Phase_Seg2.`,
+                              TSEG1: Time before the sampling point = 1 + Prop_Seg + Phase_Seg1 \t
+                              TSEG2: Time after the sampling point = 1 + Phase_Seg2.`,
         },
         {
             name: "canfdSamplingNomBitRate",
@@ -1345,7 +1349,7 @@ let config = [
         {
             name: "dataBrp",
             displayName: "Prescalar Value for Data Bitrate",
-            description: "Prescalar Value for Data Bitrate",
+            description: "To get Actual prescaler value add 1 to Prescalar Value for Data Bitrate.",
             default: 1,
             hidden: true,
             displayFormat: "dec",
@@ -1356,7 +1360,7 @@ let config = [
         {
             name: "dataPropSeg",
             displayName: "Prop Segment Value",
-            description: "Prop Segment value for Data Bitrate",
+            description: "Prop Segment value for Data Bitrate. TSEG1 = 1 + Prop Segment Value + Phase Segment1 Value",
             default: 2,
             hidden: true,
             displayFormat: "dec",
@@ -1368,7 +1372,7 @@ let config = [
         {
             name: "dataPseg1",
             displayName: "Phase Segment1 Value",
-            description: "Phase Segment1 value for Data Bitrate",
+            description: "Phase Segment1 value for Data Bitrate. TSEG1 = 1 + Prop Segment Value + Phase Segment1 Value",
             default: 3,
             hidden: true,
             displayFormat: "dec",
@@ -1380,7 +1384,7 @@ let config = [
         {
             name: "dataPseg2",
             displayName: "Phase Segment2 Value",
-            description: "Phase Segment2 value for Data Bitrate",
+            description: "Phase Segment2 value for Data Bitrate. TSEG2 = 1 + Phase Segment2 Value",
             default: 0,
             hidden: true,
             displayFormat: "dec",
@@ -1392,7 +1396,7 @@ let config = [
         {
             name: "dataSjw",
             displayName: "Data Sync Jump Width",
-            description: "(Re)Synchronization Jump Width for Data Bitrate ",
+            description: "(Re)Synchronization Jump Width for Data Bitrate. To get actual Data Sync jump Width add 1 to Data Sync Jump Width",
             default: 0,
             hidden: true,
             displayFormat: "dec",
