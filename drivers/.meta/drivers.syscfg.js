@@ -62,6 +62,11 @@ else
                 alwaysRun: true,
             },
             {
+                name: "/drivers/pinmux/pinmux.csv.xdt",
+                outputPath: "pinmux.csv",
+                alwaysRun: common.getSocName().includes('am26'),
+            },
+            {
                 name: "/drivers/system/power_clock_config.c.xdt",
                 outputPath: "ti_power_clock_config.c",
                 alwaysRun: true,
