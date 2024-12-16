@@ -691,7 +691,7 @@ function moduleInstances(inst) {
 
     if( inst.sdkInfra == "HLD")
     {
-        if(common.getSocName() == "am64x" | common.getSocName() == "am243x" ){
+        if(common.getSocName() == "am64x" | common.getSocName() == "am243x" | common.getSocName() == "am65x"){
             modInstances.push({
                 name: "child",
                 moduleName: '/drivers/ospi/v0/ospi_v0_template',
@@ -716,7 +716,7 @@ function moduleInstances(inst) {
     }
     else
     {
-        if(common.getSocName() == "am64x" | common.getSocName() == "am243x" ){
+        if(common.getSocName() == "am64x" | common.getSocName() == "am243x" | common.getSocName() == "am65x"){
             modInstances.push({
                 name: "child",
                 moduleName: '/drivers/ospi/v0/ospi_v0_lld_template',
