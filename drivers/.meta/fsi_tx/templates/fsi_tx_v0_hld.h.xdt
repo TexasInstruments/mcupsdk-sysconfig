@@ -43,6 +43,13 @@
 % }
 #define CONFIG_FSI_TX_NUM_INSTANCES (`module.$instances.length`U)
 
+/* FSI TXCLK - 50 MHz */
+#define FSI_APP_TXCLK_FREQ              (50 * 1000 * 1000)
+/* FSI module input clock - 500 MHz */
+#define FSI_APP_CLK_FREQ                (CONFIG_FSI_TX0_CLK)
+/* FSI TX prescaler value for TXCLKIN of 100 MHz. / 2 is provided as TXCLK = TXCLKIN/2 */
+#define FSI_APP_TX_PRESCALER_VAL        (FSI_APP_CLK_FREQ / FSI_APP_TXCLK_FREQ / 2U)
+
 /*  FSITx objects - initialized by the driver */
 FSI_Tx_Object gFsiTxObj[CONFIG_FSI_TX_NUM_INSTANCES];
 /*  FSITx global configuration array */

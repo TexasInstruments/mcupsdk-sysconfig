@@ -1,6 +1,7 @@
 
 let common = system.getScript("/common");
 let pinmux = system.getScript("/drivers/pinmux/pinmux");
+let hwi = system.getScript("/kernel/dpl/hwi.js");
 let soc = system.getScript(`/drivers/fsi_rx/soc/fsi_rx_${common.getSocName()}`);
 
 function getStaticConfigArr() {
@@ -52,8 +53,9 @@ function getPeripheralPinNames(inst) {
     return [ "CLK", "D0", "D1" ];
 }
 
-function validate(instance, report) {
-    /* None. Verified by SYSCFG based on selected pin */
+function validate(inst, report) {
+    common.validate.checkNumberRange(inst, report, "intrPriority", 0, hwi.getHwiMaxPriority(), "dec");
+    common.validate.checkNumberRange(inst, report, "frameDataSize", 1, 16, "dec");
 }
 
 let fsi_rx_module_name = "/drivers/fsi_rx/fsi_rx";
@@ -138,12 +140,16 @@ function getConfigurables()
                     ui.intrEnable.hidden = false;
                     ui.operMode.hidden = true;
                     ui.intrPriority.hidden = true;
+                    ui.numLane.hidden = true;
+                    ui.frameDataSize.hidden = true;
                 }
                 else if(inst.sdkInfra == "HLD")
                 {
                     ui.intrEnable.hidden = true;
                     ui.operMode.hidden = false;
                     ui.intrPriority.hidden = false;
+                    ui.numLane.hidden = false;
+                    ui.frameDataSize.hidden = false;
                 }
             },
         },
@@ -187,7 +193,30 @@ function getConfigurables()
             displayName: "Interrupt Priority",
             default: 4,
             hidden: true,
-            description: `Interrupt Priority: 0 (highest)`,
+            description: `Interrupt Priority: 0 (highest) to ${hwi.getHwiMaxPriority()} (lowest)`,
+        },
+        {
+            name: "numLane",
+            displayName: "Number of Lanes",
+            default: "FSI_DATA_WIDTH_1_LANE",
+            hidden: true,
+            options: [
+                {
+                    name: "FSI_DATA_WIDTH_1_LANE",
+                    displayName: "FSI_DATA_WIDTH_1_LANE"
+                },
+                {
+                    name: "FSI_DATA_WIDTH_2_LANE",
+                    displayName: "FSI_DATA_WIDTH_2_LANE"
+                },
+            ],
+        },
+        {
+            name: "frameDataSize",
+            displayName: "Frame data size",
+            default: "16",
+            hidden: true,
+            description: `Frame data size: 1 to 16`,
         },
     )
     return config;

@@ -1,6 +1,7 @@
 
 let common = system.getScript("/common");
 let pinmux = system.getScript("/drivers/pinmux/pinmux");
+let hwi = system.getScript("/kernel/dpl/hwi.js");
 let soc = system.getScript(`/drivers/fsi_tx/soc/fsi_tx_${common.getSocName()}`);
 
 function getStaticConfigArr() {
@@ -65,7 +66,9 @@ function getClockFrequencies(inst) {
 }
 
 function validate(inst, report) {
-    /* None */
+    common.validate.checkNumberRange(inst, report, "intrPriority", 0, hwi.getHwiMaxPriority(), "dec");
+    common.validate.checkNumberRange(inst, report, "frameDataSize", 1, 16, "dec");
+    common.validate.checkNumberRange(inst, report, "userData", 0, 255, "dec");
 }
 
 let fsi_tx_module_name = "/drivers/fsi_tx/fsi_tx";
@@ -142,12 +145,22 @@ function getConfigurables()
                     ui.intrEnable.hidden = false;
                     ui.operMode.hidden = true;
                     ui.intrPriority.hidden = true;
+                    ui.frameType.hidden = true;
+                    ui.frameTag.hidden = true;
+                    ui.numLane.hidden = true;
+                    ui.frameDataSize.hidden = true;
+                    ui.userData.hidden = true;
                 }
                 else if(inst.sdkInfra == "HLD")
                 {
                     ui.intrEnable.hidden = true;
                     ui.operMode.hidden = false;
                     ui.intrPriority.hidden = false;
+                    ui.frameType.hidden = false;
+                    ui.frameTag.hidden = false;
+                    ui.numLane.hidden = false;
+                    ui.frameDataSize.hidden = false;
+                    ui.userData.hidden = false;
                 }
             },
         },
@@ -191,7 +204,139 @@ function getConfigurables()
             displayName: "Interrupt Priority",
             default: 4,
             hidden: true,
-            description: `Interrupt Priority: 0 (highest)`,
+            description:  `Interrupt Priority: 0 (highest) to ${hwi.getHwiMaxPriority()} (lowest)`,
+        },
+        {
+            name: "userData",
+            displayName: "User Data",
+            default: 7,
+            hidden: true,
+            description: `User Data: 0 to 255`,
+        },
+        {
+            name: "numLane",
+            displayName: "Number of Lanes",
+            default: "FSI_DATA_WIDTH_1_LANE",
+            hidden: true,
+            options: [
+                {
+                    name: "FSI_DATA_WIDTH_1_LANE",
+                    displayName: "FSI_DATA_WIDTH_1_LANE"
+                },
+                {
+                    name: "FSI_DATA_WIDTH_2_LANE",
+                    displayName: "FSI_DATA_WIDTH_2_LANE"
+                },
+            ],
+        },
+        {
+            name: "frameDataSize",
+            displayName: "Frame data size",
+            default: "16",
+            hidden: true,
+            description: `Frame data size: 1 to 16`,
+        },
+        {
+            name: "frameType",
+            displayName: "Frame Type",
+            default: "FSI_FRAME_TYPE_NWORD_DATA",
+            hidden: true,
+            options: [
+                {
+                    name: "FSI_FRAME_TYPE_NWORD_DATA",
+                    displayName: "FSI_FRAME_TYPE_NWORD_DATA"
+                },
+                {
+                    name: "FSI_FRAME_TYPE_1WORD_DATA",
+                    displayName: "FSI_FRAME_TYPE_1WORD_DATA"
+                },
+                {
+                    name: "FSI_FRAME_TYPE_2WORD_DATA",
+                    displayName: "FSI_FRAME_TYPE_2WORD_DATA"
+                },
+                {
+                    name: "FSI_FRAME_TYPE_4WORD_DATA",
+                    displayName: "FSI_FRAME_TYPE_4WORD_DATA"
+                },
+                {
+                    name: "FSI_FRAME_TYPE_6WORD_DATA",
+                    displayName: "FSI_FRAME_TYPE_6WORD_DATA"
+                },
+            ],
+            description: `Frame type`,
+        },
+        {
+            name: "frameTag",
+            displayName: "Frame Data Tag",
+            default: "FSI_FRAME_TAG1",
+            hidden: true,
+            options: [
+                {
+                    name: "FSI_FRAME_TAG0",
+                    displayName: "FSI_FRAME_TAG0"
+                },
+                {
+                    name: "FSI_FRAME_TAG1",
+                    displayName: "FSI_FRAME_TAG1"
+                },
+                {
+                    name: "FSI_FRAME_TAG2",
+                    displayName: "FSI_FRAME_TAG2"
+                },
+                {
+                    name: "FSI_FRAME_TAG3",
+                    displayName: "FSI_FRAME_TAG3"
+                },
+                {
+                    name: "FSI_FRAME_TAG4",
+                    displayName: "FSI_FRAME_TAG4"
+                },
+                {
+                    name: "FSI_FRAME_TAG5",
+                    displayName: "FSI_FRAME_TAG5"
+                },
+                {
+                    name: "FSI_FRAME_TAG6",
+                    displayName: "FSI_FRAME_TAG6"
+                },
+                {
+                    name: "FSI_FRAME_TAG7",
+                    displayName: "FSI_FRAME_TAG7"
+                },
+                {
+                    name: "FSI_FRAME_TAG8",
+                    displayName: "FSI_FRAME_TAG8"
+                },
+                {
+                    name: "FSI_FRAME_TAG9",
+                    displayName: "FSI_FRAME_TAG9"
+                },
+                {
+                    name: "FSI_FRAME_TAG10",
+                    displayName: "FSI_FRAME_TAG10"
+                },
+                {
+                    name: "FSI_FRAME_TAG11",
+                    displayName: "FSI_FRAME_TAG11"
+                },
+                {
+                    name: "FSI_FRAME_TAG12",
+                    displayName: "FSI_FRAME_TAG12"
+                },
+                {
+                    name: "FSI_FRAME_TAG13",
+                    displayName: "FSI_FRAME_TAG13"
+                },
+                {
+                    name: "FSI_FRAME_TAG14",
+                    displayName: "FSI_FRAME_TAG14"
+                },
+                {
+                    name: "FSI_FRAME_TAG15",
+                    displayName: "FSI_FRAME_TAG15"
+                },
+            ],
+            description: `Frame data tag`,
         },
     )
     return config;

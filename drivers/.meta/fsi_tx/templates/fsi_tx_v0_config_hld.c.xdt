@@ -23,10 +23,12 @@ static FSI_Tx_Attrs gFsiTxAttr[CONFIG_FSI_TX_NUM_INSTANCES] =
     % let instance = module.$instances[i];
     % let config = module.getInstanceConfig(instance);
     {
+        .preScalarVal                         = FSI_APP_TX_PRESCALER_VAL,
         .baseAddr                             = `config.baseAddr`,
         .operMode                             = FSI_TX_OPER_MODE_`instance.operMode`,
         % if(instance.operMode == "INTERRUPT"){
-        .intrNum                              = `instance.$name.toUpperCase()`_INTR1,
+        .intrLine                             = `instance.$name.toUpperCase()`_INTR1,
+        .intrNum                              = FSI_INT1,
         .intrPriority                         = `instance.intrPriority`,
         % }
     },
@@ -38,8 +40,13 @@ FSI_Tx_Params txParams[CONFIG_FSI_TX_NUM_INSTANCES] =
     % for(let i = 0; i < module.$instances.length; i++) {
     % let instance = module.$instances[i];
     {
+        .userData = `instance.userData`,
+        .numLane   = `instance.numLane`,
+        .frameDataSize = `instance.frameDataSize`,
+        .frameTag  = `instance.frameTag`,
+        .frameType = `instance.frameType`,
         .transferMode = FSI_RX_TRANSFER_MODE_BLOCKING,
-        .transferCallbackFxn = NULL, 
+        .transferCallbackFxn = NULL,
         .errorCallbackFxn = NULL,
     },
     %}
