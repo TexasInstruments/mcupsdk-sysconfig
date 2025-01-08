@@ -8,6 +8,7 @@ let driverVer = soc.getDriverVer("soc_ctrl");
 let submodulesComponentsList = [
     "soc_ctrl_adc",
     "soc_ctrl_epwm",
+    "soc_ctrl_ecap",
     "soc_ctrl_cmpss",
     "soc_ctrl_sdfm",
     // "soc_ctrl_sub2",

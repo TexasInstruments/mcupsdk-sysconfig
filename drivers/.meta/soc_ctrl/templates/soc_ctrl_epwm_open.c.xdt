@@ -68,10 +68,10 @@ extern uint32_t gEpwmTbClkSyncDisableMask, gEpwmTbClkSyncEnableMask;
     /* Halt Controls for EPWM */
             % for (let opt of epwmInstAdded){
                 % if(instance["haltCtrlEn"].includes(opt) && instance["haltDisable"+opt.replace("EPWM","")]){
-    /* Halt Disabled for EPMW instance `opt.replace("EPWM","")`*/
+    /* Halt Disabled for EPWM instance `opt.replace("EPWM","")`*/
     Soc_disableEPWMHalt(`opt.replace("EPWM","")`);
                 % } else {
-    /* Halt Enabled for EPMW instance `opt.replace("EPWM","")`*/
+    /* Halt Enabled for EPWM instance `opt.replace("EPWM","")`*/
     Soc_enableEPWMHalt(`opt.replace("EPWM","")`);
                 % }
             %}

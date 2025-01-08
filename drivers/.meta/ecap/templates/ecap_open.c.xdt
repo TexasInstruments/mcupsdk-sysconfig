@@ -1,1 +1,7 @@
+% let soc_ctrl_ecap_template = '/drivers/soc_ctrl/templates/soc_ctrl_ecap_open.c.xdt'
     Drivers_ecapOpen();
+% let begin = "begin"
+% let end = "end"
+    `system.getTemplate(soc_ctrl_ecap_template)(begin)`
+    Drivers_ecapOpen();
+    `system.getTemplate(soc_ctrl_ecap_template)(end)`

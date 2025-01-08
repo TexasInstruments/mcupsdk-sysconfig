@@ -1,5 +1,5 @@
 let common   = system.getScript("/common");
-
+let soc_ctrl = system.getScript("/drivers/soc_ctrl/soc_ctrl")
 let device_peripheral = system.getScript(`/drivers/ecap/soc/ecap_${common.getSocName()}.syscfg.js`);
 let signalmonitoringunit = device_peripheral.ECAP_Monitoring_Unit;
 
@@ -693,6 +693,30 @@ config = config.concat([
 ])
 
 
+let moduleStatic = {
+    name : "ecapGlobal",
+    displayName : "ECAP Global Settings",
+    sharedModuleInstances : (inst) => {
+        return [
+            {
+                moduleName : soc_ctrl.getSocCtrlSubModulePath("soc_ctrl_ecap"),
+                name : "ecapSocControls",
+                displayName : "ECAP Global Controls",
+                collapsed : true,
+            }
+        ]
+    },
+    modules : function (){
+        return [
+            {
+                name : "socCtrl",
+                moduleName : "/drivers/soc_ctrl/soc_ctrl",
+                hidden : false,
+            }
+        ]
+    },
+}
+
 function onValidate(inst, validation) {
 
     let usedECAPInsts = [];
@@ -801,6 +825,7 @@ let ecapModule = {
     defaultInstanceName: "CONFIG_ECAP",
     description: "Enhanced Capture",
     filterHardware : filterHardware,
+    moduleStatic : moduleStatic,
     config: config,
     templates: {
         "/drivers/system/system_config.h.xdt": {

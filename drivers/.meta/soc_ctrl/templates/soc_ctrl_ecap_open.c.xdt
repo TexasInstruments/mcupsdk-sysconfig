@@ -1,0 +1,56 @@
+%%{
+    // this section is for Init parts...
+    let common = system.getScript('/common')
+    let soc_ctrl_ecap = system.modules["/drivers/soc_ctrl/v0/subModules/soc_ctrl_ecap"];
+
+    let arg = args;
+
+    let instance = soc_ctrl_ecap.$instances[0];
+    let thisCoreCxt = common.getSelfSysCfgCoreName();
+
+    let getAddedInstances = soc_ctrl_ecap.getAddedInstances
+    // let modules = soc_ctrl_adc.usedModules
+    let ecapStaticConfigArray = soc_ctrl_ecap.ecapStaticConfigArray
+
+    let ecapInstAdded = getAddedInstances('/drivers/ecap/ecap')
+
+    let ecapArgStr = ""
+    let ecapMask = []
+    if (ecapInstAdded.length > 0){
+        ecapArgStr = ecapArgStr + "("
+        for (let i of ecapInstAdded){
+            ecapMask.push("(1U << " + i.replace("ECAP", "") + "U)")
+        }
+
+        ecapArgStr += ecapMask.join(" | ") + ")"
+    }
+%%}
+%if(soc_ctrl_ecap)
+%{
+    % switch (arg[0])
+    % {
+    % case "header_file":
+/* 
+ * ECAP tbclk enable/disable configs get stored in the following macros. 
+ * These may be used in the Application to enable/disable the tbclksync
+ */
+extern uint32_t gEcapTbClkSyncDisableMask, gEcapTbClkSyncEnableMask;
+        % break;
+    % case "begin":
+        % /* code */
+
+    /* Halt Controls for ECAP */
+            % for (let opt of ecapInstAdded){
+                % if(instance["haltCtrlEn"].includes(opt) && instance["haltDisable"+opt.replace("ECAP","")]){
+    /* Halt Disabled for ECAP instance `opt.replace("ECAP","")`*/
+    Soc_disableECAPHalt(`opt.replace("ECAP","")`);
+                % } else {
+    /* Halt Enabled for ECAP instance `opt.replace("ECAP","")`*/
+    Soc_enableECAPHalt(`opt.replace("ECAP","")`);
+                % }
+            %}
+        % break;
+    % default:
+        % break;
+    % }
+%}
