@@ -93,9 +93,12 @@ function getConfig(){
             onChange    : function(inst, ui) {
                 if (inst.hsmrtDecoupling) {
                     ui.hsmrtImageOffset.hidden = false;
+                    ui.hsmrtImageLoadAddress.hidden = false;
                 }
                 else {
                     ui.hsmrtImageOffset.hidden = true;
+                    ui.hsmrtImageLoadAddress.hidden = true;
+
                 }
             }
         });
@@ -104,6 +107,13 @@ function getConfig(){
             displayName: "HSM Runtime Image Offset",
             description: "Offset of the HSM Runtime Image in Flash",
             default: "0x00400000",
+            hidden: true,
+        });
+        cfg.push({
+            name: "hsmrtImageLoadAddress",
+            displayName: "HSM Runtime RAM Load Address",
+            description: "Starting location of HSM Runtime Image in RAM",
+            default: "0x70100000",
             hidden: true,
         });
     }
@@ -251,6 +261,34 @@ function validate(inst, report) {
         if(offset.slice(0,2) != "0x" || hexValidate(offset.slice(2)) == false) {
             report.logError("Boot Image Offset should be a hexadecimal number and should start with 0x",inst, "appImageOffset");
         }
+        if(["am263x", "am263px", "am261x"].includes(common.getSocName())) {
+            if(inst.hsmrtDecoupling){
+                let hsmoffset = inst.hsmrtImageOffset;
+                if(hsmoffset.slice(0,2) != "0x" || hexValidate(hsmoffset.slice(2)) == false) {
+                    report.logError(" HSM Runtime Image Offset should be a hexadecimal number and should start with 0x",inst, "hsmrtImageOffset");
+                }
+                let hsmload = inst.hsmrtImageLoadAddress;
+                if(hsmload.slice(0,2) != "0x" || hexValidate(hsmload.slice(2)) == false) {
+                    report.logError(" HSM Runtime Image Load Address should be a hexadecimal number and should start with 0x",inst, "hsmrtImageLoadAddress");
+                }
+                if(["am263px"].includes(common.getSocName())) {
+                    if((parseInt(hsmload, 16) < parseInt("0x70000000")) || (parseInt(hsmload, 16) > parseInt("0x702FFFFF")) ){
+                        report.logError(" HSM Runtime Image Load Address out of bounds",inst, "hsmrtImageLoadAddress");                        
+                    }
+                }
+                if(["am261x"].includes(common.getSocName())) {
+                    if((parseInt(hsmload, 16) < parseInt("0x70000000")) || (parseInt(hsmload, 16) > parseInt("0x7017FFFF")) ){
+                        report.logError(" HSM Runtime Image Load Address out of bounds",inst, "hsmrtImageLoadAddress");                        
+                    }
+                }
+                if(["am263x"].includes(common.getSocName())) {
+                    if((parseInt(hsmload, 16) < parseInt("0x70000000")) || (parseInt(hsmload, 16) > parseInt("0x701FFFFF")) ){
+                        report.logError(" HSM Runtime Image Load Address out of bounds",inst, "hsmrtImageLoadAddress");                        
+                    }
+                }
+            }
+        }     
+
     }
     else if(inst.bootMedia == "MEMORY"){
         let baseAddr = inst.appImageBaseAddress;
