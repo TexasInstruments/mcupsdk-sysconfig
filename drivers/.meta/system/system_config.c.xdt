@@ -97,14 +97,14 @@ void System_init(void)
 % }
 % } else {
     `system.getTemplate("/kernel/dpl/pmu_init.c.xdt")()`
-    % if(common.getSocName() != "f29h85x"){
-        PowerClock_init();
-    % }
+% if(common.getSocName() != "f29h85x"){
+    PowerClock_init();
 % }
-    % if(common.getSocName() != "f29h85x"){
-        /* Now we can do pinmux */
-        Pinmux_init();
-    % }
+% }
+% if(common.getSocName() != "f29h85x"){
+    /* Now we can do pinmux */
+    Pinmux_init();
+% }
     /* finally we initialize all peripheral drivers */
 % for(let subTemplate of args) {
     % if (subTemplate.driver_init && !subTemplate.driver_init.match(/watchdog*/)) {
@@ -120,15 +120,15 @@ void System_init(void)
 % }
 
 
-    `system.getTemplate("/kernel/dpl/pmu_init.c.xdt")()`
-    % if(common.getSocName() != "f29h85x"){
-        PowerClock_init();
-    % }
+`system.getTemplate("/kernel/dpl/pmu_init.c.xdt")()`
+% if(common.getSocName() != "f29h85x"){
+    PowerClock_init();
+% }
 
-    % if(common.getSocName() != "f29h85x"){
-        /* Now we can do pinmux */
-        Pinmux_init();
-    % }
+% if(common.getSocName() != "f29h85x"){
+    /* Now we can do pinmux */
+    Pinmux_init();
+% }
     /* finally we initialize all peripheral drivers */
 % for(let subTemplate of args) {
     % if (subTemplate.driver_init && !subTemplate.driver_init.match(/watchdog*/)) {
@@ -151,9 +151,9 @@ void System_deinit(void)
 `system.getTemplate(subTemplate.driver_deinit)()`
     % }
 % }
-    % if(common.getSocName() != "f29h85x"){
-        PowerClock_deinit();
-    % }
+% if(common.getSocName() != "f29h85x"){
+    PowerClock_deinit();
+% }
 % if (common.isSciClientSupported()) {
 `system.getTemplate(sciclientDeInitTemplate)()`
 % }
@@ -165,9 +165,9 @@ void System_deinit(void)
 `system.getTemplate(subTemplate.driver_deinit)()`
     % }
 % }
-    % if(common.getSocName() != "f29h85x"){
-        PowerClock_deinit();
-    % }
+% if(common.getSocName() != "f29h85x"){
+    PowerClock_deinit();
+% }
 % if (common.isSciClientSupported()) {
 `system.getTemplate(sciclientDeInitTemplate)()`
 % }
