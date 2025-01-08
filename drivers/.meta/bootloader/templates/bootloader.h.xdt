@@ -19,6 +19,7 @@
 
 % if (["am263x", "am263px", "am261x"].includes(common.getSocName())) {
 	% if(module.$instances[0].hsmrtDecoupling == true) {
-#define HSMRT_FLASH_OFFSET (`module.$instances[0].hsmrtImageOffset`U)		
+#define HSMRT_FLASH_OFFSET (`module.$instances[0].hsmrtImageOffset`U)
+#define HSMRT_LOAD_ADDRESS (`module.$instances[0].hsmrtImageLoadAddress`U)		
 	% }
 	% }
