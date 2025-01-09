@@ -1,6 +1,7 @@
 
 let common = system.getScript("/common");
 let pinmux = system.getScript("/drivers/pinmux/pinmux");
+let hwi = system.getScript("/kernel/dpl/hwi.js");
 
 function getStaticConfigArr() {
     return system.getScript(`/drivers/i2c/soc/i2c_${common.getSocName()}`).getStaticConfigArr();
@@ -103,10 +104,18 @@ function getConfigurables()
                     inst.transferMode = "BLOCKING";
                     ui.transferCallbackFxn.hidden = true;
                 }
+                ui.intrPriority.hidden = !inst.enableIntr;
                 ui.transferMode.hidden = hideConfigs;
 
             },
             description: "If enabled interrupt mode otherwise polling mode",
+        },
+        {
+            name: "intrPriority",
+            displayName: "Interrupt Priority",
+            default: 4,
+            description: `Interrupt Priority: 0 (highest) to ${hwi.getHwiMaxPriority()} (lowest)`,
+            hidden: false,
         },
         {
             name: "transferMode",
@@ -270,6 +279,7 @@ function validate(instance, report) {
     common.validate.checkNumberRange(instance, report, "ownTargetAddr2", 0x0, 0x7F, "hex");
     common.validate.checkNumberRange(instance, report, "ownTargetAddr3", 0x0, 0x7F, "hex");
     common.validate.checkNumberRange(instance, report, "ownTargetAddr4", 0x0, 0x7F, "hex");
+    common.validate.checkNumberRange(instance, report, "intrPriority", 0, hwi.getHwiMaxPriority(), "dec");
     common.validate.checkValidCName(instance, report, "transferCallbackFxn");
     if((instance.transferMode == "CALLBACK") &&
         ((instance.transferCallbackFxn == "NULL") ||
