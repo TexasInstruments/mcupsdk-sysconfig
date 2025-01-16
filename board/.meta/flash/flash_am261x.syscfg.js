@@ -8,7 +8,7 @@ let supported_nor_spi_drivers = [
 
 let defaultFlashConfig = system.getScript("/board/flash/IS25LX256.json");
 
-let defaultFlashConfigLP = system.getScript("/board/flash/IS25LX256.json");
+let defaultFlashConfigLP = system.getScript("/board/flash/IS25WX064.json");
 
 let defaultNandFlashConfig = system.getScript("/board/flash/W25N01GVZEJ.json");
 
@@ -27,7 +27,7 @@ function getDefaultFlashName()
     if(system.deviceData.device == "AM261x_ZCZ") {
         return "IS25LX256";
     } else {
-        return "IS25LX256";
+        return "IS25WX064";
     }
 }
 
