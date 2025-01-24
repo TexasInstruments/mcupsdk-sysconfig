@@ -45,6 +45,14 @@ FSI_Tx_Params txParams[CONFIG_FSI_TX_NUM_INSTANCES] =
         .frameDataSize = `instance.frameDataSize`,
         .frameTag  = `instance.frameTag`,
         .frameType = `instance.frameType`,
+        .errorCheck = `instance.errorCheck`,
+        .delayLineCtrl = `instance.delayLineCtrl`,
+        .rxTrigger  = `instance.rxTrigger`,
+        .rxTriggerVal  = `instance.rxTriggerVal`,
+        .udataFilterTest = `instance.udataFilterTest`,
+        .rxFrameWDTest  = false,
+        .rxPingWDTest   = false,
+        .intrEvt        = FSI_TX_EVT_FRAME_DONE,
         .transferMode = FSI_RX_TRANSFER_MODE_BLOCKING,
         .transferCallbackFxn = NULL,
         .errorCallbackFxn = NULL,
@@ -56,6 +64,8 @@ FSI_Tx_Params txParams[CONFIG_FSI_TX_NUM_INSTANCES] =
 uint32_t    gFsiTxConfigNum = CONFIG_FSI_TX_NUM_INSTANCES;
 
 FSI_Tx_Object gFsiTxObj[CONFIG_FSI_TX_NUM_INSTANCES];
+
+uint32_t fsi_tx_clk = CONFIG_FSI_TX0_CLK;
 
 /* FSI Tx driver configuration */
 FSI_Tx_Config gFsiTxConfig[CONFIG_FSI_TX_NUM_INSTANCES] =

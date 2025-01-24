@@ -141,7 +141,12 @@ function getConfigurables()
                     ui.operMode.hidden = true;
                     ui.intrPriority.hidden = true;
                     ui.numLane.hidden = true;
+                    ui.userData.hidden = true;
                     ui.frameDataSize.hidden = true;
+                    ui.errorCheck.hidden = true;
+                    ui.delayLineCtrl.hidden = true;
+                    ui.rxTrigger.hidden = true;
+                    ui.udataFilterTest.hidden = true;
                 }
                 else if(inst.sdkInfra == "HLD")
                 {
@@ -149,7 +154,12 @@ function getConfigurables()
                     ui.operMode.hidden = false;
                     ui.intrPriority.hidden = false;
                     ui.numLane.hidden = false;
+                    ui.userData.hidden = false;
                     ui.frameDataSize.hidden = false;
+                    ui.errorCheck.hidden = false;
+                    ui.delayLineCtrl.hidden = false;
+                    ui.rxTrigger.hidden = false;
+                    ui.udataFilterTest.hidden = false;
                 }
             },
         },
@@ -186,6 +196,9 @@ function getConfigurables()
                 if(inst.operMode == "INTERRUPT") {
                     ui.intrPriority.hidden = false;
                 }
+                if(inst.operMode == 'DMA') {
+                    ui.userData.hidden = true;
+                }
             },
         },
         {
@@ -212,11 +225,71 @@ function getConfigurables()
             ],
         },
         {
+            name: "userData",
+            displayName: "User Data",
+            default: 7,
+            hidden: true,
+            description: `User Data: 0 to 255`,
+        },
+        {
             name: "frameDataSize",
             displayName: "Frame data size",
             default: "16",
             hidden: true,
             description: `Frame data size: 1 to 16`,
+        },
+        {
+            name: "errorCheck",
+            displayName: "Error Check",
+            default: "FSI_RX_NO_ERROR_CHECK",
+            hidden: true,
+            options: [
+                {
+                    name: "FSI_RX_ECC_ERROR_CHECK",
+                    displayName: "ECC Error Check"
+                },
+                {
+                    name: "FSI_RX_USER_DEFINED_CRC_CHECK",
+                    displayName: "User Defined Crc"
+                },
+                {
+                    name: "FSI_RX_NO_ERROR_CHECK",
+                    displayName: "No Error Check",
+                },
+            ],
+            description: `Error Check`,
+        },
+        {
+            name: "delayLineCtrl",
+            displayName: "Delay Line Control",
+            description: "Enable Delay Line Control",
+            default: false,
+        },
+        {
+            name: "rxTrigger",
+            displayName: "Enable Rx Trigger",
+            description: "Enable Rx Trigger",
+            default: false,
+            onChange: function (inst, ui) {
+                let hideConfigs = true;
+                if(inst.rxTrigger == true) {
+                    hideConfigs = false;
+                }
+                ui.rxTriggerValCycles.hidden = hideConfigs;
+            }
+        },
+        {
+            name: "rxTriggerValCycles",
+            displayName: "Receiver Trigger Value in Cycles",
+            default: "4",
+            hidden: true,
+            description: "Receiver Trigger Value in Cycles",
+        },
+        {
+            name: "udataFilterTest",
+            displayName: "User Data Filter Test",
+            default: false,
+            description: "User Data Filter Test",
         },
     )
     return config;
