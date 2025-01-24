@@ -16,6 +16,9 @@ uint8_t gQueue_HsmToSecureHost[SIPC_NUM_R5_CORES][SIPC_QUEUE_LENGTH*SIPC_MSG_SIZ
 uint8_t gQueue_SecureHostToHsm[SIPC_NUM_R5_CORES][SIPC_QUEUE_LENGTH*SIPC_MSG_SIZE] __attribute__((aligned(8),section(".bss.sipc_secure_host_queue_mem")));
 HsmClient_t gHSMClient ;
 
+/* Queue used to store HSM client messages that need to be dispatched via SIPC */
+HsmMsg_t gHsmClientMsgQueue[HSM_CLIENT_MSG_QUEUE_SIZE];
+
 void HsmClient_config(void)
 {
     SIPC_Params sipcParams;
@@ -53,6 +56,7 @@ void HsmClient_config(void)
 
     /* initialize the HsmClient module */
     status = HsmClient_init(&sipcParams);
+    HsmClient_SecureBootQueueInit(HSM_CLIENT_MSG_QUEUE_SIZE);
     DebugP_assert(status==SystemP_SUCCESS);
 
     /* register a hsm client to detect bootnotify message and keyring import from HSM */

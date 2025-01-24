@@ -157,3 +157,7 @@ Bootloader_Config gBootloaderConfig[CONFIG_BOOTLOADER_NUM_INSTANCES] =
 };
 
 uint32_t gBootloaderConfigNum = CONFIG_BOOTLOADER_NUM_INSTANCES;
+
+% if((common.getSocName() == "am263x") || (common.getSocName() == "am263px") || (common.getSocName() == "am261x")){
+SecureBoot_Stream_t gSecureBootStreamArray[MAX_SECURE_BOOT_STREAM_LENGTH];
+%}

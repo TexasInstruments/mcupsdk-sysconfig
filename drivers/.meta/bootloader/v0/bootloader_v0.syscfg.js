@@ -116,6 +116,13 @@ function getConfig(){
             default: "0x70100000",
             hidden: true,
         });
+        cfg.push({
+            name        : "secBootStreamLength",
+            displayName : "Stream Length for Secure Boot",
+            description : 'This is to determine the size of the stream for Secure Boot',
+            hidden      : false,
+            default     : 64,
+        });
     }
     if(["am263x", "am263px"].includes(common.getSocName())) {
         cfg.push(
@@ -273,17 +280,17 @@ function validate(inst, report) {
                 }
                 if(["am263px"].includes(common.getSocName())) {
                     if((parseInt(hsmload, 16) < parseInt("0x70000000")) || (parseInt(hsmload, 16) > parseInt("0x702FFFFF")) ){
-                        report.logError(" HSM Runtime Image Load Address out of bounds",inst, "hsmrtImageLoadAddress");                        
+                        report.logError("HSM Runtime Image Load Address out of bounds (0x70000000, 0x702FFFFF)",inst, "hsmrtImageLoadAddress");                        
                     }
                 }
                 if(["am261x"].includes(common.getSocName())) {
                     if((parseInt(hsmload, 16) < parseInt("0x70000000")) || (parseInt(hsmload, 16) > parseInt("0x7017FFFF")) ){
-                        report.logError(" HSM Runtime Image Load Address out of bounds",inst, "hsmrtImageLoadAddress");                        
+                        report.logError("HSM Runtime Image Load Address out of bounds (0x70000000, 0x7017FFFF)",inst, "hsmrtImageLoadAddress");                        
                     }
                 }
                 if(["am263x"].includes(common.getSocName())) {
                     if((parseInt(hsmload, 16) < parseInt("0x70000000")) || (parseInt(hsmload, 16) > parseInt("0x701FFFFF")) ){
-                        report.logError(" HSM Runtime Image Load Address out of bounds",inst, "hsmrtImageLoadAddress");                        
+                        report.logError("HSM Runtime Image Load Address out of bounds (0x70000000, 0x701FFFFF)",inst, "hsmrtImageLoadAddress");
                     }
                 }
             }

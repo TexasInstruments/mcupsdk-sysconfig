@@ -15,3 +15,16 @@
 #define SIPC_QUEUE_LENGTH   (`config.sipc_que_depth`u)
 /* Total number of secure cores */ 
 #define SIPC_NUM_R5_CORES   (`config.sipc_r5cores`u)
+
+/**
+ * @brief
+ *        Maximum size of the HSM client message queue
+ *        For Streaming Secure Boot, the break up is as follows,
+ *        1 start message (includes the certificate) + 
+ *        1 finish message +
+ *        1 ELF Header Buffer update message + 1 PHT Buffer update message
+ *        1024 ELF segment update messages (including the two note segments)
+ *          - PT note for boot sequence info
+ *          - PT note containing Random string for decryption verification
+ */
+#define HSM_CLIENT_MSG_QUEUE_SIZE (`module.$instances[0].hsmClientMsgQueueSize`U)

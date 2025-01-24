@@ -75,6 +75,12 @@ let hsmclient_module = {
                     name:"secure_host_id_1"
                 }]
 		},
+        {
+			name: "hsmClientMsgQueueSize",
+			displayName:"HSM Client Message Queue Size",
+			longDescription: "Select the maximum size of Messgae Queue in HSM Client.",
+			default: 64,
+		},
 	],
     longDescription:
     "The objective of HSM client is to provide APIs for accessing HSM services. It uses Secure IPC Notify driver as a low level message passing mechanism to talk to HSM M4 core. HSM client APIs can be used with either FreeRTOS or NoRTOS application.",
