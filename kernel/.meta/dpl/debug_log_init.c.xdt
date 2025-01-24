@@ -18,13 +18,13 @@
 
 % }
     /* Debug log init */
-% if((instance.enableLogZoneError) && (soc != "f29h85x") && (cpuName.match(/hsm/))) {
+% if((instance.enableLogZoneError) && (soc != "f29h85x")) {
     DebugP_logZoneEnable(DebugP_LOG_ZONE_ERROR);
 % }
-% if((instance.enableLogZoneWarning) && (soc != "f29h85x") && (cpuName.match(/hsm/))) {
+% if((instance.enableLogZoneWarning) && (soc != "f29h85x")) {
     DebugP_logZoneEnable(DebugP_LOG_ZONE_WARN);
 % }
-% if((instance.enableLogZoneInfo) && (soc != "f29h85x") && (cpuName.match(/hsm/))) {
+% if((instance.enableLogZoneInfo) && (soc != "f29h85x")) {
     DebugP_logZoneEnable(DebugP_LOG_ZONE_INFO);
 % }
 % if(instance.enableSharedMemLog && !instance.enableSharedMemLogReader) {
@@ -58,13 +58,13 @@
     }
 #else
     /* Debug log init */
-% if((instance.enableLogZoneError) && (soc != "f29h85x") && (cpuName.match(/hsm/))) {
+% if((instance.enableLogZoneError) && (soc != "f29h85x")) {
     DebugP_logZoneEnable(DebugP_LOG_ZONE_ERROR);
 % }
-% if((instance.enableLogZoneWarning) && (soc != "f29h85x") && (cpuName.match(/hsm/))) {
+% if((instance.enableLogZoneWarning) && (soc != "f29h85x")) {
     DebugP_logZoneEnable(DebugP_LOG_ZONE_WARN);
 % }
-% if((instance.enableLogZoneInfo) && (soc != "f29h85x") && (cpuName.match(/hsm/))) {
+% if((instance.enableLogZoneInfo) && (soc != "f29h85x")) {
     DebugP_logZoneEnable(DebugP_LOG_ZONE_INFO);
 % }
 % if(instance.enableSharedMemLog && !instance.enableSharedMemLogReader) {
