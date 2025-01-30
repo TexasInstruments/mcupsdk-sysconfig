@@ -2,7 +2,7 @@ let common = system.getScript("/common");
 let hwi = system.getScript("/kernel/dpl/hwi.js");
 let pinmux = system.getScript("/drivers/pinmux/pinmux");
 let soc = system.getScript(`/drivers/ospi/soc/ospi_${common.getSocName()}`);
-let phyConfigs = (common.getSocName() == "am263px");
+let phyConfigs = (common.getSocName() == "am263px" || common.getSocName() == "am261x");
 
 function getConfigArr() {
 	return soc.getConfigArr();
