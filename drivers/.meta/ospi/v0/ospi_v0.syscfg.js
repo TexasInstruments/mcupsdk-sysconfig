@@ -34,7 +34,7 @@ function getInterfaceName(inst) {
 }
 
 function getPeripheralPinNames(inst) {
-    return [ "CLK", "CSn0", "CSn1", "CSn2", "CSn3", "D0", "D1", "D2", "D3", "D4", "D5", "D6", "D7", "DQS","ECC_FAIL" ];
+    return [ "CLK", "CSn0", "CSn1", "CSn2", "CSn3", "D0", "D1", "D2", "D3", "D4", "D5", "D6", "D7", "DQS","ECC_FAIL", "RESET_OUT0"];
 }
 
 function getDmaRestrictedRegions() {
@@ -117,6 +117,13 @@ function pinmuxRequirements(inst) {
         pinResource = pinmux.getPinRequirements(interfaceName, "ECC_FAIL", "OSPI ECC Fail Pin");
         pinmux.setConfigurableDefault( pinResource, "rx", false );
         pinResource.used=false;
+        resources.push( pinResource);
+    }
+
+    if(["am263px", "am261x"].includes(common.getSocName()))
+    {
+        pinResource = pinmux.getPinRequirements(interfaceName, "RESET_OUT0", "OSPI Reset Pin");
+        pinmux.setConfigurableDefault( pinResource, "rx", false );
         resources.push( pinResource);
     }
 
