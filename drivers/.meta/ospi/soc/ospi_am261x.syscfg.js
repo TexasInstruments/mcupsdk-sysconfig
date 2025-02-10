@@ -4,7 +4,8 @@ const ospi_config_r5fss = [
     {
         name            : "OSPI0",
         baseAddr        : "CSL_FLASH_CONFIG_REG8_U_BASE",
-        dataBaseAddr    : "CSL_FLASH_DATA_REG0_U_BASE",
+        dataBaseAddr0    : "CSL_FLASH_DATA_REG0_U_BASE",
+        dataBaseAddr1    : "CSL_FLASH_DATA_REG1_U_BASE",
         inputClkFreq    : getDefaultClkRate(),
         dacEnable       : false,
         baudRateDiv     : 4,
@@ -21,7 +22,8 @@ const ospi_config_r5fss = [
     {
         name            : "OSPI1",
         baseAddr        : "CSL_FSS_UL_128_FSS_OF_UL_OSPI0_OSPI_CFG_VBUSP_VBP2APB_WRAP_OSPI_CFG_VBP_OSPI_FLASH_APB_U_BASE",
-        dataBaseAddr    : "CSL_FSS_UL_128_FSS_OF_UL_DAT_REG0_U_BASE",
+        dataBaseAddr0    : "CSL_FSS_UL_128_FSS_OF_UL_DAT_REG0_U_BASE",
+        dataBaseAddr1    : "CSL_FSS_UL_128_FSS_OF_UL_DAT_REG0_U_BASE",
         inputClkFreq    : getDefaultClkRate(),
         dacEnable       : false,
         baudRateDiv     : 4,
