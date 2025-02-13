@@ -122,6 +122,18 @@ function onValidate(inst, validation){
             "The I2C Addresses is used. Duplicated address " + allDuplicates,
             inst, "i2cAddress");
     }
+
+    let staticConfig = soc.getConfigArr();
+    let all_i2cAddresses = []
+
+    for(let cfg of staticConfig){
+        all_i2cAddresses.push(cfg.i2cAddress)
+    }
+
+    if(!(all_i2cAddresses.includes(inst.i2cAddress))){
+        validation.logError("Invalid I2C Peripheral address for the IO Expander", inst, "i2cAddress");
+    }
+
 }
 
 let ioexp_module_name = "/board/ioexp/ioexp";
