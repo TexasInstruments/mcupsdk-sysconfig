@@ -2,6 +2,7 @@
     let common = system.getScript("/common");
     let module = system.modules['/board/ram/ram'];
     let parallelmodule = system.modules['/board/ram/parallelRam/parallelram'];
+    let serialmodule = system.modules['/board/ram/serialRam/serialram'];
 %%}
 
 % for(let i = 0; i < module.$instances.length; i++) {
@@ -36,6 +37,14 @@ Ram_Config gRamConfig[CONFIG_RAM_NUM_INSTANCES] =
         .attrs = &gRamAttrs_`configparallel.pname`,
         .fxns = &gPsramGpmcFxns,
         .object = (void *)&gRamObject_`configparallel.pname`,
+    %} else if(config.ramTopology == "serialRam")
+    %{
+        % let instanceserial = serialmodule.$instances[0];
+        % let configserial = serialmodule.getInstanceConfig(instanceserial);
+        .attrs = &gRamAttrs_`configserial.sramName`,
+        .fxns = &gPsramOspiFxns,
+        .object = (void *)&gRamObject_`configserial.sramName`,
+        .devConfig = &gRamDevCfg_`configserial.sramName`,
     %}
 },
 % }
@@ -75,7 +84,12 @@ int32_t Board_ramOpen()
         % let configparallel = parallelmodule.getInstanceConfig(instanceparallel);
         gRamAttrs_`configparallel.pname`.driverInstance = CONFIG_GPMC0;
     % }
-
+    % else if(config.ramTopology == "serialRam")
+    % {
+        % let instanceserial = serialmodule.$instances[0];
+        % let configserial = serialmodule.getInstanceConfig(instanceserial);
+        gRamAttrs_`configserial.sramName`.driverInstance = CONFIG_OSPI0;
+    % }
 % }
 
     /* Open all instances */

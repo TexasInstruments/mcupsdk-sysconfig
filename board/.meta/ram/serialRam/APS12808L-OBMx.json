@@ -1,0 +1,16 @@
+{
+    "ramSize": 16777216,
+    "manufacturer": "APMEM",
+    "type": "PSRAM",
+    "interfaceType": "serial",
+    "deviceId": "0x02",
+    "manufacturerId": "0x0D",
+    "cmdRd": "0x20",
+    "cmdWr": "0xA0",
+    "cmdReset": "0xFF",
+    "cmdRegRd": "0x40",
+    "cmdRegWr": "0xC0",
+    "dummyClksRd": 7,
+    "dummyClksWr": 3,
+    "dummyClksCmd": 5
+}

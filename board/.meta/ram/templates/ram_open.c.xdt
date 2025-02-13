@@ -1,4 +1,4 @@
-if(status==SystemP_SUCCESS)
-{
-    status = Board_ramOpen();
-}
+    if(status==SystemP_SUCCESS)
+    {
+        status = Board_ramOpen();
+    }

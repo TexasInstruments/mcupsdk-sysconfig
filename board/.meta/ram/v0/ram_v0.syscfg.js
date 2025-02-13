@@ -42,6 +42,18 @@ let ram_module = {
     getInstanceConfig,
 };
 
+function getDefaultTopology(socName)
+{
+    let ramTopology = "";
+    switch(socName) {
+        case "am261x" : ramTopology = "serialRam"; break;
+        case "am263x":
+        case "am243x":
+        case "am64x" : ramTopology = "parallelRam"; break;
+    }
+    return ramTopology;
+}
+
 function  getConfigurables()
 {
     let config = [];
@@ -50,7 +62,7 @@ function  getConfigurables()
         {
             name: "ramTopology",
             displayName: "RAM Topology",
-            default: "parallelRam",
+            default: getDefaultTopology(common.getSocName()),
             options: [
                 { name: "parallelRam", displayName: "Parallel RAM" },
                 { name: "serialRam", displayName: "Serial RAM"},
@@ -97,7 +109,7 @@ function moduleInstances(inst) {
             modInstances.push({
                 name: "serialRamDriver",
                 displayName: "Serial RAM Configuration",
-                moduleName: "/board/ram/serialRam/serialRam",
+                moduleName: "/board/ram/serialRam/serialram",
                 requiredArgs: requiredArgs,
                 useArray: false,
             })

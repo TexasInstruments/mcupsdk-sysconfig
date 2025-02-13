@@ -1,0 +1,49 @@
+%%{
+    let common = system.getScript("/common");
+    let module = system.modules['/board/ram/serialRam/serialram'];
+%%}
+
+/*
+ * RAM
+ */
+
+ % for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+/* RAM Object - initialized during Ram_open() */
+Ram_OspiPsramObject gRamObject_`config.sramName` =
+{
+    .ospiHandle = NULL,
+};
+% }
+
+/* RAM Attrs */
+% for (let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+Ram_Attrs gRamAttrs_`config.sramName` =
+{
+    .ramName = "`config.sramName`",
+    .ramSize = `config.sramSize`,
+    .manufacturerId = `config.sramManfId`,
+    .deviceId = `config.sramDevId`,
+};
+% }
+
+/* RAM DevConfig */
+
+% for (let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+Ram_DevConfig gRamDevCfg_`config.sramName` =
+{
+    .cmdRd = `config.sramCmdRd`,
+    .cmdWr = `config.sramCmdWr`,
+    .cmdReset = `config.sramCmdReset`,
+    .cmdRegRd = `config.sramCmdRegRd`,
+    .cmdRegWr = `config.sramCmdRegWr`,
+    .dummyClksRd = `config.sramDummyClksRd`,
+    .dummyClksWr = `config.sramDummyClksWr`,
+    .dummyClksCmd = `config.sramDummyClksCmd`,
+};
+% }

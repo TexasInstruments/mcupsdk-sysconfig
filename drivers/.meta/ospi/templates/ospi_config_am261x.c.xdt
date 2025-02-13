@@ -47,6 +47,7 @@ static OSPI_Attrs gOspiAttrs[CONFIG_OSPI_NUM_INSTANCES] =
         %}else{
         .dataBaseAddr         = `config.dataBaseAddr0`,
         %}
+        .protocol             = OSPI_PROTO_`config.protocol.toUpperCase()`,
         .inputClkFreq         = `config.inputClkFreq`U,
         .intrNum              = `config.intrNum`U,
         .intrEnable           = `config.intrEnable.toString(10).toUpperCase()`,
