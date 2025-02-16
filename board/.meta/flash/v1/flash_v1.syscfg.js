@@ -485,10 +485,10 @@ let flash_module = {
                         let copyScriptPath = ""
                         if(system.getOS() == "win") {
                             sdkPath = products[0].path.split("\\.metadata\\product.json")[0];
-                            copyScriptPath = sdkPath + "//source//board//.meta//flash//copyutil.js";
+                            copyScriptPath = sdkPath + "//source//sysconfig//board//.meta//flash//copyutil.js";
                         } else {
                             sdkPath = products[0].path.split("/.metadata/product.json")[0];
-                            copyScriptPath = sdkPath + "/source/board/.meta/flash/copyutil.js";
+                            copyScriptPath = sdkPath + "/source/sysconfig/board/.meta/flash/copyutil.js";
                         }
                         return {
                             command: nodeCmd,
