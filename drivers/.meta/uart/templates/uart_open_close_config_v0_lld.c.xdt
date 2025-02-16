@@ -63,24 +63,29 @@ static uint8_t gUart`i`UdmaTxRingMem[UART_UDMA_TEST_RING_MEM_SIZE] __attribute__
 static uint8_t gUart`i`UdmaTxHpdMem[UART_UDMA_TEST_DESC_SIZE] __attribute__((aligned(UDMA_CACHELINE_ALIGNMENT)));
 static uint8_t gUart`i`UdmaRxHpdMem[UART_UDMA_TEST_DESC_SIZE] __attribute__((aligned(UDMA_CACHELINE_ALIGNMENT)));
 
-UART_UdmaChConfig gUartDmaChCfg[CONFIG_UART_NUM_DMA_LLD_INSTANCES] =
-{{
-    .drvHandle        = &gUdmaDrvObj,
-    .txChHandle       = &gUart`i`UdmaTxObj,
-    .rxChHandle       = &gUart`i`UdmaRxObj,
-    .cqTxEvtHandle    = &gUart`i`UdmaCqTxEventObj,
-    .cqRxEvtHandle    = &gUart`i`UdmaCqRxEventObj,
-    .txHpdMem         = &gUart`i`UdmaTxHpdMem,
-    .rxHpdMem         = &gUart`i`UdmaRxHpdMem,
-    .hpdMemSize       = UART_UDMA_TEST_DESC_SIZE,
-    .txRingMem        = &gUart`i`UdmaTxRingMem,
-    .rxRingMem        = &gUart`i`UdmaRxRingMem,
-    .ringMemSize      = UART_UDMA_TEST_RING_MEM_SIZE,
-    .ringElemCnt      = UART_UDMA_TEST_RING_ENTRIES,
-    .isOpen           = FALSE,
-}};
-
 %}
+
+UART_UdmaChConfig gUartDmaChCfg[CONFIG_UART_NUM_DMA_LLD_INSTANCES] =
+{
+    %for(let i = 0; i < uartUdmaInstances.length; i++) {
+        {
+            .drvHandle        = &gUdmaDrvObj,
+            .txChHandle       = &gUart`i`UdmaTxObj,
+            .rxChHandle       = &gUart`i`UdmaRxObj,
+            .cqTxEvtHandle    = &gUart`i`UdmaCqTxEventObj,
+            .cqRxEvtHandle    = &gUart`i`UdmaCqRxEventObj,
+            .txHpdMem         = &gUart`i`UdmaTxHpdMem,
+            .rxHpdMem         = &gUart`i`UdmaRxHpdMem,
+            .hpdMemSize       = UART_UDMA_TEST_DESC_SIZE,
+            .txRingMem        = &gUart`i`UdmaTxRingMem,
+            .rxRingMem        = &gUart`i`UdmaRxRingMem,
+            .ringMemSize      = UART_UDMA_TEST_RING_MEM_SIZE,
+            .ringElemCnt      = UART_UDMA_TEST_RING_ENTRIES,
+            .isOpen           = FALSE,
+        },
+    % }
+};
+
 %}
 
 void Drivers_uartOpenLld(void)
