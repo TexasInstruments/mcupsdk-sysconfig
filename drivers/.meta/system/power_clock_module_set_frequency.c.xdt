@@ -15,7 +15,7 @@
             % }
             % else
             % {
-    { `clockFrequency.moduleId`, `clockFrequency.clkId`, `clockFrequency.clkRate`,-1},
+    { `clockFrequency.moduleId`, `clockFrequency.clkId`, `clockFrequency.clkRate`, SOC_MODULES_END},
             % }
         % }
         % else {

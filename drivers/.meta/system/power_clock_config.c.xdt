@@ -110,7 +110,7 @@ void Module_clockSetFrequency(void)
     while(gSocModulesClockFrequency[i].moduleId!=SOC_MODULES_END)
     {
 % if (common.getSocName() == "am64x" || common.getSocName() == "am243x") {
-        if (gSocModulesClockFrequency[i].clkParentId != -1)
+        if (gSocModulesClockFrequency[i].clkParentId != SOC_MODULES_END)
         {
             /* Set module clock to specified frequency and with a specific parent */
             status = SOC_moduleSetClockFrequencyWithParent(
