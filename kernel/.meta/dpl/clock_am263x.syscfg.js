@@ -1,10 +1,16 @@
 
 let common = system.getScript("/common");
 
+function onChangeClkSource(instance, ui)
+{
+    instance.timerInputClkHz  = getDefaultTimerClockSourceMhz( instance.clkSource );
+}
+
 let timerClockSourceConfig_r5f = {
     name: "clkSource",
     displayName: "Input Clock Source",
     default: "WUCPUCLK",
+    onChange: onChangeClkSource,
     options: [
         {
             "name": "WUCPUCLK",

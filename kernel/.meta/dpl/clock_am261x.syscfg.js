@@ -1,10 +1,16 @@
 
 let common = system.getScript("/common");
 
+function onChangeClkSource(instance, ui)
+{
+    instance.timerInputClkHz  = getDefaultTimerClockSourceMhz( instance.clkSource );
+}
+
 let timerClockSourceConfig_r5f = {
     name: "clkSource",
     displayName: "Input Clock Source",
     default: "WUCPUCLK",
+    onChange: onChangeClkSource,
     options: [
         {
             "name": "WUCPUCLK",
@@ -160,7 +166,7 @@ function getDefaultTimerClockSourceMhz(clkSource) {
              break;
              case "SYS_CLK":
                  clkSourceHz = 200*1000000;
-                 if(common.getR5Freq() == "500MHz")
+                 if(common.getDefaultR5Freq() == "500MHz")
                  {
                      clkSourceHz = 250*1000000;
                  }
@@ -179,7 +185,7 @@ function getDefaultTimerClockSourceMhz(clkSource) {
              break;
              case "DPLL_PER_HSDIV0_CLKOUT0":
                  clkSourceHz = 192*1000000;
-                 if(common.getR5Freq() == "500MHz")
+                 if(common.getDefaultR5Freq() == "500MHz")
                  {
                      clkSourceHz = 240*1000000;
                  }
