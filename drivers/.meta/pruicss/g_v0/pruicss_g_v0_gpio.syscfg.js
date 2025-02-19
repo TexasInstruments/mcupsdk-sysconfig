@@ -82,6 +82,17 @@ function moduleInstances(instance) {
             minInstanceCount: 0,
             defaultInstanceCount: 0,
         });
+        modInstances.push({
+            name: "PruIcssPwm",
+            displayName: "PRU (ICSS) PWM",
+            moduleName: '/drivers/pruicss/g_v0/pruicss_g_v0_gpio_pwm',
+            useArray: true,
+            requiredArgs: {
+                instance: instance["instance"],
+            },
+            minInstanceCount: 0,
+            defaultInstanceCount: 0,
+        });
     }
 
     return (modInstances);
