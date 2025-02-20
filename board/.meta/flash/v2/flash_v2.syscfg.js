@@ -241,6 +241,7 @@ let defNandProtoJson = soc.getDefaultNandProtocolJson()
 let flash_module_name = "/board/flash/flash";
 
 let serialNorDefaultCfg = soc.getDefaultFlashConfig();
+
 let serialNandDefaultCfg = soc.getDefaultNandFlashConfig();
 
 let serialNorDefaultName = soc.getDefaultFlashName();
@@ -364,55 +365,11 @@ function changeFlashType(inst, ui)
         ui.srProgStatus.hidden = false;
         ui.srEraseStatus.hidden = false;
         ui.badBlockCheck.hidden = false;
-    } else {
-        ui.cmdWrsr.hidden = true;
-        ui.skipHwInit.hidden = false;
-        ui.cmdPageLoad.hidden = true;
-        ui.cmdPageProg.hidden = true;
-        ui.srWriteProtectReg.hidden = true;
-        ui.srWriteProtectMask.hidden = true;
-        ui.flashSectorSize.hidden = false;
-        ui.cmdBlockErase3B.hidden = false;
-        ui.cmdBlockErase4B.hidden = false;
-        ui.cmdSectorErase3B.hidden = false;
-        ui.cmdSectorErase4B.hidden = false;
-        ui.cmdBlockErase.hidden = true;
-
-        ui.modeClksCmd.hidden = false;
-        ui.modeClksRd.hidden = false;
-        ui.flashQeType.hidden = false;
-        ui.flashOeType.hidden = false;
-        ui.flash444Seq.hidden = false;
-        ui.flash888Seq.hidden = false;
-
-        ui.deviceBusyType.hidden = false;
-        ui.dummyId4.hidden = false;
-        ui.dummyId8.hidden = false;
-
-        ui.srWel.hidden = false;
-        ui.srWipReg.hidden = true;
-        ui.xspiRdsrDummy.hidden = true;
-        ui.xspiWipBit.hidden = false;
-
-        ui.cmdChipErase.hidden = false;
-        ui.enable4BAddr.hidden = false;
-
-        ui.addressByteSupport.hidden = false;
-        ui.fourByteEnableSeq.hidden = false;
-
-        ui.progStatusReg.hidden = true;
-        ui.xspiProgStatusReg.hidden = true;
-        ui.eraseStatusReg.hidden = true;
-        ui.xspiEraseStatusReg.hidden = true;
-        ui.srProgStatus.hidden = true;
-        ui.srEraseStatus.hidden = true;
-        ui.badBlockCheck.hidden = true;
     }
 }
 
 let flash_module = {
     displayName: "FLASH",
-
     templates: {
         "/board/board/board_open_close.c.xdt": {
             board_open_close_config: "/board/flash/templates/v2/flash_open_close_config.c.xdt",
@@ -427,6 +384,7 @@ let flash_module = {
         },
 
     },
+    defaultInstanceName: "CONFIG_FLASH",
     collapsed: false,
     config:  getConfigurables(),
     validate: validate,
@@ -445,7 +403,6 @@ let flash_module = {
 function getConfigurables()
 {
     let config = [];
-
     config.push(
         {
             name: "device",
@@ -479,24 +436,9 @@ function getConfigurables()
                 { name: "SERIAL_NAND", displayName: "Serial Nand Flash" },
             ],
             onChange: function(inst, ui) {
-
-                inst.cmdBlockErase = "0x00";
-                inst.cmdPageLoad = "0x00";
-                inst.cmdPageProg = "0x00";
-                inst.srWipReg = "0x00";
-                inst.xspiRdsrDummy = 0;
-                inst.srWriteProtectReg = "0x0";
-                inst.srWriteProtectMask = 0;
-                inst.progStatusReg = "0x0";
-                inst.xspiProgStatusReg = "0x0";
-                inst.eraseStatusReg = "0x0";
-                inst.xspiEraseStatusReg = "0x0";
-                inst.srProgStatus = 0;
-                inst.srEraseStatus = 0;
-                inst.cmdWrsr = "0x00";
                 if(inst.flashType == "SERIAL_NOR") {
                     inst.fname = serialNorDefaultName;
-                    inst.protocol = serialNorDefaultProtocolName ;
+                    inst.protocol = serialNorDefaultProtocolName;
                     inst.flashSize = serialNorDefaultCfg.flashSize;
                     inst.flashPageSize = serialNorDefaultCfg.flashPageSize;
 
@@ -534,11 +476,19 @@ function getConfigurables()
                     inst.proto_mask = serialNorDefaultCfg.protos[defProtoJson].protoCfg == null ? "0x00" : serialNorDefaultCfg.protos[defProtoJson].protoCfg.mask;
                     inst.proto_bitP = serialNorDefaultCfg.protos[defProtoJson].protoCfg == null ? 0 : serialNorDefaultCfg.protos[defProtoJson].protoCfg.bitP;
 
+                    inst.strDtr_isAddrReg = serialNorDefaultCfg.protos[defProtoJson].strDtrCfg == null ? false : serialNorDefaultCfg.protos[defProtoJson].strDtrCfg.isAddrReg;
+                    inst.strDtr_cfgReg = serialNorDefaultCfg.protos[defProtoJson].strDtrCfg == null ? "0x00" : serialNorDefaultCfg.protos[defProtoJson].strDtrCfg.cfgReg;
+                    inst.strDtr_cmdRegRd = serialNorDefaultCfg.protos[defProtoJson].strDtrCfg == null ? "0x00" : serialNorDefaultCfg.protos[defProtoJson].strDtrCfg.cmdRegRd;
+                    inst.strDtr_cmdRegWr = serialNorDefaultCfg.protos[defProtoJson].strDtrCfg == null ? "0x00" : serialNorDefaultCfg.protos[defProtoJson].strDtrCfg.cmdRegWr;
+
+                    inst.strDtr_shift = serialNorDefaultCfg.protos[defProtoJson].strDtrCfg == null ? 0 : serialNorDefaultCfg.protos[defProtoJson].strDtrCfg.shift;
+                    inst.strDtr_mask = serialNorDefaultCfg.protos[defProtoJson].strDtrCfg == null ? "0x00" : serialNorDefaultCfg.protos[defProtoJson].strDtrCfg.mask;
+                    inst.strDtr_bitP = serialNorDefaultCfg.protos[defProtoJson].strDtrCfg == null ? 0 : serialNorDefaultCfg.protos[defProtoJson].strDtrCfg.bitP;
+
                     inst.cmdRdsr = serialNorDefaultCfg.cmdRdsr;
                     inst.xspiWipRdCmd = serialNorDefaultCfg.xspiWipRdCmd;
                     inst.quirks = "Flash_quirkSpansionUNHYSADisable";
                     inst.xspiWipReg = serialNorDefaultCfg.xspiWipReg;
-                    // inst.cmdWrsr = serialNorDefaultCfg.cmdWrsr;
 
                 } else if(inst.flashType == "SERIAL_NAND") {
                     inst.fname = serialNandDefaultName;
@@ -577,6 +527,15 @@ function getConfigurables()
                     inst.proto_shift = serialNandDefaultCfg.protos[defNandProtoJson].protoCfg == null ? 0 : serialNandDefaultCfg.protos[defNandProtoJson].protoCfg.shift;
                     inst.proto_mask = serialNandDefaultCfg.protos[defNandProtoJson].protoCfg == null ? "0x00" : serialNandDefaultCfg.protos[defNandProtoJson].protoCfg.mask;
                     inst.proto_bitP = serialNandDefaultCfg.protos[defNandProtoJson].protoCfg == null ? 0 : serialNandDefaultCfg.protos[defNandProtoJson].protoCfg.bitP;
+                    
+                    inst.strDtr_isAddrReg = serialNandDefaultCfg.protos[defNandProtoJson].strDtrCfg == null ? false : serialNandDefaultCfg.protos[defNandProtoJson].strDtrCfg.isAddrReg;
+                    inst.strDtr_cfgReg = serialNandDefaultCfg.protos[defNandProtoJson].strDtrCfg == null ? "0x00" : serialNandDefaultCfg.protos[defNandProtoJson].strDtrCfg.cfgReg;
+                    inst.strDtr_cmdRegRd = serialNandDefaultCfg.protos[defNandProtoJson].strDtrCfg == null ? "0x00" : serialNandDefaultCfg.protos[defNandProtoJson].strDtrCfg.cmdRegRd;
+                    inst.strDtr_cmdRegWr = serialNandDefaultCfg.protos[defNandProtoJson].strDtrCfg == null ? "0x00" : serialNandDefaultCfg.protos[defNandProtoJson].strDtrCfg.cmdRegWr;
+
+                    inst.strDtr_shift = serialNandDefaultCfg.protos[defNandProtoJson].strDtrCfg == null ? 0 : serialNandDefaultCfg.protos[defNandProtoJson].strDtrCfg.shift;
+                    inst.strDtr_mask = serialNandDefaultCfg.protos[defNandProtoJson].strDtrCfg == null ? "0x00" : serialNandDefaultCfg.protos[defNandProtoJson].strDtrCfg.mask;
+                    inst.strDtr_bitP = serialNandDefaultCfg.protos[defNandProtoJson].strDtrCfg == null ? 0 : serialNandDefaultCfg.protos[defNandProtoJson].strDtrCfg.bitP;
 
                     inst.cmdRdsr = serialNandDefaultCfg.cmdRdsr;
                     inst.cmdWrsr = serialNandDefaultCfg.cmdWrsr;
@@ -615,23 +574,6 @@ function getConfigurables()
             description: "The Flash SPI protocol to be used",
             default: soc.getDefaultProtocol().name,
             options: defaultProtocols,
-            getDisabledOptions: (inst) => {
-                if(inst.flashType == "SERIAL_NOR")
-                {
-                    return [];
-                } else if(inst.flashType == "SERIAL_NAND") {
-                    let disabledOptions = [
-                            { name : "1s_1s_2s", displayName : "1S-1S-2S", reason:"Not supported for NAND Flash" },
-                            { name : "1s_1s_8s", displayName : "1S-1S-8S", reason:"Not supported for NAND Flash" },
-                            { name : "4s_4s_4s", displayName : "4S-4S-4S", reason:"Not supported for NAND Flash" },
-                            { name : "4s_4d_4d", displayName : "4S-4D-4D", reason:"Not supported for NAND Flash" },
-                            { name : "8s_8s_8s", displayName : "8S-8S-8S", reason:"Not supported for NAND Flash" },
-                            { name : "8d_8d_8d", displayName : "8D-8D-8D", reason:"Not supported for NAND Flash" },
-                            { name : "custom",   displayName : "Custom Protocol", reason:"Not supported for NAND Flash" },
-                    ];
-                    return disabledOptions;
-                }
-            },
             onChange: function(inst, ui) {
                 let pCfg = protoToCfgMap[inst.protocol];
                 if(inst.flashType == "SERIAL_NOR")
@@ -689,6 +631,29 @@ function getConfigurables()
                             inst.proto_mask = "0x00";
                             inst.proto_bitP = 0;
                         }
+
+                        if(serialNorDefaultCfg.protos[pCfg].strDtrCfg != null)
+                        {
+                            inst.strDtr_isAddrReg = serialNorDefaultCfg.protos[pCfg] == null ? false : serialNorDefaultCfg.protos[pCfg].strDtrCfg.isAddrReg;
+                            inst.strDtr_cfgReg = serialNorDefaultCfg.protos[pCfg] == null ? "0x00" : serialNorDefaultCfg.protos[pCfg].strDtrCfg.cfgReg;
+                            inst.strDtr_cmdRegRd = serialNorDefaultCfg.protos[pCfg] == null ? "0x00" : serialNorDefaultCfg.protos[pCfg].strDtrCfg.cmdRegRd;
+                            inst.strDtr_cmdRegWr = serialNorDefaultCfg.protos[pCfg] == null ? "0x00" : serialNorDefaultCfg.protos[pCfg].strDtrCfg.cmdRegWr;
+
+                            inst.strDtr_shift = serialNorDefaultCfg.protos[pCfg] == null ? 0 : serialNorDefaultCfg.protos[pCfg].strDtrCfg.shift;
+                            inst.strDtr_mask = serialNorDefaultCfg.protos[pCfg]== null ? "0x00" : serialNorDefaultCfg.protos[pCfg].strDtrCfg.mask;
+                            inst.strDtr_bitP = serialNorDefaultCfg.protos[pCfg] == null ? 0 : serialNorDefaultCfg.protos[pCfg].strDtrCfg.bitP;
+                        }
+                        else
+                        {
+                            inst.strDtr_isAddrReg = false;
+                            inst.strDtr_cfgReg = "0x00";
+                            inst.strDtr_cmdRegRd = "0x00";
+                            inst.strDtr_cmdRegWr = "0x00";
+
+                            inst.strDtr_shift = 0;
+                            inst.strDtr_mask = "0x00";
+                            inst.strDtr_bitP = 0;
+                        }
                     }
                     else
                     {
@@ -704,8 +669,8 @@ function getConfigurables()
                 {
                     if(serialNandDefaultCfg.protos[pCfg] != null && (inst.protocol != "custom"))
                     {
-                        inst.cmdRd = serialNandDefaultCfg.protos[pCfg] == null ? "0x00": soc.getDefaultNandFlashConfig().protos[pCfg].cmdRd;
-                        inst.cmdWr = serialNandDefaultCfg.protos[pCfg] == null ? "0x00": soc.getDefaultNandFlashConfig().protos[pCfg].cmdWr;
+                        inst.cmdRd = serialNandDefaultCfg.protos[pCfg] == null ? "0x00": serialNandDefaultCfg.protos[pCfg].cmdRd;
+                        inst.cmdWr = serialNandDefaultCfg.protos[pCfg] == null ? "0x00": serialNandDefaultCfg.protos[pCfg].cmdWr;
 
                         inst.dummyClksCmd = serialNandDefaultCfg.protos[pCfg] == null ? 0: serialNandDefaultCfg.protos[pCfg].dummyClksCmd;
                         inst.dummyClksRd = serialNandDefaultCfg.protos[pCfg] == null ? 0 :serialNandDefaultCfg.protos[pCfg].dummyClksRd;
@@ -755,6 +720,29 @@ function getConfigurables()
                             inst.proto_mask = "0x00";
                             inst.proto_bitP = 0;
                         }
+
+                        if(serialNandDefaultCfg.protos[pCfg].strDtrCfg != null)
+                        {
+                            inst.strDtr_isAddrReg = serialNandDefaultCfg.protos[pCfg] == null ? false : serialNandDefaultCfg.protos[pCfg].strDtrCfg.isAddrReg;
+                            inst.strDtr_cfgReg = serialNandDefaultCfg.protos[pCfg] == null ? "0x00" : serialNandDefaultCfg.protos[pCfg].strDtrCfg.cfgReg;
+                            inst.strDtr_cmdRegRd = serialNandDefaultCfg.protos[pCfg] == null ? "0x00" : serialNandDefaultCfg.protos[pCfg].strDtrCfg.cmdRegRd;
+                            inst.strDtr_cmdRegWr = serialNandDefaultCfg.protos[pCfg] == null ? "0x00" : serialNandDefaultCfg.protos[pCfg].strDtrCfg.cmdRegWr;
+
+                            inst.strDtr_shift = serialNandDefaultCfg.protos[pCfg] == null ? 0 : serialNandDefaultCfg.protos[pCfg].strDtrCfg.shift;
+                            inst.strDtr_mask = serialNandDefaultCfg.protos[pCfg]== null ? "0x00" : serialNandDefaultCfg.protos[pCfg].strDtrCfg.mask;
+                            inst.strDtr_bitP = serialNandDefaultCfg.protos[pCfg] == null ? 0 : serialNandDefaultCfg.protos[pCfg].strDtrCfg.bitP;
+                        }
+                        else
+                        {
+                            inst.strDtr_isAddrReg = false;
+                            inst.strDtr_cfgReg = "0x00";
+                            inst.strDtr_cmdRegRd = "0x00";
+                            inst.strDtr_cmdRegWr = "0x00";
+
+                            inst.strDtr_shift = 0;
+                            inst.strDtr_mask = "0x00";
+                            inst.strDtr_bitP = 0;
+                        }
                     }
                     else
                     {
@@ -765,32 +753,6 @@ function getConfigurables()
                         inst.dummyClksRd = 0;
 
                     }
-                }
-                else
-                {
-                    inst.dummy_isAddrReg = false;
-                    inst.dummy_cfgReg = "0x00";
-                    inst.dummy_cmdRegRd = "0x00";
-                    inst.dummy_cmdRegWr = "0x00";
-
-                    inst.dummy_shift = 0;
-                    inst.dummy_mask = "0x00";
-                    inst.dummy_bitP = 0;
-
-                    inst.proto_isAddrReg = false;
-                    inst.proto_cfgReg = "0x00";
-                    inst.proto_cmdRegRd = "0x00";
-                    inst.proto_cmdRegWr = "0x00";
-
-                    inst.proto_shift = 0;
-                    inst.proto_mask = "0x00";
-                    inst.proto_bitP = 0;
-
-                    inst.cmdRd = "0x00"
-                    inst.cmdWr = "0x00"
-
-                    inst.dummyClksCmd = 0;
-                    inst.dummyClksRd = 0;
                 }
 
                 let hideLines = true;
@@ -874,35 +836,35 @@ function getConfigurables()
                 {
                     name: "flashSize",
                     displayName: "Flash Size In Bytes",
-                    default: soc.getDefaultFlashConfig().flashSize,
+                    default: serialNorDefaultCfg.flashSize,
                     displayFormat: "dec",
                 },
                 {
                     name: "flashPageSize",
                     displayName: "Flash Page Size In Bytes",
-                    default: soc.getDefaultFlashConfig().flashPageSize,
+                    default: serialNorDefaultCfg.flashPageSize,
                     displayFormat: "dec",
                 },
                 {
                     name: "flashManfId",
                     displayName: "Flash JEDEC Manufacturer ID",
-                    default: soc.getDefaultFlashConfig().flashManfId,
+                    default: serialNorDefaultCfg.flashManfId,
                 },
                 {
                     name: "flashDeviceId",
                     displayName: "Flash JEDEC Device ID",
-                    default: soc.getDefaultFlashConfig().flashDeviceId,
+                    default: serialNorDefaultCfg.flashDeviceId,
                 },
                 {
                     name: "cmdPageLoad",
                     displayName: "Page Load Command",
-                    default: "0x00",
+                    default: serialNandDefaultCfg.cmdPageLoad,
                     hidden: true,
                 },
                 {
                     name: "cmdPageProg",
                     displayName: "Page Program Command",
-                    default: "0x00",
+                    default: serialNandDefaultCfg.cmdPageProg,
                     hidden: true,
                 },
                 {
@@ -913,42 +875,42 @@ function getConfigurables()
                         {
                             name: "flashBlockSize",
                             displayName: "Flash Block Size In Bytes",
-                            default: soc.getDefaultFlashConfig().flashBlockSize,
+                            default: serialNorDefaultCfg.flashBlockSize,
                         },
                         {
                             name: "flashSectorSize",
                             displayName: "Flash Sector Size In Bytes",
-                            default: soc.getDefaultFlashConfig().flashSectorSize,
+                            default: serialNorDefaultCfg.flashSectorSize,
                         },
                         {
                             name: "cmdBlockErase3B",
                             displayName: "Block Erase CMD (3B)",
                             description: "Command to erase a block in 3-Byte addressing mode",
-                            default: soc.getDefaultFlashConfig().cmdBlockErase3B,
+                            default: serialNorDefaultCfg.cmdBlockErase3B,
                         },
                         {
                             name: "cmdBlockErase4B",
                             displayName: "Block Erase CMD (4B)",
                             description: "Command to erase a block in 4-byte addressing mode",
-                            default: soc.getDefaultFlashConfig().cmdBlockErase4B,
+                            default: serialNorDefaultCfg.cmdBlockErase4B,
                         },
                         {
                             name: "cmdSectorErase3B",
                             displayName: "Sector Erase CMD (3B)",
                             description: "Command to erase a block in 3-Byte addressing mode",
-                            default: soc.getDefaultFlashConfig().cmdSectorErase3B,
+                            default: serialNorDefaultCfg.cmdSectorErase3B,
                         },
                         {
                             name: "cmdSectorErase4B",
                             displayName: "Sector Erase CMD (4B)",
                             description: "Command to erase a block in 4-byte addressing mode",
-                            default: soc.getDefaultFlashConfig().cmdSectorErase4B,
+                            default: serialNorDefaultCfg.cmdSectorErase4B,
                         },
                         {
                             name: "cmdBlockErase",
                             displayName: "Block Erase CMD",
                             description: "Command to erase a block",
-                            default: "0x00",
+                            default: serialNandDefaultCfg.cmdBlockErase,
                             hidden: true,
                         }
                     ],
@@ -960,39 +922,39 @@ function getConfigurables()
                         {
                             name: "cmdRd",
                             displayName: "Read Command",
-                            default: soc.getDefaultFlashConfig().protos[defProtoJson].cmdRd,
+                            default: serialNorDefaultCfg.protos[defProtoJson].cmdRd,
                         },
                         {
                             name: "cmdWr",
                             displayName: "Write/Page Program Command",
-                            default: soc.getDefaultFlashConfig().protos[defProtoJson].cmdWr,
+                            default: serialNorDefaultCfg.protos[defProtoJson].cmdWr,
                         },
                         {
                             name: "modeClksCmd",
                             displayName: "Mode Clocks (CMD)",
                             description: "Mode clocks required while sending command",
-                            default: soc.getDefaultFlashConfig().protos[defProtoJson].modeClksCmd,
+                            default: serialNorDefaultCfg.protos[defProtoJson].modeClksCmd,
                             displayFormat: "dec",
                         },
                         {
                             name: "modeClksRd",
                             displayName: "Mode Clocks (READ)",
                             description: "Mode clocks required while reading data",
-                            default: soc.getDefaultFlashConfig().protos[defProtoJson].modeClksRd,
+                            default: serialNorDefaultCfg.protos[defProtoJson].modeClksRd,
                             displayFormat: "dec",
                         },
                         {
                             name: "dummyClksCmd",
                             displayName: "Dummy Clocks (CMD)",
                             description: "Dummy Clocks required while sending command",
-                            default: soc.getDefaultFlashConfig().protos[defProtoJson].dummyClksCmd,
+                            default: serialNorDefaultCfg.protos[defProtoJson].dummyClksCmd,
                             displayFormat: "dec",
                         },
                         {
                             name: "dummyClksRd",
                             displayName: "Dummy Clocks (READ)",
                             description: "Dummy Clocks required while reading data",
-                            default: soc.getDefaultFlashConfig().protos[defProtoJson].dummyClksRd,
+                            default: serialNorDefaultCfg.protos[defProtoJson].dummyClksRd,
                             displayFormat: "dec",
                         },
                         {
@@ -1000,7 +962,7 @@ function getConfigurables()
                             displayName: "Quad Enable Type",
                             description: "The type of Quad Enable supported by the flash",
                             longDescription: quadEnableDescription,
-                            default: soc.getDefaultFlashConfig().protos[defProtoJson] == null ? "0" : soc.getDefaultFlashConfig().protos[defProtoJson].enableType,
+                            default: serialNorDefaultCfg.protos[defProtoJson] == null ? "0" : serialNorDefaultCfg.protos[defProtoJson].enableType,
                             options: [
                                 { name : "0" },
                                 { name : "1" },
@@ -1027,14 +989,14 @@ function getConfigurables()
                             displayName: "QPI Sequence",
                             description: "The type of octal enable supported by the flash for 1-1-8/1-8-8 mode",
                             longDescription: seq444Description,
-                            default: soc.getDefaultFlashConfig().protos[defProtoJson] == null ? "0x00" : soc.getDefaultFlashConfig().protos[defProtoJson].enableSeq,
+                            default: serialNorDefaultCfg.protos[defProtoJson] == null ? "0x00" : serialNorDefaultCfg.protos[defProtoJson].enableSeq,
                         },
                         {
                             name: "flash888Seq",
                             displayName: "OPI Sequence",
                             description: "The type of octal enable supported by the flash for 1-1-8/1-8-8 mode",
                             longDescription: seq888Description,
-                            default: "0x00",
+                            default: serialNorDefaultCfg.protos[defProtoJson] == null ? "0x00" : serialNorDefaultCfg.protos[defProtoJson].enableSeq,
                         },
                         {
                             name: "protoCfg",
@@ -1044,7 +1006,7 @@ function getConfigurables()
                                 {
                                     name: "proto_isAddrReg",
                                     displayName: "Config Is Using Addressed Reg",
-                                    default: soc.getDefaultFlashConfig().protos[defProtoJson].protoCfg == null ? false : soc.getDefaultFlashConfig().protos[defProtoJson].protoCfg.isAddrReg,
+                                    default: serialNorDefaultCfg.protos[defProtoJson].protoCfg == null ? false : serialNorDefaultCfg.protos[defProtoJson].protoCfg.isAddrReg,
                                     onChange: (inst, ui) => {
                                         changeFlashType(inst, ui);
                                     }
@@ -1052,18 +1014,18 @@ function getConfigurables()
                                 {
                                     name: "proto_cfgReg",
                                     displayName: "Address Of Config Reg",
-                                    default: soc.getDefaultFlashConfig().protos[defProtoJson].protoCfg == null ? "0x00000000" : soc.getDefaultFlashConfig().protos[defProtoJson].protoCfg.cfgReg,
-                                    hidden: soc.getDefaultFlashConfig().protos[defProtoJson].protoCfg == null,
+                                    default: serialNorDefaultCfg.protos[defProtoJson].protoCfg == null ? "0x00000000" : serialNorDefaultCfg.protos[defProtoJson].protoCfg.cfgReg,
+                                    hidden: serialNorDefaultCfg.protos[defProtoJson].protoCfg == null,
                                 },
                                 {
                                     name: "proto_cmdRegRd",
                                     displayName: "CMD To Read Config Reg",
-                                    default: soc.getDefaultFlashConfig().protos[defProtoJson].protoCfg == null ? "0x00" : soc.getDefaultFlashConfig().protos[defProtoJson].protoCfg.cmdRegRd,
+                                    default: serialNorDefaultCfg.protos[defProtoJson].protoCfg == null ? "0x00" : serialNorDefaultCfg.protos[defProtoJson].protoCfg.cmdRegRd,
                                 },
                                 {
                                     name: "proto_cmdRegWr",
                                     displayName: "CMD To Write To Config Reg",
-                                    default: soc.getDefaultFlashConfig().protos[defProtoJson].protoCfg == null ? "0x00" : soc.getDefaultFlashConfig().protos[defProtoJson].protoCfg.cmdRegWr,
+                                    default: serialNorDefaultCfg.protos[defProtoJson].protoCfg == null ? "0x00" : serialNorDefaultCfg.protos[defProtoJson].protoCfg.cmdRegWr,
                                 },
                                 {
                                     name: "regDataProto",
@@ -1074,17 +1036,17 @@ function getConfigurables()
                                         {
                                             name: "proto_shift",
                                             displayName: "Data Shift Bits",
-                                            default: soc.getDefaultFlashConfig().protos[defProtoJson].protoCfg == null ? 0 : soc.getDefaultFlashConfig().protos[defProtoJson].protoCfg.shift,
+                                            default: serialNorDefaultCfg.protos[defProtoJson].protoCfg == null ? 0 : serialNorDefaultCfg.protos[defProtoJson].protoCfg.shift,
                                         },
                                         {
                                             name: "proto_mask",
                                             displayName: "Data Binary Mask",
-                                            default: soc.getDefaultFlashConfig().protos[defProtoJson].protoCfg == null ? "0x00" : soc.getDefaultFlashConfig().protos[defProtoJson].protoCfg.mask,
+                                            default: serialNorDefaultCfg.protos[defProtoJson].protoCfg == null ? "0x00" : serialNorDefaultCfg.protos[defProtoJson].protoCfg.mask,
                                         },
                                         {
                                             name: "proto_bitP",
                                             displayName: "Data To Be Written",
-                                            default: soc.getDefaultFlashConfig().protos[defProtoJson].protoCfg == null ? 0 : soc.getDefaultFlashConfig().protos[defProtoJson].protoCfg.bitP,
+                                            default: serialNorDefaultCfg.protos[defProtoJson].protoCfg == null ? 0 : serialNorDefaultCfg.protos[defProtoJson].protoCfg.bitP,
                                         },
                                     ]
                                 }
@@ -1098,7 +1060,7 @@ function getConfigurables()
                                 {
                                     name: "dummy_isAddrReg",
                                     displayName: "Config Is Via Addressed Reg",
-                                    default: soc.getDefaultFlashConfig().protos[defProtoJson].dummyCfg == null ? false : soc.getDefaultFlashConfig().protos[defProtoJson].dummyCfg.isAddrReg,
+                                    default: serialNorDefaultCfg.protos[defProtoJson].dummyCfg == null ? false : serialNorDefaultCfg.protos[defProtoJson].dummyCfg.isAddrReg,
                                     onChange: (inst, ui) => {
                                         changeFlashType(inst, ui);
                                     }
@@ -1106,18 +1068,18 @@ function getConfigurables()
                                 {
                                     name: "dummy_cfgReg",
                                     displayName: "Address Of Config Reg",
-                                    default: soc.getDefaultFlashConfig().protos[defProtoJson].dummyCfg == null ? "0x00000000" : soc.getDefaultFlashConfig().protos[defProtoJson].dummyCfg.cfgReg,
-                                    hidden: soc.getDefaultFlashConfig().protos[defProtoJson].dummyCfg == null,
+                                    default: serialNorDefaultCfg.protos[defProtoJson].dummyCfg == null ? "0x00000000" : serialNorDefaultCfg.protos[defProtoJson].dummyCfg.cfgReg,
+                                    hidden: serialNorDefaultCfg.protos[defProtoJson].dummyCfg == null,
                                 },
                                 {
                                     name: "dummy_cmdRegRd",
                                     displayName: "CMD To Read Config Reg",
-                                    default: soc.getDefaultFlashConfig().protos[defProtoJson].dummyCfg == null ? "0x00" : soc.getDefaultFlashConfig().protos[defProtoJson].dummyCfg.cmdRegRd,
+                                    default: serialNorDefaultCfg.protos[defProtoJson].dummyCfg == null ? "0x00" : serialNorDefaultCfg.protos[defProtoJson].dummyCfg.cmdRegRd,
                                 },
                                 {
                                     name: "dummy_cmdRegWr",
                                     displayName: "CMD To Write To Config Reg",
-                                    default: soc.getDefaultFlashConfig().protos[defProtoJson].dummyCfg == null ? "0x00" : soc.getDefaultFlashConfig().protos[defProtoJson].dummyCfg.cmdRegWr,
+                                    default: serialNorDefaultCfg.protos[defProtoJson].dummyCfg == null ? "0x00" : serialNorDefaultCfg.protos[defProtoJson].dummyCfg.cmdRegWr,
                                 },
                                 {
                                     name: "regDataDummy",
@@ -1128,17 +1090,17 @@ function getConfigurables()
                                         {
                                             name: "dummy_shift",
                                             displayName: "Data Shift Bits",
-                                            default: soc.getDefaultFlashConfig().protos[defProtoJson].dummyCfg == null ? 0 : soc.getDefaultFlashConfig().protos[defProtoJson].dummyCfg.shift,
+                                            default: serialNorDefaultCfg.protos[defProtoJson].dummyCfg == null ? 0 : serialNorDefaultCfg.protos[defProtoJson].dummyCfg.shift,
                                         },
                                         {
                                             name: "dummy_mask",
                                             displayName: "Data Binary Mask",
-                                            default: soc.getDefaultFlashConfig().protos[defProtoJson].dummyCfg == null ? "0x00" : soc.getDefaultFlashConfig().protos[defProtoJson].dummyCfg.mask,
+                                            default: serialNorDefaultCfg.protos[defProtoJson].dummyCfg == null ? "0x00" : serialNorDefaultCfg.protos[defProtoJson].dummyCfg.mask,
                                         },
                                         {
                                             name: "dummy_bitP",
                                             displayName: "Data To Be Written",
-                                            default: soc.getDefaultFlashConfig().protos[defProtoJson].dummyCfg == null ? 0 : soc.getDefaultFlashConfig().protos[defProtoJson].dummyCfg.bitP,
+                                            default: serialNorDefaultCfg.protos[defProtoJson].dummyCfg == null ? 0 : serialNorDefaultCfg.protos[defProtoJson].dummyCfg.bitP,
                                         },
                                     ]
                                 }
@@ -1152,7 +1114,7 @@ function getConfigurables()
                                 {
                                     name: "strDtr_isAddrReg",
                                     displayName: "Config Is Via Addressed Reg",
-                                    default: soc.getDefaultFlashConfig().protos[defProtoJson].strDtrCfg == null ? false : soc.getDefaultFlashConfig().protos[defProtoJson].strDtrCfg.isAddrReg,
+                                    default: serialNorDefaultCfg.protos[defProtoJson].strDtrCfg == null ? false : serialNorDefaultCfg.protos[defProtoJson].strDtrCfg.isAddrReg,
                                     onChange: (inst, ui) => {
                                         changeFlashType(inst, ui);
                                     }
@@ -1160,18 +1122,18 @@ function getConfigurables()
                                 {
                                     name: "strDtr_cfgReg",
                                     displayName: "Address Of Config Reg",
-                                    default: soc.getDefaultFlashConfig().protos[defProtoJson].strDtrCfg == null ? "0x00000000" : soc.getDefaultFlashConfig().protos[defProtoJson].strDtrCfg.cfgReg,
-                                    hidden: soc.getDefaultFlashConfig().protos[defProtoJson].strDtrCfg == null,
+                                    default: serialNorDefaultCfg.protos[defProtoJson].strDtrCfg == null ? "0x00000000" : serialNorDefaultCfg.protos[defProtoJson].strDtrCfg.cfgReg,
+                                    hidden: serialNorDefaultCfg.protos[defProtoJson].strDtrCfg == null,
                                 },
                                 {
                                     name: "strDtr_cmdRegRd",
                                     displayName: "CMD To Read Config Reg",
-                                    default: soc.getDefaultFlashConfig().protos[defProtoJson].strDtrCfg == null ? "0x00" : soc.getDefaultFlashConfig().protos[defProtoJson].strDtrCfg.cmdRegRd,
+                                    default: serialNorDefaultCfg.protos[defProtoJson].strDtrCfg == null ? "0x00" : serialNorDefaultCfg.protos[defProtoJson].strDtrCfg.cmdRegRd,
                                 },
                                 {
                                     name: "strDtr_cmdRegWr",
                                     displayName: "CMD To Write To Config Reg",
-                                    default: soc.getDefaultFlashConfig().protos[defProtoJson].strDtrCfg == null ? "0x00" : soc.getDefaultFlashConfig().protos[defProtoJson].strDtrCfg.cmdRegWr,
+                                    default: serialNorDefaultCfg.protos[defProtoJson].strDtrCfg == null ? "0x00" : serialNorDefaultCfg.protos[defProtoJson].strDtrCfg.cmdRegWr,
                                 },
                                 {
                                     name: "regDataStrDtr",
@@ -1182,17 +1144,17 @@ function getConfigurables()
                                         {
                                             name: "strDtr_shift",
                                             displayName: "Data Shift Bits",
-                                            default: soc.getDefaultFlashConfig().protos[defProtoJson].strDtrCfg == null ? 0 : soc.getDefaultFlashConfig().protos[defProtoJson].strDtrCfg.shift,
+                                            default: serialNorDefaultCfg.protos[defProtoJson].strDtrCfg == null ? 0 : serialNorDefaultCfg.protos[defProtoJson].strDtrCfg.shift,
                                         },
                                         {
                                             name: "strDtr_mask",
                                             displayName: "Data Binary Mask",
-                                            default: soc.getDefaultFlashConfig().protos[defProtoJson].strDtrCfg == null ? "0x00" : soc.getDefaultFlashConfig().protos[defProtoJson].strDtrCfg.mask,
+                                            default: serialNorDefaultCfg.protos[defProtoJson].strDtrCfg == null ? "0x00" : serialNorDefaultCfg.protos[defProtoJson].strDtrCfg.mask,
                                         },
                                         {
                                             name: "strDtr_bitP",
                                             displayName: "Data To Be Written",
-                                            default: soc.getDefaultFlashConfig().protos[defProtoJson].strDtrCfg == null ? 0 : soc.getDefaultFlashConfig().protos[defProtoJson].strDtrCfg.bitP,
+                                            default: serialNorDefaultCfg.protos[defProtoJson].strDtrCfg == null ? 0 : serialNorDefaultCfg.protos[defProtoJson].strDtrCfg.bitP,
                                         },
                                     ]
                                 }
@@ -1220,14 +1182,14 @@ function getConfigurables()
                     displayName: "Flash Reset Type",
                     description: "Type of reset supported by the flash",
                     longDescription: flashResetDescription,
-                    default: soc.getDefaultFlashConfig().resetType,
+                    default: serialNorDefaultCfg.resetType,
                 },
                 {
                     name: "deviceBusyType",
                     displayName: "Flash Device Busy Type",
                     description: "Way in which device's busy status maybe polled",
                     longDescription: flashBusyDescription,
-                    default: soc.getDefaultFlashConfig().deviceBusyType,
+                    default: serialNorDefaultCfg.deviceBusyType,
                     options : [
                         { name: "0", displayName: "FLAG SR BIT 7"},
                         { name: "1", displayName: "LEGACY POLLING OF SR"},
@@ -1242,28 +1204,28 @@ function getConfigurables()
                             name: "cmdRdId",
                             displayName: "Read ID CMD",
                             description: "Command to read JEDEC ID",
-                            default: soc.getDefaultFlashConfig().rdIdSettings.cmd,
+                            default: serialNorDefaultCfg.rdIdSettings.cmd,
                         },
                         {
                             name: "rdIdAddressSzieInBytes",
                             displayName: "Address Size (bytes)",
                             description: "Number of address bytes that is required to be sent while reading ID.",
-                            default: soc.getDefaultFlashConfig().rdIdSettings.addressBytesSize
+                            default: serialNorDefaultCfg.rdIdSettings.addressBytesSize
                         },
                         {
                             name: "idNumBytes",
                             displayName: "Number Of Bytes To Read",
-                            default: soc.getDefaultFlashConfig().rdIdSettings.numBytes,
+                            default: serialNorDefaultCfg.rdIdSettings.numBytes,
                         },
                         {
                             name: "dummyId4",
                             displayName: "Number Of Dummy Cycles In Quad Mode",
-                            default: soc.getDefaultFlashConfig().rdIdSettings.dummy4,
+                            default: serialNorDefaultCfg.rdIdSettings.dummy4,
                         },
                         {
                             name: "dummyId8",
                             displayName: "Number Of Dummy Cycles In Octal Mode",
-                            default: soc.getDefaultFlashConfig().rdIdSettings.dummy8,
+                            default: serialNorDefaultCfg.rdIdSettings.dummy8,
                         },
                     ]
                 },
@@ -1271,51 +1233,51 @@ function getConfigurables()
                     name: "cmdWren",
                     displayName: "Write Enable CMD",
                     description: "Command to enable writes",
-                    default: soc.getDefaultFlashConfig().cmdWren,
+                    default: serialNorDefaultCfg.cmdWren,
                 },
                 {
                     name: "cmdRdsr",
                     displayName: "Read Status Register CMD",
                     description: "Command to read the status register",
-                    default: soc.getDefaultFlashConfig().cmdRdsr,
+                    default: serialNorDefaultCfg.cmdRdsr,
                 },
                 {
                     name: "cmdWrsr",
                     displayName: "Write Status Register CMD",
                     description: "Command to write the status register",
-                    default: "0x00",
+                    default: serialNandDefaultCfg.cmdWrsr,
                     hidden: true,
                 },
                 {
                     name: "srWipReg",
                     displayName: "WIP Status Reg Addr",
-                    default: "0x00",
+                    default: serialNandDefaultCfg.srWipReg,
                     hidden: true,
                 },
                 {
                     name: "srWip",
                     displayName: "WIP Bit",
                     description: "WIP bit position in status register",
-                    default: soc.getDefaultFlashConfig().srWip,
+                    default: serialNorDefaultCfg.srWip,
                     displayFormat: "dec",
                 },
                 {
                     name: "srWel",
                     displayName: "WEL Bit",
                     description: "WEL bit position in status register",
-                    default: soc.getDefaultFlashConfig().srWel,
+                    default: serialNorDefaultCfg.srWel,
                     displayFormat: "dec",
                 },
                 {
                     name: "xspiWipRdCmd",
                     displayName: "WIP Read CMD (xSPI)",
                     description: "Command to read WIP status register (xSPI mode)",
-                    default: soc.getDefaultFlashConfig().xspiWipRdCmd,
+                    default: serialNorDefaultCfg.xspiWipRdCmd,
                 },
                 {
                     name: "xspiWipReg",
                     displayName: "WIP Status Reg Addr (xSPI)",
-                    default: soc.getDefaultFlashConfig().xspiWipReg,
+                    default: serialNorDefaultCfg.xspiWipReg,
                 },
                 {
                     name: "xspiWipBit",
@@ -1328,7 +1290,7 @@ function getConfigurables()
                     name: "xspiRdsrDummy",
                     displayName: "WIP Read Status Dummy Cycle (xSPI)",
                     description: "Dummy cycles for reading WIP reg (xSPI mode)",
-                    default: 0,
+                    default: serialNandDefaultCfg.xspiRdsrDummy,
                     displayFormat: "dec",
                     hidden: true,
                 },
@@ -1336,70 +1298,70 @@ function getConfigurables()
                     name: "cmdChipErase",
                     displayName: "Chip Erase Command",
                     description: "Command to erase the whole flash",
-                    default: soc.getDefaultFlashConfig().cmdChipErase,
+                    default: serialNorDefaultCfg.cmdChipErase,
                 },
                 {
                     name: "flashDeviceBusyTimeout",
                     displayName: "Flash Busy Timeout",
                     description: "Time to wait for flash to be ready",
-                    default: soc.getDefaultFlashConfig().flashDeviceBusyTimeout,
+                    default: serialNorDefaultCfg.flashDeviceBusyTimeout,
                     displayFormat: "dec",
                 },
                 {
                     name: "flashPageProgTimeout",
                     displayName: "Page Program Timeout",
                     description: "Time to wait for a page write to complete",
-                    default: soc.getDefaultFlashConfig().flashPageProgTimeout,
+                    default: serialNorDefaultCfg.flashPageProgTimeout,
                     displayFormat: "dec",
                 },
                 {
                     name: "progStatusReg",
                     displayName: "Program Status Register Address",
-                    default: "0x0",
+                    default: serialNandDefaultCfg.progStatusReg,
                     hidden: true,
                 },
                 {
                     name: "xspiProgStatusReg",
                     displayName: "Program Status Register Addr (xSPI)",
-                    default: "0x0",
+                    default: serialNandDefaultCfg.progStatusReg,
                     hidden: true,
                 },
                 {
                     name: "srProgStatus",
                     displayName: "Program Status Bit Position",
                     description: "Program Status Bit Position In Status Register",
-                    default: 0,
+                    default: serialNandDefaultCfg.srProgStatus,
                     hidden: true,
                 },
                 {
                     name: "eraseStatusReg",
                     displayName: "Erase Status Register Address",
-                    default: "0x0",
+                    default: serialNandDefaultCfg.eraseStatusReg,
                     hidden: true,
                 },
                 {
                     name: "xspiEraseStatusReg",
                     displayName: "Erase Status Register Address (xSPI)",
-                    default: "0x0",
+                    default: serialNandDefaultCfg.xspiEraseStatusReg,
                     hidden: true,
                 },
                 {
                     name: "srEraseStatus",
                     displayName: "Erase Status Bit Position",
                     description: "Erase Status Bit Position In Status Register",
-                    default: 0,
+                    default: serialNandDefaultCfg.srEraseStatus,
                     hidden: true,
                 },
                 {
                     name: "srWriteProtectReg",
                     displayName: "Write Protection Status Reg Address",
-                    default: "0x0",
+                    default: serialNandDefaultCfg.srWriteProtectReg,
                     hidden: true,
                 },
                 {
                     name: "srWriteProtectMask",
                     displayName: "Write Protection Status Mask",
-                    default: 0,
+                    default: serialNandDefaultCfg.srWriteProtectMask,
                     hidden: true,
                 },
                 {
@@ -1423,19 +1385,19 @@ function getConfigurables()
                         {
                             name: "addressByteSupport",
                             displayName: "Supported Addressing Modes",
-                            default: soc.getDefaultFlashConfig().addrByteSupport,
+                            default: serialNorDefaultCfg.addrByteSupport,
                         },
                         {
                             name: "fourByteEnableSeq",
                             displayName: "4 Byte Addressing Enable Sequence",
-                            default: soc.getDefaultFlashConfig().fourByteAddrEnSeq,
+                            default: serialNorDefaultCfg.fourByteAddrEnSeq,
                         }
                     ]
                 },
                 {
                     name: "cmdExtType",
                     displayName: "Command Extension Type",
-                    default: soc.getDefaultFlashConfig().cmdExtType,
+                    default: serialNorDefaultCfg.cmdExtType,
                     options: [
                         { name: "REPEAT"},
                         { name: "INVERSE"},
@@ -1516,6 +1478,7 @@ function validateCmd(inst, cmdName, report) {
 }
 
 function validate(inst, report) {
+
     common.validate.checkSameFieldName(inst, "device", report);
 
     /* Validate flash name */
@@ -1650,6 +1613,43 @@ function fillConfigs(inst, cfg) {
             } else if(["8s_8s_8s", "8d_8d_8d"].includes(inst.protocol)) {
                 inst.flash888Seq = pCfg.enableSeq;
             }
+
+            if(pCfg.protoCfg != null) {
+                inst.proto_isAddrReg = pCfg.protoCfg.isAddrReg;
+                inst.proto_cmdRegRd  = pCfg.protoCfg.cmdRegRd;
+                inst.proto_cmdRegWr  = pCfg.protoCfg.cmdRegWr;
+                inst.proto_cfgReg    = pCfg.protoCfg.cfgReg;
+                inst.proto_shift     = pCfg.protoCfg.shift;
+                inst.proto_mask      = pCfg.protoCfg.mask;
+                inst.proto_bitP      = pCfg.protoCfg.bitP;
+            } else {
+                inst.proto_isAddrReg = false;
+            }
+            /* Dummy config */
+            if(pCfg.dummyCfg != null) {
+                inst.dummy_isAddrReg = pCfg.dummyCfg.isAddrReg;
+                inst.dummy_cmdRegRd  = pCfg.dummyCfg.cmdRegRd;
+                inst.dummy_cmdRegWr  = pCfg.dummyCfg.cmdRegWr;
+                inst.dummy_cfgReg    = pCfg.dummyCfg.cfgReg;
+                inst.dummy_shift     = pCfg.dummyCfg.shift;
+                inst.dummy_mask      = pCfg.dummyCfg.mask;
+                inst.dummy_bitP      = pCfg.dummyCfg.bitP;
+            } else {
+                inst.dummy_isAddrReg = false;
+            }
+            /* Str-Dtr config */
+            if(pCfg.strDtrCfg != null) {
+                inst.strDtr_isAddrReg = pCfg.strDtrCfg.isAddrReg;
+                inst.strDtr_cmdRegRd  = pCfg.strDtrCfg.cmdRegRd;
+                inst.strDtr_cmdRegWr  = pCfg.strDtrCfg.cmdRegWr;
+                inst.strDtr_cfgReg    = pCfg.strDtrCfg.cfgReg;
+                inst.strDtr_shift     = pCfg.strDtrCfg.shift;
+                inst.strDtr_mask      = pCfg.strDtrCfg.mask;
+                inst.strDtr_bitP      = pCfg.strDtrCfg.bitP;
+            } else {
+                inst.strDtr_isAddrReg = false;
+            }
+
             /* Custom */
             if(inst.protocol == "custom") {
                 if(cfg.protos.pCustom != null) {
@@ -1702,6 +1702,57 @@ function fillConfigs(inst, cfg) {
             inst.cmdWr = pCfg.cmdWr;
             inst.dummyClksCmd = pCfg.dummyClksCmd;
             inst.dummyClksRd = pCfg.dummyClksRd;
+            /* QE and OE bits */
+            if(inst.protocol.includes("4")) {
+                inst.flashQeType = pCfg.enableType;
+            } else if (inst.protocol.includes("8")) {
+                inst.flashOeType = pCfg.enableType;
+            }
+            /* 4-4-4 and 8-8-8 sequences */
+            if(["4s_4s_4s", "4s_4d_4d"].includes(inst.protocol)) {
+                inst.flash444Seq = pCfg.enableSeq;
+            } else if(["8s_8s_8s", "8d_8d_8d"].includes(inst.protocol)) {
+                inst.flash888Seq = pCfg.enableSeq;
+            }
+            /* Register configs */
+            /* Protocol config */
+
+            if(pCfg.protoCfg != null) {
+                inst.proto_isAddrReg = pCfg.protoCfg.isAddrReg;
+                inst.proto_cmdRegRd  = pCfg.protoCfg.cmdRegRd;
+                inst.proto_cmdRegWr  = pCfg.protoCfg.cmdRegWr;
+                inst.proto_cfgReg    = pCfg.protoCfg.cfgReg;
+                inst.proto_shift     = pCfg.protoCfg.shift;
+                inst.proto_mask      = pCfg.protoCfg.mask;
+                inst.proto_bitP      = pCfg.protoCfg.bitP;
+            } else {
+                inst.proto_isAddrReg = false;
+            }
+            /* Dummy config */
+            if(pCfg.dummyCfg != null) {
+                inst.dummy_isAddrReg = pCfg.dummyCfg.isAddrReg;
+                inst.dummy_cmdRegRd  = pCfg.dummyCfg.cmdRegRd;
+                inst.dummy_cmdRegWr  = pCfg.dummyCfg.cmdRegWr;
+                inst.dummy_cfgReg    = pCfg.dummyCfg.cfgReg;
+                inst.dummy_shift     = pCfg.dummyCfg.shift;
+                inst.dummy_mask      = pCfg.dummyCfg.mask;
+                inst.dummy_bitP      = pCfg.dummyCfg.bitP;
+            } else {
+                inst.dummy_isAddrReg = false;
+            }
+            /* Str-Dtr config */
+            if(pCfg.strDtrCfg != null) {
+                inst.strDtr_isAddrReg = pCfg.strDtrCfg.isAddrReg;
+                inst.strDtr_cmdRegRd  = pCfg.strDtrCfg.cmdRegRd;
+                inst.strDtr_cmdRegWr  = pCfg.strDtrCfg.cmdRegWr;
+                inst.strDtr_cfgReg    = pCfg.strDtrCfg.cfgReg;
+                inst.strDtr_shift     = pCfg.strDtrCfg.shift;
+                inst.strDtr_mask      = pCfg.strDtrCfg.mask;
+                inst.strDtr_bitP      = pCfg.strDtrCfg.bitP;
+            } else {
+                inst.strDtr_isAddrReg = false;
+            }
+
         }
 
         /* Custom */

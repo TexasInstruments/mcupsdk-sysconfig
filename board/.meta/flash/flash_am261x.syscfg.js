@@ -10,7 +10,7 @@ let defaultFlashConfig = system.getScript("/board/flash/IS25LX256.json");
 
 let defaultFlashConfigLP = system.getScript("/board/flash/IS25WX064.json");
 
-let defaultNandFlashConfig = system.getScript("/board/flash/W25N01GVZEJ.json");
+let defaultNandFlashConfig = system.getScript("/board/flash/W35N01JWTBAG.json");
 
 function getDriverOptions()
 {
@@ -24,11 +24,7 @@ function getDefaultDriver()
 
 function getDefaultFlashName()
 {
-    if(system.deviceData.device == "AM261x_ZCZ") {
-        return "IS25LX256";
-    } else {
-        return "IS25WX064";
-    }
+    return "IS25WX064";
 }
 
 function getDefaultFlashConfig()
@@ -43,7 +39,7 @@ function getDefaultFlashConfig()
 function getDefaultProtocol()
 {
     if(system.deviceData.device == "AM261x_ZCZ" || system.deviceData.device == "AM261x_ZFG") {
-        return { name : "1s_1s_8s", displayName : "1S-1S-8S" };
+        return { name : "8d_8d_8d", displayName : "8D-8D-8D" };
     } else {
         return { name : "4s_4d_4d", displayName : "4S-4D-4D" };
     }
@@ -52,7 +48,7 @@ function getDefaultProtocol()
 function getDefaultProtocolJson()
 {
     if(system.deviceData.device == "AM261x_ZCZ" || system.deviceData.device == "AM261x_ZFG") {
-        return "p118";
+        return "p888d";
     } else {
         return "p444d";
     }
@@ -61,7 +57,7 @@ function getDefaultProtocolJson()
 function getDefaultNandProtocolJson()
 {
     if(system.deviceData.device == "AM261x_ZCZ" || system.deviceData.device == "AM261x_ZFG") {
-        return "p114";
+        return "p188";
     } else {
         return "p444d";
     }
@@ -69,12 +65,12 @@ function getDefaultNandProtocolJson()
 
 function getDefaultNandFlashName()
 {
-    return "W25N01GVZEJ";
+    return "W35N01JWTBAG";
 }
 
 function getDefaultNandProtocol()
 {
-    return { name : "1s_1s_4s", displayName : "1S-1S-4S" };
+    return { name : "1s_8s_8s", displayName : "1S-8S-8S" };
 }
 
 function getDefaultNandFlashConfig()

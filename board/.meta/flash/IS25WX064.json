@@ -45,7 +45,7 @@
         "p444d": null,
         "p888s": null,
         "p888d": {
-            "isDtr": false,
+            "isDtr": true,
             "cmdRd": "0x7C",
             "cmdWr": "0x84",
             "modeClksCmd": 0,
@@ -78,7 +78,7 @@
                 "cmdRegWr": "0x81",
                 "cfgReg": "0x00000000",
                 "shift": 255,
-                "mask": 255,
+                "mask": "0xFF",
                 "bitP": 0
             }
         },

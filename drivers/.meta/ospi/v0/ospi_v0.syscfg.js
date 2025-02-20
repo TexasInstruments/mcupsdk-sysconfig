@@ -156,6 +156,7 @@ const ospi_supported_protocols = [
     { name : "1s_1s_2s", displayName : "1S-1S-2S" },
     { name : "1s_1s_4s", displayName : "1S-1S-4S" },
     { name : "1s_1s_8s", displayName : "1S-1S-8S" },
+    { name : "1s_8s_8s", displayName : "1S-8S-8S" },
     { name : "4s_4s_4s", displayName : "4S-4S-4S" },
     { name : "4s_4d_4d", displayName : "4S-4D-4D" },
     { name : "8s_8s_8s", displayName : "8S-8S-8S" },

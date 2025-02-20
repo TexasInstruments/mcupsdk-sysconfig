@@ -70,19 +70,19 @@
 				"isAddrReg": true,
 				"cmdRegRd":"0x71",
 				"cmdRegWr":"0x72",
-				"cfgReg":"0x00000003",
+				"cfgReg":"0x03",
 				"shift":0,
 				"mask":"0x01",
-				"bitP":0
+				"bitP":3
 			},
 			"protoCfg": {
 				"isAddrReg": true,
 				"cmdRegRd": "0x71",
 				"cmdRegWr": "0x72",
 				"cfgReg": "0x00000000",
-				"shift": 0,
-				"mask": "0x00",
-				"bitP": 0
+				"shift": 1,
+				"mask": "0x02",
+				"bitP": 1
 			},
 			"strDtrCfg": {
 				"isAddrReg": true,
@@ -90,7 +90,7 @@
 				"cmdRegWr": "0x72",
 				"cfgReg": "0x00000000",
 				"shift": 1,
-				"mask": "0x00",
+				"mask": "0x02",
 				"bitP": 1
 			}
 		},
@@ -98,7 +98,7 @@
 			"fxn": null
 		}
 	},
-	"addrByteSupport": "0",
+	"addrByteSupport": "2",
 	"fourByteAddrEnSeq": "0x20",
 	"cmdExtType": "INVERSE",
 	"resetType": "0x10",
@@ -112,12 +112,12 @@
 		"cmd": "0x9F",
 		"numBytes": 5,
 		"dummy4": 0,
-		"dummy8": 0,
+		"dummy8": 8,
 		"addressBytesSize": 0
 	},
 	"xspiWipRdCmd": "0x05",
 	"xspiWipReg": "0x00000000",
 	"xspiWipBit": 0,
-	"flashDeviceBusyTimeout": 20000000,
+	"flashDeviceBusyTimeout": 76000000,
 	"flashPageProgTimeout": 152
 }
