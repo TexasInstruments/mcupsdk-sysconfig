@@ -28,7 +28,7 @@
         "p114": {
             "isDtr": false,
             "cmdRd": "0x6B",
-            "cmdWr": "0x02",
+            "cmdWr": "0x32",
             "modeClksCmd": 0,
             "modeClksRd": 0,
             "dummyClksCmd": 0,
