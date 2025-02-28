@@ -18,14 +18,10 @@ function getInstanceConfig(moduleInstance) {
         ...staticConfig,
         ...moduleInstance,
         clkSelMuxValue : clkSelMuxValue,
-        usecPerTick0 : Math.trunc( moduleInstance.usecPerTick0 ),
-        usecPerTick1 : Math.trunc( moduleInstance.usecPerTick1 ),
-        usecPerTick2 : Math.trunc( moduleInstance.usecPerTick2 ),
-        usecPerTick3 : Math.trunc( moduleInstance.usecPerTick3 ),
-        nsecPerTick0 : Math.trunc( moduleInstance.usecPerTick0 * 1000 ),
-        nsecPerTick1 : Math.trunc( moduleInstance.usecPerTick1 * 1000 ),
-        nsecPerTick2 : Math.trunc( moduleInstance.usecPerTick2 * 1000 ),
-        nsecPerTick3 : Math.trunc( moduleInstance.usecPerTick3 * 1000 ),
+        nsecPerTick0 : Math.trunc( moduleInstance.nsecPerTick0 ),
+        nsecPerTick1 : Math.trunc( moduleInstance.nsecPerTick1 ),
+        nsecPerTick2 : Math.trunc( moduleInstance.nsecPerTick2 ),
+        nsecPerTick3 : Math.trunc( moduleInstance.nsecPerTick3 ),
         compareEnable : [moduleInstance.compare0Enable, moduleInstance.compare1Enable, moduleInstance.compare2Enable, moduleInstance.compare3Enable],
         enableInt: [moduleInstance.enableIntr0, moduleInstance.enableIntr1, moduleInstance.enableIntr2, moduleInstance.enableIntr3],
         intrPriority: [moduleInstance.intrPriority0, moduleInstance.intrPriority1, moduleInstance.intrPriority2, moduleInstance.intrPriority3],
@@ -65,10 +61,10 @@ function getInterfaceName(inst) {
 }
 
 function validate(instance, report) {
-    common.validate.checkNumberRange(instance, report, "usecPerTick0", 1, 1000000, "dec");
-    common.validate.checkNumberRange(instance, report, "usecPerTick1", 1, 1000000, "dec");
-    common.validate.checkNumberRange(instance, report, "usecPerTick2", 1, 1000000, "dec");
-    common.validate.checkNumberRange(instance, report, "usecPerTick3", 1, 1000000, "dec");
+    common.validate.checkNumberRange(instance, report, "nsecPerTick0", 1, 1000000000, "dec");
+    common.validate.checkNumberRange(instance, report, "nsecPerTick1", 1, 1000000000, "dec");
+    common.validate.checkNumberRange(instance, report, "nsecPerTick2", 1, 1000000000, "dec");
+    common.validate.checkNumberRange(instance, report, "nsecPerTick3", 1, 1000000000, "dec");
     common.validate.checkNumberRange(instance, report, "inputClkHz", 32000, 1000000000, "dec");
     common.validate.checkValidCName(instance, report, "eventCallback0");
     common.validate.checkValidCName(instance, report, "eventCallback1");
@@ -109,51 +105,51 @@ function onChangecntr1OpFreq(instance, ui)
     }
 }
 
-function onChangeUsecPerTick0(instance, ui)
+function onChangeNsecPerTick0(instance, ui)
 {
-    let requiredNsecs = Math.trunc( instance.usecPerTick0 * 1000 );
+    let requiredNsecs = Math.trunc( instance.nsecPerTick0);
     let timerCycles   = Math.trunc( instance.compInputClkHz0 * requiredNsecs / 1000000000 );
     let actualNsecs   = Math.trunc( (1000000000 / instance.compInputClkHz0) * timerCycles );
 
     if(instance.compare0Enable)
     {
-        instance.actualUsecPerTick0  = actualNsecs / 1000;
+        instance.actualNsecPerTick0  = actualNsecs;
     }
 }
 
-function onChangeUsecPerTick1(instance, ui)
+function onChangeNsecPerTick1(instance, ui)
 {
-    let requiredNsecs = Math.trunc( instance.usecPerTick1 * 1000 );
+    let requiredNsecs = Math.trunc( instance.nsecPerTick1 );
     let timerCycles   = Math.trunc( instance.compInputClkHz1 * requiredNsecs / 1000000000 );
     let actualNsecs   = Math.trunc( (1000000000 / instance.compInputClkHz1) * timerCycles );
 
     if(instance.compare1Enable)
     {
-        instance.actualUsecPerTick1  = actualNsecs / 1000;
+        instance.actualNsecPerTick1  = actualNsecs;
     }
 }
 
-function onChangeUsecPerTick2(instance, ui)
+function onChangeNsecPerTick2(instance, ui)
 {
-    let requiredNsecs = Math.trunc( instance.usecPerTick2 * 1000 );
+    let requiredNsecs = Math.trunc( instance.nsecPerTick2 );
     let timerCycles   = Math.trunc( instance.compInputClkHz2 * requiredNsecs / 1000000000 );
     let actualNsecs   = Math.trunc( (1000000000 / instance.compInputClkHz2) * timerCycles );
 
     if(instance.compare2Enable)
     {
-        instance.actualUsecPerTick2  = actualNsecs / 1000;
+        instance.actualNsecPerTick2  = actualNsecs;
     }
 }
 
-function onChangeUsecPerTick3(instance, ui)
+function onChangeNsecPerTick3(instance, ui)
 {
-    let requiredNsecs = Math.trunc( instance.usecPerTick3 * 1000 );
+    let requiredNsecs = Math.trunc( instance.nsecPerTick3);
     let timerCycles   = Math.trunc( instance.compInputClkHz3 * requiredNsecs / 1000000000 );
     let actualNsecs   = Math.trunc( (1000000000 / instance.compInputClkHz3) * timerCycles );
 
     if(instance.compare3Enable)
     {
-        instance.actualUsecPerTick3  = actualNsecs / 1000;
+        instance.actualNsecPerTick3  = actualNsecs;
     }
 }
 
@@ -340,8 +336,8 @@ let timer_module = {
                         {
                             ui.compInputClkHz0.hidden = false;
                             ui.compareSource0.hidden = false;
-                            ui.usecPerTick0.hidden = false;
-                            ui.actualUsecPerTick0.hidden = false;
+                            ui.nsecPerTick0.hidden = false;
+                            ui.actualNsecPerTick0.hidden = false;
                             ui.enableIntr0.hidden = false;
                             ui.enableDmaTrigger0.hidden = false;
                         }
@@ -349,8 +345,8 @@ let timer_module = {
                         {
                             ui.compInputClkHz0.hidden = true;
                             ui.compareSource0.hidden = true;
-                            ui.usecPerTick0.hidden = true;
-                            ui.actualUsecPerTick0.hidden = true;
+                            ui.nsecPerTick0.hidden = true;
+                            ui.actualNsecPerTick0.hidden = true;
                             ui.enableIntr0.hidden = true;
                             ui.enableDmaTrigger0.hidden = true;
                         }
@@ -385,16 +381,16 @@ let timer_module = {
                     },
                 },
                 {
-                    name: "usecPerTick0",
-                    displayName: "Tick Period (usecs)",
+                    name: "nsecPerTick0",
+                    displayName: "Tick Period (nsecs)",
                     default: 1000,
-                    description: "Timer tick period in units of usecs. MUST be >= 1.000 and <= 1000000.0000",
+                    description: "Timer tick period in units of nsecs. MUST be >= 1.000 and <= 1000000000.0000",
                     hidden: true,
-                    onChange: onChangeUsecPerTick0,
+                    onChange: onChangeNsecPerTick0,
                 },
                 {
-                    name: "actualUsecPerTick0",
-                    displayName: "Actual Tick Period (usecs)",
+                    name: "actualNsecPerTick0",
+                    displayName: "Actual Tick Period (nsecs)",
                     default: 1000,
                     description: "This is the actual time period for which the timer will be configured.",
                     readOnly: true,
@@ -454,8 +450,8 @@ let timer_module = {
                         {
                             ui.compInputClkHz1.hidden = false;
                             ui.compareSource1.hidden = false;
-                            ui.usecPerTick1.hidden = false;
-                            ui.actualUsecPerTick1.hidden = false;
+                            ui.nsecPerTick1.hidden = false;
+                            ui.actualNsecPerTick1.hidden = false;
                             ui.enableIntr1.hidden = false;
                             ui.enableDmaTrigger1.hidden = false;
                         }
@@ -463,8 +459,8 @@ let timer_module = {
                         {
                             ui.compInputClkHz1.hidden = true;
                             ui.compareSource1.hidden = true;
-                            ui.usecPerTick1.hidden = true;
-                            ui.actualUsecPerTick1.hidden = true;
+                            ui.nsecPerTick1.hidden = true;
+                            ui.actualNsecPerTick1.hidden = true;
                             ui.enableIntr1.hidden = true;
                             ui.enableDmaTrigger1.hidden = true;
                         }
@@ -499,16 +495,16 @@ let timer_module = {
                     },
                 },
                 {
-                    name: "usecPerTick1",
-                    displayName: "Tick Period (usecs)",
+                    name: "nsecPerTick1",
+                    displayName: "Tick Period (nsecs)",
                     default: 1000,
-                    description: "Timer tick period in units of usecs. MUST be >= 1.000 and <= 1000000.0000",
+                    description: "Timer tick period in units of nsecs. MUST be >= 1.000 and <= 1000000000.0000",
                     hidden: true,
-                    onChange: onChangeUsecPerTick1,
+                    onChange: onChangeNsecPerTick1,
                 },
                 {
-                    name: "actualUsecPerTick1",
-                    displayName: "Actual Tick Period (usecs)",
+                    name: "actualNsecPerTick1",
+                    displayName: "Actual Tick Period (nsecs)",
                     default: 1000,
                     description: "This is the actual time period for which the timer will be configured.",
                     readOnly: true,
@@ -568,8 +564,8 @@ let timer_module = {
                         {
                             ui.compInputClkHz2.hidden = false;
                             ui.compareSource2.hidden = false;
-                            ui.usecPerTick2.hidden = false;
-                            ui.actualUsecPerTick2.hidden = false;
+                            ui.nsecPerTick2.hidden = false;
+                            ui.actualNsecPerTick2.hidden = false;
                             ui.enableIntr2.hidden = false;
                             ui.enableDmaTrigger2.hidden = false;
                         }
@@ -577,8 +573,8 @@ let timer_module = {
                         {
                             ui.compInputClkHz2.hidden = true;
                             ui.compareSource2.hidden = true;
-                            ui.usecPerTick2.hidden = true;
-                            ui.actualUsecPerTick2.hidden = true;
+                            ui.nsecPerTick2.hidden = true;
+                            ui.actualNsecPerTick2.hidden = true;
                             ui.enableIntr2.hidden = true;
                             ui.enableDmaTrigger2.hidden = true;
                         }
@@ -613,16 +609,16 @@ let timer_module = {
                     },
                 },
                 {
-                    name: "usecPerTick2",
-                    displayName: "Tick Period (usecs)",
+                    name: "nsecPerTick2",
+                    displayName: "Tick Period (nsecs)",
                     default: 1000,
-                    description: "Timer tick period in units of usecs. MUST be >= 1.000 and <= 1000000.0000",
+                    description: "Timer tick period in units of nsecs. MUST be >= 1.000 and <= 1000000000.0000",
                     hidden: true,
-                    onChange: onChangeUsecPerTick2,
+                    onChange: onChangeNsecPerTick2,
                 },
                 {
-                    name: "actualUsecPerTick2",
-                    displayName: "Actual Tick Period (usecs)",
+                    name: "actualNsecPerTick2",
+                    displayName: "Actual Tick Period (nsecs)",
                     default: 1000,
                     description: "This is the actual time period for which the timer will be configured.",
                     hidden: true,
@@ -682,8 +678,8 @@ let timer_module = {
                         {
                             ui.compInputClkHz3.hidden = false;
                             ui.compareSource3.hidden = false;
-                            ui.usecPerTick3.hidden = false;
-                            ui.actualUsecPerTick3.hidden = false;
+                            ui.nsecPerTick3.hidden = false;
+                            ui.actualNsecPerTick3.hidden = false;
                             ui.enableIntr3.hidden = false;
                             ui.enableDmaTrigger3.hidden = false;
                         }
@@ -691,8 +687,8 @@ let timer_module = {
                         {
                             ui.compInputClkHz3.hidden = true;
                             ui.compareSource3.hidden = true;
-                            ui.usecPerTick3.hidden = true;
-                            ui.actualUsecPerTick3.hidden = true;
+                            ui.nsecPerTick3.hidden = true;
+                            ui.actualNsecPerTick3.hidden = true;
                             ui.enableIntr3.hidden = true;
                             ui.enableDmaTrigger3.hidden = true;
                         }
@@ -727,16 +723,16 @@ let timer_module = {
                     },
                 },
                 {
-                    name: "usecPerTick3",
-                    displayName: "Tick Period (usecs)",
+                    name: "nsecPerTick3",
+                    displayName: "Tick Period (nsecs)",
                     default: 1000,
-                    description: "Timer tick period in units of usecs. MUST be >= 1.000 and <= 1000000.0000",
+                    description: "Timer tick period in units of nsecs. MUST be >= 1.000 and <= 1000000000.0000",
                     hidden: true,
-                    onChange: onChangeUsecPerTick3,
+                    onChange: onChangeNsecPerTick3,
                 },
                 {
-                    name: "actualUsecPerTick3",
-                    displayName: "Actual Tick Period (usecs)",
+                    name: "actualNsecPerTick3",
+                    displayName: "Actual Tick Period (nsecs)",
                     default: 1000,
                     description: "This is the actual time period for which the timer will be configured.",
                     readOnly: true,
