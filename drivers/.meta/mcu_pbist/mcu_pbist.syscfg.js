@@ -4,9 +4,9 @@ let soc = system.getScript(`/drivers/soc/drivers_${common.getSocName()}`);
 
 function getModule() {
 
-    let driverVer = soc.getDriverVer("mcu_bist");
+    let driverVer = soc.getDriverVer("mcu_pbist");
 
-    return system.getScript(`/drivers/mcu_bist/${driverVer}/mcu_bist_${driverVer}`);
+    return system.getScript(`/drivers/mcu_pbist/${driverVer}/mcu_pbist_${driverVer}`);
 }
 
 exports = getModule();

@@ -1,6 +1,6 @@
 
 let common = system.getScript("/common");
-let soc = system.getScript(`/drivers/mcu_bist/soc/mcu_bist_${common.getSocName()}`);
+let soc = system.getScript(`/drivers/mcu_pbist/soc/mcu_pbist_${common.getSocName()}`);
 
 function getInstanceConfig(moduleInstance) {
 
@@ -32,19 +32,19 @@ function validate(instance, report) {
 }
 
 let bist_module = {
-    displayName: "MCU_BIST",
+    displayName: "MCU_PBIST",
 
     templates: {
         "/drivers/system/system_config.c.xdt": {
-            driver_config: "/drivers/mcu_bist/templates/mcu_bist_config.c.xdt",
-            driver_init: "/drivers/mcu_bist/templates/mcu_bist_init.c.xdt",
+            driver_config: "/drivers/mcu_pbist/templates/mcu_pbist_config.c.xdt",
+            driver_init: "/drivers/mcu_pbist/templates/mcu_pbist_init.c.xdt",
         },
         "/drivers/system/system_config.h.xdt": {
-            driver_config: "/drivers/mcu_bist/templates/mcu_bist.h.xdt",
+            driver_config: "/drivers/mcu_pbist/templates/mcu_pbist.h.xdt",
         },
     },
     maxInstances: 1,
-    defaultInstanceName: "CONFIG_MCU_BIST",
+    defaultInstanceName: "CONFIG_MCU_PBIST",
     config: getConfigurables(),
     validate: validate,
     moduleStatic: {

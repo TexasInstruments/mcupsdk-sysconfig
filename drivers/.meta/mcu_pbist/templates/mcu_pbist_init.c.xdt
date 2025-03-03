@@ -1,12 +1,12 @@
 %%{
     let common = system.getScript("/common");
-    let soc = system.getScript(`/drivers/mcu_bist/soc/mcu_bist_${common.getSocName()}`);
-    let module = system.modules['/drivers/mcu_bist/mcu_bist'];
+    let soc = system.getScript(`/drivers/mcu_pbist/soc/mcu_pbist_${common.getSocName()}`);
+    let module = system.modules['/drivers/mcu_pbist/mcu_pbist'];
     let instance = module.$instances[0];
 
 %%}
 % if (instance.enableMcuPbist ){
-    /* BIST */
+    /* PBIST */
 
     int32_t status = SystemP_SUCCESS;
 
@@ -21,6 +21,6 @@
 
     if(SystemP_FAILURE == status)
     {
-        DebugP_logError(" pBIST test Failed...");
+        DebugP_logError(" PBIST test Failed...");
     }
 %}
