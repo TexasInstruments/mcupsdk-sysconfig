@@ -22,7 +22,7 @@
     % if (!module.$instances.includes (module.$instances[i], i) ||
     %    (i == (module.$instances.length -1))) {
 /* EEPROM Object - initalized during EEPROM_open() */
-EEPROM_Object gEepromObject_`config.name`;
+EEPROM_Object gEepromObject_`config.name`[CONFIG_EEPROM_NUM_INSTANCES];
     % }
 % }
 
@@ -38,7 +38,7 @@ EEPROM_Config gEepromConfig[CONFIG_EEPROM_NUM_INSTANCES] =
     {
         .attrs = &gEepromAttrs_`config.name`,
         .fxns = &gEepromFxns_`config.name`,
-        .object = (void *)&gEepromObject_`config.name`,
+        .object = (void *)&gEepromObject_`config.name`[`i`],
     },
 % }
 };
