@@ -4,7 +4,7 @@ let mmcsd_input_clk_freq = 240000000;
 
 const mmcsd_config_r5fss = [
 	{
-		name              : "MMC",
+		name              : "MMC0",
 		baseAddr          : "CSL_MMC0_U_BASE",
         instNum           : 0,
         intrNum           : 83,
