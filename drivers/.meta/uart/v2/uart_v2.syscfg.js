@@ -197,9 +197,7 @@ function getConfigurables()
             displayName: "Clock Source",
             default: soc.getDefaultClkSource(),
             description: "Clock Source",
-            options: function(inst) {
-                return soc.getClockSourceOptions();
-            }
+            options: soc.getClockSourceOptions(),
         },
         {
             name: "inputClkFreq",
