@@ -472,18 +472,18 @@ let configHLD = [
                 },
             },
             {
-                name: "intrPriority",
-                displayName: "Interrupt Priority",
-                default: 4,
-                hidden: true,
-                description: `Interrupt Priority: 0 (highest) to ${hwi.getHwiMaxPriority()} (lowest)`,
-            },
-            {
                 name: "transferCompleteCallbackFxnHLD",
                 displayName: "Transfer Complete Callback",
                 default: "NULL",
                 hidden: true,
                 description: "Transfer Complete Callback function when Callback mode is selected",
+            },
+            {
+                name: "intrPriority",
+                displayName: "Interrupt Priority",
+                default: 4,
+                hidden: true,
+                description: `Interrupt Priority: 0 (highest) to ${hwi.getHwiMaxPriority()} (lowest)`,
             },
         ]
     },
@@ -1075,6 +1075,12 @@ const setHldDefaultConfigs = (inst, ui) => {
     ui.enableLoopbackHLD.hidden = false;
     ui.loopBackModeHLD.hidden = true;
     ui.loopBackTypeHLD.hidden = true;
+
+    inst.baudRateHLD = 19200;
+    ui.baudRateHLD.hidden = false
+
+    ui.baudPreScalerHLD.hidden = false
+    ui.fracDivSel_M_HLD.hidden = false
 
     inst.enableParityHLD = true;
     ui.enableParityHLD.hidden = false;

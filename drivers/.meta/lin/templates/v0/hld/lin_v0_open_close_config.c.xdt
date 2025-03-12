@@ -19,6 +19,8 @@
 /*
  * LIN HLD
  */
+
+ /* SCI/LIN Callbacks */
 % if(gLinConfigNum != 0) {
     % for(let i = 0; i < module.$instances.length; i++) {
         % let instance = module.$instances[i];
@@ -26,11 +28,9 @@
         % if (config.sdkInfra == "HLD") {
             % if(config.transferModeHLD == "LIN_TRANSFER_MODE_CALLBACK") {
                 % if(config.moduleModeHLD == "LIN_MODULE_OP_MODE_LIN") {
-/* LIN Callbacks */
 void `config.transferCompleteCallbackFxnHLD`(LIN_Handle handle, LIN_SCI_Frame *frame);
                 % }
                 % else {
-/* SCI Callbacks */
 void `config.writeCallbackFxnHLD`(LIN_Handle handle, LIN_SCI_Frame *frame);
 void `config.readCallbackFxnHLD`(LIN_Handle handle, LIN_SCI_Frame *frame);
                 % }
