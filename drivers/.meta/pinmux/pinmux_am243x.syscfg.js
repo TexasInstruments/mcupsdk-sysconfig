@@ -45,7 +45,9 @@ function getPinMode(peripheralPin)
 
     let muxSetting = _.find(devicePin.mux.muxSetting,
                             function(muxSetting) {
-                                return (muxSetting.peripheralPin.name == peripheralPin.$solution.peripheralPinName);
+                                if(muxSetting.peripheralPin != undefined){
+                                    return (muxSetting.peripheralPin.name == peripheralPin.$solution.peripheralPinName);
+                                }
                             }
                         );
 
