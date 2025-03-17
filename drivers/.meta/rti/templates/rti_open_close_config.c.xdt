@@ -115,7 +115,7 @@ void Drivers_rtiOpen(void)
     HwiP_Params_init(&rtiHwiParams);
     rtiHwiParams.intNum = `config.$name`_INT_NUM_EVENT`j`;
     rtiHwiParams.callback = RTI`i`_event`j`Isr;
-    rtiHwiParams.isPulse = 0;
+    rtiHwiParams.isPulse = 1;
     rtiHwiParams.priority = `config.intrPriority[j]`;
     status = HwiP_construct(&gRtiEvent`j`HwiObj[`config.$name`], &rtiHwiParams);
     DebugP_assertNoLog(status==SystemP_SUCCESS);

@@ -66,7 +66,7 @@ void TimerP_init()
     HwiP_Params_init(&timerHwiParams);
     timerHwiParams.intNum = `config.$name`_INT_NUM;
     timerHwiParams.callback = TimerP_isr`i`;
-    timerHwiParams.isPulse = 0;
+    timerHwiParams.isPulse = 1;
     timerHwiParams.priority = `config.intrPriority`;
     status = HwiP_construct(&gTimerHwiObj[`config.$name`], &timerHwiParams);
     DebugP_assertNoLog(status==SystemP_SUCCESS);
