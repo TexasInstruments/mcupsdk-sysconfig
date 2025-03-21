@@ -130,6 +130,21 @@ let config = [
     },
 ]
 
+function checkRunMemoryType(run_memory, restrictedType){
+
+    let memory_regions = memoryRegs.loadMemoryRegions(book_keeping).memory_regions;
+
+    let flash_memory = memory_regions.filter(element => {
+        return (element.name === run_memory && element.displayName.includes("Type: " + restrictedType.toUpperCase()))
+    });
+
+    if(flash_memory.length > 0){
+        return true;
+    }
+
+    return false;
+}
+
 function validate(inst, report) {
 
     // if(inst.output_sections.length == 0) {
@@ -143,6 +158,17 @@ function validate(inst, report) {
     }
     if(inst.$ownedBy === undefined && inst.output_section.length == 0) {
         report.logError("Add atleast 1 output section", inst, "output_section")
+    }
+
+    /*
+        Check the value of run_memory. For devices not having XIP support, the run_memory shouldn't be allowed
+        to have memory region of type Flash. Eg: AM263x doesn't have XIP support
+    */
+
+    if( system.deviceData.device === "AM263x_beta"){
+        if ( checkRunMemoryType(inst.run_memory, "Flash") ){
+            report.logError("XIP not supported, can't be run from Flash!", inst, "run_memory")
+        }
     }
 }
 exports = {
