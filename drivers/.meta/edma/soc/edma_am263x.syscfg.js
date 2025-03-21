@@ -10,8 +10,13 @@ const edma_config = [
         name: "EDMA0",
         baseAddr: "CSL_TPCC0_U_BASE",
         compIntrNumber: getIntrMacro(),
+        errIntrNumber: "CSLR_R5FSS0_CORE0_INTR_TPCC0_ERRAGGR",
         intrAggEnableAddr: "CSL_MSS_CTRL_U_BASE + CSL_MSS_CTRL_TPCC0_INTAGG_MASK",
         intrAggStatusAddr: "CSL_MSS_CTRL_U_BASE + CSL_MSS_CTRL_TPCC0_INTAGG_STATUS",
+        errIntrAggEnableAddr: "CSL_MSS_CTRL_U_BASE + CSL_MSS_CTRL_TPCC0_ERRAGG_MASK",
+        errIntrAggStatusAddr: "CSL_MSS_CTRL_U_BASE + CSL_MSS_CTRL_TPCC0_ERRAGG_STATUS",
+        /* Below mask enables all errors in the aggregated interrupt */
+        errIntrAggEnable: "0x707001F",
         maxDmaChannels: "64",
         maxTcc: "64",
         maxPaRAM: "256",

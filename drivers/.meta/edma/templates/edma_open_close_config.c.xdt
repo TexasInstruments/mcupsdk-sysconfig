@@ -17,6 +17,7 @@ EDMA_Params gEdmaParams[CONFIG_EDMA_NUM_INSTANCES] =
     % let instance = module.$instances[i];
     {
         .intrEnable = `instance.intrEnable`,
+        .errIntrEnable = `instance.errorIntrEnable`,
     },
 % }
 };

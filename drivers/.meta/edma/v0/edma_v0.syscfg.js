@@ -252,6 +252,29 @@ let edma_module = {
             description: `Interrupt Priority: 0 (highest) to ${hwi.getHwiMaxPriority()} (lowest)`,
         },
         {
+            name: "errorIntrEnable",
+            displayName: "Enable Error Interrupt",
+            default: "FALSE",
+            options: [
+                {
+                    name: "FALSE",
+                    displayName: "FALSE"
+                },
+                {
+                    name: "TRUE",
+                    displayName: "TRUE"
+                },
+            ],
+            description: "This determines whether the error interrupt needs to be registered",
+        },
+        {
+            name: "errIntrPriority",
+            displayName: "Error Interrupt Priority",
+            default: hwi.getHwiDefaultPriority(),
+            hidden: !hwi.getPriorityConfigSupported(),
+            description: `Interrupt Priority: 0 (highest) to ${hwi.getHwiMaxPriority()} (lowest)`,
+        },
+        {
             name: "enableOwnDmaChannelConfig",
             displayName: "Enable Core Dma Channel Config",
             default: true,
