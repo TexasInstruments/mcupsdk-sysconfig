@@ -199,14 +199,17 @@ function getConfigurables()
             ],
             description: "Operation Mode",
             onChange: function (inst, ui) {
-                if((inst.operMode == "DMA")  || (inst.operMode == "POLLED")) {
+                if(inst.operMode == "DMA") {
                     ui.intrPriority.hidden = true;
+                    ui.userData.hidden = true;
+                }
+                if(inst.operMode == "POLLED") {
+                    ui.intrPriority.hidden = true;
+                    ui.userData.hidden = false;
                 }
                 if(inst.operMode == "INTERRUPT") {
                     ui.intrPriority.hidden = false;
-                }
-                if(inst.operMode == 'DMA') {
-                    ui.userData.hidden = true;
+                    ui.userData.hidden = false;
                 }
             },
         },
@@ -375,12 +378,14 @@ function getConfigurables()
             displayName: "Delay Line Control",
             description: "Enable Delay Line Control",
             default: false,
+            hidden: true,
         },
         {
             name: "rxTrigger",
             displayName: "Enable Rx Trigger",
             description: "Enable Rx Trigger",
             default: false,
+            hidden: true,
             onChange: function (inst, ui) {
                 let hideConfigs = true;
                 if(inst.rxTrigger == true) {
@@ -400,6 +405,7 @@ function getConfigurables()
             name: "udataFilterTest",
             displayName: "User Data Filter Test",
             default: false,
+            hidden: true,
             description: "User Data Filter Test",
         },
     )
