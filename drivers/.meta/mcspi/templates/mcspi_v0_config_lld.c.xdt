@@ -69,6 +69,9 @@ MCSPI_ChConfig g`instNameCamelCase`ChCfg[`instance.$name.toUpperCase()`_NUM_CH] 
         % if(config.mode == "PERIPHERAL") {
         %   ch_config.cs = 0;
         % }
+        % if(config.mode == "MULTI_CONTROLLER") {
+        %   ch_config.cs = ch;
+        % }
         % channelEnable[i][ch_config.cs] = "TRUE";
     {
         .chNum              = MCSPI_CHANNEL_`ch_config.cs`,
@@ -134,6 +137,9 @@ MCSPILLD_InitObject gMcspiInitObject[`module.$instances.length`] =
         % for(let ch = 0; ch < ch_instances.length; ch++) {
         % let ch_instance = ch_instances[ch];
         % let ch_config = module_ch.getInstanceConfig(ch_instance);
+        % if(config.mode == "MULTI_CONTROLLER") {
+        %   ch_config.cs = ch;
+        % }
         .chObj[`ch_config.cs`].chCfg              = &g`instNameCamelCase`ChCfg[`ch`],
         .chObj[`ch_config.cs`].dmaChCfg           = NULL,
         .chObj[`ch_config.cs`].dmaChConfigNum     = `0`,
