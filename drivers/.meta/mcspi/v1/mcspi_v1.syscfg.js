@@ -399,6 +399,19 @@ function getConfigurables()
                         ui.errorCallbackFxn.hidden = false;
                     }
                 }
+                if(common.getSocName() == "am263x")
+                {
+                    if (inst.intrEnable == "DMA")
+                    {
+                        ui.txFifoTrigLevel.hidden = true;
+                        ui.rxFifoTrigLevel.hidden = true;
+                    }
+                    else
+                    {
+                        ui.txFifoTrigLevel.hidden = false;
+                        ui.rxFifoTrigLevel.hidden = false;
+                    }
+                }
             },
             description: "Driver Operating Mode. In case of DMA mode, Default TX Data feature is not supported"
         },
