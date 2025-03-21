@@ -236,10 +236,10 @@ function getConfigurables()
         },
         {
             name: "frameDataSize",
-            displayName: "Frame data size",
+            displayName: "Frame Data Size",
             default: "16",
             hidden: true,
-            description: `Frame data size: 1 to 16`,
+            description: `Frame Data Size: 1 to 16`,
         },
         {
             name: "errorCheck",
