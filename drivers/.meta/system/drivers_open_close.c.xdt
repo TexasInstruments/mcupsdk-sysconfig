@@ -66,11 +66,6 @@ void Drivers_open(void)
 `system.getTemplate(subTemplate.driver_open)()`
     %}
 % }
-% for(let subTemplate of args) {
-    % if (subTemplate.driver_runtime_open && subTemplate.driver_runtime_open.match(/watchdog*/)){
-`system.getTemplate(subTemplate.driver_runtime_open)()`
-    %}
-% }
 % if(cpuName.match(/a53/)) {
 
     }

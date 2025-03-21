@@ -61,7 +61,6 @@ function utilfunction(inst, ui)
 function validatePair(instance, report)
 {
     let mult_pair = (instance.expirationTime * instance.wdt_func_clk)/1000;
-    let mult_pair_init = (instance.initializationTime * instance.wdt_func_clk)/1000;
     /*
         texp = (2^13(1+PRD)) /freq
         => PRD = (texp * freq)/2^13 -1
@@ -69,8 +68,6 @@ function validatePair(instance, report)
         0<= ( (texp * freq) /2^13) -1 <= 2^12 -1
         2^13 < = (texp * freq) <= 2^25
     */
-    if( mult_pair_init < 8192 || mult_pair_init > 33554432)
-    report.logError(`(Initialization time * WDT input clock frequency) = ${mult_pair_init} has to be within 8192 to 33554432`, instance, "initializationTime");
     if( mult_pair < 8192 || mult_pair > 33554432)
     report.logError(`(Expiration time * WDT input clock frequency) = ${mult_pair} has to be within 8192 to 33554432`, instance, "expirationTime");
 }
@@ -93,7 +90,6 @@ function validateInputClkFreq(instance, report)
 function validate(instance, report) {
     common.validate.checkSameInstanceName(instance, report);
     common.validate.checkNumberRange(instance, report, "expirationTime", 0, 60000, "dec");
-    common.validate.checkNumberRange(instance, report, "initializationTime", 0, 60000, "dec");
     if( soc_name == "am263x" || soc_name == "am263px" || soc_name == "am261x" || soc_name == "am273x" || soc_name == "awr294x")
     {
         validatePair(instance, report);
@@ -171,18 +167,10 @@ if( soc_name == "am263x" || soc_name == "am263px" || soc_name == "am261x" || soc
 {
     gconfig = gconfig.concat([
     {
-        name: "initializationTime",
-        displayName: "WDT Initialization Timeout (ms)",
-        default: 165,
-        description: "Initialization Timeout in millisecond (ms)",
-        longDescription: "Watchdog is started with this timeout at the beginning of Drivers_open before all other peripheral drivers open.",
-    },
-    {
         name: "expirationTime",
-        displayName: "WDT Runtime Timeout (ms)",
+        displayName: "WDT Expiry Timeout (ms)",
         default: 165,
-        description: "Runtime Timeout in millisecond (ms)",
-        longDescription: "Watchdog is reinitialized with this timeout for the application runtime duration.",
+        description: "Expiration Timeout in millisecond (ms)",
     },
     {
         name: "wdt_clk_src",
@@ -204,18 +192,10 @@ if( soc_name == "am263x" || soc_name == "am263px" || soc_name == "am261x" || soc
 else{
     gconfig = gconfig.concat([
     {
-        name: "initializationTime",
-        displayName: "WDT Initialization Timeout (ms)",
-        default: 1000,
-        description: "Initialization Timeout in millisecond (ms)",
-        longDescription: "Watchdog is started with this timeout at the beginning of Drivers_open before all other peripheral drivers open.",
-    },
-    {
         name: "expirationTime",
-        displayName: "WDT Runtime Timeout (ms)",
-        default: 1000,
-        description: "Runtime Timeout in millisecond (ms)",
-        longDescription: "Watchdog is reinitialized with this timeout for the application runtime duration.",
+        displayName: "WDT Expiry Timeout (ms)",
+        default: 165,
+        description: "Expiration Timeout in millisecond (ms)",
     },
    ])
 }
@@ -235,7 +215,6 @@ let watchdog_module = {
         "/drivers/system/drivers_open_close.c.xdt": {
             driver_open_close_config: "/drivers/watchdog/templates/watchdog_open_close_config.c.xdt",
             driver_open: "/drivers/watchdog/templates/watchdog_open.c.xdt",
-            driver_runtime_open: "/drivers/watchdog/templates/watchdog_open_runtime.c.xdt",
             driver_close: "/drivers/watchdog/templates/watchdog_close.c.xdt",
         },
         "/drivers/system/drivers_open_close.h.xdt": {
