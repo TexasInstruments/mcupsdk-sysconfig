@@ -9,6 +9,7 @@ const lin_config_r5fss = [
         intrNum0        : 16,
         intrNum1        : 17,
         clockIds        : [ "SOC_RcmPeripheralId_LIN0_UART0" ],
+        sysClk          : getSysClkFrequency(),
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_LIN0_UART0",
@@ -23,6 +24,7 @@ const lin_config_r5fss = [
         intrNum0        : 18,
         intrNum1        : 19,
         clockIds        : [ "SOC_RcmPeripheralId_LIN1_UART1" ],
+        sysClk          : getSysClkFrequency(),
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_LIN1_UART1",
@@ -37,6 +39,7 @@ const lin_config_r5fss = [
         intrNum0        : 20,
         intrNum1        : 21,
         clockIds        : [ "SOC_RcmPeripheralId_LIN2_UART2" ],
+        sysClk          : getSysClkFrequency(),
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_LIN2_UART2",
@@ -51,6 +54,7 @@ const lin_config_r5fss = [
         intrNum0        : 22,
         intrNum1        : 23,
         clockIds        : [ "SOC_RcmPeripheralId_LIN3_UART3" ],
+        sysClk          : getSysClkFrequency(),
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_LIN3_UART3",
@@ -65,6 +69,7 @@ const lin_config_r5fss = [
         intrNum0        : 24,
         intrNum1        : 25,
         clockIds        : [ "SOC_RcmPeripheralId_LIN4_UART4" ],
+        sysClk          : getSysClkFrequency(),
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_LIN4_UART4",
@@ -114,6 +119,13 @@ function getDefaultClkSource() {
     return "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT1";
 }
 
+/* This is subject to change, therefore update might be required */
+function getSysClkFrequency(){
+
+    let clkFreq = 200*1000000;
+    return clkFreq;
+}
+
 exports = {
     getConfigArr,
     getInterfaceName,
@@ -121,4 +133,5 @@ exports = {
     getClockSourceOptions,
     getDefaultClkSource,
     getClockValue,
+    getSysClkFrequency,
 };

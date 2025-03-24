@@ -589,7 +589,8 @@ let configHLD = [
                         ui.supFracDivSel_U_HLD.readOnly = false;
                         ui.baudRateHLD.readOnly = true;
                         /** Calculate and Change Baud Value */
-                        inst.baudRateHLD = (200000000.0/((16.0*inst.baudPreScalerHLD) + 16 + inst.fracDivSel_M_HLD)) | 0;
+                        let config = soc.getDefaultConfig();
+                        inst.baudRateHLD = (config.sysClk/((16.0*inst.baudPreScalerHLD) + 16 + inst.fracDivSel_M_HLD)) | 0;
 
                     } else {
                         ui.baudPreScalerHLD.readOnly = true;
@@ -597,47 +598,51 @@ let configHLD = [
                         ui.supFracDivSel_U_HLD.readOnly = true;
                         ui.baudRateHLD.readOnly = false;
                         /** Re Calculate and change in case of modification by user */
-                        inst.baudPreScalerHLD = ((200000000.0/(16.0*inst.baudRateHLD)) - 1) | 0;
-                        inst.fracDivSel_M_HLD = 16*((200000000.0/(16.0*inst.baudRateHLD)) - (inst.baudPreScalerHLD + 1)) | 0;
+                        let config = soc.getDefaultConfig();
+                        inst.baudPreScalerHLD = ((config.sysClk/(16.0*inst.baudRateHLD)) - 1) | 0;
+                        inst.fracDivSel_M_HLD = 16*((config.sysClk/(16.0*inst.baudRateHLD)) - (inst.baudPreScalerHLD + 1)) | 0;
                     }
                 },
             },
             {
                 name: "baudRateHLD",
                 displayName: "Baud Rate(Bits/s)",
-                default: 9600,
+                default: 19200,
                 hidden: true,
                 readOnly: false,
                 description: "Baud Rate",
                 onChange: function (inst, ui) {
-                    inst.baudPreScalerHLD = ((200000000.0/(16.0*inst.baudRateHLD)) - 1) | 0;
-                    inst.fracDivSel_M_HLD = 16*((200000000.0/(16.0*inst.baudRateHLD)) - (inst.baudPreScalerHLD + 1)) | 0;
+                    let config = soc.getDefaultConfig();
+                    inst.baudPreScalerHLD = ((config.sysClk/(16.0*inst.baudRateHLD)) - 1) | 0;
+                    inst.fracDivSel_M_HLD = 16*((config.sysClk/(16.0*inst.baudRateHLD)) - (inst.baudPreScalerHLD + 1)) | 0;
                 },
             },
             {
                 name: "baudPreScalerHLD",
                 displayName: "Prescaler",
                 description: "The 24-bit integer prescaler used to select the required baud rates.",
-                default: 0,
+                default: getDefaultPreScaler(),
                 hidden: true,
                 readOnly: true,
                 description: "Prescaler",
                 onChange: function (inst, ui) {
                     /** Calculate and Change Baud Value */
-                    inst.baudRateHLD = (200000000.0/((16.0*inst.baudPreScalerHLD) + 16 + inst.fracDivSel_M_HLD)) | 0;
+                    let config = soc.getDefaultConfig();
+                    inst.baudRateHLD = (config.sysClk/((16.0*inst.baudPreScalerHLD) + 16 + inst.fracDivSel_M_HLD)) | 0;
                 },
             },
             {
                 name: "fracDivSel_M_HLD",
                 displayName: "Fractional Divider",
                 description: "The 4-bit fractional divider to refine the baud rate selection.",
-                default: 0,
+                default: getDefaultFracDiv(),
                 hidden: true,
                 readOnly: true,
                 description: "Fractional Divider",
                 onChange: function (inst, ui) {
-                    /** Calculate and Change Baud Value */
-                    inst.baudRateHLD = (200000000.0/((16.0*inst.baudPreScalerHLD) + 16 + inst.fracDivSel_M_HLD)) | 0;
+                    /* Calculate and Change Baud Value */
+                    let config = soc.getDefaultConfig();
+                    inst.baudRateHLD = (config.sysClk/((16.0*inst.baudPreScalerHLD) + 16 + inst.fracDivSel_M_HLD)) | 0;
                 },
             },
             {
@@ -1035,6 +1040,15 @@ const hideAllHldConfigs = (ui) => {
     ui.dataBitsHLD.hidden = true;
 }
 
+function getDefaultPreScaler() {
+    let config = soc.getDefaultConfig();
+    return ((config.sysClk/(16.0 * 19200.0)) - 1) | 0;
+}
+function getDefaultFracDiv() {
+    let config = soc.getDefaultConfig();
+    return 16*((config.sysClk/(16.0*19200)) - (getDefaultPreScaler() + 1)) | 0;
+}
+
 const setHldDefaultConfigs = (inst, ui) => {
 
     inst.clockSourceHLD = soc.getDefaultClkSource();
@@ -1055,6 +1069,10 @@ const setHldDefaultConfigs = (inst, ui) => {
     ui.intrPriority.hidden = false;
 
     /* Baud Related Configurations */
+    inst.baudRateHLD = 19200;
+    inst.baudPreScalerHLD = getDefaultPreScaler();
+    inst.fracDivSel_M_HLD = getDefaultFracDiv();
+
     ui.manualConfigBaudHLD.hidden = false;
     ui.supFracDivSel_U_HLD.hidden = true
 

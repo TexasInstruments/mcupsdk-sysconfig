@@ -7,6 +7,7 @@ const lin_config_r5fss = [
         intrNum0        : 61,
         intrNum1        : 62,
         clockIds        : [ "SOC_RcmPeripheralId_LIN0_UART0" ],
+        sysClk          : getSysClkFrequency(),
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_LIN0_UART0",
@@ -21,6 +22,7 @@ const lin_config_r5fss = [
         intrNum0        : 63,
         intrNum1        : 64,
         clockIds        : [ "SOC_RcmPeripheralId_LIN1_UART1" ],
+        sysClk          : getSysClkFrequency(),
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_LIN1_UART1",
@@ -35,6 +37,7 @@ const lin_config_r5fss = [
         intrNum0        : 65,
         intrNum1        : 66,
         clockIds        : [ "SOC_RcmPeripheralId_LIN2_UART2" ],
+        sysClk          : getSysClkFrequency(),
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_LIN2_UART2",
@@ -121,6 +124,19 @@ function getClockValue(clkSrc) {
         /* Bad clk source */
     }
     return clockVal;
+}
+
+/* This is subject to change, therefore update might be required */
+function getSysClkFrequency(){
+
+    let clkFreq = 200*1000000;
+
+    if(common.getR5Freq() == "500MHz")
+    {
+        clkFreq = 250*1000000;
+    }
+
+    return clkFreq;
 }
 
 exports = {
