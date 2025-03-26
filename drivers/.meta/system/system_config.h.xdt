@@ -75,6 +75,15 @@ void CopyVecsToATCMmem(void);
 
 `system.getTemplate("/kernel/dpl/pmu.h.xdt")()`
 
+/*
+ * MCU_LBIST
+ */
+% for(let subTemplate of args) {
+    % if (subTemplate.driver_config1 && subTemplate.driver_config1.match(/mcu_lbist*/)) {
+`system.getTemplate(subTemplate.driver_config1)()`
+    % }
+% }
+void SDL_lbist_selftest(void);
 
 #ifdef __cplusplus
 }

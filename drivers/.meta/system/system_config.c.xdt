@@ -52,6 +52,21 @@
     % }
 % }
 
+/*
+ * MCU_LBIST
+ */
+
+uint32_t gMcuLbistTestStatus = 0U;
+
+void SDL_lbist_selftest(void)
+{
+% for(let subTemplate of args) {
+    % if (subTemplate.driver_init1 && subTemplate.driver_init1.match(/mcu_lbist*/)) {
+`system.getTemplate(subTemplate.driver_init1)()`
+    % }
+% }
+}
+
 % if(common.getSocName() != "f29h85x"){
 void Pinmux_init(void);
 void PowerClock_init(void);
