@@ -168,20 +168,11 @@ function getConfigurables()
                         description: "ICSS iep clock is derived from Core Clk in IEP Clk sync mode"
                     }
                 ],
-                onChange: (inst, ui) => {
-                    if(inst.iepClk == 225*1000000)
-                    {
-                        inst.iepSyncMode = true,
-                        inst.coreClk = 225*1000000,
-                        ui.iepClk.readOnly =  true,
-                        ui.coreClk.readOnly =  true
-                    }
-                    if(inst.iepClk == 250*1000000)
-                    {
-                        /*changing the core clock to 225 MHz, when iep clock is 250 MHz*/
-                        inst.coreClk = 225*1000000
-                        ui.coreClk.readOnly = true
-                    }
+                getDisabledOptions: () => {
+                    return [{
+                        name: 225*1000000,
+                        reason: "This option is auto selected when IEP Clk Sync Mode is enabled"
+                    }]
                 },
             }, 
             {
@@ -210,6 +201,8 @@ function getConfigurables()
                     }
                     else
                     {
+                        /*Change back IEP to default option if iepSyncMode is disabled*/
+                        inst.iepClk = 250*1000000,
                         ui.iepClk.readOnly =  false,
                         ui.coreClk.readOnly =  false
                     }     
