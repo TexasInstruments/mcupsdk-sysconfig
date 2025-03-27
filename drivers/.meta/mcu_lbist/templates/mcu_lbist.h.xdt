@@ -11,7 +11,7 @@
 % if(common.getSocName() === "am261x"){
 static const SDL_STC_Inst test_case[]={SDL_STC_INST_MAINR5F0};
 %}
-% if(common.getSocName() === "am263px"){
+% if(common.getSocName() === "am263px" | common.getSocName() === "am263x"){
 static const SDL_STC_Inst test_case[]={SDL_STC_INST_MAINR5F0, SDL_STC_INST_MAINR5F1};
 %}
 %}

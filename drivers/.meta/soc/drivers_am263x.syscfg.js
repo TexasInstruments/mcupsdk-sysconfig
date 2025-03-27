@@ -53,6 +53,9 @@ const driverVer = {
     "mcan": {
         version: "v1",
     },
+    "mcu_lbist": {
+        version: "v0",
+    },
     "mcu_pbist": {
         version: "v0",
     },
@@ -103,6 +106,7 @@ const topModules_main = [
     "/drivers/ipc/ipc",
     "/drivers/lin/lin",
     "/drivers/mcan/mcan",
+    "/drivers/mcu_lbist/mcu_lbist",
     "/drivers/mcu_pbist/mcu_pbist",
     "/drivers/mcspi/mcspi",
     "/drivers/mmcsd/mmcsd",
