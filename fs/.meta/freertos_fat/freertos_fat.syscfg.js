@@ -23,14 +23,16 @@ let freertos_fat_module = {
 			name: "media",
 			displayName: "Select Media",
 			description: "Select the media which is to be used underneath the virtual file system provided by FreeRTOS FAT",
-			default: "SD",
-			options: [
-				{ name: "SD" },
-                { name: "EMMC" },
-			]
+			default: (common.getSocName() == "am261x") ? "EMMC" : "SD",
+			options: () => { 
+							return ((common.getSocName() == "am261x") ? 
+							[ {name: "EMMC" }] :
+							[ { name: "SD" },{ name: "EMMC" }])
+						}
 		},
 	],
 	moduleInstances: moduleInstances,
+	validate: onValidate,
 };
 
 function moduleInstances(inst) {
@@ -76,6 +78,16 @@ function moduleInstances(inst) {
     }
 
     return (modInstances);
+}
+
+
+function onValidate(inst, report){
+
+	let valid_media_options_across_socs = ["SD", "EMMC"]
+
+	if( !(valid_media_options_across_socs.includes(inst.media)) ){
+		report.logError("Invalid Freertos media option!", inst, "media")
+	}
 }
 
 exports = freertos_fat_module;
