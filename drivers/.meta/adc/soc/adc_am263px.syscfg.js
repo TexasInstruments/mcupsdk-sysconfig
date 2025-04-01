@@ -425,7 +425,7 @@ let ADC_SafetyAggr_Instances = [
      displayName: "ADC Safety Checker Aggregator 1"},
 ]
 
-let ADC_Sysclk_Mhz = 200
+// let ADC_Sysclk_Mhz = 200
 function getInterfaceName(inst) {
 
 	return "ADC";
@@ -609,7 +609,7 @@ exports = {
     ADC_RepMode: ADC_RepMode,
 	ADC_EVT: ADC_EVT,
 	ADC_FORCE: ADC_FORCE,
-    ADC_Sysclk_Mhz: ADC_Sysclk_Mhz,
+    // ADC_Sysclk_Mhz: ADC_Sysclk_Mhz,
     ADC_SafetyAggr_Instances,
     getInterfaceName,
     getInterfaceNameAdcR,

@@ -203,7 +203,7 @@ let ADC_FORCE = [
 	{ name: "ADC_FORCE_SOC14", displayName: "SW trigger ADC SOC 14" },
 	{ name: "ADC_FORCE_SOC15", displayName: "SW trigger ADC SOC 15" },
 ]
-let ADC_Sysclk_Mhz = 200
+// let ADC_Sysclk_Mhz = 200
 function getInterfaceName(instance) {
     return "ADC";
 }
@@ -275,7 +275,7 @@ exports = {
 	ADC_PriorityMode: ADC_PriorityMode,
 	ADC_EVT: ADC_EVT,
 	ADC_FORCE: ADC_FORCE,
-    ADC_Sysclk_Mhz: ADC_Sysclk_Mhz,
+    // ADC_Sysclk_Mhz: ADC_Sysclk_Mhz,
     getInterfaceName,
     getStaticConfigArr,
     isLoopBackAvailable,

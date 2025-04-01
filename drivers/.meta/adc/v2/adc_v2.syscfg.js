@@ -1,7 +1,15 @@
 let common   = system.getScript("/common");
 let pinmux   = system.getScript("/drivers/pinmux/pinmux");
 let device_peripheral = system.getScript(`/drivers/adc/soc/adc_${common.getSocName()}.syscfg.js`);
-let adc_sampletime_sysclk_ns = 1000/device_peripheral.ADC_Sysclk_Mhz;
+
+function getAdcSysClkMhz(){
+    let staticModule = common.getStaticModuleForCore("/drivers/adc/adc", common.getSelfSysCfgCoreName());
+    if (staticModule !== undefined){
+        return staticModule["sampleWindowSYSCLK"];
+    }
+    return 100
+};
+
 let soc_ctrl = system.getScript("/drivers/soc_ctrl/soc_ctrl")
 
 function getStaticConfigArr() {
@@ -112,9 +120,6 @@ for (let soci = 0; soci < 16; soci++)
                 description : 'Select the sample window (1-512) for this SOC',
                 hidden      : false,
                 default     : 16,
-                onChange    : (inst,ui)=>{
-                    inst["soc" + soci.toString() + "SampleTime"] = adc_sampletime_sysclk_ns*(inst["soc" + soci.toString() + "SampleWindow"])
-                }
             },
             {
                 name: "soc" + soci.toString() + "SampleTime",
@@ -122,7 +127,11 @@ for (let soci = 0; soci < 16; soci++)
                 description : 'Selected the sample time in ns for this SOC',
                 hidden      : false,
                 readOnly    : true,
-                default     : adc_sampletime_sysclk_ns*16
+                getValue    : (inst) => {
+                    let Adc_sysclk_ns = 1000/getAdcSysClkMhz();
+                    return Adc_sysclk_ns*(inst["soc" + soci.toString() + "SampleWindow"])
+                },
+                default     : 0
             },
 
         ]
@@ -611,7 +620,18 @@ let globalConfig = [
         name: "sampleWindowSYSCLK",
         displayName: "SYSCLK [MHz]",
         description: "This is the SYSCLK value",
-        default: device_peripheral.ADC_Sysclk_Mhz,
+        default: 200,
+        getValue : (inst) => {
+            let r5Freq = common.getR5Freq();
+            if(r5Freq !== "")
+            {
+                return parseInt(r5Freq.split("MHz")[0]/2);
+            }
+            else
+            {
+                return 200;
+            }
+        }
     },
     {
         name: "synchronousModeCheck",

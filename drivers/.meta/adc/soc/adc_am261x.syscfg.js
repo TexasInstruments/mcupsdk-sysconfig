@@ -384,7 +384,7 @@ const staticConfig = [
         resultBaseAddr : "CSL_CONTROLSS_ADC1_RESULT_U_BASE",
         instanceNumber : "1",
 		refBuf         : "0",
-		monitor         : "1",
+		monitor         : "0",
     },
     {
         name: "ADC2",
@@ -475,7 +475,7 @@ exports = {
     ADC_RepMode: ADC_RepMode,
 	ADC_EVT: ADC_EVT,
 	ADC_FORCE: ADC_FORCE,
-    ADC_Sysclk_Mhz: ADC_Sysclk_Mhz,
+    // ADC_Sysclk_Mhz: ADC_Sysclk_Mhz,
     ADC_SafetyAggr_Instances,
     getInterfaceName,
     getStaticConfigArr,
