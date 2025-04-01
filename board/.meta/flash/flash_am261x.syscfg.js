@@ -8,7 +8,7 @@ let supported_nor_spi_drivers = [
 
 let defaultFlashConfig = system.getScript("/board/flash/IS25LX256.json");
 
-let defaultFlashConfigLP = system.getScript("/board/flash/IS25WX064.json");
+let defaultFlashConfigLP = system.getScript("/board/flash/MX25UW064.json");
 
 let defaultNandFlashConfig = system.getScript("/board/flash/W35N01JWTBAG.json");
 
@@ -24,7 +24,7 @@ function getDefaultDriver()
 
 function getDefaultFlashName()
 {
-    return "IS25WX064";
+    return "MX25UW064";
 }
 
 function getDefaultFlashConfig()
