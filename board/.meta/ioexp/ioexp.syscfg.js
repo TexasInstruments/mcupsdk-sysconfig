@@ -1,146 +1,179 @@
+// Import required modules
+const common = system.getScript("/common");
+const soc = system.getScript(`/board/ioexp/ioexp_${common.getSocName()}`);
 
-let common = system.getScript("/common");
-let soc = system.getScript(`/board/ioexp/ioexp_${common.getSocName()}`);
+/******************************************************************************
+ * Helper Functions
+ ******************************************************************************/
 
-function getInstanceConfig(moduleInstance) {
-    let configArr = soc.getConfigArr();
-    let config = configArr.find(o => o.i2cAddress === moduleInstance.i2cAddress);
-
+// Creates configuration for a single pin
+const createPinConfig = (cfg, pin) => {
+    // Clean up pin name by replacing . and / with _
+    const pinName_filtered = pin.pinName.replace(/[./]/g, '_');
+    
+    // Create unique element name for this pin
+    const element_name = `${cfg.name}_port${pin.portNumber}_pin${pinName_filtered}`;
+    
     return {
-        ...config,
-        ...moduleInstance,
+        name: element_name,
+        displayName: `${pin.pinName} Configurations`,
+        config: [
+            // Mode configuration (Input/Output)
+            {
+                name: `${element_name}_mode`,
+                displayName: `${pin.pinName} Mode`,
+                options: [
+                    { name: 0, displayName: "Output" },
+                    { name: 1, displayName: "Input" },
+                ],
+                default: 1,
+                onChange: (inst, ui) => {
+                    // Hide state option if mode is input
+                    ui[`${element_name}_state`].hidden = (inst[`${element_name}_mode`] === 1);
+                },
+                hidden: cfg.i2cAddress !== 0x20,
+            },
+            // State configuration (HIGH/LOW)
+            {
+                name: `${element_name}_state`,
+                displayName: `${pin.pinName} State`,
+                options: [
+                    { name: 0, displayName: "LOW" },
+                    { name: 1, displayName: "HIGH" },
+                ],
+                default: 0,
+                hidden: true,
+            }
+        ]
     };
 };
 
-function getConfigurables() {
-    /* get 'CPU enable' configurables */
-    let config = [];
-    let staticConfig = soc.getConfigArr();
+// Creates I2C address options for the configuration
+const createI2CAddressOptions = (staticConfig) => {
+    return staticConfig.map(cfg => ({
+        name: `${cfg.board} 0x${cfg.i2cAddress.toString(16)}`,
+        displayName: `${cfg.board} 0x${cfg.i2cAddress.toString(16)}`
+    }));
+};
 
-    config.push(
+/******************************************************************************
+ * Main Configuration Functions
+ ******************************************************************************/
+
+// Get configuration for a specific instance
+function getInstanceConfig(moduleInstance) {
+    const configArr = soc.getConfigArr();
+    const i2cAddressName = parseInt(moduleInstance.i2cAddress.split("x")[1], 16);
+    const config = configArr.find(o => o.i2cAddress === i2cAddressName);
+
+    return { ...config, ...moduleInstance };
+}
+
+// Get all configurable options
+function getConfigurables() {
+    const staticConfig = soc.getConfigArr();
+
+    // Basic configuration options
+    const baseConfig = [
+        // IO Expander name configuration
         {
             ...common.ui.makeConfig(staticConfig, "name", "IO Expander")
         },
+        // I2C address configuration
         {
-            name : "i2cAddress",
-            displayName : "I2C Target Address",
-            options : ()=>{
-                let opt = [];
-                for (let cfg of staticConfig){
-                    opt.push(
-                        {name : cfg.i2cAddress, displayName : "0x"+(cfg.i2cAddress).toString(16)}
-                    )
-                }
-                return opt
-            },
-            onChange : onChangeIoExp,
-            default : 0x20,
-        },
+            name: "i2cAddress",
+            displayName: "I2C Target Address",
+            options: () => createI2CAddressOptions(staticConfig),
+            onChange: onChangeIoExp,
+            default: "LP-E1 0x20",
+        }
+    ];
+
+    // Create configurations for all pins
+    const ioexp_cfg = staticConfig.flatMap(cfg => 
+        cfg.pinSet.map(pin => createPinConfig(cfg, pin))
     );
-    let ioexp_cfg = [];
-    for(let cfg of staticConfig){
-        for(let pin of cfg.pinSet){
-            let pinName_filtered = pin.pinName.replace(".","_").replace("/","_");
-            let element_name = cfg.name+"_"+"port"+pin.portNumber+"_"+"pin"+pinName_filtered;
-            ioexp_cfg.push(
-                {
-                    name : element_name,
-                    displayName : pin.pinName+" Configurations",
-                    config : [
-                        {
-                            name : element_name+"_mode",
-                            displayName : pin.pinName+" Mode",
-                            options : [
-                                { name : 0, displayName : "Output"},
-                                { name : 1, displayName : "Input"},
-                            ],
-                            default : 1,
-                            onChange : (inst, ui)=>{
-                                if (inst[element_name+"_mode"] == 1){
-                                    //input
-                                    ui[element_name+"_state"].hidden = true
-                                }else{
-                                    ui[element_name+"_state"].hidden = false
-                                }
-                            },
-                            hidden : !(cfg.i2cAddress == 0x20),
-                        },
-                        {
-                            name : element_name+"_state",
-                            displayName : pin.pinName+" State",
-                            options : [
-                                { name : 0, displayName : "LOW"},
-                                { name : 1, displayName : "HIGH"},
-                            ],
-                            default : 0,
-                            hidden : true,
-                        }
-                    ] 
-                }
-            )
-        }
-    }
-    config = config.concat([
+
+    // Combine base config with pin configurations
+    return [
+        ...baseConfig,
         {
-            name : "ioExpConfigGrp",
-            displayName : "IO Expander Configurations",
-            config : ioexp_cfg,
+            name: "ioExpConfigGrp",
+            displayName: "IO Expander Configurations",
+            config: ioexp_cfg,
         }
-    ]);
-    return config;
+    ];
 }
 
-function onChangeIoExp(inst, ui){
-    let staticConfig = soc.getConfigArr();
-    for(let cfg of staticConfig){
-        for(let pin of cfg.pinSet){
-            let pinName_filtered = pin.pinName.replace(".","_").replace("/","_");
-                    let element_name = cfg.name+"_"+"port"+pin.portNumber+"_"+"pin"+pinName_filtered;
-            ui[element_name+"_mode"].hidden = !(inst["i2cAddress"] == cfg.i2cAddress)
-            ui[element_name+"_state"].hidden = (!(inst["i2cAddress"] == cfg.i2cAddress) || (inst[element_name+"_mode"] == 1))
-        }
-    }
+// Handle I2C address changes
+function onChangeIoExp(inst, ui) {
+    const staticConfig = soc.getConfigArr();
+    
+    staticConfig.forEach(cfg => {
+        cfg.pinSet.forEach(pin => {
+            const pinName_filtered = pin.pinName.replace(/[./]/g, '_');
+            const element_name = `${cfg.name}_port${pin.portNumber}_pin${pinName_filtered}`;
+            const i2cAddressName = `${cfg.board} 0x${cfg.i2cAddress.toString(16)}`;
+            
+            // Update UI visibility based on I2C address and mode
+            ui[`${element_name}_mode`].hidden = inst.i2cAddress !== i2cAddressName;
+            ui[`${element_name}_state`].hidden = 
+                inst.i2cAddress !== i2cAddressName || 
+                inst[`${element_name}_mode`] === 1;
+        });
+    });
 }
 
-function onValidate(inst, validation){
+// Validate configuration
+function onValidate(inst, validation) {
+    // Check for duplicate I2C addresses in Given Board
+    const instanceMap = inst.$module.$instances.map(instance => ({
+        i2cAddressName: instance.i2cAddress,
+        instName: instance.$name
+    }));
 
-    let addedInstances = []
+    const { duplicates } = common.findDuplicates(instanceMap.map(o => o.i2cAddressName));
+    
+    // Log error for each duplicate found
+    duplicates.forEach(duplicate => {
+        const duplicateInstances = instanceMap
+            .filter(o => o.i2cAddressName === duplicate)
+            .map(item => item.instName)
+            .join(", ");
 
-    for(let instance of inst.$module.$instances){
-        addedInstances.push("0x"+(instance.i2cAddress).toString(16));
-    }
-    let duplicatesResult = common.findDuplicates(addedInstances)
-    if (duplicatesResult.duplicates.length != 0)
-    {
-        let allDuplicates = "";
-        for (let duplicateNamesIndex in duplicatesResult.duplicates)
-        {
-            allDuplicates = allDuplicates + common.stringOrEmpty(allDuplicates, ", ")
-                            + duplicatesResult.duplicates[duplicateNamesIndex];
-        }
         validation.logError(
-            "The I2C Addresses is used. Duplicated address " + allDuplicates,
-            inst, "i2cAddress");
-    }
-
-    let staticConfig = soc.getConfigArr();
-    let all_i2cAddresses = []
-
-    for(let cfg of staticConfig){
-        all_i2cAddresses.push(cfg.i2cAddress)
-    }
-
-    if(!(all_i2cAddresses.includes(inst.i2cAddress))){
-        validation.logError("Invalid I2C Peripheral address for the IO Expander", inst, "i2cAddress");
-    }
-
+            `This IO Expander is used in the instances: ${duplicateInstances}`,
+            inst,
+            "i2cAddress"
+        );
+    });
 }
 
-let ioexp_module_name = "/board/ioexp/ioexp";
+// Get module instances
+function moduleInstances(instance) {
+    const configArr = soc.getConfigArr();
+    const config = configArr.find(o => o.name === instance.name);
 
-let ioexp_module = {
+    if (config.type !== "I2C") return [];
+
+    return [{
+        name: "peripheralDriver",
+        displayName: "I2C Configuration",
+        moduleName: '/drivers/i2c/i2c',
+        requiredArgs: {
+            I2C: { $assign: config.instance }
+        }
+    }];
+}
+
+/******************************************************************************
+ * Module Definition
+ ******************************************************************************/
+
+const ioexp_module = {
     displayName: "IO Expander",
-
+    
+    // Template configurations
     templates: {
         "/board/board/board_open_close.c.xdt": {
             board_open: "/board/ioexp/templates/ioexp_open.c.xdt",
@@ -152,17 +185,16 @@ let ioexp_module = {
         "/board/board/board_config.h.xdt": {
             board_config: "/board/ioexp/templates/ioexp.h.xdt",
         },
-
     },
+    
+    // Module properties
     defaultInstanceName: "CONFIG_IOEXP",
     config: getConfigurables(),
     moduleStatic: {
-        modules: function(instance) {
-            return [{
-                name: "system_common",
-                moduleName: "/system_common",
-            }]
-        },
+        modules: () => [{
+            name: "system_common",
+            moduleName: "/system_common",
+        }]
     },
     validate: onValidate,
     maxInstances: soc.getConfigArr().length,
@@ -170,25 +202,5 @@ let ioexp_module = {
     getInstanceConfig,
 };
 
-function moduleInstances(instance) {
-    let modInstances = new Array();
-    let configArr = soc.getConfigArr();
-    let config = configArr.find(o => o.name === instance.name);
-
-    if(config.type == "I2C") {
-        modInstances.push({
-            name: "peripheralDriver",
-            displayName: "I2C Configuration",
-            moduleName: '/drivers/i2c/i2c',
-            requiredArgs: {
-                I2C : {
-                    $assign : config.instance
-                }
-            }
-        });
-    }
-
-    return (modInstances);
-}
-
+// Export the module
 exports = ioexp_module;

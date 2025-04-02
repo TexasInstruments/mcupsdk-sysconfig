@@ -8,15 +8,14 @@
 %    for(let instance of module.$instances)
 %    {
 %       let staticArrCfg = module.getInstanceConfig(instance)
-%       let expName      = staticArrCfg.driverName.replace("ioexp_","");
+%       let expName      = staticArrCfg.driverName.replace("ioexp_","").toUpperCase();
 %       if(!addedDriverNames.includes(staticArrCfg.driverName)){
 %           addedDriverNames.push(staticArrCfg.driverName);
 /*
  * IOEXP `instance.name`
  */
-#include <board/ioexp/ioexp_`expName`.h>
+#include <board/ioexp/`staticArrCfg.driverName`.h>
 %       }
-%   expName = expName.toUpperCase()
 %       for(let pin of staticArrCfg.pinSet){
 %           let pinName_filtered = pin.pinName.replace(".","_").replace("/","_");
 %           let element_name = staticArrCfg.name+"_"+"port"+pin.portNumber+"_"+"pin"+pinName_filtered;
