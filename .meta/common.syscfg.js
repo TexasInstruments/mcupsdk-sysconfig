@@ -17,7 +17,7 @@ function getSelfSysCfgCoreName() {
         case "am261x":
             return "r5fss0-0";
         case "am273x":
-            return "r5fss0-0";
+            return system.context;
         case "awr294x":
             return "r5fss0-0";
         case "am62x":

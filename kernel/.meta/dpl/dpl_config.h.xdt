@@ -48,10 +48,14 @@ extern "C" {
 `system.getTemplate(subTemplate)()`
 % }
 
+% let cpuName = system.getScript('/common').getSelfSysCfgCoreName();
+% if((system.getScript('/common').getSocName() == "am273x") && cpuName.match(/m4f/)){
+#include <kernel/dpl/CacheP.h>
+%}
+
 void Dpl_init(void);
 void Dpl_deinit(void);
 
-% let cpuName = system.getScript('/common').getSelfSysCfgCoreName();
 % if(cpuName.match(/a53/)) {
 extern uint64_t Armv8_getCoreId();
 % }

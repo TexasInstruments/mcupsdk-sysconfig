@@ -39,6 +39,9 @@
 % let is_am263px_soc = (device === "am263px-cc") ? true : false;
 % let is_am261x_soc = (device === "am261x-lp") ? true : false;
 #include "ti_drivers_config.h"
+% if((common.getSocName() == "am273x") && (common.getSelfSysCfgCoreName() == "m4fss0-1")){
+%}
+% else {
 #include <drivers/pinmux.h>
 
 static Pinmux_PerCfg_t gPinMuxMainDomainCfg[] = {
@@ -113,6 +116,7 @@ static Pinmux_PerCfg_t gPinMuxMainDomainCfg[] = {
 % }
     {PINMUX_END, PINMUX_END}
 };
+%}
 
 % if(common.isMcuDomainSupported() || common.isWakeupDomainSupported()) {
 static Pinmux_PerCfg_t gPinMuxMcuDomainCfg[] = {
@@ -134,6 +138,9 @@ static Pinmux_PerCfg_t gPinMuxMcuDomainCfg[] = {
 
 void Pinmux_init(void)
 {
+% if((common.getSocName() == "am273x") && (common.getSelfSysCfgCoreName() == "m4fss0-1")){
+%}
+%else {
     %let MSS_CTRL_ICSSM0_PRU0_GPIO_OUT_CTRL_VALUE=0x00000000;
     %let MSS_CTRL_ICSSM0_PRU1_GPIO_OUT_CTRL_VALUE=0x00000000;
     %let MSS_CTRL_ICSSM1_PRU0_GPIO_OUT_CTRL_VALUE=0x00000000;
@@ -243,6 +250,7 @@ void Pinmux_init(void)
     % if(common.isMcuDomainSupported()) {
     Pinmux_config(gPinMuxMcuDomainCfg, PINMUX_DOMAIN_ID_MCU);
     % }
+% }
 }
 
 

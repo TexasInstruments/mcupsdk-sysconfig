@@ -24,7 +24,12 @@ const topModules_c66 = [
     "/kernel/dpl/timer",
 ];
 
-
+const topModules_m4 = [
+    "/kernel/dpl/clock",
+    "/kernel/dpl/debug_log",
+    "/kernel/dpl/mpu_armv7",
+    "/kernel/dpl/dpl_cfg",
+];
 
 /* Max xcache sizes in KB */
 const cache_config_c66 = {
@@ -45,7 +50,6 @@ function getConfigArr() {
 exports = {
     getTopModules: function() {
         let cpu = common.getSelfSysCfgCoreName();
-
         if(cpu.match(/r5f*/)) {
             return topModules_main;
         }
@@ -56,6 +60,10 @@ exports = {
 
         if(cpu.match(/c66*/)) {
             return topModules_c66;
+        }
+
+        if (cpu.includes("m4fss0-1")) {
+            return topModules_m4;
         }
 
         return undefined;

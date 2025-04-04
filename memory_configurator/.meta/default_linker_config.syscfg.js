@@ -180,6 +180,50 @@ function def_memory_regions(regionInst, ind, device, core){
                 regionInst.memory_region[ind].$name              = "MAILBOX_R5F";
             }
         }
+        else if(core.includes("m4fss0-1")) {
+            if(ind == 0){
+                regionInst.memory_region[ind].$name              = "M5F_VECS";
+                regionInst.memory_region[ind].size               = 0x200;
+                regionInst.memory_region[ind].auto               = false;
+            }
+            else if(ind == 1){
+                regionInst.memory_region[ind].type               = "RAM_M4F";
+                regionInst.memory_region[ind].$name              = "M4F_RAM";
+                regionInst.memory_region[ind].size               = 0xFDFC;
+                regionInst.memory_region[ind].auto               = false;
+                regionInst.memory_region[ind].manualStartAddress = 0x200;
+            }
+            else if(ind == 2){
+                regionInst.memory_region[ind].type               = "MSS_L2_M4F";
+                regionInst.memory_region[ind].$name              = "MSS_L2";
+                regionInst.memory_region[ind].auto               = false;
+                regionInst.memory_region[ind].manualStartAddress = 0xC0220000;
+                regionInst.memory_region[ind].size               = 0x000C8000;
+            }
+            else if(ind == 3){
+                regionInst.memory_region[ind].type               = "DSS_L2_M4F";
+                regionInst.memory_region[ind].$name              = "DSS_L2";
+                regionInst.memory_region[ind].auto               = false;
+                regionInst.memory_region[ind].manualStartAddress = 0x80800000;
+                regionInst.memory_region[ind].size               = 0x0005FFFC;
+            }
+            else if(ind == 4){
+                regionInst.memory_region[ind].type               = "DSS_L3_ALL";
+                regionInst.memory_region[ind].$name              = "DSS_L3";
+                regionInst.memory_region[ind].size               = 0x390000;
+                regionInst.memory_region[ind].isShared           = true;
+                regionInst.memory_region[ind].shared_cores       = ["c66ss0","r5fss0-1","r5fss0-0"];
+            }
+            else if(ind == 5){
+                regionInst.memory_region[ind].type               = "CUSTOM_ALL";
+                regionInst.memory_region[ind].$name              = "RTOS_NORTOS_IPC_SHM_MEM";
+                regionInst.memory_region[ind].auto               = false;
+                regionInst.memory_region[ind].manualStartAddress = 0xC5000000;
+                regionInst.memory_region[ind].size               = 0x1F40;
+                regionInst.memory_region[ind].isShared           = true;
+                regionInst.memory_region[ind].shared_cores       = ["c66ss0","r5fss0-1","r5fss0-0"];
+            }
+        }
     }
     else if(device == "AM263x_beta")
     {
@@ -1515,7 +1559,7 @@ function def_memory_regions(regionInst, ind, device, core){
 
 function def_shared_region_name_change(sharedRegionNameChangeInst, device, core){
 
-    if( (device == "AM64x" || device == "AM243x_ALV_beta" || device == "AM243x_ALX_beta") && core.includes("m4f") ){
+    if( (device == "AM64x" || device == "AM243x_ALV_beta" || device == "AM243x_ALX_beta" || device == "AM273x") && core.includes("m4f") ){
             sharedRegionNameChangeInst.$name                     = "CONFIG_SHARED0";
             sharedRegionNameChangeInst.shared_region             = "RTOS_NORTOS_IPC_SHM_MEM";
             sharedRegionNameChangeInst.shared_region_name_change = "IPC_VRING_MEM";
@@ -1770,6 +1814,69 @@ function def_sections(sectionInst, ind, device, core){
                 sectionInst.output_section.create(1);
                 sectionInst.output_section[0].alignment = 0;
                 sectionInst.output_section[0].$name     = ".bss.sipc_secure_host_queue_mem";
+            }
+        }
+        else if(core.includes("m4fss0-1")) {
+            if(ind == 1) {
+                sectionInst.$name                   = "Vector Table";
+                sectionInst.group                   = false;
+                sectionInst.load_memory             = "M4F_VECS";
+                sectionInst.output_section.create(1);
+                sectionInst.output_section[0].$name = ".vectors";
+                sectionInst.output_section[0].palignment = true;
+            }
+            else if(ind == 2){
+                sectionInst.$name                           = "Text Segments";
+                sectionInst.group                           = false;
+                sectionInst.load_memory                     = "M4F_RAM";
+                sectionInst.output_section.create(2);
+                sectionInst.output_section[0].$name         = ".text";
+                sectionInst.output_section[0].palignment    = true;
+            }
+            else if(ind == 3){
+                sectionInst.$name                                   = "Memory Segments";
+                sectionInst.group                                   = false;
+                sectionInst.load_memory                             = "M4F_RAM";
+                sectionInst.output_section.create(3);
+                sectionInst.output_section[0].$name                 = ".bss";
+                sectionInst.output_section[0].palignment            = true;
+                sectionInst.output_section[0].output_sections_start = "__BSS_START";
+                sectionInst.output_section[0].output_sections_end   = "__BSS_END";
+            }
+            else if(ind == 4) {
+                sectionInst.$name                                   = "Data Segments";
+                sectionInst.group                                   = false;
+                sectionInst.load_memory                             = "M4F_RAM";
+                sectionInst.output_section.create(3);
+                sectionInst.output_section[0].$name                 = ".data";
+                sectionInst.output_section[0].palignment            = true;
+                sectionInst.output_section[1].$name                 = ".rodata";
+                sectionInst.output_section[1].palignment            = true;
+                sectionInst.output_section[2].$name                 = ".sysmem";
+                sectionInst.output_section[2].palignment            = true;
+                sectionInst.output_section[3].$name                 = ".stack";
+                sectionInst.output_section[3].palignment            = true;
+            }
+            else if(ind == 5) {
+                sectionInst.$name                                   = "Initialization and Exception Handling";
+                sectionInst.group                                   = false;
+                sectionInst.load_memory                             = "M4F_RAM";
+                sectionInst.output_section.create(3);
+                sectionInst.output_section[0].$name                 = ".ARM.exidx";
+                sectionInst.output_section[0].palignment            = true;
+                sectionInst.output_section[1].$name                 = ".init_array";
+                sectionInst.output_section[1].palignment            = true;
+                sectionInst.output_section[2].$name                 = ".fini_array";
+                sectionInst.output_section[2].palignment            = true;
+            }
+            else if(ind == 6) {
+                sectionInst.$name                       = "IPC Shared Memory";
+                sectionInst.type                        = "NOLOAD";
+                sectionInst.load_memory                 = "RTOS_NORTOS_IPC_SHM_MEM";
+                sectionInst.group                       = false;
+                sectionInst.output_section.create(1);
+                sectionInst.output_section[0].alignment = 0;
+                sectionInst.output_section[0].$name     = ".bss.ipc_vring_mem";
             }
         }
     }

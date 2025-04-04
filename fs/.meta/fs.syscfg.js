@@ -21,7 +21,7 @@ function getTopModules() {
     }
 
 	if((fsSocList.includes(common.getSocName()) || lfsSocList.includes(common.getSocName())) &&
-    !common.getSelfSysCfgCoreName().includes("hsm")) {
+    !(common.getSelfSysCfgCoreName().includes("hsm") || (common.getSelfSysCfgCoreName() == "m4fss0-1"))) {
 		return topModules;
 	} else {
 		return topModulesNull;

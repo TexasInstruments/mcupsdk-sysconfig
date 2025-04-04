@@ -166,6 +166,21 @@
 			"size": 0xFFFFFFFF,
             "access": "all"
 		},
+		"RAM0_M4F": {
+			"start": 0x00000000,
+			"size": 0x00010000,
+            "access": "all"
+		},
+		"MSS_L2_M4F": {
+			"start": 0xC0220000,
+			"size": 0x000C8000,
+            "access": "individual"
+		},
+		"DSS_L2_M4F": {
+			"start": 0x80800000,
+			"size": 0x0005FFFC,
+            "access": "individual"
+		},
 	},
 	"AM263x_beta": {
 		"OCRAM": {

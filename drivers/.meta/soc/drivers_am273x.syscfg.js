@@ -115,11 +115,16 @@ const topModules_mcu = [
 
 ];
 
+const topModules_m4f = [
+
+];
+
 function getCpuID() {
     let corename_map = {
         "r5fss0-0" : "CSL_CORE_ID_R5FSS0_0",
         "r5fss0-1" : "CSL_CORE_ID_R5FSS0_1",
         "c66ss0"   : "CSL_CORE_ID_C66SS0",
+        "m4fss0-1"  : "CSL_CORE_ID_M4FSS0_1",
     };
     if(common.getSelfSysCfgCoreName().includes("hsm")) {
         corename_map = system.getScript(`/imports/drivers/soc/drivers_${common.getSocName()}_hsm.syscfg.js`).corename_map_hsm;
@@ -133,6 +138,7 @@ function getSelfCoreID() {
         "r5fss0-0" : "R5FSS0_CORE0",
         "r5fss0-1" : "R5FSS0_CORE1",
         "c66ss0"   : "C66SS0",
+        "m4fss0-1"  : "M4FSS0_CORE1",
     };
 
     return corename_map[common.getSelfSysCfgCoreName()];
@@ -149,6 +155,10 @@ exports = {
 
         if(common.getSelfSysCfgCoreName().includes("hsm")) {
             topModules = topModules_mcu;
+        }
+
+        if(common.getSelfSysCfgCoreName().includes("m4fss0-1")) {
+            topModules = topModules_m4f;
         }
 
         return topModules;

@@ -80,6 +80,17 @@ let staticConfig_c66 = [
     },
 ];
 
+let staticConfig_dss_m4f = [
+    {
+        name: "M4F_SYSTICK",
+        timerBaseAddr: 0xE000E010, /* Setting to SYST_CSR as defined by ARMv7-M */
+        timerHwiIntNum: 15,
+        timerInputPreScaler: 1, /* NOT USED */
+        clkSelMuxAddr: 0, /* NOT USED */
+        disableClkSourceConfig: true,
+    }
+];
+
 function makeInstanceConfig() {
     let config = {};
     let staticConfigArr = getStaticConfigArr();
@@ -111,6 +122,7 @@ function getDefaultInstance() {
         "r5fss0-1": 1,
         "c66ss0": 0,
         "hsm0-0": 0,
+        "m4fss0-1": 0,
     }
     return defaultInstanceMap[cpu];
 }
@@ -122,8 +134,12 @@ function getStaticConfigArr() {
     if(cpu.match(/r5f*/)) {
         staticConfigArr = staticConfig_r5f;
     }
-    else if(cpu.match(/hsm*/) || cpu.match(/m4f*/)) {
+    else if(cpu.match(/hsm*/) && cpu.match(/m4f*/)) {
         staticConfigArr = system.getScript(`/imports/kernel/dpl/clock_${common.getSocName()}_hsm.syscfg.js`).staticConfig_m4f;
+    }
+    else if(cpu == "m4fss0-1")
+    {
+        staticConfigArr = staticConfig_dss_m4f;
     }
     else
     {

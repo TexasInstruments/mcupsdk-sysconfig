@@ -37,6 +37,7 @@
 /*
  * Auto generated file
  */
+
 #include <kernel/dpl/DebugP.h>
 #include <drivers/soc.h>
 
@@ -158,3 +159,4 @@ void PowerClock_deinit(void)
 {
     Module_clockDisable();
 }
+
