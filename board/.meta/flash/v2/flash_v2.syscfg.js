@@ -1,11 +1,5 @@
 let common = system.getScript("/common");
 let soc = system.getScript(`/board/flash/flash_${common.getSocName()}`);
-let copyCmd = "cp";
-
-if(system.getOS() == "win")
-{
-    copyCmd = "copy";
-}
 
 let regDataDescription = `
 Certain attributes of the flash are sometimes configured by writing to a register.
@@ -312,6 +306,9 @@ function changeFlashType(inst, ui)
 
         ui.addressByteSupport.hidden = false;
         ui.fourByteEnableSeq.hidden = false;
+        ui.resetType.hidden = false;
+        ui.flashDeviceBusyTimeout.hidden = false;
+        ui.flashPageProgTimeout.hidden = false;
 
         ui.progStatusReg.hidden = true;
         ui.xspiProgStatusReg.hidden = true;
@@ -355,6 +352,9 @@ function changeFlashType(inst, ui)
         ui.enable4BAddr.hidden = true;
         ui.addressByteSupport.hidden = true;
         ui.fourByteEnableSeq.hidden = true;
+        ui.resetType.hidden = true;
+        ui.flashDeviceBusyTimeout.hidden = true;
+        ui.flashPageProgTimeout.hidden =true;
 
         ui.progStatusReg.hidden = false;
         ui.xspiProgStatusReg.hidden = false;
@@ -435,7 +435,7 @@ function getConfigurables()
                 { name: "SERIAL_NOR", displayName: "Serial Nor Flash" },
                 { name: "SERIAL_NAND", displayName: "Serial Nand Flash" },
             ],
-            onChange: function(inst, ui) {
+            onChange: function(inst,ui) {
                 if(inst.flashType == "SERIAL_NOR") {
                     inst.fname = serialNorDefaultName;
                     inst.protocol = serialNorDefaultProtocolName;
@@ -573,7 +573,7 @@ function getConfigurables()
             displayName: "Protocol",
             description: "The Flash SPI protocol to be used",
             default: soc.getDefaultProtocol().name,
-            options: defaultProtocols,
+            options: ()=>{return defaultProtocols;} ,
             onChange: function(inst, ui) {
                 let pCfg = protoToCfgMap[inst.protocol];
                 if(inst.flashType == "SERIAL_NOR")
@@ -978,7 +978,7 @@ function getConfigurables()
                             displayName: "Octal Enable Type",
                             description: "The type of octal enable supported by the flash for 1-1-8/1-8-8 mode",
                             longDescription: octalEnableDescription,
-                            default: "0",
+                            default: serialNorDefaultCfg.protos[defProtoJson] == null ? "0" : serialNorDefaultCfg.protos[defProtoJson].enableType,
                             options: [
                                 { name : "0" },
                                 { name : "1" },
@@ -1283,7 +1283,7 @@ function getConfigurables()
                     name: "xspiWipBit",
                     displayName: "WIP Bit (xSPI)",
                     description: "WIP bit position in status register (xSPI mode)",
-                    default: 0,
+                    default: serialNorDefaultCfg.xspiWipBit,
                     displayFormat: "dec",
                 },
                 {
@@ -1419,9 +1419,20 @@ function getConfigurables()
                     pickDirectory: false,
                     nonSerializable: true,
                     onLaunch: (inst) => {
+                        let products=system.getProducts()
+                        let nodeCmd=common.getNodePath()
+                        let sdkPath = ""
+                        let copyScriptPath = ""
+                        if(system.getOS() == "win") {
+                            sdkPath = products[0].path.split("\\.metadata\\product.json")[0];
+                            copyScriptPath = sdkPath + "//source//sysconfig//board//.meta//flash//copyutil.js";
+                        } else {
+                            sdkPath = products[0].path.split("/.metadata/product.json")[0];
+                            copyScriptPath = sdkPath + "/source/sysconfig/board/.meta/flash/copyutil.js";
+                        }
                         return {
-                            command: copyCmd,
-                            args: ["$browsedFile", "$comFile"],
+                            command: nodeCmd,
+                            args: [copyScriptPath, "$browsedFile", "$comFile"],
                             initialData: "initialData",
                             inSystemPath: true,
                         };
@@ -1573,13 +1584,11 @@ function moduleInstances(inst) {
 
 function fillConfigs(inst, cfg) {
 
-    inst.fourByteEnableSeq = cfg.fourByteAddrEnSeq;
-    inst.flashDeviceBusyTimeout = cfg.flashDeviceBusyTimeout;
-    inst.flashPageProgTimeout = cfg.flashPageProgTimeout;
-
     if(inst.flashType == "SERIAL_NOR")
     {
         /* Basic Config */
+        serialNorDefaultCfg = cfg;
+        inst.protocol = defaultProtocols[0].name;
         inst.flashSize = cfg.flashSize;
         inst.flashPageSize = cfg.flashPageSize;
         inst.flashManfId = cfg.flashManfId;
@@ -1590,7 +1599,7 @@ function fillConfigs(inst, cfg) {
         inst.cmdBlockErase4B = cfg.cmdBlockErase4B;
         inst.cmdSectorErase3B = cfg.cmdSectorErase3B;
         inst.cmdSectorErase4B = cfg.cmdSectorErase4B;
-
+        
         let pCfg = cfg.protos[protoToCfgMap[inst.protocol]];
 
         if(pCfg != null)
@@ -1680,10 +1689,16 @@ function fillConfigs(inst, cfg) {
         inst.idNumBytes = cfg.rdIdSettings.numBytes;
         inst.dummyId4 = cfg.rdIdSettings.dummy4;
         inst.dummyId8 = cfg.rdIdSettings.dummy8;
+
+        inst.fourByteEnableSeq = cfg.fourByteAddrEnSeq;
+        inst.flashDeviceBusyTimeout = cfg.flashDeviceBusyTimeout;
+        inst.flashPageProgTimeout = cfg.flashPageProgTimeout;
     }
     else if(inst.flashType == "SERIAL_NAND")
     {
         /* Basic Config */
+        serialNandDefaultCfg = cfg;
+        inst.protocol = defaultProtocols[0].name;
         inst.flashSize = cfg.flashSize;
         inst.flashPageSize = cfg.flashPageSize;
         inst.flashManfId = cfg.flashManfId;
