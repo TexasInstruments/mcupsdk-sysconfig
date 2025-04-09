@@ -20,6 +20,7 @@ int32_t Board_ioexpOpen()
 %       }else{
 %       }
 
+    `expName`Params.i2cInstance  =  `instance.peripheralDriver.$name.toUpperCase()`;
     `expName`Params.i2cAddress  = 0x`instance.i2cAddress.split("x").pop()`U;
     status = `expName`_open(&g`expName`_Config, &`expName`Params);
 %       for(let pin of staticArrCfg.pinSet){
