@@ -29,6 +29,7 @@ let common = system.getScript("/common");
  *    - pinName with special characters replaced:
  *      "." becomes "_" 
  *      "/" becomes "_"
+ *      "#" becomes ""
  *    Example: "USB2.0/MUX_SEL" becomes "USB2_0_MUX_SEL"
  *    - Used in both display names and generated macro definitions
  */

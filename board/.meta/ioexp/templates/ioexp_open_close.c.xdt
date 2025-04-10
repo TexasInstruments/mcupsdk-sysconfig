@@ -24,7 +24,7 @@ int32_t Board_ioexpOpen()
     `expName`Params.i2cAddress  = 0x`instance.i2cAddress.split("x").pop()`U;
     status = `expName`_open(&g`expName`_Config, &`expName`Params);
 %       for(let pin of staticArrCfg.pinSet){
-%           let pinName_filtered = pin.pinName.replace(".","_").replace("/","_");
+%           let pinName_filtered = module.filterIoexpPinName(pin.pinName);
 %           let element_name = staticArrCfg.name+"_"+"port"+pin.portNumber+"_"+"pin"+pinName_filtered;
 %           if(instance[element_name+"_mode"] == 0){
     

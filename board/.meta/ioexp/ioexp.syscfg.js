@@ -2,14 +2,21 @@
 const common = system.getScript("/common");
 const soc = system.getScript(`/board/ioexp/ioexp_${common.getSocName()}`);
 
+const DEFAULT_MODE = 1;  // Input
+const DEFAULT_STATE = 0; // LOW
+
 /******************************************************************************
  * Helper Functions
  ******************************************************************************/
 
+function filterIoexpPinName(pinName) {
+    return pinName.replace(/[./]/g, '_').replace(/#/g, '')
+}
+
 // Creates configuration for a single pin
 const createPinConfig = (cfg, pin) => {
     // Clean up pin name by replacing . and / with _
-    const pinName_filtered = pin.pinName.replace(/[./]/g, '_');
+    const pinName_filtered = filterIoexpPinName(pin.pinName);
     
     // Create unique element name for this pin
     const element_name = `${cfg.name}_port${pin.portNumber}_pin${pinName_filtered}`;
@@ -26,7 +33,7 @@ const createPinConfig = (cfg, pin) => {
                     { name: 0, displayName: "Output" },
                     { name: 1, displayName: "Input" },
                 ],
-                default: 1,
+                default: DEFAULT_MODE,
                 onChange: (inst, ui) => {
                     // Hide state option if mode is input
                     ui[`${element_name}_state`].hidden = (inst[`${element_name}_mode`] === 1);
@@ -41,7 +48,7 @@ const createPinConfig = (cfg, pin) => {
                     { name: 0, displayName: "LOW" },
                     { name: 1, displayName: "HIGH" },
                 ],
-                default: 0,
+                default: DEFAULT_STATE,
                 hidden: true,
             }
         ]
@@ -63,8 +70,9 @@ const createI2CAddressOptions = (staticConfig) => {
 // Get configuration for a specific instance
 function getInstanceConfig(moduleInstance) {
     const configArr = soc.getConfigArr();
+    const boardName = moduleInstance.i2cAddress.split(" 0x")[0];
     const i2cAddressName = parseInt(moduleInstance.i2cAddress.split("x")[1], 16);
-    const config = configArr.find(o => o.i2cAddress === i2cAddressName);
+    const config = configArr.find(o => (o.i2cAddress === i2cAddressName) && (o.board === boardName));
 
     return { ...config, ...moduleInstance };
 }
@@ -111,7 +119,7 @@ function onChangeIoExp(inst, ui) {
     
     staticConfig.forEach(cfg => {
         cfg.pinSet.forEach(pin => {
-            const pinName_filtered = pin.pinName.replace(/[./]/g, '_');
+            const pinName_filtered = filterIoexpPinName(pin.pinName);
             const element_name = `${cfg.name}_port${pin.portNumber}_pin${pinName_filtered}`;
             const i2cAddressName = `${cfg.board} 0x${cfg.i2cAddress.toString(16)}`;
             
@@ -120,6 +128,12 @@ function onChangeIoExp(inst, ui) {
             ui[`${element_name}_state`].hidden = 
                 inst.i2cAddress !== i2cAddressName || 
                 inst[`${element_name}_mode`] === 1;
+
+            // Reset values to default if this config is not selected
+            if (inst.i2cAddress !== i2cAddressName) {
+                inst[`${element_name}_mode`] = DEFAULT_MODE;
+                inst[`${element_name}_state`] = DEFAULT_STATE;
+            }
         });
     });
 }
@@ -200,6 +214,7 @@ const ioexp_module = {
     maxInstances: soc.getConfigArr().length,
     sharedModuleInstances: moduleInstances,
     getInstanceConfig,
+    filterIoexpPinName,
 };
 
 // Export the module

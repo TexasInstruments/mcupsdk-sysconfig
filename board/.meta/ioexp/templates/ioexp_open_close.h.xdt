@@ -17,7 +17,7 @@
 #include <board/ioexp/`staticArrCfg.driverName`.h>
 %       }
 %       for(let pin of staticArrCfg.pinSet){
-%           let pinName_filtered = pin.pinName.replace(".","_").replace("/","_");
+%           let pinName_filtered = module.filterIoexpPinName(pin.pinName);
 %           let element_name = staticArrCfg.name+"_"+"port"+pin.portNumber+"_"+"pin"+pinName_filtered;
 /* Port Number : `pin.portNumber`, Pin Number : `pin.pinNumber`. Line Number : (Port Number * 8) + Pin Number */
 #define IO_EXP_`pinName_filtered`_LINE      (`pin.portNumber*8+pin.pinNumber`)
