@@ -109,8 +109,14 @@ function getClockEnableIds(inst) {
 function getClockFrequencies(inst) {
 
     let instConfig = getInstanceConfig(inst);
+    let sdfmClk = instConfig.clockFrequencies;
 
-    return instConfig.clockFrequencies;
+    let r5Freq = common.getR5Freq();
+    if(r5Freq !== "")
+    {
+        sdfmClk[0].clkRate = parseInt(r5Freq.split("MHz")[0])*1000*1000;
+    }
+    return sdfmClk;
 }
 
 function pinmuxRequirements(inst)

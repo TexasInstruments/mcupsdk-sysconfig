@@ -93,7 +93,8 @@ function getInterfaceName(instance) {
     return "SDFM";
 }
 
-let sdfm_func_clk = 500 * 1000 * 1000;
+let sdfm_func_clk = 500 * 1000 * 1000; // overwritten in other file. function : getClockFrequencies
+
 const staticConfig = [
     {
         name: "SDFM0",
