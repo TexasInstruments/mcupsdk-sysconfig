@@ -20,12 +20,7 @@ function onChangeLoadMode(inst, ui)
 let numberOfDACs = 1;
 
 /* Array of possible ePWM sync signals */
-let ePWMInstances = 32
-let ePWMArray = [];
-for(let i = 0; i < ePWMInstances; i++) {
-    ePWMArray.push()
-    ePWMArray.push({ name: ""+(i+1), displayName: "EPWM"+(i)+"SYNCPER"})
-}
+let ePWMArray = soc.getEpwmSyncPerArray();
 
 /* Array of DAC configurables that are common across device families */
 let config = [

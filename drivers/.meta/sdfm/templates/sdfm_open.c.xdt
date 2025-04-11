@@ -1,1 +1,4 @@
+% let soc_ctrl_sdfm_template = '/drivers/soc_ctrl/templates/soc_ctrl_sdfm_open.c.xdt'
+
+`system.getTemplate(soc_ctrl_sdfm_template)("/drivers/sdfm/sdfm")`
     Drivers_sdfmOpen();

@@ -116,10 +116,10 @@ let soc_ctrl_sdfm = {
         // "/drivers/pinmux/pinmux_config.c.xdt": {
         //     moduleName: sd_module_name,
         // },
-        "/drivers/system/power_clock_config.c.xdt": {
-            clock_config : "/drivers/soc_ctrl/templates/soc_ctrl_sdfm_clock.c.xdt",
-            moduleName: "/drivers/soc_ctrl/v0/subModules/soc_ctrl_sdfm",
-        },
+        // "/drivers/system/power_clock_config.c.xdt": {
+        //     clock_config : "/drivers/soc_ctrl/templates/soc_ctrl_sdfm_clock.c.xdt",
+        //     moduleName: "/drivers/soc_ctrl/v0/subModules/soc_ctrl_sdfm",
+        // },
     },
     sdfmCfgArray,
     sdfmClkNumber,

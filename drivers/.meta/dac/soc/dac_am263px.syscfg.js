@@ -11,6 +11,21 @@ let DAC_LOCK = [
 	{ name: "DAC_LOCK_SHADOW", displayName: "Lock the shadow value register" },
 	{ name: "DAC_LOCK_OUTPUT", displayName: "Lock the output enable register" },
 ]
+
+function getEpwmSyncPerArray() {
+    const ePWMInstances = 32;
+    const ePWMArray = [];
+    
+    for (let i = 0; i < ePWMInstances; i++) {
+        ePWMArray.push({
+            name: String(i + 1),
+            displayName: `EPWM${i}SYNCPER`
+        });
+    }
+
+    return ePWMArray;
+}
+
 function getInterfaceName(instance) {
     return "DAC";
 }
@@ -19,4 +34,5 @@ exports = {
 	DAC_LoadMode: DAC_LoadMode,
 	DAC_LOCK: DAC_LOCK,
     getInterfaceName,
+	getEpwmSyncPerArray
 }
