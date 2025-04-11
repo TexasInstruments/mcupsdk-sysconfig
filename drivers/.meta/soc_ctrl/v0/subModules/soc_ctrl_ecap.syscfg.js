@@ -76,24 +76,7 @@ let soc_ctrl_sub = {
     defaultInstanceName : "soc_ctrl_ecap",
     maxInstances : 1,
     config : haltConfig,
-    templates: {
-        // "/drivers/system/system_config.c.xdt": {
-        //     driver_init: "/drivers/soc_ctrl/templates/soc_ctrl_ecap_config.c.xdt",
-        // },
-        // "/drivers/system/drivers_open_close.h.xdt": {
-        //     driver_open_close_config: "/drivers/sdfm/templates/sdfm_open_close_config.h.xdt",
-        // },
-        // "/drivers/system/drivers_open_close.c.xdt": {
-        //     driver_open_close_config: "/drivers/sdfm/templates/sdfm_open_close_config.c.xdt",
-        //     driver_open: "/drivers/sdfm/templates/sdfm_open.c.xdt",
-        // },
-        // "/drivers/pinmux/pinmux_config.c.xdt": {
-        //     moduleName: sd_module_name,
-        // },
-        // "/drivers/system/power_clock_config.c.xdt": {
-        //     moduleName: sd_module_name,
-        // },
-    },
+    templates: {},
     ecapStaticConfigArray,
     getAddedInstances,
 }
