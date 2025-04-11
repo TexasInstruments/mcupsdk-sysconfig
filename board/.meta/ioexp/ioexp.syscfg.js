@@ -161,6 +161,14 @@ function onValidate(inst, validation) {
             "i2cAddress"
         );
     });
+
+    // Validate I2C address
+    /* if the i2cAddress is not in the options list thats an error */
+    const staticConfig = soc.getConfigArr();
+    const optionNames = createI2CAddressOptions(staticConfig).map(option => option.name);
+    if(optionNames.includes(inst.i2cAddress) === false){
+        validation.logError("Invalid I2C address", inst, "i2cAddress");
+    }
 }
 
 // Get module instances
