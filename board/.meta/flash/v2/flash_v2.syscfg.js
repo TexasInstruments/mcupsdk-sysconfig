@@ -573,7 +573,7 @@ function getConfigurables()
             displayName: "Protocol",
             description: "The Flash SPI protocol to be used",
             default: soc.getDefaultProtocol().name,
-            options: ()=>{return defaultProtocols;} ,
+            options: defaultProtocols,
             onChange: function(inst, ui) {
                 let pCfg = protoToCfgMap[inst.protocol];
                 if(inst.flashType == "SERIAL_NOR")
