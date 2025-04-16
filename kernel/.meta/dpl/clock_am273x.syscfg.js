@@ -30,6 +30,7 @@ let staticConfig_r5f = [
         timerBaseAddr: 0x02F7A000,
         timerHwiIntNum: 3,
         timerInputPreScaler: 1,
+        isPulseInterrupt: 1,
         clkSelMuxAddr: 0x02100000 + 0x28,
         disableClkSourceConfig: false,
         lockUnlockDomain: "SOC_DOMAIN_ID_MSS_RCM",
@@ -40,6 +41,7 @@ let staticConfig_r5f = [
         timerBaseAddr: 0x02F7A100,
         timerHwiIntNum: 9,
         timerInputPreScaler: 1,
+        isPulseInterrupt: 1,
         clkSelMuxAddr: 0x02100000 + 0x2C,
         disableClkSourceConfig: false,
         lockUnlockDomain: "SOC_DOMAIN_ID_MSS_RCM",
@@ -50,6 +52,7 @@ let staticConfig_r5f = [
         timerBaseAddr: 0x02F7A200,
         timerHwiIntNum: 13,
         timerInputPreScaler: 1,
+        isPulseInterrupt: 1,
         clkSelMuxAddr: 0x02100000 + 0x30,
         disableClkSourceConfig: false,
         lockUnlockDomain: "SOC_DOMAIN_ID_MSS_RCM",
@@ -63,6 +66,7 @@ let staticConfig_c66 = [
         timerBaseAddr: 0x06F7A000,
         timerHwiIntNum: 66,
         timerInputPreScaler: 1,
+        isPulseInterrupt: 1,
         clkSelMuxAddr: 0x06000000 + 0x94,
         disableClkSourceConfig: false,
         lockUnlockDomain: "SOC_DOMAIN_ID_DSS_RCM",
@@ -73,6 +77,7 @@ let staticConfig_c66 = [
         timerBaseAddr: 0x06F7A100,
         timerHwiIntNum: 72,
         timerInputPreScaler: 1,
+        isPulseInterrupt: 1,
         clkSelMuxAddr: 0x06000000 + 0x98,
         disableClkSourceConfig: false,
         lockUnlockDomain: "SOC_DOMAIN_ID_DSS_RCM",
@@ -86,6 +91,7 @@ let staticConfig_dss_m4f = [
         timerBaseAddr: 0xE000E010, /* Setting to SYST_CSR as defined by ARMv7-M */
         timerHwiIntNum: 15,
         timerInputPreScaler: 1, /* NOT USED */
+        isPulseInterrupt: 1,
         clkSelMuxAddr: 0, /* NOT USED */
         disableClkSourceConfig: true,
     }

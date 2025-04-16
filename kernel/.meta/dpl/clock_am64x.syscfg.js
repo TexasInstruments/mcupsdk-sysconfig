@@ -18,6 +18,7 @@ let staticConfig_m4f = [
         timerBaseAddr: 0xE000E010, /* Setting to SYST_CSR as defined by ARMv7-M */
         timerHwiIntNum: 15,
         timerInputPreScaler: 1, /* NOT USED */
+        isPulseInterrupt: 0,
         clkSelMuxAddr: 0, /* NOT USED */
         disableClkSourceConfig: true,
     }
@@ -100,6 +101,7 @@ function getStaticConfigArr() {
                     timerBaseAddr: 0x02400000 + i*0x10000,
                     timerHwiIntNum: 152 + i,
                     timerInputPreScaler: 1,
+                    isPulseInterrupt: 0,
                     clkSelMuxAddr: 0x430081B0 + 4*i,
                     disableClkSourceConfig: false,
                     lockUnlockDomain: "SOC_DOMAIN_ID_MAIN",
@@ -133,6 +135,7 @@ function getStaticConfigArr() {
                 timerBaseAddr: 0x02400000 + i*0x10000,
                 timerHwiIntNum: 152 + i,
                 timerInputPreScaler: 1,
+                isPulseInterrupt: 0,
                 clkSelMuxAddr: 0x430081B0 + 4*i,
                 disableClkSourceConfig: true,
             }
