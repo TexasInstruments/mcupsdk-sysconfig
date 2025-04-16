@@ -123,6 +123,7 @@ function getStaticConfigArr() {
                     /* RTI Interrupts are not continous. RTI 0-3 are grouped together and RTI 4-7 are grouped separately */
                     timerHwiIntNum: ((i < 4) ? (84 + (7 * i)) : (219 + (6 * (i - 4)))),
                     timerInputPreScaler: 1,
+                    isPulseInterrupt: 1,
                     clkSelMuxAddr: 0x53208000 + 0x114 + 4*i,
                     disableClkSourceConfig: false,
                     lockUnlockDomain: "SOC_DOMAIN_ID_MAIN",

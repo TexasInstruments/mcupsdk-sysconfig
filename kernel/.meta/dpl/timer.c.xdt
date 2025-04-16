@@ -60,7 +60,6 @@ void TimerP_init()
     timerParams.oneshotMode    = `Number(config.enableOneShotMode)`;
     timerParams.enableOverflowInt = `Number(config.enableIntr)`;
     timerParams.enableDmaTrigger  = `Number(config.enableDmaTrigger)`;
-    timerParams.isPulse         = 1;
     TimerP_setup(gTimerBaseAddr[`config.$name`], &timerParams);
 
     % if (config.enableIntr) {
