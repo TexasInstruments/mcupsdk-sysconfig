@@ -302,6 +302,12 @@ function getConfigurables()
             description: `Enable data transfer using DMA`,
         },
         {
+            name: "dacEnable",
+            displayName: "Enable DAC",
+            default: false,
+            description: `Enable Direct Access Mode`,
+        },
+        {
             name: "phyEnable",
             displayName: "Enable PHY Mode",
             default: false,
