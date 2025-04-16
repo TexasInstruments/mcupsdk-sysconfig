@@ -317,6 +317,7 @@ function changeFlashType(inst, ui)
         ui.srProgStatus.hidden = true;
         ui.srEraseStatus.hidden = true;
         ui.badBlockCheck.hidden = true;
+        ui.quirks.hidden = false;
     } else if(inst.flashType == "SERIAL_NAND") {
         ui.cmdWrsr.hidden = false;
         ui.skipHwInit.hidden = true;
@@ -365,6 +366,7 @@ function changeFlashType(inst, ui)
         ui.srProgStatus.hidden = false;
         ui.srEraseStatus.hidden = false;
         ui.badBlockCheck.hidden = false;
+        ui.quirks.hidden = true;
     }
 }
 
