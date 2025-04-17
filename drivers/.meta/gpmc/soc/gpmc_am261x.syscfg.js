@@ -5,7 +5,7 @@ let gpmc_input_clk_freq = 500000000;
 const gpmc_config_r5fss = [
     {
         name            : "GPMC",
-        baseAddr        : "CSL_GPMC0_CFG_U_BASE",
+        baseAddr        : "CSL_GPMC0_CFG",
         dataBaseAddr    : "CSL_GPMC0_MEM_U_BASE",
         elmBaseAddr     : "CSL_ELM0_BASE",
         inputClkFreq    : gpmc_input_clk_freq,
