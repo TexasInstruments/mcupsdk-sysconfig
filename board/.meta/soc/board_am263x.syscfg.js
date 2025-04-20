@@ -25,6 +25,7 @@ const topModules_main = [
       "/board/flash/flash",
       "/board/ethphy_cpsw_icssg/ethphy_cpsw_icssg",
       "/board/ethphy/ethphy",
+      "/board/ioexp/ioexp",
       "/board/ram/ram",
 ];
 const topModules_mcu = [
