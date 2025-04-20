@@ -27,35 +27,31 @@ function getConfigurables()
         },
         {
             name: "input0Src",
-            default: "",
+            default: "SDL_DCC_CLK0_SRC_CLOCK0_0",
             hidden: true,
+            getValue: (inst) => soc.getClkSrc(inst.dccIndex, 1, inst.clk0SrcOpts)
         },
         {
             name: "input1Src",
-            default: "",
+            default: "SDL_DCC_CLK1_SRC_CLOCKSRC3",
             hidden: true,
+            getValue: (inst) => soc.getClkSrc(inst.dccIndex, 1, inst.clk1SrcOpts)
         },
         {
             name: "clk0SrcOpts",
             displayName: "Clk 0 Source",
             options: soc.getClk0Options,
             getDisabledOptions: soc.getClk0DisabledOptions,
-            default: "",
+            default: "XTALCLK",
             description: "DCC clock source for input0",
-            onChange: function (inst, ui) {
-                inst.input0Src = soc.getClkSrc(inst.dccIndex, 0, inst.clk0SrcOpts);
-            },
         },
         {
             name: "clk1SrcOpts",
             displayName: "Clk 1 Source",
             options: soc.getClk1Options,
             getDisabledOptions: soc.getClk1DisabledOptions,
-            default: "",
+            default: "RCCLK10M",
             description: "DCC clock source for input1",
-            onChange: function (inst, ui) {
-                inst.input1Src = soc.getClkSrc(inst.dccIndex, 1, inst.clk1SrcOpts);
-            },
         },
         {
             name: "clkSrc0Seed",
@@ -88,7 +84,6 @@ let dcc_clk_srcs_module = {
     displayName: "DCC Clock Source Configuration",
     defaultInstanceName: "CONFIG_DCC_CLK_SRCS",
     config: getConfigurables(),
-    validate : validate,
     getInstanceConfig,
 };
 
@@ -96,10 +91,10 @@ let dcc_clk_srcs_module = {
  *  ======== validate ========
  */
 function validate(inst, report) {
-    if (inst.clk0SrcOpts == "") {
+    if (inst.clk0SrcOpts == "XTALCLK") {
         report.logError("Clk0 Src must be configured", inst);
     }
-    if (inst.clk1SrcOpts == "") {
+    if (inst.clk1SrcOpts == "RCCLK10M") {
         report.logError("Clk1 Src must be configured", inst);
     }
     if (inst.clkSrc0ValidSeed < 4) {
@@ -112,4 +107,3 @@ function validate(inst, report) {
 }
 
 exports = dcc_clk_srcs_module;
-

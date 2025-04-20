@@ -109,7 +109,7 @@ const dcc_clk1_opts = [
 
 function getClkSrc(dccIndex, clk_num, dcc_clk)
 {
-    let clk_src = "";
+    let clk_src = "SDL_DCC_CLK1_SRC_CLOCKSRC1";
     let clk_opts = dcc_config[dccIndex].input0Clks;
 
     if (clk_num == 1)

@@ -62,7 +62,6 @@ function getConfigurables(inst)
             displayName: "DCC Mode",
             default: "Continuous",
             options: dcc_mode_options,
-            description: "Select Continuous or Single-shot mode. In continuous mode both the counts will get reloaded with the seed value upon completion of counts without error. In Single-shot mode the counts count down one time and stop operation when both Clk0 count and Clk0 valid Count reach 0. At the end of Single-shot mode if there is no error, the Done flag is set and interrupt generated.",
             onChange: function (inst, ui) {
                 if(inst.mode == "Continuous") {
                     ui.callback.hidden = true;
@@ -90,8 +89,8 @@ function getConfigurables(inst)
         },
         {
             name: "oneShotInsts",
-            displayName: "Number of clock cominations to test with this one-shot instance",
-            description: "In one-shot mode, the DCC can be re-programmed to test another clock once one test is completed. Enter the number of combinations that will be tested with this DCC instance. The actual clock to be tested will be configured in the Clock Sources.",
+            displayName: "One Shot Instance",
+            description: "In one-shot mode, the DCC can be re-programmed to test another clock once one test is completed. Enter the number of combinations that will be tested with this DCC instance.",
             default: 1,
             displayFormat: "dec",
             hidden: true,

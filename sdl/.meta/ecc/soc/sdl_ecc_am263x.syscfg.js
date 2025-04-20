@@ -616,7 +616,7 @@ const ecc_endpts_11 = [
         },
         {
                 name            : "SDL_CPSW3GCSS_ECC_AGGR_CPSW3GCSS_EST_RAM_ECC_RAM_ID",
-                endptNum        : 0,
+                endptNum        : 7,
         },
 ];
 
@@ -716,7 +716,7 @@ const ecc_config_main = [
         esmInst       : "MAIN_ESM",
         esmEvtCor     : "SDL_ESM0_CPSW3G_CPSW_ECC_SEC_PEND_INTR",
         esmEvtUncor   : "SDL_ESM0_CPSW3G_CPSW_ECC_DED_PEND_INTR",
-    },
+    }
 ];
 
 function getConfigArr() {

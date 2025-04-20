@@ -25,13 +25,13 @@ const dcc1_input0_clks = [
 
 const dcc1_input1_clks = [
     {name: "RCCLK10M", src: "SDL_DCC_CLK1_SRC_CLOCKSRC3"},
-    {name: "DPLL_CORE_HSDIV0_CLKOUT1", src: "SDL_DCC_CLK1_SRC_CLOCKSRC1"},
-    {name: "DPLL_PER_HSDIV0_CLKOUT0", src: "SDL_DCC_CLK1_SRC_CLOCKSRC0"},
-    {name: "DPLL_PER_HSDIV0_CLKOUT1", src: "SDL_DCC_CLK1_SRC_CLOCKSRC2"},
-    {name: "FSI0_RX_CLK", src: "SDL_DCC_CLK1_SRC_CLOCKSRC4"},
-    {name: "FSI1_RX_CLK", src: "SDL_DCC_CLK1_SRC_CLOCKSRC5"},
-    {name: "FSI2_RX_CLK", src: "SDL_DCC_CLK1_SRC_CLOCKSRC6"},
-    {name: "FSI3_RX_CLK", src: "SDL_DCC_CLK1_SRC_CLOCKSRC7"},
+    {name: "DPLL_CORE_HSDIV0_CLKOUT1", src: "SDL_DCC_CLK1_SRC_CLOCKSRC1",},
+    {name: "DPLL_PER_HSDIV0_CLKOUT0", src: "SDL_DCC_CLK1_SRC_CLOCKSRC0",},
+    {name: "DPLL_PER_HSDIV0_CLKOUT1", src: "SDL_DCC_CLK1_SRC_CLOCKSRC2",},
+    {name: "FSI0_RX_CLK", src: "SDL_DCC_CLK1_SRC_CLOCKSRC4",},
+    {name: "FSI1_RX_CLK", src: "SDL_DCC_CLK1_SRC_CLOCKSRC5",},
+    {name: "FSI2_RX_CLK", src: "SDL_DCC_CLK1_SRC_CLOCKSRC6",},
+    {name: "FSI3_RX_CLK", src: "SDL_DCC_CLK1_SRC_CLOCKSRC7",},
 ];
 
 const dcc2_input0_clks = [
@@ -46,8 +46,8 @@ const dcc2_input1_clks = [
     {name: "WDT1_CLK", src: "SDL_DCC_CLK1_SRC_CLOCKSRC2",},
     {name: "WDT2_CLK", src: "SDL_DCC_CLK1_SRC_CLOCKSRC3",},
     {name: "WDT3_CLK", src: "SDL_DCC_CLK1_SRC_CLOCKSRC4",},
-    {name: "MCAN0_CLK", src: "SDL_DCC_CLK1_SRC_CLOCKSRC5"},
-    {name: "MCAN1_CLK", src: "SDL_DCC_CLK1_SRC_CLOCKSRC6"},
+    {name: "MCAN0_CLK", src: "SDL_DCC_CLK1_SRC_CLOCKSRC5",},
+    {name: "MCAN1_CLK", src: "SDL_DCC_CLK1_SRC_CLOCKSRC6",},
     {name: "TEMPSENSE_32K_CLK", src: "SDL_DCC_CLK1_SRC_CLOCKSRC7",},
 ];
 
@@ -76,40 +76,40 @@ const dcc_clk0_opts = [
 ];
 
 const dcc_clk1_opts = [
-    {name: "XTALCLK"},
-    {name: "RCCLK10M"},
-    {name: "EXT_REFCLK"},
-    {name: "RCCLK32K"},
-    {name: "DPLL_CORE_HSDIV0_CLKOUT1"},
-    {name: "DPLL_PER_HSDIV0_CLKOUT0"},
-    {name: "DPLL_PER_HSDIV0_CLKOUT1"},
-    {name: "R5SS0_CLK"},
-    {name: "R5SS1_CLK"},
-    {name: "SYS_CLK"},
-    {name: "WDT0_CLK"},
-    {name: "WDT1_CLK"},
-    {name: "WDT2_CLK"},
-    {name: "WDT3_CLK"},
-    {name: "MCAN0_CLK"},
-    {name: "MCAN1_CLK"},
-    {name: "TEMPSENSE_32K_CLK"},
-    {name: "RMII1_REFCLK"},
-    {name: "RMII2_REFCLK"},
-    {name: "RGMII1_RXC"},
-    {name: "RGMII2_RXC"},
-    {name: "MII1_RXCLK"},
-    {name: "MII2_RXCLK"},
-    {name: "PR0_MII0_RXCLK"},
-    {name: "PR0_MII1_RXCLK"},
-    {name: "FSI0_RX_CLK"},
-    {name: "FSI1_RX_CLK"},
-    {name: "FSI2_RX_CLK"},
-    {name: "FSI3_RX_CLK"},
+    {name: "XTALCLK",},
+    {name: "RCCLK10M",},
+    {name: "EXT_REFCLK",},
+    {name: "RCCLK32K",},
+    {name: "DPLL_CORE_HSDIV0_CLKOUT1",},
+    {name: "DPLL_PER_HSDIV0_CLKOUT0,"},
+    {name: "DPLL_PER_HSDIV0_CLKOUT1",},
+    {name: "R5SS0_CLK",},
+    {name: "R5SS1_CLK",},
+    {name: "SYS_CLK",},
+    {name: "WDT0_CLK",},
+    {name: "WDT1_CLK",},
+    {name: "WDT2_CLK",},
+    {name: "WDT3_CLK",},
+    {name: "MCAN0_CLK",},
+    {name: "MCAN1_CLK",},
+    {name: "TEMPSENSE_32K_CLK",},
+    {name: "RMII1_REFCLK",},
+    {name: "RMII2_REFCLK",},
+    {name: "RGMII1_RXC",},
+    {name: "RGMII2_RXC",},
+    {name: "MII1_RXCLK",},
+    {name: "MII2_RXCLK",},
+    {name: "PR0_MII0_RXCLK",},
+    {name: "PR0_MII1_RXCLK",},
+    {name: "FSI0_RX_CLK",},
+    {name: "FSI1_RX_CLK",},
+    {name: "FSI2_RX_CLK",},
+    {name: "FSI3_RX_CLK",},
 ];
 
 function getClkSrc(dccIndex, clk_num, dcc_clk)
 {
-    let clk_src = "";
+    let clk_src = "SDL_DCC_CLK1_SRC_CLOCKSRC1";
     let clk_opts = dcc_config[dccIndex].input0Clks;
 
     if (clk_num == 1)

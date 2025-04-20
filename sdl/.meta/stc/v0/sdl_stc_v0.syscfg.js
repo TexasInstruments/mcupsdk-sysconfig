@@ -37,22 +37,22 @@ function getConfigurables(inst)
         },
         {
             name: "lpScanMode",
-            displayName: "Scan Mode Config - lpScanMode",
+            displayName: "Scan Mode Config - LpScanMode",
             default: "STC_MSS_LP_SCAN_MODE",
         },
         {
             name: "codecSpreadMode",
-            displayName: "Scan Mode Config - codecSpreadMode",
+            displayName: "Scan Mode Config - CodecSpreadMode",
             default: "STC_MSS_CODEC_SPREAD_MODE",
         },
         {
             name: "capIdleCycle",
-            displayName: "Scan Mode Config - capIdleCycle",
+            displayName: "Scan Mode Config - CapIdleCycle",
             default: "STC_MSS_CAP_IDLE_CYCLE",
         },
         {
             name: "scanEnHighCap_idleCycle",
-            displayName: "Scan Mode Config - scanEnHighCap_idleCycle",
+            displayName: "Scan Mode Config",
             default: "STC_MSS_SCANEN_HIGH_CAP_IDLE_CYCLE",
         },
         {
@@ -72,7 +72,7 @@ function getConfigurables(inst)
         },
         {
             name: "pRomStartAdd",
-            displayName: "Pointer of ROM Start Address",
+            displayName: "Pointer Of ROM Start Address",
             default: "STC_pROM_START_ADDRESS",
         },
     );
