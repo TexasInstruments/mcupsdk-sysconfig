@@ -14,9 +14,6 @@ const sdlVer = {
     "ecc": {
         version: "v1",
     },
-    "stc": {
-        version: "v0",
-    },
 };
 
 const topModules_main = [
@@ -24,7 +21,6 @@ const topModules_main = [
     "/sdl/ccm/ccm",
     "/sdl/dcc/dcc",
     "/sdl/ecc/ecc",
-    "/sdl/stc/stc",
 ];
 
 const topModules_mcu = [
@@ -32,7 +28,6 @@ const topModules_mcu = [
     "/sdl/ccm/ccm",
     "/sdl/dcc/dcc",
     "/sdl/ecc/ecc",
-    "/sdl/stc/stc",
 ];
 
 function getCpuID() {
