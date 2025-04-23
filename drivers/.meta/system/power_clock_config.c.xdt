@@ -151,12 +151,16 @@ void Module_clockSetFrequency(void)
 
 void PowerClock_init(void)
 {
+    % if (common.getSelfSysCfgCoreName().includes("hsm")) {
     Module_clockEnable();
     Module_clockSetFrequency();
+    %}
 }
 
 void PowerClock_deinit(void)
 {
+    % if (common.getSelfSysCfgCoreName().includes("hsm")) {
     Module_clockDisable();
+    %}
 }
 
