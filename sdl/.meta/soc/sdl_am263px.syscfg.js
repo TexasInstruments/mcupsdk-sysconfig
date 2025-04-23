@@ -24,10 +24,6 @@ const topModules_main = [
 ];
 
 const topModules_mcu = [
-    "/sdl/esm/esm",
-    "/sdl/dcc/dcc",
-    "/sdl/ecc/ecc",
-    "/sdl/ccm/ccm",
 ];
 
 function getCpuID() {
