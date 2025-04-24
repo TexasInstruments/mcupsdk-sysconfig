@@ -16,6 +16,10 @@ function filterIoexpPinName(pinName) {
 // Creates configuration for a single pin
 const createPinConfig = (cfg, pin) => {
     // Clean up pin name by replacing . and / with _
+    const staticConfig = soc.getConfigArr();
+    const defaultConfig = staticConfig[0]
+    const defaultI2cAddressName = `${defaultConfig.board} 0x${defaultConfig.i2cAddress.toString(16)}`
+
     const pinName_filtered = filterIoexpPinName(pin.pinName);
     
     // Create unique element name for this pin
@@ -38,7 +42,7 @@ const createPinConfig = (cfg, pin) => {
                     // Hide state option if mode is input
                     ui[`${element_name}_state`].hidden = (inst[`${element_name}_mode`] === 1);
                 },
-                hidden: cfg.i2cAddress !== 0x20,
+                hidden: !(defaultI2cAddressName === `${cfg.board} 0x${cfg.i2cAddress.toString(16)}`),
             },
             // State configuration (HIGH/LOW)
             {
@@ -83,26 +87,40 @@ function getConfigurables() {
 
     // Basic configuration options
     const baseConfig = [
-        // IO Expander name configuration
         {
-            ...common.ui.makeConfig(staticConfig, "name", "IO Expander")
+            name : "name",
+            displayName : "IO Expander",
+            getValue : (inst)=>{
+                return staticConfig.find(cfg => (`${cfg.board} 0x${cfg.i2cAddress.toString(16)}` === inst["i2cAddress"])).name
+            },
+            default : ""
         },
-        // I2C address configuration
         {
             name: "i2cAddress",
             displayName: "I2C Target Address",
-            options: () => createI2CAddressOptions(staticConfig),
+            options: createI2CAddressOptions(staticConfig),
             onChange: onChangeIoExp,
-            default: "LP-E1 0x20",
+            default: createI2CAddressOptions(staticConfig)[0].name,
         }
     ];
 
-    // Create configurations for all pins
-    const ioexp_cfg = staticConfig.flatMap(cfg => 
-        cfg.pinSet.map(pin => createPinConfig(cfg, pin))
-    );
+    // Create configurations grouped by port number
+    const ioexp_cfg = staticConfig.flatMap(cfg => {
+        // Get unique port numbers
+        const portNumbers = [...new Set(cfg.pinSet.map(pin => pin.portNumber))];
+        
+        // Create groups for each port
+        return portNumbers.map(portNum => ({
+            name: `port${portNum}Group`,
+            displayName: `Port ${portNum}`,
+            collapsed : false,
+            config: cfg.pinSet
+                .filter(pin => pin.portNumber === portNum)
+                .map(pin => createPinConfig(cfg, pin))
+        }));
+    });
 
-    // Combine base config with pin configurations
+    // Combine base config with grouped pin configurations
     return [
         ...baseConfig,
         {
