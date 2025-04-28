@@ -10,6 +10,7 @@ const edma_config_r5fss = [
         intrAggStatusAddr: "CSL_RCSS_CTRL_U_BASE + CSL_RCSS_CTRL_RCSS_TPCC_A_INTAGG_STATUS",
         errIntrAggEnableAddr: "CSL_RCSS_CTRL_U_BASE + CSL_RCSS_CTRL_RCSS_TPCC_A_ERRAGG_MASK",
         errIntrAggStatusAddr: "CSL_RCSS_CTRL_U_BASE + CSL_RCSS_CTRL_RCSS_TPCC_A_ERRAGG_STATUS",
+        errIntrAggRawStatusAddr: "CSL_RCSS_CTRL_U_BASE + CSL_RCSS_CTRL_RCSS_TPCC_A_ERRAGG_STATUS_RAW",
         /* Below mask enables all errors in the aggregated interrupt */
         errIntrAggEnable: "0x707001F",
         maxDmaChannels: "64",
@@ -49,6 +50,7 @@ const edma_config_r5fss = [
         intrAggStatusAddr: "CSL_MSS_CTRL_U_BASE + CSL_MSS_CTRL_MSS_TPCC_A_INTAGG_STATUS",
         errIntrAggEnableAddr: "CSL_MSS_CTRL_U_BASE + CSL_MSS_CTRL_MSS_TPCC_A_ERRAGG_MASK",
         errIntrAggStatusAddr: "CSL_MSS_CTRL_U_BASE + CSL_MSS_CTRL_MSS_TPCC_A_ERRAGG_STATUS",
+        errIntrAggRawStatusAddr: "CSL_MSS_CTRL_U_BASE + CSL_MSS_CTRL_MSS_TPCC_A_ERRAGG_STATUS_RAW",
         /* Below mask enables all errors in the aggregated interrupt */
         errIntrAggEnable: "0x707001F",
         maxDmaChannels: "64",
@@ -88,6 +90,7 @@ const edma_config_r5fss = [
         intrAggStatusAddr: "CSL_MSS_CTRL_U_BASE + CSL_MSS_CTRL_MSS_TPCC_B_INTAGG_STATUS",
         errIntrAggEnableAddr: "CSL_MSS_CTRL_U_BASE + CSL_MSS_CTRL_MSS_TPCC_B_ERRAGG_MASK",
         errIntrAggStatusAddr: "CSL_MSS_CTRL_U_BASE + CSL_MSS_CTRL_MSS_TPCC_B_ERRAGG_STATUS",
+        errIntrAggRawStatusAddr: "CSL_MSS_CTRL_U_BASE + CSL_MSS_CTRL_MSS_TPCC_B_ERRAGG_STATUS_RAW",
         /* Below mask enables all errors in the aggregated interrupt */
         errIntrAggEnable: "0x707001F",
         maxDmaChannels: "64",
@@ -126,6 +129,7 @@ const edma_config_r5fss = [
         intrAggStatusAddr: "CSL_DSS_CTRL_U_BASE + CSL_DSS_CTRL_DSS_TPCC_A_INTAGG_STATUS",
         errIntrAggEnableAddr: "CSL_DSS_CTRL_U_BASE + CSL_DSS_CTRL_DSS_TPCC_A_ERRAGG_MASK",
         errIntrAggStatusAddr: "CSL_DSS_CTRL_U_BASE + CSL_DSS_CTRL_DSS_TPCC_A_ERRAGG_STATUS",
+        errIntrAggRawStatusAddr: "CSL_DSS_CTRL_U_BASE + CSL_DSS_CTRL_DSS_TPCC_A_ERRAGG_STATUS_RAW",
         /* Below mask enables all errors in the aggregated interrupt */
         errIntrAggEnable: "0x707001F",
         maxDmaChannels: "64",
@@ -164,6 +168,7 @@ const edma_config_r5fss = [
         intrAggStatusAddr: "CSL_DSS_CTRL_U_BASE + CSL_DSS_CTRL_DSS_TPCC_B_INTAGG_STATUS",
         errIntrAggEnableAddr: "CSL_DSS_CTRL_U_BASE + CSL_DSS_CTRL_DSS_TPCC_B_ERRAGG_MASK",
         errIntrAggStatusAddr: "CSL_DSS_CTRL_U_BASE + CSL_DSS_CTRL_DSS_TPCC_B_ERRAGG_STATUS",
+        errIntrAggRawStatusAddr: "CSL_DSS_CTRL_U_BASE + CSL_DSS_CTRL_DSS_TPCC_B_ERRAGG_STATUS_RAW",
         /* Below mask enables all errors in the aggregated interrupt */
         errIntrAggEnable: "0x707001F",
         maxDmaChannels: "64",
@@ -202,6 +207,7 @@ const edma_config_r5fss = [
         intrAggStatusAddr: "CSL_DSS_CTRL_U_BASE + CSL_DSS_CTRL_DSS_TPCC_C_INTAGG_STATUS",
         errIntrAggEnableAddr: "CSL_DSS_CTRL_U_BASE + CSL_DSS_CTRL_DSS_TPCC_C_ERRAGG_MASK",
         errIntrAggStatusAddr: "CSL_DSS_CTRL_U_BASE + CSL_DSS_CTRL_DSS_TPCC_C_ERRAGG_STATUS",
+        errIntrAggRawStatusAddr: "CSL_DSS_CTRL_U_BASE + CSL_DSS_CTRL_DSS_TPCC_C_ERRAGG_STATUS_RAW",
         /* Below mask enables all errors in the aggregated interrupt */
         errIntrAggEnable: "0x707001F",
         maxDmaChannels: "64",
@@ -243,6 +249,7 @@ const edma_config_c66ss = [
         intrAggStatusAddr: "CSL_RCSS_CTRL_U_BASE + CSL_RCSS_CTRL_RCSS_TPCC_A_INTAGG_STATUS",
         errIntrAggEnableAddr: "CSL_RCSS_CTRL_U_BASE + CSL_RCSS_CTRL_RCSS_TPCC_A_ERRAGG_MASK",
         errIntrAggStatusAddr: "CSL_RCSS_CTRL_U_BASE + CSL_RCSS_CTRL_RCSS_TPCC_A_ERRAGG_STATUS",
+        errIntrAggRawStatusAddr: "CSL_RCSS_CTRL_U_BASE + CSL_RCSS_CTRL_RCSS_TPCC_A_ERRAGG_STATUS_RAW",
         /* Below mask enables all errors in the aggregated interrupt */
         errIntrAggEnable: "0x707001F",
         maxDmaChannels: "64",
@@ -271,6 +278,7 @@ const edma_config_c66ss = [
         intrAggStatusAddr: "CSL_DSS_CTRL_U_BASE + CSL_DSS_CTRL_DSS_TPCC_A_INTAGG_STATUS",
         errIntrAggEnableAddr: "CSL_DSS_CTRL_U_BASE + CSL_DSS_CTRL_DSS_TPCC_A_ERRAGG_MASK",
         errIntrAggStatusAddr: "CSL_DSS_CTRL_U_BASE + CSL_DSS_CTRL_DSS_TPCC_A_ERRAGG_STATUS",
+        errIntrAggRawStatusAddr: "CSL_DSS_CTRL_U_BASE + CSL_DSS_CTRL_DSS_TPCC_A_ERRAGG_STATUS_RAW",
         /* Below mask enables all errors in the aggregated interrupt */
         errIntrAggEnable: "0x707001F",
         maxDmaChannels: "64",
@@ -299,6 +307,7 @@ const edma_config_c66ss = [
         intrAggStatusAddr: "CSL_DSS_CTRL_U_BASE + CSL_DSS_CTRL_DSS_TPCC_B_INTAGG_STATUS",
         errIntrAggEnableAddr: "CSL_DSS_CTRL_U_BASE + CSL_DSS_CTRL_DSS_TPCC_B_ERRAGG_MASK",
         errIntrAggStatusAddr: "CSL_DSS_CTRL_U_BASE + CSL_DSS_CTRL_DSS_TPCC_B_ERRAGG_STATUS",
+        errIntrAggRawStatusAddr: "CSL_DSS_CTRL_U_BASE + CSL_DSS_CTRL_DSS_TPCC_B_ERRAGG_STATUS_RAW",
         /* Below mask enables all errors in the aggregated interrupt */
         errIntrAggEnable: "0x707001F",
         maxDmaChannels: "64",
@@ -327,6 +336,7 @@ const edma_config_c66ss = [
         intrAggStatusAddr: "CSL_DSS_CTRL_U_BASE + CSL_DSS_CTRL_DSS_TPCC_C_INTAGG_STATUS",
         errIntrAggEnableAddr: "CSL_DSS_CTRL_U_BASE + CSL_DSS_CTRL_DSS_TPCC_C_ERRAGG_MASK",
         errIntrAggStatusAddr: "CSL_DSS_CTRL_U_BASE + CSL_DSS_CTRL_DSS_TPCC_C_ERRAGG_STATUS",
+        errIntrAggRawStatusAddr: "CSL_DSS_CTRL_U_BASE + CSL_DSS_CTRL_DSS_TPCC_C_ERRAGG_STATUS_RAW",
         /* Below mask enables all errors in the aggregated interrupt */
         errIntrAggEnable: "0x707001F",
         maxDmaChannels: "64",

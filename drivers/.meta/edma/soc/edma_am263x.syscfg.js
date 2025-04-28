@@ -15,6 +15,7 @@ const edma_config = [
         intrAggStatusAddr: "CSL_MSS_CTRL_U_BASE + CSL_MSS_CTRL_TPCC0_INTAGG_STATUS",
         errIntrAggEnableAddr: "CSL_MSS_CTRL_U_BASE + CSL_MSS_CTRL_TPCC0_ERRAGG_MASK",
         errIntrAggStatusAddr: "CSL_MSS_CTRL_U_BASE + CSL_MSS_CTRL_TPCC0_ERRAGG_STATUS",
+        errIntrAggRawStatusAddr: "CSL_MSS_CTRL_U_BASE + CSL_MSS_CTRL_TPCC0_ERRAGG_STATUS_RAW",
         /* Below mask enables all errors in the aggregated interrupt */
         errIntrAggEnable: "0x707001F",
         maxDmaChannels: "64",

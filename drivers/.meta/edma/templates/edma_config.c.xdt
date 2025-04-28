@@ -159,6 +159,7 @@ static EDMA_Attrs gEdmaAttrs[CONFIG_EDMA_NUM_INSTANCES] =
         .errIntrAggEnableAddr  = `config.errIntrAggEnableAddr`,
         .errIntrAggEnableMask  = 0xFFFFFFFF & (~(`config.errIntrAggEnable`)),
         .errIntrAggStatusAddr  = `config.errIntrAggStatusAddr`,
+        .errIntrAggRawStatusAddr  = `config.errIntrAggRawStatusAddr`,
         .initPrms           =
         {
             .regionId     = `instance.regionId`,
