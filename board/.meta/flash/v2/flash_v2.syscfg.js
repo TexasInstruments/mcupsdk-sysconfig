@@ -588,6 +588,9 @@ function getConfigurables()
                         inst.dummyClksCmd = serialNorDefaultCfg.protos[pCfg] == null ? 0: serialNorDefaultCfg.protos[pCfg].dummyClksCmd;
                         inst.dummyClksRd = serialNorDefaultCfg.protos[pCfg] == null ? 0 :serialNorDefaultCfg.protos[pCfg].dummyClksRd;
 
+                        inst.flash444Seq = serialNorDefaultCfg.protos[pCfg] == null ? "0x00" : serialNorDefaultCfg.protos[pCfg].enableSeq;
+                        inst.flash888Seq = serialNorDefaultCfg.protos[pCfg] == null ? "0x00" : serialNorDefaultCfg.protos[pCfg].enableSeq;
+
                         if(serialNorDefaultCfg.protos[pCfg].dummyCfg != null)
                         {
                             inst.dummy_isAddrReg = serialNorDefaultCfg.protos[pCfg] == null ? false : serialNorDefaultCfg.protos[pCfg].dummyCfg.isAddrReg;
@@ -1427,7 +1430,7 @@ function getConfigurables()
                         let copyScriptPath = ""
                         if(system.getOS() == "win") {
                             sdkPath = products[0].path.split("\\.metadata\\product.json")[0];
-                            copyScriptPath = sdkPath + "//source//sysconfig//board//.meta//flash//copyutil.js";
+                            copyScriptPath = sdkPath + "\\source\\sysconfig\\board\\.meta\\flash\\copyutil.js";
                         } else {
                             sdkPath = products[0].path.split("/.metadata/product.json")[0];
                             copyScriptPath = sdkPath + "/source/sysconfig/board/.meta/flash/copyutil.js";
@@ -1623,6 +1626,9 @@ function fillConfigs(inst, cfg) {
                 inst.flash444Seq = pCfg.enableSeq;
             } else if(["8s_8s_8s", "8d_8d_8d"].includes(inst.protocol)) {
                 inst.flash888Seq = pCfg.enableSeq;
+            } else {
+                inst.flash444Seq = "0x00";
+                inst.flash888Seq = "0x00";
             }
 
             if(pCfg.protoCfg != null) {
