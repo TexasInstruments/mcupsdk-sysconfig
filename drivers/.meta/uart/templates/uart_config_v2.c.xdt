@@ -58,8 +58,7 @@ UART_DmaConfig gUartDmaConfig[CONFIG_UART_NUM_DMA_INSTANCES] =
 {
 % for(let i = 0; i < edmaModule.$instances.length; i++) {
     {
-        .fxns        = NULL,
-        .uartDmaArgs = (void *)&gUartEdmaChConfig[`i`],
+        .uartDmaArgs = &gUartEdmaChConfig[`i`],
     },
 %}
 };

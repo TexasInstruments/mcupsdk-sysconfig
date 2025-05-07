@@ -153,8 +153,7 @@ UART_DmaConfig gUartDmaConfig[] =
 {
 % for(let i = 0; i < udmaModule.$instances.length; i++) {
     {
-        .fxns        = NULL,
-        .uartDmaArgs = (void *)&gUartUdmaChConfig[`i`],
+        .uartDmaArgs = &gUartUdmaChConfig[`i`],
     },
 %}
 };

@@ -34,7 +34,7 @@ uint32_t gUartDmaConfigNumLld = CONFIG_UART_NUM_DMA_LLD_INSTANCES;
         % let config = module.getInstanceConfig(instance);
         % if(config.intrEnable != "DISABLE") {
     /* UART Read Callback */
-    void `config.readCallbackFxn`(void *args);
+    void `config.readCallbackFxn`(struct UARTLLD_Object_s *args);
         % }
     %}
 % }
@@ -44,7 +44,7 @@ uint32_t gUartDmaConfigNumLld = CONFIG_UART_NUM_DMA_LLD_INSTANCES;
         % let config = module.getInstanceConfig(instance);
         % if(config.intrEnable != "DISABLE") {
     /* UART Write Callback */
-    void `config.writeCallbackFxn`(void *args);
+    void `config.writeCallbackFxn`(struct UARTLLD_Object_s *args);
         % }
      %}
 % }
