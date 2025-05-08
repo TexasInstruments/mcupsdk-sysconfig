@@ -491,6 +491,7 @@ function getConfigurables()
                     inst.xspiWipRdCmd = serialNorDefaultCfg.xspiWipRdCmd;
                     inst.quirks = "Flash_quirkSpansionUNHYSADisable";
                     inst.xspiWipReg = serialNorDefaultCfg.xspiWipReg;
+                    inst.flashData = JSON.stringify(serialNorDefaultCfg);
 
                 } else if(inst.flashType == "SERIAL_NAND") {
                     inst.fname = serialNandDefaultName;
@@ -558,6 +559,7 @@ function getConfigurables()
 
                     inst.srProgStatus = serialNandDefaultCfg.srProgStatus;
                     inst.srEraseStatus = serialNandDefaultCfg.srEraseStatus;
+                    inst.flashData = JSON.stringify(serialNandDefaultCfg);
 
                     inst.quirks = "Flash_quirkSpansionUNHYSADisable";
                 }
@@ -1409,6 +1411,23 @@ function getConfigurables()
                         { name: "NONE"},
                     ]
                 },
+                {
+                    name: "flashData",
+                    default: JSON.stringify(serialNorDefaultCfg),
+                    onChange: (inst, ui) => {
+                        if(inst.flashType == "SERIAL_NOR")
+                        {
+                            serialNorDefaultCfg = JSON.parse(inst.flashData);
+                            fillConfigs(inst, serialNorDefaultCfg);
+                        }
+                        else if(inst.flashType == "SERIAL_NAND")
+                        {
+                            serialNandDefaultCfg = JSON.parse(inst.flashData);
+                            fillConfigs(inst, serialNandDefaultCfg);
+                        }
+                    },
+                    hidden : true,
+                }
             ]
         },
         {
@@ -1424,11 +1443,12 @@ function getConfigurables()
                     pickDirectory: false,
                     nonSerializable: true,
                     onLaunch: (inst) => {
-                        let products=system.getProducts()
-                        let nodeCmd=common.getNodePath()
-                        let sdkPath = ""
-                        let copyScriptPath = ""
-                        if(system.getOS() == "win") {
+                        let products = system.getProducts();
+                        let nodeCmd = common.getNodePath();
+                        let sdkPath = "";
+                        let copyScriptPath = "";
+
+                        if (system.getOS() == "win") {
                             sdkPath = products[0].path.split("\\.metadata\\product.json")[0];
                             copyScriptPath = sdkPath + "\\source\\sysconfig\\board\\.meta\\flash\\copyutil.js";
                         } else {
@@ -1458,6 +1478,7 @@ function getConfigurables()
                                 return;
                             }
                             /* Fill up the configurables with data from JSON file */
+                            inst.flashData = JSON.stringify(flashConfig);
                             fillConfigs(inst, flashConfig);
                             return;
                         }
@@ -1720,7 +1741,6 @@ function fillConfigs(inst, cfg) {
 
         if(pCfg != null)
         {
-            inst.isDtr = pCfg.isDtr;
             inst.cmdRd = pCfg.cmdRd;
             inst.cmdWr = pCfg.cmdWr;
             inst.dummyClksCmd = pCfg.dummyClksCmd;
