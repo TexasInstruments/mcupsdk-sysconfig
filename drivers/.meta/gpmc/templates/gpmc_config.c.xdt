@@ -163,13 +163,13 @@ static uint8_t gGpmcUdmaBlkCopyCh`i`TrpdMem[GPMC_UDMA_BLK_COPY_CH_TRPD_MEM_SIZE]
 %}
 
 %for(let i = 0; i < gpmcUdmaInstances.length; i++) {
-GpmcDma_UdmaArgs gGpmcUdma`i`Args =
+Gpmc_DmaArgs gGpmcUdma`i`Args =
 {
     .drvHandle     = &gUdmaDrvObj[`gpmcUdmaInstances[i].$name`],
     .chHandle      = &gGpmcUdmaBlkCopyChObj[`i`],
-    .trpdMem       = &gGpmcUdmaBlkCopyCh`i`TrpdMem,
+    .trpdMem       = gGpmcUdmaBlkCopyCh`i`TrpdMem,
     .trpdMemSize   = GPMC_UDMA_BLK_COPY_CH_TRPD_MEM_SIZE,
-    .ringMem       = &gGpmcUdmaBlkCopyCh`i`RingMem,
+    .ringMem       = gGpmcUdmaBlkCopyCh`i`RingMem,
     .ringMemSize   = GPMC_UDMA_BLK_COPY_CH_RING_MEM_SIZE,
     .ringElemCount = GPMC_UDMA_BLK_COPY_CH_RING_ELEM_CNT,
     .localEventID  = `config.dmaLocalEventID`,
@@ -180,7 +180,6 @@ GPMC_DmaConfig gGpmcDmaConfig[CONFIG_GPMC_NUM_DMA_INSTANCES] =
 {
 %for(let i = 0; i < gpmcUdmaInstances.length; i++) {
     {
-        .fxns        = &gGpmcDmaUdmaFxns,
         .gpmcDmaArgs = (void *)&gGpmcUdma`i`Args,
     }
 %}

@@ -8,7 +8,7 @@
 #include <drivers/gpmc.h>
 
 /* GPMC Driver handles */
-extern GPMC_Handle gGpmcHandle[CONFIG_GPMC_NUM_INSTANCES];
+extern GPMC_Config* gGpmcHandle[CONFIG_GPMC_NUM_INSTANCES];
 
 /*
  * GPMC Driver Advance Parameters - to be used only when Driver_open() and

@@ -41,7 +41,6 @@ GPMC_Params gGpmcParams[CONFIG_GPMC_NUM_INSTANCES] =
         .intrEnable             =   `config.intrEnable.toString(10).toUpperCase()`,
         .dmaEnable              =   `config.dmaEnable.toString(10).toUpperCase()`,
         .transferMode           =   GPMC_TRANSFER_MODE_BLOCKING,
-        .transferCallBckFunc    =   NULL,
         %if(config.deviceType == "PARALLEL_NAND") {
         .memDevice              =   GPMC_MEM_TYPE_NAND,
         %}
