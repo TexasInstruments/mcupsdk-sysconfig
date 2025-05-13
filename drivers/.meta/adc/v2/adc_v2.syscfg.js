@@ -1021,7 +1021,7 @@ function getInterfaceName(inst)
 
 function getPeripheralPinNames(inst)
 {
-    return [ "AIN0", "AIN1", "AIN2", "AIN3", "AIN4", "AIN5" ];
+    return [ "AIN0", "AIN1", "AIN2", "AIN3", "AIN4", "AIN5", "AIN6" ];
 }
 
 function pinmuxRequirements(inst)
@@ -1035,6 +1035,9 @@ function pinmuxRequirements(inst)
     resources.push( pinmux.getPinRequirements(interfaceName, "AIN3", "ADC Input Pin"));
     resources.push( pinmux.getPinRequirements(interfaceName, "AIN4", "ADC Input Pin"));
     resources.push( pinmux.getPinRequirements(interfaceName, "AIN5", "ADC Input Pin"));
+    if (["am261x"].includes(common.getSocName())) {
+    resources.push( pinmux.getPinRequirements(interfaceName, "AIN6", "ADC Input Pin"));
+    }
 
     let peripheral = {
         name: interfaceName,
