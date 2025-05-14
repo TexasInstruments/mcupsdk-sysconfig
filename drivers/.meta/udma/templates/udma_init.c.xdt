@@ -5,7 +5,7 @@
 
         for(instId = 0U; instId < CONFIG_UDMA_NUM_INSTANCES; instId++)
         {
-            retVal += Udma_init(&gUdmaDrvObj[instId], &gUdmaInitPrms[instId]);
+            retVal += Udma_init((Udma_DrvHandle)&gUdmaDrvObj[instId], &gUdmaInitPrms[instId]);
             DebugP_assert(UDMA_SOK == retVal);
         }
     }

@@ -69,7 +69,7 @@ UART_UdmaChConfig gUartDmaChCfg[CONFIG_UART_NUM_DMA_LLD_INSTANCES] =
 {
     %for(let i = 0; i < uartUdmaInstances.length; i++) {
         {
-            .drvHandle        = &gUdmaDrvObj,
+            .drvHandle        = &gUdmaDrvObj[`i`],
             .txChHandle       = &gUart`i`UdmaTxObj,
             .rxChHandle       = &gUart`i`UdmaRxObj,
             .cqTxEvtHandle    = &gUart`i`UdmaCqTxEventObj,

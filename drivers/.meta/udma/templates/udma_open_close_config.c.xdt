@@ -141,7 +141,7 @@ static void Drivers_udma`instNameCamelCase`BlkCopyOpen(void)
     Udma_ChPrms         chPrms;
     Udma_ChTxPrms       txPrms;
     Udma_ChRxPrms       rxPrms;
-    Udma_DrvHandle      drvHandle = &gUdmaDrvObj[`instance.$name.toUpperCase()`];
+    Udma_DrvHandle      drvHandle = (Udma_DrvHandle) &gUdmaDrvObj[`instance.$name.toUpperCase()`];
     Udma_EventPrms      cqEventPrms;
     Udma_EventHandle    cqEventHandle;
 % if(common.getSocName() === "am65x"){
@@ -151,7 +151,7 @@ static void Drivers_udma`instNameCamelCase`BlkCopyOpen(void)
 
     for(chCnt = 0U; chCnt < `instance.$name.toUpperCase()`_NUM_BLKCOPY_CH; chCnt++)
     {
-        chHandle = &g`instNameCamelCase`BlkCopyChObj[chCnt];
+        chHandle = (Udma_ChHandle) &g`instNameCamelCase`BlkCopyChObj[chCnt];
         g`instNameCamelCase`BlkCopyChHandle[chCnt] = chHandle;
 
         /* Init channel parameters */
@@ -187,7 +187,7 @@ static void Drivers_udma`instNameCamelCase`BlkCopyOpen(void)
         /* Register completion event */
         if(NULL != g`instNameCamelCase`BlkCopyCqEventCb[chCnt])
         {
-            cqEventHandle = &g`instNameCamelCase`BlkCopyCqEventObj[chCnt];
+            cqEventHandle = (Udma_EventHandle) &g`instNameCamelCase`BlkCopyCqEventObj[chCnt];
             g`instNameCamelCase`BlkCopyCqEventHandle[chCnt] = cqEventHandle;
             UdmaEventPrms_init(&cqEventPrms);
             cqEventPrms.eventType         = UDMA_EVENT_TYPE_DMA_COMPLETION;
@@ -202,8 +202,8 @@ static void Drivers_udma`instNameCamelCase`BlkCopyOpen(void)
     if(UDMA_SOK == retVal)
     {
         /* Register teardown ring completion callback */
-        tdCqEventHandle = &g`instNameCamelCase`BlkCopyTdCqEventObj[chCnt];
-        g`instNameCamelCase`BlkCopyTdCqEventHandle[chCnt] = tdCqEventHandle;
+        tdCqEventHandle = (Udma_EventHandle) &g`instNameCamelCase`BlkCopyTdCqEventObj[chCnt];
+        g`instNameCamelCase`BlkCopyTdCqEventHandle[chCnt] = (Udma_EventHandle) tdCqEventHandle;
         UdmaEventPrms_init(&tdCqEventPrms);
         tdCqEventPrms.eventType         = UDMA_EVENT_TYPE_TEARDOWN_PACKET;
         tdCqEventPrms.eventMode         = UDMA_EVENT_MODE_SHARED;
@@ -228,7 +228,7 @@ static void Drivers_udma`instNameCamelCase`BlkCopyClose(void)
 
     for(chCnt = 0U; chCnt < `instance.$name.toUpperCase()`_NUM_BLKCOPY_CH; chCnt++)
     {
-        chHandle = &g`instNameCamelCase`BlkCopyChObj[chCnt];
+        chHandle = (Udma_ChHandle) &g`instNameCamelCase`BlkCopyChObj[chCnt];
 
         /* Flush any pending request from the free queue */
         while(1)

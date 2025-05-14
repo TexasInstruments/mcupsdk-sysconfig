@@ -232,7 +232,7 @@ CANFD_UdmaChConfig gCanfdUdmaChConfig =
 };
 
 /* UDMA driver instance object */
-Udma_DrvObjectInt          gUdmaDrvObjInt =
+Udma_DrvObject          gUdmaDrvObjInt =
 {
     .initPrms.instId             = UDMA_INST_ID_PKTDMA_0,
     .initPrms.skipGlobalEventReg = FALSE,

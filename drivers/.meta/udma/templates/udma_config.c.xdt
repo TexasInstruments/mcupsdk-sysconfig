@@ -4,6 +4,7 @@
 /*
  * UDMA
  */
+ #include <drivers/udma.h>
 /* UDMA driver instance object */
 Udma_DrvObject          gUdmaDrvObj[CONFIG_UDMA_NUM_INSTANCES];
 /* UDMA driver instance init params */
