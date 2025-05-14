@@ -1036,7 +1036,10 @@ function pinmuxRequirements(inst)
     resources.push( pinmux.getPinRequirements(interfaceName, "AIN4", "ADC Input Pin"));
     resources.push( pinmux.getPinRequirements(interfaceName, "AIN5", "ADC Input Pin"));
     if (["am261x"].includes(common.getSocName())) {
-    resources.push( pinmux.getPinRequirements(interfaceName, "AIN6", "ADC Input Pin"));
+        if(system.deviceData.package != "ZCZ")
+        {
+            resources.push( pinmux.getPinRequirements(interfaceName, "AIN6", "ADC Input Pin"));
+        }
     }
 
     let peripheral = {
