@@ -101,12 +101,12 @@ uint32_t gGpmcConfigNum = CONFIG_GPMC_NUM_INSTANCES;
 % let config = module.getInstanceConfig(instance);
 
 #include <drivers/gpmc/v0/dma/gpmc_dma.h>
+#include <drivers/gpmc/v0/dma/edma/gpmc_dma_edma.h>
 GPMC_DmaConfig gGpmcDmaConfig[CONFIG_GPMC_NUM_DMA_INSTANCES] =
 {
 %for(let i = 0; i < gpmcEdmaInstances.length; i++) {
     {
-        .fxns        = &gGpmcDmaEdmaFxns,
-        .gpmcDmaArgs = (void *)&gGpmcEdma`i`Args,
+        .gpmcDmaArgs = &gGpmcEdma`i`Args,
     }
 %}
 };

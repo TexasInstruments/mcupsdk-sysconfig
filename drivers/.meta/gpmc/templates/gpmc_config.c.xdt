@@ -180,7 +180,7 @@ GPMC_DmaConfig gGpmcDmaConfig[CONFIG_GPMC_NUM_DMA_INSTANCES] =
 {
 %for(let i = 0; i < gpmcUdmaInstances.length; i++) {
     {
-        .gpmcDmaArgs = (void *)&gGpmcUdma`i`Args,
+        .gpmcDmaArgs = &gGpmcUdma`i`Args,
     }
 %}
 };
