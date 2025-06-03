@@ -71,7 +71,7 @@ function getStaticConfigArr() {
                 name: `RTI${i}`,
                 baseAddr: 0x52180000 + i*0x1000,
                 hwiIntNum: (124 + (6 * i)),
-                clkSelMuxAddr: 0x53208000 + 0x114 + 4*i,
+                clkSelMuxAddr: 0x53208000 + 0x140 + 4*i,
                 disableClkSourceConfig: false,
                 lockUnlockDomain: "SOC_DOMAIN_ID_MAIN",
                 lockUnlockPartition: "MSS_RCM_PARTITION0",
