@@ -116,7 +116,7 @@ const topModules_mcu = [
 ];
 
 const topModules_m4f = [
-
+    "/drivers/edma/edma",
 ];
 
 function getCpuID() {

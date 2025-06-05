@@ -82,6 +82,14 @@ function getRmDefaultStart(moduleInstance, resType) {
         defOwnParamStart = instConfig.defaultOwnParamStart_c66ss0;
         defReservedDmaChStart = instConfig.defaultReservedDmaChannelStart_c66ss0;
     }
+    if (selfCoreName === "m4fss0-1") {
+        defOwnDmaChStart = instConfig.defaultOwnDmaChannelStart_m4ss0;
+        defOwnQdmaChStart = instConfig.defaultOwnQdmaChannelStart_m4ss0;
+        defOwnTccStart = instConfig.defaultOwnTccStart_m4ss0;
+        defOwnParamStart = instConfig.defaultOwnParamStart_m4ss0;
+        defReservedDmaChStart = instConfig.defaultReservedDmaChannelStart_m4ss0;
+    }
+
     if(resType == "ownDmaCh") {
         return Number(defOwnDmaChStart);
     }
@@ -142,6 +150,14 @@ function getRmDefaultEnd(moduleInstance, resType) {
         defOwnParamEnd = instConfig.defaultOwnParamEnd_c66ss0;
         defReservedDmaChEnd = instConfig.defaultReservedDmaChannelEnd_c66ss0;
     }
+    if (selfCoreName === "m4fss0-1") {
+        defOwnDmaChEnd = instConfig.defaultOwnDmaChannelEnd_m4ss0;
+        defOwnQdmaChEnd = instConfig.defaultOwnQdmaChannelEnd_m4ss0;
+        defOwnTccEnd = instConfig.defaultOwnTccEnd_m4ss0;
+        defOwnParamEnd = instConfig.defaultOwnParamEnd_m4ss0;
+        defReservedDmaChEnd = instConfig.defaultReservedDmaChannelEnd_m4ss0;
+    }
+
     if(resType == "ownDmaCh") {
         return Number(defOwnDmaChEnd);
     }

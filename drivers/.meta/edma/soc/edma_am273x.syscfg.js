@@ -358,11 +358,109 @@ const edma_config_c66ss = [
     },
 ];
 
+const edma_config_m4fss = [
+    {
+        name: "EDMA_RCSS_A",
+        baseAddr: "CSL_CM4_RCSS_TPCC_A_U_BASE",
+        compIntrNumber: "CSL_CM4_INTR_RCSS_TPCC_A_INTAGG",
+        intrAggEnableAddr: "CSL_CM4_RCSS_CTRL_U_BASE + CSL_RCSS_CTRL_RCSS_TPCC_A_INTAGG_MASK",
+        intrAggStatusAddr: "CSL_CM4_RCSS_CTRL_U_BASE + CSL_RCSS_CTRL_RCSS_TPCC_A_INTAGG_STATUS",
+        maxDmaChannels: "64",
+        maxTcc: "64",
+        maxPaRAM: "128",
+        maxRegions: "8",
+        maxQueue: "2",
+        /* This instance can be shared between the 2 R5 Cores and c66x core. */
+        defaultOwnDmaChannelStart_m4ss0: "0",
+        defaultOwnDmaChannelEnd_m4ss0: "0",
+        defaultOwnQdmaChannelStart_m4ss0: "0",
+        defaultOwnQdmaChannelEnd_m4ss0: "0",
+        defaultOwnTccStart_m4ss0: "0",
+        defaultOwnTccEnd_m4ss0: "0",
+        defaultOwnParamStart_m4ss0: "0",
+        defaultOwnParamEnd_m4ss0: "0",
+        defaultReservedDmaChannelStart_m4ss0: "0",
+        defaultReservedDmaChannelEnd_m4ss0: "0",
+    },
+    {
+        name: "EDMA_DSS_A",
+        baseAddr: "CSL_CM4_DSS_TPCC_A_U_BASE",
+        compIntrNumber: "CSL_CM4_INTR_DSS_TPCC_A_INTAGG",
+        intrAggEnableAddr: "CSL_CM4_DSS_CTRL_U_BASE + CSL_DSS_CTRL_DSS_TPCC_A_INTAGG_MASK",
+        intrAggStatusAddr: "CSL_CM4_DSS_CTRL_U_BASE + CSL_DSS_CTRL_DSS_TPCC_A_INTAGG_STATUS",
+        maxDmaChannels: "64",
+        maxTcc: "64",
+        maxPaRAM: "128",
+        maxRegions: "8",
+        maxQueue: "2",
+        /* This instance can be shared between the 2 R5 Cores and c66x core. */
+        defaultOwnDmaChannelStart_m4ss0: "60",
+        defaultOwnDmaChannelEnd_m4ss0: "61",
+        defaultOwnQdmaChannelStart_m4ss0: "6",
+        defaultOwnQdmaChannelEnd_m4ss0: "6",
+        defaultOwnTccStart_m4ss0: "60",
+        defaultOwnTccEnd_m4ss0: "61",
+        defaultOwnParamStart_m4ss0: "120",
+        defaultOwnParamEnd_m4ss0: "123",
+        defaultReservedDmaChannelStart_m4ss0: "60",
+        defaultReservedDmaChannelEnd_m4ss0: "60",
+    },
+    {
+        name: "EDMA_DSS_B",
+        baseAddr: "CSL_CM4_DSS_TPCC_B_U_BASE",
+        compIntrNumber: "CSL_CM4_INTR_DSS_TPCC_B_INTAGG",
+        intrAggEnableAddr: "CSL_CM4_DSS_CTRL_U_BASE + CSL_DSS_CTRL_DSS_TPCC_B_INTAGG_MASK",
+        intrAggStatusAddr: "CSL_CM4_DSS_CTRL_U_BASE + CSL_DSS_CTRL_DSS_TPCC_B_INTAGG_STATUS",
+        maxDmaChannels: "64",
+        maxTcc: "64",
+        maxPaRAM: "128",
+        maxRegions: "8",
+        maxQueue: "2",
+        /* This instance can be shared between the 2 R5 Cores and c66x core. */
+        defaultOwnDmaChannelStart_m4ss0: "0",
+        defaultOwnDmaChannelEnd_m4ss0: "0",
+        defaultOwnQdmaChannelStart_m4ss0: "0",
+        defaultOwnQdmaChannelEnd_m4ss0: "0",
+        defaultOwnTccStart_m4ss0: "0",
+        defaultOwnTccEnd_m4ss0: "0",
+        defaultOwnParamStart_m4ss0: "0",
+        defaultOwnParamEnd_m4ss0: "0",
+        defaultReservedDmaChannelStart_m4ss0: "0",
+        defaultReservedDmaChannelEnd_m4ss0: "0",
+    },
+    {
+        name: "EDMA_DSS_C",
+        baseAddr: "CSL_CM4_DSS_TPCC_C_U_BASE",
+        compIntrNumber: "CSL_CM4_INTR_DSS_TPCC_C_INTAGG",
+        intrAggEnableAddr: "CSL_CM4_DSS_CTRL_U_BASE + CSL_DSS_CTRL_DSS_TPCC_C_INTAGG_MASK",
+        intrAggStatusAddr: "CSL_CM4_DSS_CTRL_U_BASE + CSL_DSS_CTRL_DSS_TPCC_C_INTAGG_STATUS",
+        maxDmaChannels: "64",
+        maxTcc: "64",
+        maxPaRAM: "256",
+        maxRegions: "8",
+        maxQueue: "2",
+        /* This instance can be shared between the 2 R5 Cores and c66x core. */
+        defaultOwnDmaChannelStart_m4ss0: "0",
+        defaultOwnDmaChannelEnd_m4ss0: "0",
+        defaultOwnQdmaChannelStart_m4ss0: "0",
+        defaultOwnQdmaChannelEnd_m4ss0: "0",
+        defaultOwnTccStart_m4ss0: "0",
+        defaultOwnTccEnd_m4ss0: "0",
+        defaultOwnParamStart_m4ss0: "0",
+        defaultOwnParamEnd_m4ss0: "0",
+        defaultReservedDmaChannelStart_m4ss0: "0",
+        defaultReservedDmaChannelEnd_m4ss0: "0",
+    },
+];
+
 function getConfigArr() {
     let edma_config;
 
     if(common.getSelfSysCfgCoreName().includes("c66")) {
         edma_config = edma_config_c66ss;
+    }
+    else if(common.getSelfSysCfgCoreName().includes("m4fss0-1")) {
+        edma_config = edma_config_m4fss;
     }
     else {
         edma_config = edma_config_r5fss;
