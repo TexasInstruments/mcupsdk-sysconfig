@@ -145,13 +145,15 @@ void Pinmux_init(void)
     %let MSS_CTRL_ICSSM0_PRU1_GPIO_OUT_CTRL_VALUE=0x00000000;
     %let MSS_CTRL_ICSSM1_PRU0_GPIO_OUT_CTRL_VALUE=0x00000000;
     %let MSS_CTRL_ICSSM1_PRU1_GPIO_OUT_CTRL_VALUE=0x00000000;
+    %let targetInterfacesM0 = ["ICSSM", "PRU-ICSS", "PRU-ICSS0"];
+    %let targetInterfacesM1 = ["PRU-ICSS1"];
     %for(let subTemplate of args){
         %let module=system.modules[subTemplate.moduleName];
         % for(let i = 0; i < module.$instances.length; i++) {
             %let instance = module.$instances[i];
-            %if((module.getInterfaceName && (module.getInterfaceName(instance)=="ICSSM" || module.getInterfaceName(instance)=="PRU-ICSS" || module.getInterfaceName(instance)=="PRU-ICSS0")) || (module.getInterfaceNameList && (module.getInterfaceNameList(instance)=="ICSSM" || module.getInterfaceNameList(instance)=="PRU-ICSS" || module.getInterfaceNameList(instance)=="PRU-ICSS0"))){
+                %if((module.getInterfaceName && _.includes(targetInterfacesM0, module.getInterfaceName(instance))) || (module.getInterfaceNameList && _.some(module.getInterfaceNameList(instance), name => _.includes(targetInterfacesM0, name)))) {
                 %configIcssm0Pinmux=1;
-                %let interfaceName = module.getInterfaceName ? module.getInterfaceName(instance) : module.getInterfaceNameList(instance) ;
+                %let interfaceName = module.getInterfaceName ? module.getInterfaceName(instance) : _.find(module.getInterfaceNameList(instance), name => _.includes(targetInterfacesM0, name));
                 % let peripheral = instance[interfaceName];
                 % let pinNames = module.getPeripheralPinNames(instance);
                 % for (let pinName of pinNames) {
@@ -164,9 +166,9 @@ void Pinmux_init(void)
                 %     }
                 %}
             %}
-            %if((module.getInterfaceName && (module.getInterfaceName(instance)=="PRU-ICSS1")) || (module.getInterfaceNameList && (module.getInterfaceNameList(instance)=="PRU-ICSS1"))){
+            %if((module.getInterfaceName && _.includes(targetInterfacesM1, module.getInterfaceName(instance))) || (module.getInterfaceNameList && _.some(module.getInterfaceNameList(instance), name => _.includes(targetInterfacesM1, name)))) {
                 %configIcssm1Pinmux=1;
-                %let interfaceName = module.getInterfaceName ? module.getInterfaceName(instance) : module.getInterfaceNameList(instance) ;
+                %let interfaceName = module.getInterfaceName ? module.getInterfaceName(instance) : _.find(module.getInterfaceNameList(instance), name => _.includes(targetInterfacesM1, name));
                 % let peripheral = instance[interfaceName];
                 % let pinNames = module.getPeripheralPinNames(instance);
                 % for (let pinName of pinNames) {
