@@ -1,4 +1,5 @@
 let common = system.getScript("/common");
+let helperScript = system.getScript(`/clockTree/helperScript.js`);
 
 const ospi_config_r5fss = [
     {
@@ -14,8 +15,8 @@ const ospi_config_r5fss = [
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_OSPI0",
-                clkId   : "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT3",
-                clkRate : getDefaultClkRate(),
+                clkId   : getDefaultClkSource("OSPI0"),
+                clkRate : getDefaultClkRate("OSPI0"),
             },
         ],
     },
@@ -32,8 +33,8 @@ const ospi_config_r5fss = [
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_OSPI1",
-                clkId   : "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT3",
-                clkRate : getDefaultClkRate(),
+                clkId   : getDefaultClkSource("OSPI1"),
+                clkRate : getDefaultClkRate("OSPI1"),
             },
         ],
     },
@@ -69,8 +70,19 @@ const ospi_dma_restrict_regions = [
     { start : "CSL_HSM_RAM_U_BASE"      , size : "0x2fffc" }
 ];
 
-function getDefaultClkRate() {
-    let ospi_input_clk_freq = 166666666;
+
+function getDefaultClkSource(instanceName = "OSPI0") {
+
+    let ospi_input_clock_source = "SOC_RcmPeripheralClockSource_" + helperScript.helperMux(instanceName);
+    return ospi_input_clock_source;
+}
+
+function getDefaultClkRate(instanceName =  "OSPI0") {
+
+    if (instanceName === "")
+        return 0;
+    let namedConnection = instanceName + "_CLK"
+    let ospi_input_clk_freq = helperScript.helperGetFrequencyNamedConnection(namedConnection)
 
     return ospi_input_clk_freq;
 }
@@ -125,7 +137,9 @@ exports = {
     getDmaRestrictedRegions,
     getSupportedDataLines,
     addModuleInstances,
-    getPhyTuningParams
+    getPhyTuningParams,
+    getDefaultClkRate,
+    getDefaultClkSource
 };
 
 

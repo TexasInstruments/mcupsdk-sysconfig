@@ -1,7 +1,6 @@
 
 let common = system.getScript("/common");
-
-let i2c_func_clk = 48000000;
+let helperScript = system.getScript(`/clockTree/helperScript.js`);
 
 const staticConfig_r5f = [
     {
@@ -55,21 +54,27 @@ function getClockEnableIds(inst) {
     return [ "SOC_RcmPeripheralId_I2C" ];
 }
 
-function getDefaultClkSource() {
-    return "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT0";
+function getDefaultClkSource(instanceName = "I2C0") {
+
+    let i2c_input_clock_source = "SOC_RcmPeripheralClockSource_" + helperScript.helperMux(instanceName);
+    return i2c_input_clock_source;
 }
 
-function getClockSourceOptions() {
+function getClockSourceOptions(instanceName = "I2C0") {
 
-    return [
-        {name: "SOC_RcmPeripheralClockSource_XTALCLK"},
-        {name: "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT0"},
-        {name: "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT0"},
-    ];
+    let muxSelectionLines = helperScript.helperMuxInputs(instanceName)
+    muxSelectionLines = muxSelectionLines.map((value) => ({name: "SOC_RcmPeripheralClockSource_" + value.name, displayName: value.name}))
+    return muxSelectionLines
 }
 
-function getDefaultClockValue() {
-    return getClockValue(getDefaultClkSource());
+function getDefaultClockValue(instanceName = "I2C0") {
+
+    if (instanceName === "")
+        return 0;
+    let namedConnection = instanceName + "_CLK"
+    let i2c_input_clk_freq = helperScript.helperGetFrequencyNamedConnection(namedConnection)
+
+    return i2c_input_clk_freq;
 }
 
 function getClockValue(clkSrc) {

@@ -1,76 +1,75 @@
 let common = system.getScript("/common");
+let helperScript = system.getScript(`/clockTree/helperScript.js`);
 
-
-let mcspi_input_clk_freq = 50000000;
 
 const mcspi_config_r5fss = [
     {
         name            : "SPI0",
         baseAddr        : "CSL_MCSPI0_U_BASE",
-        inputClkFreq    : mcspi_input_clk_freq,
+        inputClkFreq    : getClkRate("SPI0"),
         intrNum         : "CSLR_R5FSS0_CORE0_INTR_MCSPI0_INTR",
         clockIds        : [ "SOC_RcmPeripheralId_MCSPI0" ],
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_MCSPI0",
-                clkId   : "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT0",
-                clkRate : mcspi_input_clk_freq,
+                clkId   : getClkSource("SPI0"),
+                clkRate : getClkRate("SPI0"),
             },
         ],
     },
     {
         name            : "SPI1",
         baseAddr        : "CSL_MCSPI1_U_BASE",
-        inputClkFreq    : mcspi_input_clk_freq,
+        inputClkFreq    : getClkRate("SPI1"),
         intrNum         : "CSLR_R5FSS0_CORE0_INTR_MCSPI1_INTR",
         clockIds        : [ "SOC_RcmPeripheralId_MCSPI1" ],
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_MCSPI1",
-                clkId   : "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT0",
-                clkRate : mcspi_input_clk_freq,
+                clkId   : getClkSource("SPI1"),
+                clkRate : getClkRate("SPI1"),
             },
         ],
     },
     {
         name            : "SPI2",
         baseAddr        : "CSL_MCSPI2_U_BASE",
-        inputClkFreq    : mcspi_input_clk_freq,
+        inputClkFreq    : getClkRate("SPI2"),
         intrNum         : "CSLR_R5FSS0_CORE0_INTR_MCSPI2_INTR",
         clockIds        : [ "SOC_RcmPeripheralId_MCSPI2" ],
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_MCSPI2",
-                clkId   : "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT0",
-                clkRate : mcspi_input_clk_freq,
+                clkId   : getClkSource("SPI2"),
+                clkRate : getClkRate("SPI2"),
             },
         ],
     },
     {
         name            : "SPI3",
         baseAddr        : "CSL_MCSPI3_U_BASE",
-        inputClkFreq    : mcspi_input_clk_freq,
+        inputClkFreq    : getClkRate("SPI3"),
         intrNum         : "CSLR_R5FSS0_CORE0_INTR_MCSPI3_INTR",
         clockIds        : [ "SOC_RcmPeripheralId_MCSPI3" ],
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_MCSPI3",
-                clkId   : "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT0",
-                clkRate : mcspi_input_clk_freq,
+                clkId   : getClkSource("SPI3"),
+                clkRate : getClkRate("SPI3"),
             },
         ],
     },
     {
         name            : "SPI4",
         baseAddr        : "CSL_MCSPI4_U_BASE",
-        inputClkFreq    : mcspi_input_clk_freq,
+        inputClkFreq    : getClkRate("SPI4"),
         intrNum         : "CSLR_R5FSS0_CORE0_INTR_MCSPI4_INTR",
         clockIds        : [ "SOC_RcmPeripheralId_MCSPI4" ],
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_MCSPI4",
-                clkId   : "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT0",
-                clkRate : mcspi_input_clk_freq,
+                clkId   : getClkSource("SPI4"),
+                clkRate : getClkRate("SPI4"),
             },
         ],
     },
@@ -89,18 +88,28 @@ function isFrequencyDefined()
     return true;
 }
 
-function getClkRate() {
+function getClkRate(instanceName =  "SPI0") {
+
+    if (instanceName === "")
+        return 0;
+    let namedConnection = instanceName + "_CLK"
+    let mcspi_input_clk_freq = helperScript.helperGetFrequencyNamedConnection(namedConnection)
+
     return mcspi_input_clk_freq;
 }
 
-function getClkSource() {
-    return "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT0";
+function getClkSource(instanceName =  "SPI0") {
+
+    let mcspi_input_clock_source = "SOC_RcmPeripheralClockSource_" + helperScript.helperMux(instanceName);
+    return mcspi_input_clock_source;
 }
 
 exports = {
     getConfigArr,
     getMaxChannels,
     isFrequencyDefined,
+    getClkRate,
+    getClkSource,
     getClkRate,
     getClkSource,
 };

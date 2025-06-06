@@ -1,7 +1,6 @@
 let common   = system.getScript("/common");
 let pinmux   = system.getScript("/drivers/pinmux/pinmux");
 let device_peripheral = system.getScript("/drivers/resolver/soc/resolver_am263px.syscfg.js");
-let resolver_sampletime_sysclk_ns = 1000/device_peripheral.RESOLVER_Sysclk_Mhz;
 
 function getStaticConfigArr() {
     return system.getScript(`/drivers/resolver/soc/resolver_${common.getSocName()}`).getStaticConfigArr();
@@ -969,7 +968,13 @@ config = config.concat([
         name  : "resovlerCoreConfigurations",
         displayName :   "Resovler Core Configurations",
         config : resovlerCoreConfig,
-    }
+    },
+        {
+        name: "resolver_sampletime_sysclk_ns",
+        default: 200,
+        hidden: true,
+        getValue: () => 1000/system.clockTree.SYSCLK.out[0],
+    },
 ])
 
 let int_configs = [

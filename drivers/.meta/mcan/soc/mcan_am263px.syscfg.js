@@ -1,6 +1,6 @@
 let common = system.getScript("/common");
-
-let mcan_func_clk = 80 * 1000 * 1000;
+let clockTreeInfo = system.clockTree;
+let helperScript = system.getScript(`/clockTree/helperScript.js`);
 
 const mcan_config_r5fss = [
     {
@@ -12,8 +12,8 @@ const mcan_config_r5fss = [
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_MCAN0",
-                clkId   : "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT0",
-                clkRate : mcan_func_clk,
+                clkId   : getDefaultClkSource("MCAN0"),
+                clkRate : getDefaultClkRate("MCAN0"),
             },
         ],
     },
@@ -26,8 +26,8 @@ const mcan_config_r5fss = [
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_MCAN1",
-                clkId   : "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT0",
-                clkRate : mcan_func_clk,
+                clkId   : getDefaultClkSource("MCAN1"),
+                clkRate : getDefaultClkRate("MCAN1"),
             },
         ],
     },
@@ -40,8 +40,8 @@ const mcan_config_r5fss = [
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_MCAN2",
-                clkId   : "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT0",
-                clkRate : mcan_func_clk,
+                clkId   : getDefaultClkSource("MCAN2"),
+                clkRate : getDefaultClkRate("MCAN2"),
             },
         ],
     },
@@ -54,8 +54,8 @@ const mcan_config_r5fss = [
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_MCAN3",
-                clkId   : "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT0",
-                clkRate : mcan_func_clk,
+                clkId   : getDefaultClkSource("MCAN3"),
+                clkRate : getDefaultClkRate("MCAN3"),
             },
         ],
     },
@@ -68,8 +68,8 @@ const mcan_config_r5fss = [
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_MCAN4",
-                clkId   : "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT0",
-                clkRate : mcan_func_clk,
+                clkId   : getDefaultClkSource("MCAN4"),
+                clkRate : getDefaultClkRate("MCAN4"),
             },
         ],
     },
@@ -82,8 +82,8 @@ const mcan_config_r5fss = [
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_MCAN5",
-                clkId   : "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT0",
-                clkRate : mcan_func_clk,
+                clkId   : getDefaultClkSource("MCAN5"),
+                clkRate : getDefaultClkRate("MCAN5"),
             },
         ],
     },
@@ -96,8 +96,8 @@ const mcan_config_r5fss = [
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_MCAN6",
-                clkId   : "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT0",
-                clkRate : mcan_func_clk,
+                clkId   : getDefaultClkSource("MCAN6"),
+                clkRate : getDefaultClkRate("MCAN6"),
             },
         ],
     },
@@ -110,8 +110,8 @@ const mcan_config_r5fss = [
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_MCAN7",
-                clkId   : "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT0",
-                clkRate : mcan_func_clk,
+                clkId   : getDefaultClkSource("MCAN7"),
+                clkRate : getDefaultClkRate("MCAN7"),
             },
         ],
     },
@@ -133,8 +133,31 @@ function getDmaType() {
     return "EDMA";
 }
 
-function getClkSource() {
-    return "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT0";
+function getDefaultClkSource(interfaceName) {
+
+    return getClkSource(interfaceName)
+
+}
+
+function getClkSource(interfaceName) {
+
+    const muxSelectedIn = helperScript.helperMux(interfaceName)    
+    return "SOC_RcmPeripheralClockSource_" + muxSelectedIn
+}
+
+function getDefaultClkRate(instanceName =  "MCAN0") {
+
+    return getClkRate(instanceName);
+}
+
+function getClkRate(instanceName =  "MCAN0") {
+
+    if (instanceName === "")
+        return 0;
+    let namedConnection = instanceName + "_CLK"
+    let mcan_input_clk_freq = helperScript.helperGetFrequencyNamedConnection(namedConnection)
+
+    return mcan_input_clk_freq;
 }
 
 exports = {
@@ -142,4 +165,5 @@ exports = {
     getInterfaceName,
     getDmaType,
     getClkSource,
+    getClkRate
 };

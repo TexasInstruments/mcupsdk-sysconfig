@@ -332,11 +332,44 @@ let gpmc_module = {
         },
     },
     config : [
+        {
+            name: "clockSource",
+            displayName: "Clock Source",
+            default: soc.getDefaultClkSource(),
+            description: "Clock Source",
+            getValue: (inst) => {
+                const interfaceName = getInterfaceName(inst)
+                const gpmcSolution = inst[interfaceName].$solution
+                let gpmcInstanceName = ""
+                if(gpmcSolution)
+                    gpmcInstanceName   = gpmcSolution.peripheralName
+                else
+                    gpmcInstanceName = "GPMC0"
 
+                if(gpmcInstanceName === "GPMC")
+                    gpmcInstanceName = "GPMC0"
+                return soc.getDefaultClkSource(gpmcInstanceName)
+            }
+            
+        },
         {
             name: "inputClkFreq",
             displayName: "Input Clock Frequency (Hz)",
-            default: soc.getDefaultConfig().inputClkFreq,
+            default: soc.getDefaultClkRate(),
+            getValue: (inst) => {
+                const interfaceName = getInterfaceName(inst)
+                const gpmcSolution = inst[interfaceName].$solution
+                let gpmcInstanceName = ""
+                if(gpmcSolution)
+                    gpmcInstanceName   = gpmcSolution.peripheralName
+                else
+                    gpmcInstanceName = "GPMC0"
+
+                if(gpmcInstanceName === "GPMC")
+                    gpmcInstanceName = "GPMC0"
+
+                return soc.getDefaultClkRate(gpmcInstanceName)
+            }
         },
         {
             name: "clockRateDiv",

@@ -1,6 +1,5 @@
 let common = system.getScript("/common");
-
-let mmcsd_input_clk_freq = 192000000;
+let helperScript = system.getScript(`/clockTree/helperScript.js`);
 
 const mmcsd_config_r5fss = [
 	{
@@ -8,7 +7,7 @@ const mmcsd_config_r5fss = [
 		baseAddr          : "CSL_MMC0_U_BASE",
         instNum           : 0,
         intrNum           : 83,
-		inputClkFreq      : mmcsd_input_clk_freq,
+		inputClkFreq      : getDefaultClkRate(),
         outputClk         : 400000,
         iodelayFxn        : "NULL",
         switchVoltageFxn  : "NULL",
@@ -19,8 +18,8 @@ const mmcsd_config_r5fss = [
 		clockFrequencies  : [
 			{
 				moduleId  : "SOC_RcmPeripheralId_MMC0",
-				clkId     : "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT1",
-				clkRate   : mmcsd_input_clk_freq,
+                clkId     : getDefaultClkSource("MMC0"),
+				clkRate   : getDefaultClkRate(),
 			},
 		],
 	},
@@ -44,6 +43,23 @@ function getClockSourceOptions() {
         {name: "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT1"},
         {name: "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT0"},
     ];
+}
+
+function getDefaultClkSource(instanceName = "MMC0") {
+
+    let mmcsd_input_clock_source = "SOC_RcmPeripheralClockSource_" + helperScript.helperMux(instanceName);
+    return mmcsd_input_clock_source;
+
+}
+
+function getDefaultClkRate(instanceName =  "MMC0") {
+    
+    if (instanceName === "")
+        return 0;
+    let namedConnection = instanceName + "_CLK"
+    let mmcsd_input_clk_freq = helperScript.helperGetFrequencyNamedConnection(namedConnection)
+
+    return mmcsd_input_clk_freq;
 }
 
 function getClockValue(clkSrc) {
@@ -73,4 +89,6 @@ exports = {
     getClockValue,
     getDefaultOperatingModeSD,
     getOperatingModesSD,
+    getDefaultClkSource,
+    getDefaultClkRate
 };

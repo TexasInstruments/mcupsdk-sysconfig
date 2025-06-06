@@ -14,6 +14,9 @@ function getInstanceConfig(moduleInstance) {
     let config = configArr.find(o => o.name === solution.peripheralName);
 
     config.clockFrequencies[0].clkRate = moduleInstance.inputClkFreq;
+    if(["am263px", "am261x"].includes(common.getSocName())){
+        config.clockFrequencies[0].clkId = moduleInstance.clockSource;
+    }
 
     return {
         ...config,
@@ -216,12 +219,56 @@ function onMigrate(newInst, oldInst, oldSystem) {
 function getConfigurables()
 {
     let config = [];
-    config.push(
+
+    if(["am263px", "am261x"].includes(common.getSocName())){
+        config.push(
+                    {
+            name: "clockSource",
+            displayName: "Clock Source",
+            default: soc.getDefaultClkSource(),
+            description: "Clock Source",
+            getValue: (inst) => {
+                const interfaceName = getInterfaceName(inst)
+                const ospiSolution = inst[interfaceName].$solution
+                let ospiInstanceName = ""
+                if(ospiSolution)
+                    ospiInstanceName   = ospiSolution.peripheralName
+                else
+                    ospiInstanceName = "OSPI0"
+                return soc.getDefaultClkSource(ospiInstanceName)
+            }
+
+        },
         {
             name: "inputClkFreq",
             displayName: "Input Clock Frequency (Hz)",
-            default: soc.getDefaultConfig().inputClkFreq,
+            default: ["am263px", "am261x"].includes(common.getSocName())? soc.getDefaultClkRate(): soc.getDefaultConfig().inputClkFreq,
+            displayFormat: "dec",
+            getValue: (inst) => {
+                const interfaceName = getInterfaceName(inst)
+                const ospiSolution = inst[interfaceName].$solution
+                let ospiInstanceName = ""
+                if(ospiSolution)
+                    ospiInstanceName   = ospiSolution.peripheralName
+                else
+                    ospiInstanceName = "OSPI0"
+                return  (soc.getDefaultClkRate(ospiInstanceName))
+            }
         },
+        )
+    }
+    else{
+        config.push(
+            {
+                name: "inputClkFreq",
+                displayName: "Input Clock Frequency (Hz)",
+                default: soc.getDefaultConfig().inputClkFreq,
+            },
+        )
+    }
+
+    config.push(
+
         {
             name: "baudRateDiv",
             displayName: "Input Clock Divider",

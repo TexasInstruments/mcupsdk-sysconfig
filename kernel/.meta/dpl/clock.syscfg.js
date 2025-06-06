@@ -2,6 +2,11 @@
 let common = system.getScript("/common");
 let soc = system.getScript(`/kernel/dpl/clock_${common.getSocName()}`);
 let hwi = system.getScript("/kernel/dpl/hwi.js");
+let helperScript = system.getScript(`/clockTree/helperScript.js`);
+let srcclkfreq = common.getDefaultR5Freq();
+if( ["am263x", "am263px", "am261x"].includes(common.getSocName())){
+    srcclkfreq = helperScript.helperGetFrequencyNamedConnection("R5FSS0_GATED_CLK");
+}
 
 function getInstanceConfig(moduleInstance) {
     let staticConfigArr = soc.getStaticConfigArr();
@@ -43,18 +48,9 @@ let clock_module = {
             {
                 name: "r5ClockFreq",
                 displayName: "R5 Clock Freqeuncy",
-                default: common.getDefaultR5Freq(),
+                default: (srcclkfreq/1000000) + "MHz",
+                readOnly: true,
                 hidden: getR5freqHidden(),
-                options: [
-                    {
-                        name: "400MHz",
-                        displayName: "400 MHz"
-                    },
-                    {
-                        name: "500MHz",
-                        displayName: "500 MHz"
-                    },
-                ],
                 description: "Select R5 Clock Frequency"
             },
             soc.makeInstanceConfig(),

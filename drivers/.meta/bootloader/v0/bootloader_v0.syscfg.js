@@ -190,17 +190,25 @@ function getConfig(){
     return cfg;
 }
 
+let templates = {
+     "/drivers/system/system_config.c.xdt": {
+            driver_config: "/drivers/bootloader/templates/bootloader_config.c.xdt",
+    },
+    "/drivers/system/system_config.h.xdt": {
+        driver_config: "/drivers/bootloader/templates/bootloader.h.xdt",
+    },
+}
+
+if (["am263x", "am263px", "am261x"].includes(common.getSocName())){
+
+    templates["/clockTree/templates/ti_clocktree_pll_config.c.xdt"] = {},
+    templates["/clockTree/templates/ti_clocktree_pll_config.h.xdt"] = {}
+}
+
 let bootloader_module = {
     displayName: "BOOTLOADER",
 
-    templates: {
-        "/drivers/system/system_config.c.xdt": {
-            driver_config: "/drivers/bootloader/templates/bootloader_config.c.xdt",
-        },
-        "/drivers/system/system_config.h.xdt": {
-            driver_config: "/drivers/bootloader/templates/bootloader.h.xdt",
-        },
-    },
+    templates: templates,
     defaultInstanceName: "CONFIG_BOOTLOADER",
     validate: validate,
     moduleStatic: {

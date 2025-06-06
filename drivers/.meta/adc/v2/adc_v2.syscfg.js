@@ -37,6 +37,12 @@ let config = [
         default     : device_peripheral.ADC_ClkPrescale[0].name,
         options     : device_peripheral.ADC_ClkPrescale,
     },
+    {
+        name: "adc_sampletime_sysclk_ns",
+        default: 200,
+        hidden: true,
+        getValue: () => 1000/system.clockTree.SYSCLK.out[0],
+    },
 ];
 
 // ADC_setMode()
@@ -126,12 +132,8 @@ for (let soci = 0; soci < 16; soci++)
                 displayName : "SOC" + soci.toString() + " Sample Time In Nanoseconds",
                 description : 'Selected the sample time in ns for this SOC',
                 hidden      : false,
-                readOnly    : true,
-                getValue    : (inst) => {
-                    let Adc_sysclk_ns = 1000/getAdcSysClkMhz();
-                    return Adc_sysclk_ns*(inst["soc" + soci.toString() + "SampleWindow"])
-                },
-                default     : 0
+                default     : 0,
+                getValue: (inst) => inst["adc_sampletime_sysclk_ns"]*(inst["soc" + soci.toString() + "SampleWindow"])
             },
 
         ]

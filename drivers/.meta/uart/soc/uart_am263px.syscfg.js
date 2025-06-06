@@ -1,89 +1,88 @@
 let common = system.getScript("/common");
-
-let uart_input_clk_freq = 48000000;
+let helperScript = system.getScript(`/clockTree/helperScript.js`);
 
 const uart_config_r5fss = [
     {
         name            : "UART0",
         baseAddr        : "CSL_UART0_U_BASE",
-        inputClkFreq    : uart_input_clk_freq,
+        inputClkFreq    : getClkRate(),
         intrNum         : 38,
         clockIds        : [ "SOC_RcmPeripheralId_LIN0_UART0" ],
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_LIN0_UART0",
-                clkId   : "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT1",
-                clkRate : uart_input_clk_freq,
+                clkId   : getClkSource("UART0"),
+                clkRate : getClkRate("UART0"),
             },
         ],
     },
     {
         name            : "UART1",
         baseAddr        : "CSL_UART1_U_BASE",
-        inputClkFreq    : uart_input_clk_freq,
+        inputClkFreq    : getClkRate(),
         intrNum         : 39,
         clockIds        : [ "SOC_RcmPeripheralId_LIN1_UART1" ],
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_LIN1_UART1",
-                clkId   : "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT1",
-                clkRate : uart_input_clk_freq,
+                clkId   : getClkSource("UART1"),
+                clkRate : getClkRate("UART1"),
             },
         ],
     },
     {
         name            : "UART2",
         baseAddr        : "CSL_UART2_U_BASE",
-        inputClkFreq    : uart_input_clk_freq,
+        inputClkFreq    : getClkRate(),
         intrNum         : 40,
         clockIds        : [ "SOC_RcmPeripheralId_LIN2_UART2" ],
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_LIN2_UART2",
-                clkId   : "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT1",
-                clkRate : uart_input_clk_freq,
+                clkId   : getClkSource("UART2"),
+                clkRate : getClkRate("UART2"),
             },
         ],
     },
     {
         name            : "UART3",
         baseAddr        : "CSL_UART3_U_BASE",
-        inputClkFreq    : uart_input_clk_freq,
+        inputClkFreq    : getClkRate(),
         intrNum         : 41,
         clockIds        : [ "SOC_RcmPeripheralId_LIN3_UART3" ],
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_LIN3_UART3",
-                clkId   : "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT1",
-                clkRate : uart_input_clk_freq,
+                clkId   : getClkSource("UART3"),
+                clkRate : getClkRate("UART3"),
             },
         ],
     },
     {
         name            : "UART4",
         baseAddr        : "CSL_UART4_U_BASE",
-        inputClkFreq    : uart_input_clk_freq,
+        inputClkFreq    : getClkRate(),
         intrNum         : 42,
         clockIds        : [ "SOC_RcmPeripheralId_LIN4_UART4" ],
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_LIN4_UART4",
-                clkId   : "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT1",
-                clkRate : uart_input_clk_freq,
+                clkId   : getClkSource("UART4"),
+                clkRate : getClkRate("UART4"),
             },
         ],
     },
     {
         name            : "UART5",
         baseAddr        : "CSL_UART5_U_BASE",
-        inputClkFreq    : uart_input_clk_freq,
+        inputClkFreq    : getClkRate(),
         intrNum         : 43,
         clockIds        : [ "SOC_RcmPeripheralId_LIN5_UART5" ],
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_LIN5_UART5",
-                clkId   : "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT1",
-                clkRate : uart_input_clk_freq,
+                clkId   : getClkSource("UART5"),
+                clkRate : getClkRate("UART5"),
             },
         ],
     },
@@ -102,19 +101,28 @@ function getConfigArr() {
     return uart_config;
 }
 
-function getDefaultClkRate() {
+function getClkRate(instanceName =  "UART0") {
+
+    if (instanceName === "")
+        return 0;
+    let namedConnection = instanceName + "_CLK"
+    let uart_input_clk_freq = helperScript.helperGetFrequencyNamedConnection(namedConnection)
+
     return uart_input_clk_freq;
 }
 
-function getDefaultClkSource() {
-    return "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT1";
+
+function getClkSource(instanceName = "UART0") {
+
+    let uart_input_clock_source = "SOC_RcmPeripheralClockSource_" + helperScript.helperMux(instanceName);
+    return uart_input_clock_source;
 }
 
 function getClockSourceOptions() {
-    return [
-        {name: "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT1"},
-        {name: "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT0"},
-    ];
+
+    let muxSelectionLines = helperScript.helperMuxInputs(instanceName)
+    muxSelectionLines = muxSelectionLines.map((value) => ({name: "SOC_RcmPeripheralClockSource_" + value.name, displayName: value.name}))
+    return muxSelectionLines
 }
 
 function getClockOptions(clkSrc) {
@@ -136,8 +144,7 @@ function getClockOptions(clkSrc) {
 
 exports = {
     getConfigArr,
-    getDefaultClkRate,
-    getClockSourceOptions,
+    getClkRate,
+    getClkSource,
     getClockOptions,
-    getDefaultClkSource,
 };

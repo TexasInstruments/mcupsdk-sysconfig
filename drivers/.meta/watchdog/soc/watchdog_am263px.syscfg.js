@@ -1,6 +1,6 @@
 
 let common = system.getScript("/common");
-let wdt_func_clk = 200000000;
+let helperScript = system.getScript(`/clockTree/helperScript.js`);
 
 //Note that clockFrequencies.clkId and clockFrequencies.clkRate are user configurable from sycfg
 //and default values will get overwritten by those input
@@ -10,13 +10,13 @@ const watchdog_config = [
         name: "WDT0",
         wdtInstance: "WATCHDOG_INST_ID_0",
         baseAddr: "CSL_WDT0_U_BASE",
-        funcClk: wdt_func_clk,
+        funcClk: getClkRate(),
         clockIds        : [ "SOC_RcmPeripheralId_WDT0" ],
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_WDT0",
-                clkId   : "SOC_RcmPeripheralClockSource_SYS_CLK",
-                clkRate : wdt_func_clk,
+                clkId   : getClkSource("WDT0"),
+                clkRate : getClkRate("WDT0"),
             },
         ],
     },
@@ -24,13 +24,13 @@ const watchdog_config = [
         name: "WDT1",
         wdtInstance: "WATCHDOG_INST_ID_1",
         baseAddr: "CSL_WDT1_U_BASE",
-        funcClk: wdt_func_clk,
+        funcClk: getClkRate(),
         clockIds        : [ "SOC_RcmPeripheralId_WDT1" ],
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_WDT1",
-                clkId   : "SOC_RcmPeripheralClockSource_SYS_CLK",
-                clkRate : wdt_func_clk,
+                clkId   : getClkSource("WDT1"),
+                clkRate : getClkRate("WDT1"),
             },
         ],
     },
@@ -38,13 +38,13 @@ const watchdog_config = [
         name: "WDT2",
         wdtInstance: "WATCHDOG_INST_ID_2",
         baseAddr: "CSL_WDT2_U_BASE",
-        funcClk: wdt_func_clk,
+        funcClk: getClkRate(),
         clockIds        : [ "SOC_RcmPeripheralId_WDT2" ],
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_WDT2",
-                clkId   : "SOC_RcmPeripheralClockSource_SYS_CLK",
-                clkRate : wdt_func_clk,
+                clkId   : getClkSource("WDT2"),
+                clkRate : getClkRate("WDT2"),
             },
         ],
     },
@@ -52,17 +52,34 @@ const watchdog_config = [
         name: "WDT3",
         wdtInstance: "WATCHDOG_INST_ID_3",
         baseAddr: "CSL_WDT3_U_BASE",
-        funcClk: wdt_func_clk,
+        funcClk: getClkRate(),
         clockIds        : [ "SOC_RcmPeripheralId_WDT3" ],
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_WDT3",
-                clkId   : "SOC_RcmPeripheralClockSource_SYS_CLK",
-                clkRate : wdt_func_clk,
+                clkId   : getClkSource("WDT3"),
+                clkRate : getClkRate("WDT3"),
             },
         ],
     },
 ];
+
+function getClkRate(instanceName =  "WDT0") {
+
+    if (instanceName === "")
+        return 0;
+    let namedConnection = instanceName + "_CLK"
+    let lin_input_clk_freq = helperScript.helperGetFrequencyNamedConnection(namedConnection)
+
+    return lin_input_clk_freq;
+}
+
+function getClkSource(instanceName =  "WDT0") {
+
+    let lin_input_clock_source = "SOC_RcmPeripheralClockSource_" + helperScript.helperMux(instanceName);
+    return lin_input_clock_source;
+}
+
 
 function getConfigArr() {
     let wdtInst = [];
@@ -104,6 +121,8 @@ const SOC_RcmClkSrcInfo = [
 
 exports = {
     getConfigArr,
-    SOC_RcmClkSrcInfo
+    SOC_RcmClkSrcInfo,
+    getClkRate,
+    getClkSource
 };
 

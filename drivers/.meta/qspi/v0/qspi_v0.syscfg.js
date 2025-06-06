@@ -13,6 +13,10 @@ function getInstanceConfig(moduleInstance) {
 
     config.clockFrequencies[0].clkRate = moduleInstance.inputClkFreq;
 
+    if(["am263x"].includes(common.getSocName())){
+        config.clockFrequencies[0].clkId = moduleInstance.clockSource;
+    }
+    
     return {
         ...config,
         ...moduleInstance,
@@ -89,6 +93,64 @@ function getSupportedProtocols() {
 
 let qspi_module_name = "/drivers/qspi/qspi";
 
+let config = []
+
+if(["am263x"].includes(common.getSocName())){
+    config.push(
+                    {
+            name: "clockSource",
+            displayName: "Clock Source",
+            default: soc.getDefaultClkSource(),
+            description: "Clock Source",
+            getValue: (inst) => {
+                const interfaceName = getInterfaceName(inst)
+                const qspiSolution = inst[interfaceName].$solution
+                let qspiInstanceName = ""
+                if(qspiSolution)
+                    qspiInstanceName   = qspiSolution.peripheralName
+                else
+                    qspiInstanceName = "QSPI0"
+                /*AM263x has only one instance of QSPI and it names it as QSPI.
+                 But to maintain consistency on the instance numbering, making it to QSPI0
+                */
+               if(qspiInstanceName === "QSPI")
+                   qspiInstanceName = "QSPI0"
+
+                return soc.getDefaultClkSource(qspiInstanceName)
+            }
+        },
+        {
+            name: "inputClkFreq",
+            displayName: "Input Clock Frequency (Hz)",
+            default: soc.getDefaultClkRate(),
+            displayFormat: "dec",
+            getValue: (inst) => {
+                const interfaceName = getInterfaceName(inst)
+                const qspiSolution = inst[interfaceName].$solution
+                let qspiInstanceName = ""
+                if(qspiSolution)
+                    qspiInstanceName   = qspiSolution.peripheralName
+                else
+                   qspiInstanceName = "QSPI0"
+
+                /*AM263x has only one instance of QSPI and it names it as QSPI.
+                 But to maintain consistency on the instance numbering, making it to QSPI0
+                */
+               if(qspiInstanceName === "QSPI")
+                   qspiInstanceName = "QSPI0"
+                return soc.getDefaultClkRate(qspiInstanceName)
+            }
+        },
+    )   
+}
+else {
+    config.push({
+                name: "inputClkFreq",
+                displayName: "Input Clock Frequency (Hz)",
+                default: soc.getDefaultConfig().inputClkFreq,
+    })
+}
+
 let qspi_module = {
     displayName: "QSPI",
     templates: {
@@ -102,11 +164,7 @@ let qspi_module = {
     maxInstances: getConfigArr().length,
     defaultInstanceName: "CONFIG_QSPI",
     config: [
-        {
-            name: "inputClkFreq",
-            displayName: "Input Clock Frequency (Hz)",
-            default: soc.getDefaultConfig().inputClkFreq,
-        },
+        ...config,
         {
             name: "baudRateDiv",
             displayName: "Input Clock Divider",

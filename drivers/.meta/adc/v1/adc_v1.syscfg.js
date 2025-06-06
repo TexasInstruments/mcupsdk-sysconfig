@@ -411,15 +411,22 @@ let globalConfig = [
         description: "This is the SYSCLK value",
         default: 200,
         getValue : (inst) => {
-            let r5Freq = common.getR5Freq();
-            if(r5Freq !== "")
-            {
-                return parseInt(r5Freq.split("MHz")[0]/2);
+
+            if(["am263x","am263px", "am261x"].includes(common.getSocName())){
+                return system.clockTree.SYSCLK.out[0]
             }
-            else
-            {
-                return 200;
+            else{
+                 let r5Freq = common.getR5Freq();
+                if(r5Freq !== "")
+                {
+                    return parseInt(r5Freq.split("MHz")[0]/2);
+                }
+                else
+                {
+                    return 200;
+                }
             }
+                
         }
     },
     {

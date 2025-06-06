@@ -13,7 +13,11 @@ function getInstanceConfig(moduleInstance) {
     let configArr = getConfigArr();
     let config = configArr.find( o => o.name === solution.peripheralName);
 
-    config.clockFrequencies[0].clkId = soc.getClkSource();
+    config.clockFrequencies[0].clkId = soc.getClkSource(solution.peripheralName);
+
+    if(["am263x", "am263px", "am261x"].includes(common.getSocName())){
+        config.clockFrequencies[0].clkRate = soc.getClkRate(solution.peripheralName);
+    }
 
     return {
         ...config,

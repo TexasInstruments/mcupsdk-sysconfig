@@ -425,7 +425,7 @@ let ADC_SafetyAggr_Instances = [
      displayName: "ADC Safety Checker Aggregator 1"},
 ]
 
-// let ADC_Sysclk_Mhz = 200
+
 function getInterfaceName(inst) {
 
 	return "ADC";

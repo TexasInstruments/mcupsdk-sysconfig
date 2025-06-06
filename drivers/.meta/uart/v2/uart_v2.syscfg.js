@@ -195,18 +195,35 @@ function getConfigurables()
         {
             name: "clockSource",
             displayName: "Clock Source",
-            default: soc.getDefaultClkSource(),
+            default: soc.getClkSource(),
             description: "Clock Source",
-            options: soc.getClockSourceOptions(),
+            getValue: (inst) => {
+                const interfaceName = getInterfaceName(inst)
+                const uartSolution = inst[interfaceName].$solution
+                let uartInstanceName = ""
+                if(uartSolution)
+                    uartInstanceName   = uartSolution.peripheralName
+                else
+                    uartInstanceName = "UART0"
+                return soc.getClkSource(uartInstanceName)
+            }
+            
         },
         {
             name: "inputClkFreq",
             displayName: "Clock Freq",
-            default: soc.getDefaultClkRate(),
+            default: soc.getClkRate(),
             description: "Source Clock Frequency",
             displayFormat: "dec",
-            options: function(inst) {
-                return soc.getClockOptions(inst.clockSource);
+            getValue: (inst) => {
+                const interfaceName = getInterfaceName(inst)
+                const uartSolution = inst[interfaceName].$solution
+                let uartInstanceName = ""
+                if(uartSolution)
+                    uartInstanceName   = uartSolution.peripheralName
+                else
+                    uartInstanceName = inst[interfaceName].$suggestSolution?.peripheralName
+                return soc.getClkRate(uartInstanceName)
             }
         },
         {

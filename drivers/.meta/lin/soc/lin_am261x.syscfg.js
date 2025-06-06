@@ -1,4 +1,5 @@
 let common = system.getScript("/common");
+let helperScript = system.getScript(`/clockTree/helperScript.js`);
 
 const lin_config_r5fss = [
     {
@@ -11,8 +12,8 @@ const lin_config_r5fss = [
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_LIN0_UART0",
-                clkId   : getDefaultClkSource(),
-                clkRate : getDefaultClkRate(),
+                clkId   : getClkSource("LIN0"),
+                clkRate : getClkRate("LIN0"),
             },
         ],
     },
@@ -26,8 +27,8 @@ const lin_config_r5fss = [
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_LIN1_UART1",
-                clkId   : getDefaultClkSource(),
-                clkRate : getDefaultClkRate(),
+                clkId   : getClkSource("LIN1"),
+                clkRate : getClkRate("LIN1")
             },
         ],
     },
@@ -41,54 +42,25 @@ const lin_config_r5fss = [
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_LIN2_UART2",
-                clkId   : getDefaultClkSource(),
-                clkRate : getDefaultClkRate(),
+                clkId   : getClkSource("LIN2"),
+                clkRate : getClkRate("LIN2")
             },
         ],
     },
 ];
 
-function getDefaultClkRate() {
-    let lin_input_clk_freq = 192000000;
-
-    if(common.getDefaultR5Freq() == "500MHz")
-    {
-        lin_input_clk_freq = 160000000;
-    }
+function getClkRate(instanceName =  "LIN0") {
+    if (instanceName === "")
+        return 0;
+    let namedConnection = instanceName + "_CLK"
+    let lin_input_clk_freq = helperScript.helperGetFrequencyNamedConnection(namedConnection)
 
     return lin_input_clk_freq;
 }
 
-function getDefaultClkSource() {
-    let lin_input_clock_source = "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT0";
-
-    if(common.getDefaultR5Freq() == "500MHz")
-    {
-        lin_input_clock_source = "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT2";
-    }
-
-    return lin_input_clock_source;
-}
-
-function getClkRate() {
-    let lin_input_clk_freq = 192000000;
-
-    if(common.getR5Freq() == "500MHz")
-    {
-        lin_input_clk_freq = 160000000;
-    }
-
-    return lin_input_clk_freq;
-}
-
-function getClkSource() {
-    let lin_input_clock_source = "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT0";
-
-    if(common.getR5Freq() == "500MHz")
-    {
-        lin_input_clock_source = "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT2";
-    }
-
+function getClkSource(instanceName =  "LIN0") {
+    instanceName = instanceName.replace("LIN", "UART"); // LIN and UART share the same mux
+    let lin_input_clock_source = "SOC_RcmPeripheralClockSource_" + helperScript.helperMux(instanceName);
     return lin_input_clock_source;
 }
 
@@ -108,12 +80,6 @@ function getDefaultConfig() {
     return lin_config_r5fss[0];
 }
 
-function getClockSourceOptions() {
-    let clkSourceOptions =  [];
-    clkSourceOptions.push({name: getDefaultClkSource()});
-    return clkSourceOptions;
-}
-
 function getClockValue(clkSrc) {
     let clockVal;
     if(clkSrc === "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT0") {
@@ -129,21 +95,13 @@ function getClockValue(clkSrc) {
 /* This is subject to change, therefore update might be required */
 function getSysClkFrequency(){
 
-    let clkFreq = 200*1000000;
-
-    if(common.getR5Freq() == "500MHz")
-    {
-        clkFreq = 250*1000000;
-    }
-
-    return clkFreq;
+    return helperScript.helperGetFrequencyNamedConnection("SYSCLK");
 }
 
 exports = {
     getConfigArr,
     getInterfaceName,
     getDefaultConfig,
-    getClockSourceOptions,
-    getDefaultClkSource,
-    getClockValue,
+    getClkSource,
+    getClkRate
 };

@@ -71,6 +71,16 @@ else
                 outputPath: "ti_power_clock_config.c",
                 alwaysRun: true,
             },
+            {
+                name: "/clockTree/templates/ti_clocktree_pll_config.c.xdt",
+                outputPath: "ti_clocktree_pll_config.c",
+                alwaysRun: false,
+            },
+			{
+                name: "/clockTree/templates/ti_clocktree_pll_config.h.xdt",
+                outputPath: "ti_clocktree_pll_config.h",
+                alwaysRun: false,
+            }
         ],
         topModules: soc.getTopModules(),
     };

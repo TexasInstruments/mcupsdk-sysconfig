@@ -1,11 +1,11 @@
-let qspi_input_clk_freq = 80000000;
+let helperScript = system.getScript(`/clockTree/helperScript.js`);
 
 const qspi_config_r5fss = [
     {
         name            : "QSPI",
         baseAddr        : "CSL_QSPI0_U_BASE",
         memMapBaseAddr  : "CSL_EXT_FLASH0_U_BASE",
-        inputClkFreq    : qspi_input_clk_freq,
+        inputClkFreq    : getDefaultClkRate(),
         intrNum         : 54,
         baudRateDiv     : 0,
         wrdLen          : 8,
@@ -13,8 +13,8 @@ const qspi_config_r5fss = [
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_QSPI0",
-                clkId   : "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT0",
-                clkRate : qspi_input_clk_freq,
+                clkId   : getDefaultClkSource("QSPI0"),
+                clkRate : getDefaultClkRate("QSPI0"),
             },
         ],
     },
@@ -69,9 +69,28 @@ function getConfigArr() {
     return qspi_config_r5fss;
 }
 
+
+function getDefaultClkSource(instanceName = "QSPI0") {
+
+    let ospi_input_clock_source = "SOC_RcmPeripheralClockSource_" + helperScript.helperMux(instanceName);
+    return ospi_input_clock_source;
+}
+
+function getDefaultClkRate(instanceName =  "QSPI0") {
+
+    if (instanceName === "")
+        return 0;
+    let namedConnection = instanceName + "_CLK"
+    let qspi_input_clk_freq = helperScript.helperGetFrequencyNamedConnection(namedConnection)
+
+    return qspi_input_clk_freq;
+}
+
 exports = {
     getDefaultConfig,
     getConfigArr,
     getInterfaceName,
     getQspiPinName,
+    getDefaultClkSource,
+    getDefaultClkRate
 };

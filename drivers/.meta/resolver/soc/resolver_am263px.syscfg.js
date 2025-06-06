@@ -91,7 +91,7 @@ let RESOLVER_pgEstimationTrainLimitOptions = [
 	{ name: 15, displayName: (Math.pow(2,15)).toString()+" Rotations" },
 ]
 
-let RESOLVER_Sysclk_Mhz = 200
+
 
 function getInterfaceName(instance) {
     return "RESOLVER";
@@ -117,7 +117,6 @@ exports = {
 	RESOLVER_SignalMode: RESOLVER_SignalMode,
     RESOLVER_ExcFreq,
     RESOLVER_pgEstimationTrainLimitOptions,
-    RESOLVER_Sysclk_Mhz: RESOLVER_Sysclk_Mhz,
     getInterfaceName,
     getStaticConfigArr,
 }

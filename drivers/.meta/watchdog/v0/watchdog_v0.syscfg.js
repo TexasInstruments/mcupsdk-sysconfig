@@ -1,7 +1,12 @@
 let common = system.getScript("/common");
-let srcclkfreq = 200000000;
+let helperScript = system.getScript(`/clockTree/helperScript.js`);
+let srcclkfreq = common.getDefaultR5Freq();
+if( ["am263x", "am263px", "am261x"].includes(common.getSocName())){
+    srcclkfreq = helperScript.helperGetFrequencyNamedConnection("R5FSS0_GATED_CLK")/2;
+}
 let clockSourcesInfo;
 let soc_name = common.getSocName();
+let soc = system.getScript(`/drivers/watchdog/soc/watchdog_${common.getSocName()}`);
 
 if (soc_name == "awr294x")
 {
@@ -10,11 +15,11 @@ if (soc_name == "awr294x")
 
 if( soc_name == "am263x" || soc_name == "am263px" || soc_name == "am261x" || soc_name == "am273x" || soc_name == "awr294x")
 {
-    clockSourcesInfo = system.getScript(`/drivers/watchdog/soc/watchdog_${common.getSocName()}`).SOC_RcmClkSrcInfo;
+    clockSourcesInfo = soc.SOC_RcmClkSrcInfo;
 }
 
 function getConfigArr() {
-    return system.getScript(`/drivers/watchdog/soc/watchdog_${common.getSocName()}`).getConfigArr();
+    return soc.getConfigArr();
 }
 
 function getInstanceConfig(moduleInstance) {
@@ -93,7 +98,7 @@ function validate(instance, report) {
     if( soc_name == "am263x" || soc_name == "am263px" || soc_name == "am261x" || soc_name == "am273x" || soc_name == "awr294x")
     {
         validatePair(instance, report);
-        validateInputClkFreq(instance, report);
+        // validateInputClkFreq(instance, report);
     }
 }
 
@@ -165,27 +170,57 @@ gconfig = gconfig.concat([
 
 if( soc_name == "am263x" || soc_name == "am263px" || soc_name == "am261x" || soc_name == "am273x" || soc_name == "awr294x")
 {
-    gconfig = gconfig.concat([
-    {
-        name: "expirationTime",
-        displayName: "WDT Expiry Timeout (ms)",
-        default: 165,
-        description: "Expiration Timeout in millisecond (ms)",
-    },
-    {
-        name: "wdt_clk_src",
-        displayName: "WDT Clock Source",
-        default: clock_sources[1].name,
-        description: "WDT Clock Source",
-        options : clock_sources,
-        onChange: utilfunction
+
+    if(soc_name == "am263x" || soc_name == "am263px" || soc_name == "am261x"){
+        gconfig = gconfig.concat([
+            {
+                name: "wdt_clk_src",
+                displayName: "WDT Clock Source",
+                default: ["am263x", "am263px", "am261x"].includes(common.getSocName()) ? soc.getClkSource(): clock_sources[1].name,
+                description: "WDT Clock Source",
+                getValue: (inst) => {
+                    const wdtInstanceName = inst.instance
+                    return soc.getClkSource(wdtInstanceName)
+                }
         },
         {
             name: "wdt_func_clk",
             displayName: "WDT Input Clock Frequency (Hz)",
-            hidden: false,
-            default: 200000000,
+            default: ["am263x", "am263px", "am261x"].includes(common.getSocName()) ? soc.getClkRate(): 200000000,
             description: "WDT Input Clock frequency (Hz)",
+            getValue: (inst) => {
+                const wdtInstanceName = inst.instance
+                return soc.getClkRate(wdtInstanceName)
+            }
+        },
+        ])
+    }
+    else{
+        gconfig = gconfig.concat([
+        {
+            name: "wdt_clk_src",
+            displayName: "WDT Clock Source",
+            default: clock_sources[1].name,
+            description: "WDT Clock Source",
+            options : clock_sources,
+            onChange: utilfunction
+        },
+        {
+                name: "wdt_func_clk",
+                displayName: "WDT Input Clock Frequency (Hz)",
+                hidden: false,
+                default: 200000000,
+                description: "WDT Input Clock frequency (Hz)",
+            },
+        ])
+    }
+
+    gconfig = gconfig.concat([
+        {
+            name: "expirationTime",
+            displayName: "WDT Expiry Timeout (ms)",
+            default: 165,
+            description: "Expiration Timeout in millisecond (ms)",
         },
     ])
 }

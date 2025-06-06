@@ -134,18 +134,44 @@ let mmcsd_module = {
         {
             name: "clockSource",
             displayName: "Clock Source",
-            default: "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT1",
+            default: soc.getDefaultClkSource(),
             description: "Clock Source",
-            options: soc.getClockSourceOptions(),
-            onChange: function (inst, ui) {
-                inst.inputClkFreq = soc.getClockValue(inst.clockSource);
-            },
+            getValue: (inst) => {
+                const interfaceName = getInterfaceName(inst)
+                const mmcsdSolution = inst[interfaceName].$solution
+                let mmcsdInstanceName = ""
+                if(mmcsdSolution)
+                    mmcsdInstanceName   = mmcsdSolution.peripheralName
+                else
+                    mmcsdInstanceName = "MMC0"
+
+                // AM263Px has 1 instance and it's named as MMC. But for consistency among am26x devices, we change it to MMC0
+                if(mmcsdInstanceName == "MMC") {
+                    mmcsdInstanceName = "MMC0";
+                }
+                return soc.getDefaultClkSource(mmcsdInstanceName)
+            }
         },
 		{
 			name: "inputClkFreq",
 			displayName: "Input Clock Frequency (Hz)",
-			default: soc.getDefaultConfig().inputClkFreq,
+			default: soc.getDefaultClkRate(),
             hidden: false,
+            getValue: (inst) => {
+                const interfaceName = getInterfaceName(inst)
+                const mmcsdSolution = inst[interfaceName].$solution
+                let mmcsdInstanceName = ""
+                if(mmcsdSolution)
+                    mmcsdInstanceName   = mmcsdSolution.peripheralName
+                else
+                    mmcsdInstanceName = "MMC0"
+
+                // AM263Px has 1 instance and it's named as MMC. But for consistency among am26x devices, we change it to MMC0
+                if(mmcsdInstanceName == "MMC") {
+                    mmcsdInstanceName = "MMC0";
+                }
+                return soc.getDefaultClkRate(mmcsdInstanceName)
+            }
 		},
 		{
 			name: "cardType",

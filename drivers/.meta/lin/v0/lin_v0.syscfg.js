@@ -406,19 +406,35 @@ let configHLD = [
             {
                 name: "clockSourceHLD",
                 displayName: "Module Clock Source",
-                default: soc.getDefaultClkSource(),
+                default: soc.getClkSource(),
                 description: "Clock Source",
-                options: soc.getClockSourceOptions(),
                 hidden: true,
-                onChange: function (inst, ui) {
-                    inst.inputClkFreqHLD = soc.getClockValue(inst.clockSourceHLD);
-                },
+                getValue: (inst) => {
+                    const interfaceName = getInterfaceName(inst)
+                    const linSolution = inst[interfaceName].$solution
+                    let linInstanceName = ""
+                    if(linSolution)
+                        linInstanceName   = linSolution.peripheralName
+                    else
+                        linInstanceName = "LIN0"
+                    return soc.getClkSource(linInstanceName)
+                }
             },
             {
                 name: "inputClkFreqHLD",
                 displayName: "Input Clock Frequency (Hz)",
-                default: soc.getClockValue(soc.getDefaultClkSource()),
-                hidden: true,
+                default: soc.getClkRate(),
+                // hidden: true,
+                getValue: (inst) => {
+                    const interfaceName = getInterfaceName(inst)
+                    const linSolution = inst[interfaceName].$solution
+                    let linInstanceName = ""
+                    if(linSolution)
+                        linInstanceName   = linSolution.peripheralName
+                    else
+                        linInstanceName = inst[interfaceName].$suggestSolution?.peripheralName
+                    return soc.getClkRate(linInstanceName)
+                }
             },
         ]
     },
@@ -1051,10 +1067,10 @@ function getDefaultFracDiv() {
 
 const setHldDefaultConfigs = (inst, ui) => {
 
-    inst.clockSourceHLD = soc.getDefaultClkSource();
+    // inst.clockSourceHLD = soc.getDefaultClkSource();
     ui.clockSourceHLD.hidden = false;
 
-    inst.inputClkFreqHLD = soc.getClockValue(soc.getDefaultClkSource());
+    // inst.inputClkFreqHLD = soc.getClockValue(soc.getDefaultClkSource());
     ui.inputClkFreqHLD.hidden = false;
 
     inst.moduleModeHLD = "LIN_MODULE_OP_MODE_LIN";

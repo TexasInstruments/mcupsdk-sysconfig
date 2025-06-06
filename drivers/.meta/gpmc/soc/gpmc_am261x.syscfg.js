@@ -1,14 +1,12 @@
 let common = system.getScript("/common");
 
-let gpmc_input_clk_freq = 500000000;
-
 const gpmc_config_r5fss = [
     {
         name            : "GPMC",
         baseAddr        : "CSL_GPMC0_CFG",
         dataBaseAddr    : "CSL_GPMC0_MEM_U_BASE",
         elmBaseAddr     : "CSL_ELM0_BASE",
-        inputClkFreq    : gpmc_input_clk_freq,
+        inputClkFreq    : getDefaultClkRate(),
         clockRateDiv    : 1,
         intrNum         : "CSLR_R5FSS0_CORE0_GPMC_SINTR",
         dmaLocalEventID : 29,
@@ -16,8 +14,8 @@ const gpmc_config_r5fss = [
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_GPMC",
-                clkId   : "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT0",
-                clkRate : gpmc_input_clk_freq,
+                clkId   : getDefaultClkSource("GPMC0"),
+                clkRate : getDefaultClkRate("GPMC0"),
             },
         ],
     },
@@ -90,10 +88,28 @@ function getNorlikeGpmcConfig ()
     return gpmc_config_norlike_device;
 }
 
+function getDefaultClkSource(instanceName = "GPMC0") {
+
+    let ospi_input_clock_source = "SOC_RcmPeripheralClockSource_" + helperScript.helperMux(instanceName);
+    return ospi_input_clock_source;
+}
+
+function getDefaultClkRate(instanceName =  "GPMC0") {
+
+    if (instanceName === "")
+        return 0;
+    let namedConnection = instanceName + "_CLK"
+    let ospi_input_clk_freq = helperScript.helperGetFrequencyNamedConnection(namedConnection)
+
+    return ospi_input_clk_freq;
+}
+
 exports = {
     getDefaultConfig,
     getConfigArr,
     getNorlikeGpmcConfig,
     getDmaRestrictedRegions,
+    getDefaultClkSource,
+    getDefaultClkRate
 };
 

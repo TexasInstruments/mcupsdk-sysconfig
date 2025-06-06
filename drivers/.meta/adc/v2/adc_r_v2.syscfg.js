@@ -1,7 +1,6 @@
 let common   = system.getScript("/common");
 let pinmux   = system.getScript("/drivers/pinmux/pinmux");
 let device_peripheral = system.getScript(`/drivers/adc/soc/adc_${common.getSocName()}.syscfg.js`);
-let adc_sampletime_sysclk_ns = 1000/device_peripheral.ADC_Sysclk_Mhz;
 
 let module = system.getScript("adc_v2");
 

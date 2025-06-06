@@ -1,14 +1,13 @@
 let common = system.getScript("/common");
-
-let ospi_input_clk_freq = 133333333;
+let helperScript = system.getScript(`/clockTree/helperScript.js`);
 
 const ospi_config_r5fss = [
     {
         name            : "OSPI0",
         baseAddr        : "CSL_FLASH_CONFIG_REG8_U_BASE",
-        dataBaseAddr0    : "CSL_FLASH_DATA_REG0_U_BASE",
-        dataBaseAddr1    : "CSL_FLASH_DATA_REG1_U_BASE",
-        inputClkFreq    : ospi_input_clk_freq,
+        dataBaseAddr0   : "CSL_FLASH_DATA_REG0_U_BASE",
+        dataBaseAddr1   : "CSL_FLASH_DATA_REG1_U_BASE",
+        inputClkFreq    : getDefaultClkRate(),
         dacEnable       : false,
         baudRateDiv     : 4,
         intrNum         : 54,
@@ -16,8 +15,8 @@ const ospi_config_r5fss = [
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_OSPI0",
-                clkId   : "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT0",
-                clkRate : ospi_input_clk_freq,
+                clkId   : getDefaultClkSource("OSPI0"),
+                clkRate : getDefaultClkRate("OSPI0"),
             },
         ],
     },
@@ -52,6 +51,22 @@ const ospi_dma_restrict_regions = [
     { start : "CSL_MSS_TCMA_RAM_BASE"   , size : "CSL_MSS_TCMA_RAM_SIZE" },
     { start : "CSL_HSM_RAM_U_BASE"      , size : "0x2fffc" }
 ];
+
+function getDefaultClkSource(instanceName = "OSPI0") {
+
+    let ospi_input_clock_source = "SOC_RcmPeripheralClockSource_" + helperScript.helperMux(instanceName);
+    return ospi_input_clock_source;
+}
+
+function getDefaultClkRate(instanceName =  "OSPI0") {
+
+    if (instanceName === "")
+        return 0;
+    let namedConnection = instanceName + "_CLK"
+    let ospi_input_clk_freq = helperScript.helperGetFrequencyNamedConnection(namedConnection)
+
+    return ospi_input_clk_freq;
+}
 
 function getDefaultConfig()
 {
@@ -102,7 +117,9 @@ exports = {
     getDmaRestrictedRegions,
     getSupportedDataLines,
     addModuleInstances,
-    getPhyTuningParams
+    getPhyTuningParams,
+    getDefaultClkSource,
+    getDefaultClkRate
 };
 
 

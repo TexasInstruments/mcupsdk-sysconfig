@@ -4,7 +4,6 @@ let soc = system.getScript(`/drivers/i2c/soc/i2c_${common.getSocName()}`);
 let hwi = system.getScript("/kernel/dpl/hwi.js");
 
 let globalClockId = soc.getDefaultClkSource();
-let globalClockRate = soc.getDefaultClockValue(globalClockId);
 
 function getStaticConfigArr() {
     return system.getScript(`/drivers/i2c/soc/i2c_${common.getSocName()}`).getStaticConfigArr();
@@ -237,24 +236,29 @@ function getModuleStatic() {
                     displayName: "Clock Source",
                     default: soc.getDefaultClkSource(),
                     description: "Clock Source",
-                    options: gClockSourceOptions,
+                    // options: gClockSourceOptions,
                     hidden: false,
-                    onChange: function (inst, ui) {
-                        inst.funcClk = soc.getClockValue(inst.clockSource);
-                        globalClockId = inst.clockSource;
-                        globalClockRate = inst.funcClk;
-                    },
+                    // onChange: function (inst, ui) {
+                    //     inst.funcClk = soc.getClockValue(inst.clockSource);
+                    //     globalClockId = inst.clockSource;
+                    //     globalClockRate = inst.funcClk;
+                    // },
+                    getValue: () => {
+                        globalClockId = soc.getDefaultClkSource()
+                        return globalClockId
+                    }
                 },
                 {
                     name: "funcClk",
                     displayName: "Input Clock Frequency (Hz)",
-                    default: soc.getDefaultClockValue(),
+                    default: 48000000,
                     description: "Source Clock Frequency",
                     displayFormat: "dec",
                     hidden: false,
-                    onChange: function (inst, ui) {
-                        globalClockRate = inst.funcClk;
-                    },
+                    getValue: () => {
+                        let globalClockRate = soc.getDefaultClockValue()
+                        return globalClockRate
+                    }
                 },
             ],
         }
@@ -264,8 +268,6 @@ function getModuleStatic() {
 }
 
 let i2c_module_name = "/drivers/i2c/i2c";
-
-let gClockSourceOptions = soc.getClockSourceOptions();
 
 function getModuleStaticAll(inst) {
 
@@ -365,7 +367,7 @@ function moduleInstances(inst) {
 function getClockFrequencies(inst) {
 
     if (common.getSocName() != "am273x") {
-
+        let globalClockRate = 48000000;
         let clockFrequencies = [
             {
                 moduleId: "SOC_RcmPeripheralId_I2C",
@@ -385,7 +387,7 @@ function getClockFrequencies(inst) {
 
 function getClockRate(inst) {
     if (common.getSocName() != "am273x") {
-
+        let globalClockRate = 48000000;
         return (globalClockRate);
     }
     else {

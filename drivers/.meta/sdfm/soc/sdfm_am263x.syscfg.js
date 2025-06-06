@@ -1,4 +1,5 @@
 let common = system.getScript("/common");
+let helperScript = system.getScript(`/clockTree/helperScript.js`);
 
 
 let SDFM_OutputThresholdStatus = [
@@ -137,7 +138,6 @@ function getInterfaceName(instance) {
     return "SDFM";
 }
 
-let sdfm_func_clk = 400 * 1000 * 1000;
 const staticConfig = [
     {
         name: "SDFM0",
@@ -146,21 +146,21 @@ const staticConfig = [
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_CONTROLSS_PLL",
-                clkId   : "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT2",
-                clkRate : sdfm_func_clk,
+				clkId   : getClkSource("SDFM0_PLL"),
+                clkRate : getClkRate("SDFM0_PLL"),
             },
         ],
     },
     {
         name: "SDFM1",
         baseAddr: "CSL_CONTROLSS_SDFM1_U_BASE",
-        funcClk: sdfm_func_clk,
+        funcClk: getClkRate("SDFM1_PLL"),
         clockIds        : [ "SOC_RcmPeripheralId_CONTROLSS_PLL" ],
         clockFrequencies: [
             {
                 moduleId: "SOC_RcmPeripheralId_CONTROLSS_PLL",
-                clkId   : "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT2",
-                clkRate : sdfm_func_clk,
+				clkId   : getClkSource("SDFM1_PLL"),
+                clkRate : getClkRate("SDFM1_PLL"),
             },
         ],
     },
@@ -174,6 +174,21 @@ function getStaticConfigArr() {
 
 function isClkLoopBackAvailable(){
     return false
+}
+function getClkSource(instanceName =  "SDFM0") {
+
+    let sdfm_input_clock_source = "SOC_RcmPeripheralClockSource_" + helperScript.helperMux(instanceName);
+    return sdfm_input_clock_source;
+}
+
+function getClkRate(instanceName =  "SDFM0") {
+
+    if (instanceName === "")
+        return 0;
+    let namedConnection = instanceName + "_CLK"
+    let sdfm_input_clk_freq = helperScript.helperGetFrequencyNamedConnection(namedConnection)
+
+    return sdfm_input_clk_freq;
 }
 
 exports = {
