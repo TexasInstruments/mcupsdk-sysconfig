@@ -1,0 +1,26 @@
+%%{
+	const signals = _.filter(system.deviceData.clockTree.connectivity, (c) => !_.isEmpty(c.displayName));
+
+	function freqToString(freq) {
+		if (_.isArray(freq)) {
+			if (freq[0] !== freq[1]) {
+				return `${freq[0]} - ${freq[1]} MHz`;
+			}
+
+			return freq[0] + " MHz"
+		}
+		return freq + " MHz"
+	}
+%%}
+
+Signal | Frequency | Used
+--- | --- | ---
+% for (const signal of signals) {
+% // This generates a link - stuff in the [] is the link name, and we're using system.getReference for the location
+% // This allows us to name the signal, but also allow clicking on it to see where to configure it
+% const name = signal.displayName ?? signal.name;
+% const link = system.getReference(system.clockTree[signal.name]);
+% const frequency = freqToString(system.clockTree[signal.name].in);
+% const inUse = system.clockTree[signal.name].$isUsed;
+[`name`](`link`) | `frequency` | `inUse`
+% }

@@ -1,0 +1,7 @@
+% const common = system.getScript("/common");
+% const soc = common.getSocName();
+
+#include <drivers/hw_include/cslr_soc.h>
+#include <drivers/soc/`soc`/soc_rcm.h>
+
+void Bootloader_socConfigurePll(void);

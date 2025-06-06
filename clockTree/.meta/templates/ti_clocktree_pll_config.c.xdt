@@ -1,0 +1,81 @@
+% let dividerModule = system.modules[`/clockTree/divider.js`];
+% let dividerInstances = dividerModule.$instances;
+% let pllModule = system.modules[`/clockTree/unknown.js`];
+% let pllInstances = pllModule.$instances;
+% let common = system.getScript("/common");
+% let soc = common.getSocName();
+
+#include "ti_clocktree_pll_config.h"
+extern uint32_t gR5ClockFrequency;
+
+%function getPllGateStatus( component ,index ){
+%
+%    const gateModule = system.modules["/clockTree/gate.js"];
+%    const gateInstances = gateModule.$instances;
+%
+%    for(let inst of gateInstances){
+%        let hsdiv = "HSDIV0_CLKOUT" + index
+%        let name = inst.$name
+%        if(name.startsWith("PLL") && name.includes(component) && name.startsWith("PLL") && name.includes(hsdiv))
+%            return inst.enable;
+%    }
+%}
+
+%function helperHsDivConfig(component, index){
+%
+%    let hsDiv = "DPLL_" + component + "_HSDIV0_CLKOUT" + index + "_DIV"
+%    let freqOut = _.find(dividerInstances, inst => inst.$name === hsDiv).out[0]
+%    return Math.floor(freqOut)
+%}
+
+%function configureHSDivCfg(component){
+%
+%    let pllGateEnabled = []
+%    for(let i = 0; i < 4; i++){
+%        if(getPllGateStatus(component, i)){
+%            pllGateEnabled.push(`RCM_PLL_HSDIV_OUTPUT_ENABLE_${i}`)
+    hsDivCfg.hsDivOutFreqHz[`i`] = SOC_RCM_FREQ_MHZ2HZ(`helperHsDivConfig(component, i)`U);
+%        }
+%   }
+%    let result = ""
+%    if( pllGateEnabled.length == 4)
+%        result = "RCM_PLL_HSDIV_OUTPUT_ENABLE_ALL"
+%    else
+%        result = pllGateEnabled.join(' | ');
+%
+    hsDivCfg.hsdivOutEnMask = `result`;
+%}
+
+%function getPllFreq(component){
+%    let pllName = "PLL_" + component + "_CLK"
+%    let fout =  _.find(pllInstances, inst => inst.$name === pllName).out[0]
+%    let componentModified = component.charAt(0).toUpperCase() + component.slice(1).toLowerCase()
+%    let functionName = "SOC_rcm" + componentModified + "ApllConfig";
+    `functionName`(RCM_PLL_FOUT_FREQID_CLK_`fout`MHZ, &hsDivCfg);
+
+%}
+
+void Bootloader_socConfigurePll(void)
+{
+
+    % let components = ["CORE", "ETH", "PER"]
+    SOC_RcmPllHsDivOutConfig hsDivCfg;
+
+    uint32_t r5ClkSrc_restore;
+
+    /* Pre Requisite Sequence to relock core pll needs to be done */
+    r5ClkSrc_restore = SOC_rcmCoreApllRelockPreRequisite();
+
+    %%{
+        for(let component of components){
+            if( component === "ETH" && (system.deviceData.device === "AM263x_beta" || system.deviceData.device === "AM263Px")){
+                continue;
+            }
+            configureHSDivCfg(component)
+            getPllFreq(component)
+        }
+    %%}
+
+    /* Restore R5F source clock*/
+    SOC_rcmSetR5ClockSource(r5ClkSrc_restore);
+}
