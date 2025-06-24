@@ -63,8 +63,6 @@ MMCSDLLD_InitObject gMmcsdLldInitObject[CONFIG_MMCSD_NUM_INSTANCES] =
         .pllEnableSD            = `config.usePLLSD`,
         .deviceData             = NULL,
         .dataBuf                = NULL,
-        .Clock_getTicks         = ClockP_getTicks,
-        .Clock_uSleep           = ClockP_usleep,
     }
 % }
 };

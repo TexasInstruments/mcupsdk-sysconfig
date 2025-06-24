@@ -36,7 +36,6 @@ MMCSDLLD_InitObject gMmcsdLldInitObject[CONFIG_MMCSD_NUM_INSTANCES] =
         .enableDma              = `config.dmaEnable`,
         .deviceData             = NULL,
         .dataBuf                = NULL,
-        .Clock_uSleep           = ClockP_usleep,
     }
 % }
 };
