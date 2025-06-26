@@ -302,6 +302,15 @@ function getConfigurables()
             description: `Enable data transfer using DMA`,
         },
         {
+            name: "readMode",
+            displayName: "Read Mode",
+            default: "READ_MODE_DAC",
+            options: [
+                { name: "READ_MODE_DAC" },
+                { name: "READ_MODE_INDAC" },
+            ]
+        },
+        {
             name: "dacEnable",
             displayName: "Enable DAC",
             default: false,
