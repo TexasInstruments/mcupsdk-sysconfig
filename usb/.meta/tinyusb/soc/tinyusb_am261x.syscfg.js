@@ -24,6 +24,40 @@ function getConfigArr() {
     return tinyusb_config;
 }
 
+const usb_speeds = [
+    {
+        name        : "High Speed"
+    },
+    {
+        name        : "Full Speed"
+    },
+    {
+        name        : "Low Speed"
+    }
+];
+
+function getUsbSpeedArray() {
+    return usb_speeds;
+}
+
+const usb_class = [
+    {
+        name        : "CDC",
+    },
+    {
+        name        : "DFU",
+    },
+    {
+        name        : "NCM",
+    }
+];
+
+function getUsbClassArray() {
+    return usb_class;
+}
+
 exports = {
     getConfigArr,
+    getUsbSpeedArray,
+    getUsbClassArray,
 };

@@ -1,0 +1,16 @@
+%%{
+    let module = system.modules['/usb/tinyusb/tinyusb'];
+    let common = system.getScript("/common");
+%%}
+%
+% if(common.getSocName() == "am261x") {
+%
+%   for(let i = 0; i < module.$instances.length; i++) {
+%       let instance = module.$instances[i];
+%       let config = module.getInstanceConfig(instance);
+%
+%       if(config.usbClass == "NCM") {
+extern const uint8_t tud_network_mac_address[6];
+%       }
+%   }
+%}
