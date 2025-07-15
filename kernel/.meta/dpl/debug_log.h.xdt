@@ -7,3 +7,7 @@
 #include <soc/f29h85x/soc_defines.h>
 #include <modules/memlog/memlog.h>
 %}
+% else if(soc == "f29p32x" && (cpuName.match(/hsm/))){
+#include <soc/f29p32x/soc_defines.h>
+#include <modules/memlog/memlog.h>
+%}

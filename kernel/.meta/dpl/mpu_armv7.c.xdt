@@ -3,7 +3,7 @@
     let soc = system.getScript('/common').getSocName();
     let cpuName = system.getScript('/common').getSelfSysCfgCoreName();
 %%}
-% if(soc == "f29h85x" && (cpuName.match(/hsm/))){
+% if(((soc == "f29h85x") || (soc == "f29p32x")) && (cpuName.match(/hsm/))){
 #ifdef __FLASH_BUILD
 /* ----------- Cert Section for F29H85x Flash ----------- */
 /* The cert section is added for f29h85x flash based execution. 

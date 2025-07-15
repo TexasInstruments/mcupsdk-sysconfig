@@ -67,7 +67,7 @@ void SDL_lbist_selftest(void)
 % }
 }
 
-% if(common.getSocName() != "f29h85x"){
+% if((common.getSocName() != "f29h85x") && (common.getSocName() != "f29p32x")){
 void Pinmux_init(void);
 void PowerClock_init(void);
 void PowerClock_deinit(void);
@@ -112,11 +112,11 @@ void System_init(void)
 % }
 % } else {
     `system.getTemplate("/kernel/dpl/pmu_init.c.xdt")()`
-% if(common.getSocName() != "f29h85x"){
+% if((common.getSocName() != "f29h85x") && (common.getSocName() != "f29p32x")){
     PowerClock_init();
 % }
 % }
-% if(common.getSocName() != "f29h85x"){
+% if((common.getSocName() != "f29h85x") && (common.getSocName() != "f29p32x")){
     /* Now we can do pinmux */
     Pinmux_init();
 % }
@@ -136,11 +136,11 @@ void System_init(void)
 
 
 `system.getTemplate("/kernel/dpl/pmu_init.c.xdt")()`
-% if(common.getSocName() != "f29h85x"){
+% if((common.getSocName() != "f29h85x") && (common.getSocName() != "f29p32x")){
     PowerClock_init();
 % }
 
-% if(common.getSocName() != "f29h85x"){
+% if((common.getSocName() != "f29h85x") && (common.getSocName() != "f29p32x")){
     /* Now we can do pinmux */
     Pinmux_init();
 % }
@@ -166,7 +166,7 @@ void System_deinit(void)
 `system.getTemplate(subTemplate.driver_deinit)()`
     % }
 % }
-% if(common.getSocName() != "f29h85x"){
+% if((common.getSocName() != "f29h85x") && (common.getSocName() != "f29p32x")){
     PowerClock_deinit();
 % }
 % if (common.isSciClientSupported()) {
@@ -180,7 +180,7 @@ void System_deinit(void)
 `system.getTemplate(subTemplate.driver_deinit)()`
     % }
 % }
-% if(common.getSocName() != "f29h85x"){
+% if((common.getSocName() != "f29h85x") && (common.getSocName() != "f29p32x")){
     PowerClock_deinit();
 % }
 % if (common.isSciClientSupported()) {

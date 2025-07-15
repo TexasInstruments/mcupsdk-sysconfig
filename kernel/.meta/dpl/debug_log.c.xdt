@@ -11,13 +11,13 @@
     }
 %%}
 /* ----------- DebugP ----------- */
-% if(soc == "f29h85x" && instance.enableMemLog && (cpuName.match(/hsm/))){
+% if(((soc == "f29h85x") || (soc == "f29p32x")) && instance.enableMemLog && (cpuName.match(/hsm/))){
 extern volatile uint32_t gMemLogAddress;
 void memLogPrintBuffer(uint8_t ch);
 %}
 void putchar_(char character)
 {
-% if(soc != "f29h85x"){
+% if((soc != "f29h85x") && (soc != "f29p32x")){
 % if(instance.enableCssLog) {
     /* Output to CCS console */
     putchar(character);
@@ -40,12 +40,12 @@ void putchar_(char character)
     DebugP_shmLogWriterPutChar(character);
 % }
 % }
-% if(soc == "f29h85x" && instance.enableMemLog && (cpuName.match(/hsm/))){
+% if(((soc == "f29h85x") || (soc == "f29p32x")) && instance.enableMemLog && (cpuName.match(/hsm/))){
     memLogPrintBuffer(character);
 %}    
 }
 
-% if( ((ipc_instance && ipc_instance.enableLinuxIpc === true) || instance.enableMemLog) && soc != "f29h85x") {
+% if( ((ipc_instance && ipc_instance.enableLinuxIpc === true) || instance.enableMemLog) && ((soc != "f29h85x") && (soc != "f29p32x"))) {
 /* DebugP log buffer memory and size
  * - This log can be viewed via ROV in CCS
  * - When linux is enabled, this log can also be viewed via linux debugfs
