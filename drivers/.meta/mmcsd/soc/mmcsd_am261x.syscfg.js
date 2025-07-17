@@ -45,16 +45,14 @@ function getClockSourceOptions() {
     ];
 }
 
-function getClockValue(clkSrc) {
-    let clockVal;
-    if(clkSrc === "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT1") {
-        clockVal = 192000000;
-    } else if (clkSrc === "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT0") {
-        clockVal = 200000000;
-    } else {
-        /* Bad clk source */
+function getClockSrcValueMap(clkSrc) {
+
+    let clockSrc_Freq_Map = {
+        "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT1": 192000000,
+        "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT0": 200000000,
     }
-    return clockVal;
+
+    return clockSrc_Freq_Map
 }
 
 function getDefaultOperatingModeSD() {
@@ -86,7 +84,7 @@ exports = {
 	getDefaultConfig,
 	getConfigArr,
 	getClockSourceOptions,
-    getClockValue,
+    getClockSrcValueMap,
     getDefaultOperatingModeSD,
     getOperatingModesSD,
     getDefaultClkSource,

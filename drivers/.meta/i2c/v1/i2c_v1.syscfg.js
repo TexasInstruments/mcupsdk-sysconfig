@@ -4,6 +4,7 @@ let soc = system.getScript(`/drivers/i2c/soc/i2c_${common.getSocName()}`);
 let hwi = system.getScript("/kernel/dpl/hwi.js");
 
 let globalClockId = soc.getDefaultClkSource();
+let globalClockRate = soc.getDefaultClockValue();
 
 function getStaticConfigArr() {
     return system.getScript(`/drivers/i2c/soc/i2c_${common.getSocName()}`).getStaticConfigArr();
@@ -224,46 +225,83 @@ function getModuleStatic() {
 
     let config = [];
 
-    config = (
-        {
-            name: "GROUP_GLOBAL_I2C_CLOCK_CONFIGURATION",
-            displayName: "I2C Global Clock Configuration",
-            collapsed:false,
+    if (["am263x", "am263px", "am261x"].includes(common.getSocName()) ) {
+            config = (
+            {
+                name: "GROUP_GLOBAL_I2C_CLOCK_CONFIGURATION",
+                displayName: "I2C Global Clock Configuration",
+                collapsed:false,
 
-            config : [
-                {
-                    name: "clockSource",
-                    displayName: "Clock Source",
-                    default: soc.getDefaultClkSource(),
-                    description: "Clock Source",
-                    // options: gClockSourceOptions,
-                    hidden: false,
-                    // onChange: function (inst, ui) {
-                    //     inst.funcClk = soc.getClockValue(inst.clockSource);
-                    //     globalClockId = inst.clockSource;
-                    //     globalClockRate = inst.funcClk;
-                    // },
-                    getValue: () => {
-                        globalClockId = soc.getDefaultClkSource()
-                        return globalClockId
-                    }
-                },
-                {
-                    name: "funcClk",
-                    displayName: "Input Clock Frequency (Hz)",
-                    default: 48000000,
-                    description: "Source Clock Frequency",
-                    displayFormat: "dec",
-                    hidden: false,
-                    getValue: () => {
-                        let globalClockRate = soc.getDefaultClockValue()
-                        return globalClockRate
-                    }
-                },
-            ],
-        }
-    )
+                
+                config : [
+                    {
+                        name: "clockSource",
+                        displayName: "Clock Source",
+                        default: soc.getDefaultClkSource(),
+                        description: "Clock Source",
+                        hidden: false,
+                        getValue: () => {
+                            globalClockId = soc.getDefaultClkSource()
+                            return globalClockId
+                        }
+                    },
+                    {
+                        name: "funcClk",
+                        displayName: "Input Clock Frequency (Hz)",
+                        default: 48000000,
+                        description: "Source Clock Frequency",
+                        displayFormat: "dec",
+                        hidden: false,
+                        getValue: () => {
+                            globalClockRate = soc.getDefaultClockValue()
+                            return globalClockRate
+                        }
+                    },
+                ],
+            }
+        )          
+    }
+    else {
+        config = (
+            {
+                name: "GROUP_GLOBAL_I2C_CLOCK_CONFIGURATION",
+                displayName: "I2C Global Clock Configuration",
+                collapsed:false,
 
+                
+                config : [
+                    {
+                        name: "clockSource",
+                        displayName: "Clock Source",
+                        default: soc.getDefaultClkSource(),
+                        description: "Clock Source",
+                        options: soc.getClockSourceOptions(),
+                        hidden: false,
+                        onChange: function (inst, ui) {
+                            inst.funcClk = soc.getClockValue(inst.clockSource);
+                            globalClockId = inst.clockSource;
+                            globalClockRate = inst.funcClk;
+                        },
+                    },
+                    {
+                        name: "funcClk",
+                        displayName: "Input Clock Frequency (Hz)",
+                        default: 48000000,
+                        description: "Source Clock Frequency",
+                        displayFormat: "dec",
+                        hidden: false,
+                        getValue: () => {
+                            globalClockRate = soc.getDefaultClockValue()
+                            return globalClockRate
+                        }
+                    },
+                ],
+            }
+        )
+
+    }
+
+    
     return config;
 }
 
@@ -335,6 +373,20 @@ function validate(instance, report) {
             (instance.transferCallbackFxn == ""))) {
         report.logError("Callback function MUST be provided for callback transfer mode", instance, "transferCallbackFxn");
     }
+
+    if (["am263x", "am263px", "am261x"].includes(common.getSocName()) ) {
+        let clockSrc_Freq_Map = soc.getClockSrcValueMap()
+        let clockSrc = instance.$module.$static.clockSource 
+        let clockRate = instance.$module.$static.funcClk
+        if(!clockSrc_Freq_Map.hasOwnProperty(clockSrc) || clockRate !== clockSrc_Freq_Map[clockSrc]){
+            if(!clockSrc_Freq_Map.hasOwnProperty(clockSrc)){
+                report.logWarning(`Invalid clock source ${clockSrc} selected `, instance.$module.$static, "funcClk");
+            }
+            else{
+                report.logWarning(`Valid clock frequency for this clock source ${clockSrc} is ${clockSrc_Freq_Map[clockSrc]}`, instance.$module.$static, "funcClk");
+            }
+        }
+    }
 }
 
 /*
@@ -367,7 +419,7 @@ function moduleInstances(inst) {
 function getClockFrequencies(inst) {
 
     if (common.getSocName() != "am273x") {
-        let globalClockRate = 48000000;
+        // let globalClockRate = 48000000;
         let clockFrequencies = [
             {
                 moduleId: "SOC_RcmPeripheralId_I2C",
@@ -387,7 +439,7 @@ function getClockFrequencies(inst) {
 
 function getClockRate(inst) {
     if (common.getSocName() != "am273x") {
-        let globalClockRate = 48000000;
+        // let globalClockRate = 48000000;
         return (globalClockRate);
     }
     else {

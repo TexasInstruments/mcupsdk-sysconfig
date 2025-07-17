@@ -362,6 +362,31 @@ let mmcsd_module = {
 
 function validate(inst, report) {
 
+    if (["am263x", "am263px", "am261x"].includes(common.getSocName()) ) {
+        let clockSrc_Freq_Map = soc.getClockSrcValueMap()
+
+        const interfaceName = getInterfaceName(inst)
+        const mmcsdSolution = inst[interfaceName]
+        let mmcsdInstanceName = ""
+
+        if(mmcsdSolution)
+            mmcsdInstanceName   = mmcsdSolution.$assign
+        
+        if(mmcsdInstanceName === undefined || mmcsdInstanceName === "Any"){
+            mmcsdInstanceName = "MMC0"
+        }
+
+        let clockSrc = inst.clockSource 
+        let clockRate = inst.inputClkFreq
+        if(!clockSrc_Freq_Map.hasOwnProperty(clockSrc) || clockRate !== clockSrc_Freq_Map[clockSrc]){
+            if(!clockSrc_Freq_Map.hasOwnProperty(clockSrc)){
+                report.logWarning(`Invalid clock source ${clockSrc} selected `, inst, "inputClkFreq");
+            }
+            else{
+                report.logWarning(`Valid clock frequency for this clock source ${clockSrc} is ${clockSrc_Freq_Map[clockSrc]}`, inst, "inputClkFreq");
+            }
+        }
+    }
 }
 
 /*

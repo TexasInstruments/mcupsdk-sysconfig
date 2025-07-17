@@ -82,35 +82,19 @@ function getDefaultClockValue(instanceName = "I2C0") {
     return i2c_input_clk_freq;
 }
 
-function getClockValue(clkSrc) {
+function getClockSrcValueMap(clkSrc) {
 
-    let clockVal;
+    let clockSrc_Freq_Map = {
+        "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT1": 96000000,
+        "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT0": 200000000,
+        "SOC_RcmPeripheralClockSource_XTALCLK": 25*1000000,
+        "SOC_RcmPeripheralClockSource_SYS_CLK": 200*1000000,
+        "SOC_RcmPeripheralClockSource_WUCPUCLK": 25*1000000,
+        "SOC_RcmPeripheralClockSource_EXT_REFCLK": 100*1000000,
+        "SOC_RcmPeripheralClockSource_RCCLK10M": 10*1000000
+    }
 
-    if(clkSrc === "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT1") {
-        clockVal = 96000000;
-    }
-    else if (clkSrc === "SOC_RcmPeripheralClockSource_DPLL_CORE_HSDIV0_CLKOUT0") {
-        clockVal = 200000000;
-    }
-    else if (clkSrc === "SOC_RcmPeripheralClockSource_XTALCLK") {
-        clockVal = 25*1000000;
-    }
-    else if (clkSrc === "SOC_RcmPeripheralClockSource_SYS_CLK") {
-        clockVal = 200*1000000;
-    }
-    else if (clkSrc === "SOC_RcmPeripheralClockSource_WUCPUCLK") {
-        clockVal = 25*1000000;
-    }
-    else if (clkSrc === "SOC_RcmPeripheralClockSource_EXT_REFCLK") {
-        clockVal = 100*1000000;
-    }
-    else if (clkSrc === "SOC_RcmPeripheralClockSource_RCCLK10M") {
-        clockVal = 10*1000000;
-    }
-    else {
-        /* Bad clk source */
-    }
-    return clockVal;
+    return clockSrc_Freq_Map
 }
 
 let soc = {
@@ -121,7 +105,7 @@ let soc = {
     isFrequencyDefined,
     getDefaultConfig,
     getClockSourceOptions,
-    getClockValue,
+    getClockSrcValueMap,
     getDefaultClkSource,
     getDefaultClockValue,
     getClockEnableIds,

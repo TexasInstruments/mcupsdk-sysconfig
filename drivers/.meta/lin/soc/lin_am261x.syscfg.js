@@ -92,6 +92,16 @@ function getClockValue(clkSrc) {
     return clockVal;
 }
 
+function getClockSrcValueMap(clkSrc) {
+
+    let clockSrc_Freq_Map = {
+        "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT0": 192000000,
+        "SOC_RcmPeripheralClockSource_DPLL_PER_HSDIV0_CLKOUT2": 160000000,
+    }
+
+    return clockSrc_Freq_Map
+}
+
 /* This is subject to change, therefore update might be required */
 function getSysClkFrequency(){
 
@@ -103,5 +113,6 @@ exports = {
     getInterfaceName,
     getDefaultConfig,
     getClkSource,
-    getClkRate
+    getClkRate,
+    getClockSrcValueMap
 };

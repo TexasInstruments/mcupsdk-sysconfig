@@ -1304,6 +1304,34 @@ function validate(instance, report) {
 
         }
     }
+
+    if (["am263x", "am263px", "am261x"].includes(common.getSocName()) ) {
+        let clockSrc_Freq_Map = soc.getClockSrcValueMap()
+        
+        const interfaceName = getInterfaceName(instance)
+        const linSolution = instance[interfaceName]
+        let linInstanceName = ""
+
+        if(linSolution)
+            linInstanceName   = linSolution.$assign
+        
+        if(linInstanceName === undefined || linInstanceName === "Any"){
+            linInstanceName = "LIN0"
+        }
+
+
+        let clockSrc = soc.getClkSource(linInstanceName)
+        let clockRate = soc.getClkRate(linInstanceName)
+
+        if(!clockSrc_Freq_Map.hasOwnProperty(clockSrc) || clockRate !== clockSrc_Freq_Map[clockSrc]){
+            if(!clockSrc_Freq_Map.hasOwnProperty(clockSrc)){
+                report.logWarning(`Invalid clock source ${clockSrc} selected `, instance, "inputClkFreqHLD");
+            }
+            else{
+                report.logWarning(`Valid clock frequency for this clock source ${clockSrc} is ${clockSrc_Freq_Map[clockSrc]}`, instance, "inputClkFreqHLD");
+            }
+        }
+    }
 }
 
 function moduleInstances(inst) {
