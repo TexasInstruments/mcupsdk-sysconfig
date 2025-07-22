@@ -98,7 +98,7 @@ function getConfigArr() {
 }
 
 function getSupportedDataLines() {
-    if(system.deviceData.device == "AM261x_ZCZ" || system.deviceData.device == "AM261x_ZFG") {
+    if(system.deviceData.device == "AM261x_ZCZ" || system.deviceData.device == "AM261x_ZFG" || system.deviceData.device == "AM261x_ZFG_400") {
         return 8;
     } else {
         return 4;

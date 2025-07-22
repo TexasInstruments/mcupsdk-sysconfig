@@ -38,7 +38,7 @@ function getDefaultFlashConfig()
 
 function getDefaultProtocol()
 {
-    if(system.deviceData.device == "AM261x_ZCZ" || system.deviceData.device == "AM261x_ZFG") {
+    if(system.deviceData.device == "AM261x_ZCZ" || system.deviceData.device == "AM261x_ZFG" || system.deviceData.device == "AM261x_ZFG_400") {
         return { name : "8d_8d_8d", displayName : "8D-8D-8D" };
     } else {
         return { name : "4s_4d_4d", displayName : "4S-4D-4D" };
@@ -47,7 +47,7 @@ function getDefaultProtocol()
 
 function getDefaultProtocolJson()
 {
-    if(system.deviceData.device == "AM261x_ZCZ" || system.deviceData.device == "AM261x_ZFG") {
+    if(system.deviceData.device == "AM261x_ZCZ" || system.deviceData.device == "AM261x_ZFG"  || system.deviceData.device == "AM261x_ZFG_400") {
         return "p888d";
     } else {
         return "p444d";
@@ -56,7 +56,7 @@ function getDefaultProtocolJson()
 
 function getDefaultNandProtocolJson()
 {
-    if(system.deviceData.device == "AM261x_ZCZ" || system.deviceData.device == "AM261x_ZFG") {
+    if(system.deviceData.device == "AM261x_ZCZ" || system.deviceData.device == "AM261x_ZFG"  || system.deviceData.device == "AM261x_ZFG_400") {
         return "p188";
     } else {
         return "p444d";
