@@ -2,6 +2,7 @@
     let common = system.getScript("/common");
     let soc = system.getScript(`/drivers/soc/drivers_${common.getSocName()}`);
     let driverVer = soc.getDriverVer("mmcsd");
+    let mmcsdEdmaInstances = [];
     let module = system.modules['/drivers/mmcsd/mmcsd'];
 %%}
 
@@ -25,6 +26,9 @@ MMCSD_SdDeviceData gSdData`i`;
             %}
             %else {
             %}
+        % if(instance.dmaEnable === true) {
+        %   mmcsdEdmaInstances.push(config.edmaDriver);
+        % }
 %}
 
 /* MMCSD temporary data buffers */
@@ -34,6 +38,27 @@ MMCSD_SdDeviceData gSdData`i`;
     % if (config.cardType != "NO_DEVICE") {
 uint8_t gMmcsdDataBuf`i`[512U] __attribute__((aligned(128U)));
     % }
+%}
+
+%if(mmcsdEdmaInstances.length > 0) {
+#include <drivers/edma.h>
+#include <drivers/mmcsd/v1/lld/dma/edma/mmcsd_edma_lld.h>
+
+%  for(let i=0; i < module.$instances.length; i++) {
+%      let instance = module.$instances[i];
+%      let config = module.getInstanceConfig(instance);
+%      let instNameCamelCase = common.camelSentence(instance.$name);
+%      if(instance.dmaEnable == true) {
+
+MMCSD_EdmaChConfig g`instNameCamelCase`DmaChCfg[CONFIG_MMCSD_NUM_DMA_INSTANCES] =
+{   
+    {
+        .edmaRxChId = `instance.mmcRxConfigXbar.instance`,
+        .edmaTxChId = `instance.mmcTxConfigXbar.instance`,
+    },
+};
+%}
+%}
 %}
 
 void Drivers_mmcsdOpen(void)
@@ -59,12 +84,22 @@ void Drivers_mmcsdOpen(void)
     gMmcsdLldHandle[`i`]->initHandle->deviceData = `deviceDataTemp``i`;
     gMmcsdLldHandle[`i`]->initHandle->dataBuf = `dataBufTemp``i`;
 
+    %if(config.dmaEnable == true) {
+    status += MMCSD_lld_InitDma(gMmcsdLldHandle[`i`]);
+
+    if(MMCSD_STS_SUCCESS != status)
+    {
+        MMCSD_lld_deInitDma(gMmcsdLldHandle[`i`]);   /* Exit gracefully */
+    }
+    %}
+    %else {
     status += MMCSD_lld_init(gMmcsdLldHandle[`i`]);
 
     if(MMCSD_STS_SUCCESS != status)
     {
         MMCSD_lld_deInit(gMmcsdLldHandle[`i`]);   /* Exit gracefully */
     }
+    %}
     return;
 % }
 }
@@ -74,7 +109,13 @@ void Drivers_mmcsdClose(void)
     /* Deinit all instances that are open */
 % for(let i = 0; i < module.$instances.length; i++) {
     % let instance = module.$instances[i];
+    % let config = module.getInstanceConfig(instance);
+    % if(config.dmaEnable == true) {
+    MMCSD_lld_deInitDma(gMmcsdLldHandle[`i`]);
+    %}
+    % else {
     MMCSD_lld_deInit(gMmcsdLldHandle[`i`]);
+    %}
 % }
     return;
 }

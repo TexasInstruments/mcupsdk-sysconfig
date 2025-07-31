@@ -9,7 +9,7 @@ exports = {
         },
 
         "/drivers/system/system_config.h.xdt": {
-            driver_config: "/drivers/mmcsd/templates/mmcsd.h.xdt",
+            driver_config: "/drivers/mmcsd/templates/mmcsd_v1.h.xdt",
         },
         "/drivers/system/drivers_open_close.c.xdt": {
             driver_open_close_config: "/drivers/mmcsd/templates/mmcsd_open_close_config.c.xdt",

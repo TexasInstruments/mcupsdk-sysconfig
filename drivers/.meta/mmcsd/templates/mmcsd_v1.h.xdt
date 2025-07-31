@@ -11,10 +11,9 @@
 /*
  * MMCSD
  */
-#include <drivers/mmcsd/v1/lld/mmcsd_lld.h>
-#include <kernel/dpl/ClockP.h>
+#include <drivers/mmcsd.h>
 
-/* I2C Instance Macros */
+/* MMCSD Instance Macros */
 % for(let i = 0; i < module.$instances.length; i++) {
     % let instance = module.$instances[i];
 #define `instance.$name.toUpperCase()` (`i`U)

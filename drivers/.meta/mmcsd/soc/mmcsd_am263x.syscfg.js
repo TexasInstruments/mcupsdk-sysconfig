@@ -8,7 +8,7 @@ const mmcsd_config_r5fss = [
         instNum           : 0,
         intrNum           : 83,
 		inputClkFreq      : getDefaultClkRate(),
-        outputClk         : 25*1000000,
+        outputClk         : 48*1000000,
         iodelayFxn        : "NULL",
         switchVoltageFxn  : "NULL",
         inputClockControl : "NULL",

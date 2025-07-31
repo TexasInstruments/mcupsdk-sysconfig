@@ -36,6 +36,14 @@ void Drivers_dmaTrigXbarOpen()
 			%   xbarOutput = "DMA_TRIG_XBAR_"+instance.$ownedBy.$ownedBy.SPI.$solution.peripheralName+"_DMA_WRITE_REQ"+csPinName[csPinName.length-1];
 			% }
         % }
+        % else if(config.parentName == "MMC_DMA_RD")
+        % {
+        %   xbarOutput = "DMA_TRIG_XBAR_MMC_DMA_RD";
+        % }
+        % else if(config.parentName == "MMC_DMA_WR")
+        % {
+        %   xbarOutput = "DMA_TRIG_XBAR_MMC_DMA_WR";
+        % }
         % else if(config.parentName == "UART_RX")
         % {
         %   xbarOutput = "DMA_TRIG_XBAR_USART"+(instance.$ownedBy.UART.$solution.peripheralName).replace("UART","")+"_DMA_1";

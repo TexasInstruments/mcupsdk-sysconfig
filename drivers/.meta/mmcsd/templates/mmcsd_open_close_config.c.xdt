@@ -2,6 +2,7 @@
     let common = system.getScript("/common");
     let soc = system.getScript(`/drivers/soc/drivers_${common.getSocName()}`);
     let driverVer = soc.getDriverVer("mmcsd");
+    let mmcsdEdmaInstances = [];
     let module = system.modules['/drivers/mmcsd/mmcsd'];
 %%}
 /*
@@ -17,6 +18,9 @@ MMCSD_EmmcDeviceData gEmmcData`i`;
         %else if(config.cardType == "SD") {
 MMCSD_SdDeviceData gSdData`i`;
         %}
+    % if(instance.dmaEnable === true) {
+    %   mmcsdEdmaInstances.push(config.edmaDriver);
+    % }
 %}
 
 /* MMCSD temporary data buffers */
@@ -55,8 +59,50 @@ MMCSD_Params gMmcsdParams[CONFIG_MMCSD_NUM_INSTANCES] =
         %else{
         .txnCallbackFxn = NULL,
         %}
+        %if(config.dmaEnable == true) {
+        .edmaInst = `instance.edmaConfig.$name`,
+        %}
+        %else {
+        .edmaInst = -1,
+        %}
     },
 % }
+};
+
+%if(mmcsdEdmaInstances.length > 0) {
+#include <drivers/edma.h>
+#include <drivers/mmcsd/v1/lld/dma/edma/mmcsd_edma_lld.h>
+
+%  for(let i=0; i < module.$instances.length; i++) {
+%      let instance = module.$instances[i];
+%      let config = module.getInstanceConfig(instance);
+%      let instNameCamelCase = common.camelSentence(instance.$name);
+%      if(instance.dmaEnable == true) {
+
+MMCSD_EdmaChConfig g`instNameCamelCase`DmaChCfg[CONFIG_MMCSD_NUM_DMA_INSTANCES] =
+{   
+    {
+        .edmaRxChId = `instance.mmcRxConfigXbar.instance`,
+        .edmaTxChId = `instance.mmcTxConfigXbar.instance`,
+    },
+};
+%}
+%}
+%}
+
+MMCSD_DmaChConfig gMmcsdDmaChConfig[`module.$instances.length`] = 
+{
+    
+    % for(let i=0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let instNameCamelCase = common.camelSentence(instance.$name);
+    % if(instance.dmaEnable == true) {
+        &g`instNameCamelCase`DmaChCfg[0],
+    % }
+    % else{
+        NULL,
+    % }
+    % }
 };
 
 void Drivers_mmcsdOpen(void)

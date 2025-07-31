@@ -284,7 +284,11 @@ let mmcsd_module = {
             name: "dmaEnable",
             displayName: "DMA Enable",
             default: false,
-            hidden: true,
+            hidden: false,
+            onChange: function (inst, ui) {
+                ui.intrEnable.hidden = inst.dmaEnable;
+                ui.intrPriority.hidden = inst.dmaEnable;
+            },
         },
         {
             name: "supportedBusVoltages",
@@ -347,6 +351,7 @@ let mmcsd_module = {
         },
 	],
     moduleInstances: moduleInstances,
+    sharedModuleInstances: addModuleInstances,
 	getInstanceConfig,
 	pinmuxRequirements,
 	getInterfaceName,
@@ -362,6 +367,38 @@ function validate(inst, report) {
 /*
  *  ======== moduleInstances ========
  */
+function addModuleInstances(inst) {
+    let modInstances = new Array();
+
+    if(inst.dmaEnable == true)
+    {
+        modInstances.push({
+            name: "edmaConfig",
+            displayName: "EDMA",
+            moduleName: '/drivers/edma/edma',
+        });
+        modInstances.push({
+            name: "mmcRxConfigXbar",
+            displayName: "MMC DMA RX Trigger Configuration",
+            moduleName: '/xbar/dma_trig_xbar/dma_trig_xbar',
+            requiredArgs: {
+                parentName: "MMC_DMA_RD",
+            },
+        });
+        modInstances.push({
+            name: "mmcTxConfigXbar",
+            displayName: "MMC DMA TX Trigger Configuration",
+            moduleName: '/xbar/dma_trig_xbar/dma_trig_xbar',
+            requiredArgs: {
+                parentName: "MMC_DMA_WR",
+            },
+        });
+    }
+    
+
+    return modInstances;
+}
+
 function moduleInstances(inst) {
     let modInstances = new Array();
 

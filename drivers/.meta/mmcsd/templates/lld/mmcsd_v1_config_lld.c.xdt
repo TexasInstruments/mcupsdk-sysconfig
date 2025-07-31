@@ -1,4 +1,5 @@
 %%{
+    let common = system.getScript("/common");
     let module = system.modules['/drivers/mmcsd/mmcsd'];
 %%}
 /*
@@ -8,11 +9,20 @@
 /* MMCSD LLD objects - initialized by the driver */
 MMCSDLLD_Object gMmcsdLldObject[CONFIG_MMCSD_NUM_INSTANCES];
 
+%let config = module.getInstanceConfig(module.$instances[0]);
+%let instance = module.$instances[0];
+%let instNameCamelCase = common.camelSentence(instance.$name);
+%if(config.dmaEnable === true) {
+#include <drivers/mmcsd/v1/mmcsd.h>
+#include <drivers/mmcsd/v1/lld/dma/edma/mmcsd_edma_lld.h>
+extern MMCSD_EdmaChConfig g`instNameCamelCase`DmaChCfg[CONFIG_MMCSD_NUM_DMA_INSTANCES];
+%}
 /* MMCSD LLD Init Objects */
 MMCSDLLD_InitObject gMmcsdLldInitObject[CONFIG_MMCSD_NUM_INSTANCES] =
 {
     % for(let i = 0; i < module.$instances.length; i++) {
     % let instance = module.$instances[i];
+    % let instNameCamelCase = common.camelSentence(instance.$name);
     % let config = module.getInstanceConfig(instance);
     % let name = config.name;
     {
@@ -30,6 +40,10 @@ MMCSDLLD_InitObject gMmcsdLldInitObject[CONFIG_MMCSD_NUM_INSTANCES] =
         % else {
         %     modeSelTemp = config.modeSelectSD;
         %     modeSelCardTemp = "MMCSD_SD_";
+        % }
+        % if(config.dmaEnable == true){
+        .mmcsdDmaHandle         = (MMCSD_DmaHandle) &gEdmaConfig[0],
+        .mmcsdDmaChConfig       = (MMCSD_DmaChConfig) &g`instNameCamelCase`DmaChCfg[0],
         % }
         .uaBusSpeed             = `modeSelCardTemp`MODE_`modeSelTemp`,
         .busWidth               = `config.supportedBusWidth`,
