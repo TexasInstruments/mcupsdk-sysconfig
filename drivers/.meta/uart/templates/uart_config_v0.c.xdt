@@ -149,9 +149,9 @@ uint32_t gUartConfigNum = CONFIG_UART_NUM_INSTANCES;
 %if(uartUdmaInstances.length > 0) {
 #include <drivers/uart/v0/lld/dma/udma/uart_dma_udma.h>
 extern UART_UdmaChConfig gUartUdmaChConfig[];
-UART_DmaConfig gUartDmaConfig[] =
+UART_DmaConfig gUartDmaConfig[`uartUdmaInstances.length`] =
 {
-% for(let i = 0; i < udmaModule.$instances.length; i++) {
+% for(let i = 0; i < uartUdmaInstances.length; i++) {
     {
         .uartDmaArgs = &gUartUdmaChConfig[`i`],
     },
@@ -164,7 +164,7 @@ UART_DmaHandle gUartDmaHandle[CONFIG_UART_NUM_INSTANCES] =
     % let instance = module.$instances[i];
     % if(instance.sdkInfra == "HLD") {
         %if(instance.intrEnable == "DMA") {
-                (void *)&gUdmaDrvObj[CONFIG_UDMA0],
+                (void *)&gUdmaDrvObj[`module.getInstanceConfig(instance).udmaDriver.$name`],
         % }
         %else {
             NULL,

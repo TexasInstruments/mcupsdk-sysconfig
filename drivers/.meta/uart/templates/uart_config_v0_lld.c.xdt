@@ -87,8 +87,8 @@ UARTLLD_InitObject gUartInitObject[CONFIG_UART_NUM_LLD_INSTANCES] =
         .txTrigLvl          = UART_TXTRIGLVL_1,
         .rxEvtNum           = `config.udmaPdmaChannels[0].rxCh`,
         .txEvtNum           = `config.udmaPdmaChannels[0].txCh`,
-        .uartDmaHandle      = (UART_DmaHandle) &gUdmaDrvObj[`uartUdmaInstances[0].$name`],
-        .dmaChCfg           = (UART_DmaChConfig) &gUartDmaChCfg,
+        .uartDmaHandle      = (UART_DmaHandle) &gUdmaDrvObj[`module.getInstanceConfig(instance).udmaDriver.$name`],
+        .dmaChCfg           = (UART_DmaChConfig) &gUartDmaChCfg[`i`],
         %}
         %else {
         .rxTrigLvl          = UART_RXTRIGLVL_`config.rxTrigLvl`,
