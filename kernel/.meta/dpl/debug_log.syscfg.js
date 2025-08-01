@@ -122,31 +122,34 @@ function getConfigurables()
             name: "enableLogZoneError",
             displayName: "Enable Error Log Zone",
             default: true,
+            description: "Used to enable error logs. When enabled, it logs all messages coming from DebugP_logError API.",
             hidden: !getLogZoneErrorSupported(),
         },
         {
             name: "enableLogZoneWarning",
             displayName: "Enable Warning Log Zone",
             default: true,
+            description: "Used to enable warning logs. When enabled, it logs all messages coming from DebugP_logWarn API.",
             hidden: !getLogZoneWarningSupported(),
         },
         {
             name: "enableLogZoneInfo",
             displayName: "Enable Info Log Zone",
             default: false,
+            description: "Used to enable information logs. When enabled, it logs all messages coming from DebugP_logInfo API.",
             hidden: !getLogZoneInfoSupported(),
         },
         {
             name: "enableMemLog",
             displayName: "Enable Memory Log",
-            description: "Logs string to memory. This can be viewed via ROV in CCS",
+            longDescription: "Used to enable memory logging. When enabled, the log messages are saved to memory used by application. A buffer will be created via Sysconfig code generation to store the logs. This will increase the overall size of application. Logging can be done via DebugP_memLogWriterPutChar API.",
             default: false,
             hidden: !getMemLogSupported(),
         },
         {
             name: "enableUartLog",
             displayName: "Enable UART Log",
-            description: `Logs string to UART.`,
+            description: "Used to enable logging via UART peripheral. When enabled the log messages will now be printed on UART console used by the application.",
             longDescription:
     `Configure the UART to use for logging, using options shown below on this page.
     This also enables UART for console input via the DebugP_readLine and DebugP_scanf APIs.
@@ -170,6 +173,7 @@ function getConfigurables()
         {
             name: "enableSharedMemLogReader",
             displayName: "Enable Shared Memory Log Reader",
+            description: "Used to enable shared memory log writes. When enabled, it can log the messages to the shared memory region. Messages can be logged using DebugP_shmLogWriterPutChar API.",
             longDescription: `Reads strings logged from other remote cores and output them to the console selected on this core.
                         In case of freertos application the reader task will be created by default. While in the case of nortos 
                         user needs to call DebugP_shmLogRead() API.`,
@@ -202,7 +206,7 @@ function getConfigurables()
             {
                 name: "enableCssLog",
                 displayName: "Enable CCS Log",
-                description: "Logs string to CCS console. This needs CCS and JTAG connected to the EVM.",
+                description: "Logs string to CCS console. When enabled, it prints all the logging messages on CCS console. This needs CCS and JTAG connected to the EVM.",
                 default: true,
                 hidden: !getCssLogSupported(),
             },

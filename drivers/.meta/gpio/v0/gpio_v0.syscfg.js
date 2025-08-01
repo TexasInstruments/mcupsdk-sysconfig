@@ -222,7 +222,7 @@ function getConfigurables() {
             displayName: "Output"
         },
         ],
-        description: "GPIO PIN direction",
+        description: "Direction of GPIO Pin. Can be either input or output",
         onChange: function(inst, ui) {
             if(inst.pinDir == "OUTPUT"){
                 ui.defaultValue.hidden = false;
@@ -263,11 +263,12 @@ function getConfigurables() {
             displayName: "Rising and Falling",
         },
         ],
-        description: "GPIO PIN Trigger Type",
+        description: "GPIO Trigger type for interrupt generation",
     },
     {
         name: "enableIntr",
         displayName: "Enable Interrupt Configuration",
+        description: "Enable this option to do the interrupt configuration for GPIO Pin",
         default: false,
         onChange: function (inst, ui) {
             if (common.isSciClientSupported())

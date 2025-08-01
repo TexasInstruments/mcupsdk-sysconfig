@@ -73,7 +73,7 @@ function getConfigurables()
             name: "bitRate",
             displayName: "Bit Rate",
             default: "400KHZ",
-            description: "I2C bitrate",
+            description: "Select the bitrate for I2C instance",
             options: [
                 {
                     name: "100KHZ",
@@ -111,14 +111,14 @@ function getConfigurables()
                 }
 
             },
-            description: "If enabled, Interrupt mode otherwise Polling mode",
+            description: "Enable this option to configure in interrupt mode otherwise configured in polling mode",
         },
         {
             name: "intrPriority",
             displayName: "Interrupt Priority",
             default: 4,
             hidden: false,
-            description: `Interrupt Priority: 0 (highest) to ${hwi.getHwiMaxPriority()} (lowest)`,
+            description: `Select Interrupt Priority: 0 (highest) to ${hwi.getHwiMaxPriority()} (lowest)`,
         },
         {
             name: "transferMode",
@@ -144,7 +144,7 @@ function getConfigurables()
                     ui.transferCallbackFxn.hidden = true;
                 }
             },
-            description: "This determines whether the driver operates synchronously or asynchronously",
+            longDescription: "This determines whether the driver operates synchronously or asynchronously. Select Blocking to operate in Synchronous mode or Callback to operate in Asynchronous mode",
         },
         {
             name: "transferCallbackFxn",
@@ -163,6 +163,7 @@ function getConfigurables()
         {
             name: "sdkInfra",
             displayName: "SDK Infra",
+            description: "Choose the SDK infra to use I2C with HLD or LLD driver",
             default: "HLD",
             options: [
                 {
@@ -199,7 +200,6 @@ function getConfigurables()
                     ui.transferMode.hidden = false;
                 }
             },
-            description: "SDK Infra",
         },
     )
 

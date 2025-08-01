@@ -72,7 +72,7 @@ function getConfigurables()
             name: "bitRate",
             displayName: "Bit Rate",
             default: "400KHZ",
-            description: "I2C bitrate",
+            description: "Select the bitrate for I2C instance",
             options: [
                 {
                     name: "100KHZ",
@@ -108,13 +108,13 @@ function getConfigurables()
                 ui.transferMode.hidden = hideConfigs;
 
             },
-            description: "If enabled interrupt mode otherwise polling mode",
+            description: "Enable this option to configure in interrupt mode otherwise configured in polling mode",
         },
         {
             name: "intrPriority",
             displayName: "Interrupt Priority",
             default: 4,
-            description: `Interrupt Priority: 0 (highest) to ${hwi.getHwiMaxPriority()} (lowest)`,
+            description: `Select Interrupt Priority: 0 (highest) to ${hwi.getHwiMaxPriority()} (lowest)`,
             hidden: false,
         },
         {
@@ -141,7 +141,7 @@ function getConfigurables()
                     ui.transferCallbackFxn.hidden = true;
                 }
             },
-            description: "This determines whether the driver operates synchronously or asynchronously",
+            longDescription: "This determines whether the driver operates synchronously or asynchronously. Select Blocking to operate in Synchronous mode or Callback to operate in Asynchronous mode",
         },
         {
             name: "transferCallbackFxn",
@@ -196,6 +196,7 @@ function getConfigurables()
         {
             name: "sdkInfra",
             displayName: "SDK Infra",
+            description: "Choose the SDK infra to use I2C with HLD or LLD driver",
             default: "HLD",
             options: [
                 {
@@ -225,7 +226,6 @@ function getConfigurables()
                     inst.enableIntr = false;
                 }
             },
-            description: "SDK Infra",
             hidden: (common.getSocName() == "am65x"),
         },
     )

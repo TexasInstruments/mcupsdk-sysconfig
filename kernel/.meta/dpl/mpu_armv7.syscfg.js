@@ -248,14 +248,14 @@ let mpu_armv7_module = {
         {
             name: "baseAddr",
             displayName: "Region Start Address (hex)",
-            description: "MUST be <= 32 bits and MUST be region size aligned",
+            description: "Starting address of the region. MUST be <= 32 bits and MUST be region size aligned",
             default: 0x0,
             displayFormat: "hex",
         },
         {
             name: "baseAddr_mr",
             displayName: "Region Start Address (hex)",
-            description: "MUST be <= 32 bits and MUST be region size aligned",
+            description: "Starting address of the region. MUST be <= 32 bits and MUST be region size aligned",
             default: 0x0,
             hidden: true,
             displayFormat: "hex",
@@ -271,6 +271,7 @@ let mpu_armv7_module = {
         {
             name: "size",
             displayName: "Region Size (bytes)",
+            description: "Size of the region in bytes.",
             default: 32,
             options: [
                 {
@@ -395,6 +396,7 @@ let mpu_armv7_module = {
         {
             name: "accessPermissions",
             displayName: "Access Permissions",
+            description: "Access Permission for specified region",
             default: "Supervisor RD+WR, User RD+WR",
             options: [
                 {
@@ -420,6 +422,7 @@ let mpu_armv7_module = {
         {
             name: "attributes",
             displayName: "Region Attributes",
+            description: "Memory attribute for the specified region",
             default: "Cached",
             onChange: function (inst, ui) {
                 let hideConfigs = true;

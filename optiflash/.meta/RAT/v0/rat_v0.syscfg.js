@@ -115,17 +115,19 @@ exports =
                 {name: "AddrTranslateP_RegionSize_4G", displayName: "4G"}
             ],
             default: "AddrTranslateP_RegionSize_4K",
-            description: "Size of the region that is to be translated"
+            description: "Size of region(in bytes) that is to be translated"
         },
         {
             name: "baseAddress",
             displayName: "Region Base Address (hex)",
+            description: "Local Address to the CPU. MUST be <= 32 bits and MUST be region size aligned and MUST NOT overlap with other regions",
             default: 0,
             displayFormat: "hex"
         },
         {
             name: "translatedAddress",
             displayName: "Region Translated Address (hex)",
+            description: "System Address common to the SoC. MUST be <= 48 bits and MUST be region size aligned",
             default: 0,
             displayFormat: "hex"
         }

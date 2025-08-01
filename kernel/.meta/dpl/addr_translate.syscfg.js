@@ -18,20 +18,21 @@ let addr_translate_module = {
         {
             name: "localAddr",
             displayName: "Local Address (hex)",
-            description: "MUST be <= 32 bits and MUST be region size aligned and MUST NOT overlap with other regions",
+            description: "Local Address to the CPU. MUST be <= 32 bits and MUST be region size aligned and MUST NOT overlap with other regions",
             default: 0x0,
             displayFormat: "hex",
         },
         {
             name: "systemAddr",
             displayName: "Translated System Address (hex)",
-            description: "MUST be <= 48 bits and MUST be region size aligned",
+            description: "System Address common to the SoC. MUST be <= 48 bits and MUST be region size aligned",
             default: 0x0,
             displayFormat: "hex",
         },
         {
             name: "size",
             displayName: "Region Size (bytes)",
+            description: "Size of region(in bytes) that is to be translated",
             default: 29,
             options: [
                 {
