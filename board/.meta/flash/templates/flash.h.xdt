@@ -1,5 +1,7 @@
 %%{
+    let common = system.getScript("/common");
     let module = system.modules['/board/flash/flash'];
+    let soc = common.getSocName();
 %%}
 /*
  * FLASH
@@ -12,3 +14,11 @@
 #define `instance.$name.toUpperCase()` (`i`U)
 % }
 #define CONFIG_FLASH_NUM_INSTANCES (`module.$instances.length`U)
+
+% let config = module.getInstanceConfig(module.$instances[0]);
+% if((soc == "am261x" || soc == "am263px") && (config.enableFlashReset == true)){
+void board_flash_reset(OSPI_Handle oHandle);
+    % if(soc == "am261x") {
+int32_t enableOspiResetSignal(uint16_t enable);
+    % }
+% }

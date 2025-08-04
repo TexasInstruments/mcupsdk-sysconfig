@@ -131,6 +131,35 @@ function getDeviceName() {
         return "am62x-sk";
 };
 
+function getBoardName() {
+    if(system.deviceData.device == "AM64x")
+        return "am64x-evm";
+    if(system.deviceData.device == "AM65xx_SR2.0_beta")
+        return "am65x-idk";
+    if(system.deviceData.device == "AM243x_ALV_beta")
+        return "am243x-evm";
+    if(system.deviceData.device == "AM243x_ALX_beta")
+        return "am243x-lp";
+    if(system.deviceData.device == "AM263x_beta")
+        return "am263x-cc";
+    if(system.deviceData.device == "AM263Px") {
+        if (system.deviceData.package == "ZCZ_C")
+            return "am263px-lp";
+        if (system.deviceData.package == "ZCZ_S")
+            return "am263px-cc";
+    }
+    if(system.deviceData.device == "AM261x_ZCZ")
+        return "am261x-som";
+    if(system.deviceData.device == "AM261x_ZFG")
+        return "am261x-lp";
+    if(system.deviceData.device == "AM273x")
+        return "am273x-evm";
+    if(system.deviceData.device == "AWR294X")
+        return "awr294x-evm";
+    if(system.deviceData.device == "AM62x")
+        return "am62x-sk";
+};
+
 function isCName(id) {
     if ( (id != null) && (id.match(/^[a-zA-Z_][0-9a-zA-Z_]*$/) != null) )
     {
@@ -456,6 +485,7 @@ exports = {
     getNodePath,
     getOtherContextNames,
     onMigrate,
+    getBoardName,
 
     validate: {
         checkSameInstanceName : function (instance, report) {

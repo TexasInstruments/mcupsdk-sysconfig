@@ -99,3 +99,12 @@ void Board_deinit(void)
 % }
 
 }
+% let common = system.getScript("/common");
+% let soc = common.getSocName();
+% if(soc == "am263px" || soc == "am261x") {
+    % for(let subTemplate of args) {
+        % if (subTemplate.flash_reset) {
+`system.getTemplate(subTemplate.flash_reset)()`
+        % }
+    % }
+% }

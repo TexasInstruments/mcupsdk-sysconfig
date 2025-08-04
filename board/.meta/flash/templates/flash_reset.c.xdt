@@ -1,0 +1,244 @@
+%%{
+    let common = system.getScript("/common");
+    let soc = common.getSocName();
+    let board = common.getBoardName();
+    let module = system.modules['/board/flash/flash'];
+    let instance = module.$instances[0];
+    let config = module.getInstanceConfig(instance);
+%%}
+%
+% if(config.enableFlashReset == true) {
+    % if(config.device == "CUSTOM_FLASH") {
+void `config.customFlashResetFxn`(void);
+    % } 
+    % else if(config.device == "TI_DEFAULT_FLASH") {
+        % if(board == "am261x-lp") {
+#include "ti_board_open_close.h"
+#include "ti_drivers_open_close.h"
+        % }
+        % if(board == "am263px-cc") {
+#include "ti_board_open_close.h"
+#include <board/ioexp/ioexp_tca6424.h>
+#include <board/ioexp/ioexp_tca6416.h>
+#include <board/eeprom.h>    
+        % }
+    % }
+    % if((soc == "am261x") || (soc == "am263px")) {
+        % if(config.device == "TI_DEFAULT_FLASH") {
+#define PIN_STATE_HIGH                  (1U)
+#define PIN_STATE_LOW                   (0U)
+    %
+    % if(board == "am261x-lp") {
+/*
+ * BP_BO_MUX_EN is set high in Board_driversOpen
+ * This API pulls this signal to low once the application is received,
+ * to allow OSPI Reset to be possible.
+ */
+
+int32_t enableOspiResetSignal(uint16_t enable)
+{
+    int32_t status = SystemP_SUCCESS;
+    static TCA6408_Config gTCA6408_Config;
+    TCA6408_Params TCA6408Params;
+    TCA6408_Params_init(&TCA6408Params);
+    TCA6408Params.i2cAddress = 0x20U;
+
+    status = TCA6408_open(&gTCA6408_Config, &TCA6408Params);
+
+    /* Configure as output  */
+    status += TCA6408_config(
+                        &gTCA6408_Config,
+                        IO_EXP_BP_BO_MUX_EN_LINE,
+                        TCA6408_MODE_OUTPUT);
+
+    if (enable == TRUE)
+    {
+        /* Configure State */
+        status = TCA6408_setOutput(
+                        &gTCA6408_Config,
+                        IO_EXP_BP_BO_MUX_EN_LINE,
+                        TCA6408_OUT_STATE_HIGH);
+    }
+    else
+    {
+        /* Configure State */
+        status = TCA6408_setOutput(
+                        &gTCA6408_Config,
+                        IO_EXP_BP_BO_MUX_EN_LINE,
+                        TCA6408_OUT_STATE_LOW);
+    }
+
+    if (status != SystemP_SUCCESS)
+    {
+        DebugP_log("Failed to enable OSPI Reset Signal\r\n");
+        TCA6408_close(&gTCA6408_Config);
+    }
+
+    return status;
+}
+    % } else if(board == "am263px-cc") {
+#define IO_MUX_OSPI_RST_SEL_PORT_LINE   (0U)      // PORT 0, PIN 0    -> ioIndex : 0*8 + 0 = 0
+
+#define EEPROM_OFFSET_READ_PCB_REV      (0x0022U)
+#define EEPROM_READ_PCB_REV_DATA_LEN    (0x2U)
+#define SIP_FLASH_CFG_VALUE             (0x55)
+
+
+int32_t TCA6424_Flash_reset()
+{
+    TCA6424_Config  gTCA6424_Config;
+    int32_t             status = SystemP_SUCCESS;
+    TCA6424_Params      TCA6424Params;
+    TCA6424_Params_init(&TCA6424Params);
+    status = TCA6424_open(&gTCA6424_Config, &TCA6424Params);
+
+    /* Configure as output  */
+    status += TCA6424_config(&gTCA6424_Config,
+                    IO_MUX_OSPI_RST_SEL_PORT_LINE,
+                    TCA6424_MODE_OUTPUT);
+
+    status += TCA6424_setOutput(&gTCA6424_Config,IO_MUX_OSPI_RST_SEL_PORT_LINE,TCA6424_OUT_STATE_LOW);
+
+    status += TCA6424_setOutput(&gTCA6424_Config,IO_MUX_OSPI_RST_SEL_PORT_LINE,TCA6424_OUT_STATE_HIGH);
+
+    if(status != SystemP_SUCCESS)
+    {
+        DebugP_log("Failure to reset the Flash!! %d\r\n");
+        TCA6424_close(&gTCA6424_Config);
+    }
+
+    TCA6424_close(&gTCA6424_Config);
+
+    return status;
+}
+
+int32_t TCA6416_Flash_reset()
+{
+    TCA6416_Config  gTCA6416_Config;
+    int32_t             status = SystemP_SUCCESS;
+    TCA6416_Params      tca6416Params;
+    TCA6416_Params_init(&tca6416Params);
+    status = TCA6416_open(&gTCA6416_Config, &tca6416Params);
+
+    /* Configure as output  */
+    status += TCA6416_config(&gTCA6416_Config,
+                    IO_MUX_OSPI_RST_SEL_PORT_LINE,
+                    TCA6416_MODE_OUTPUT);
+
+    status += TCA6416_setOutput(&gTCA6416_Config,IO_MUX_OSPI_RST_SEL_PORT_LINE,TCA6416_OUT_STATE_LOW);
+
+    status += TCA6416_setOutput(&gTCA6416_Config,IO_MUX_OSPI_RST_SEL_PORT_LINE,TCA6416_OUT_STATE_HIGH);
+
+    if(status != SystemP_SUCCESS)
+    {
+        DebugP_log("Failure to reset the Flash!! %d\r\n");
+    }
+
+    TCA6416_close(&gTCA6416_Config);
+
+    return status;
+}
+    % } else {
+    
+int32_t enableOspiResetSignal(uint16_t enable)
+{
+    return SystemP_SUCCESS;
+}
+        % }
+    % } else {
+
+int32_t enableOspiResetSignal(uint16_t enable)
+{
+    return SystemP_SUCCESS;
+}
+    % }
+
+void board_flash_reset(OSPI_Handle oHandle)
+{
+        %if(config.device == "CUSTOM_FLASH") {
+    `config.customFlashResetFxn`();
+        % } else if(config.device == "TI_DEFAULT_FLASH") {
+            % if((board == "am261x-som") || (board == "am263px-lp")) 
+            % {
+    /* Toggle the reset pin directly */
+    OSPI_setResetPinStatus(oHandle, PIN_STATE_HIGH);
+    OSPI_setResetPinStatus(oHandle, PIN_STATE_LOW);
+            % }
+            % else if(board == "am261x-lp") {
+        
+    int32_t status = SystemP_FAILURE;
+
+    /* Toggle the level translator to enable the ospi reset signal */
+    status = enableOspiResetSignal(TRUE);
+
+    if (status == SystemP_SUCCESS)
+    {
+        /* Now toggle the ospi reset line */
+        OSPI_setResetPinStatus(oHandle, PIN_STATE_HIGH);
+        OSPI_setResetPinStatus(oHandle, PIN_STATE_LOW);
+        
+        status = enableOspiResetSignal(FALSE);
+        if (status == SystemP_FAILURE)
+        {
+            DebugP_log("Failed to disable the ospi reset line!\r\n");
+        }
+    }
+    else
+    {
+        DebugP_log("Failed to enable the ospi reset line!\r\n");
+    }
+
+            % } else if(board == "am263px-cc") {
+    int32_t status = SystemP_SUCCESS;
+    uint8_t boardVer[2] = "";
+    CSL_top_ctrlRegs * ptrTopCtrlRegs = (CSL_top_ctrlRegs *)CSL_TOP_CTRL_U_BASE;
+
+    Board_eepromOpen();
+
+    /* check if part type is SIP (internal flash) or non-SIP (external flash)
+     * if SIP, directly do flash reset using driver API irrespective of board revision, there is no IO expander involved
+     */
+    uint32_t sipVal = (((ptrTopCtrlRegs->EFUSE2_ROW_6) & 
+            CSL_TOP_CTRL_EFUSE2_ROW_6_EFUSE2_ROW_6_BOOTROM_CFG_MASK) >> 
+                    CSL_TOP_CTRL_EFUSE2_ROW_6_EFUSE2_ROW_6_BOOTROM_CFG_SHIFT);
+
+    if(!(sipVal == SIP_FLASH_CFG_VALUE))
+    {
+        status = EEPROM_read(gEepromHandle[CONFIG_EEPROM0], EEPROM_OFFSET_READ_PCB_REV, boardVer, EEPROM_READ_PCB_REV_DATA_LEN);
+
+        if(status == SystemP_SUCCESS)
+        {
+            if(boardVer[1] == '2' && boardVer[0] == 'E')
+            {
+                /* boardVer is E2 */
+                status = TCA6424_Flash_reset();
+            }
+            else if(boardVer[1] == '1' && boardVer[0] == 'E')
+            {
+                /* boardVer is E1 */
+                status = TCA6416_Flash_reset();
+            }
+            else
+            {
+                /* boardVer is REV A or REV B*/
+                /* OSPI RESET signal does not come via IO expander */
+                /* Toggle the reset pin directly */
+                
+                OSPI_setResetPinStatus(oHandle, PIN_STATE_HIGH);
+                OSPI_setResetPinStatus(oHandle, PIN_STATE_LOW);
+            }
+        }
+    }
+    else
+    {
+        OSPI_setResetPinStatus(oHandle, PIN_STATE_HIGH);
+        OSPI_setResetPinStatus(oHandle, PIN_STATE_LOW);
+    }
+
+    DebugP_assert(status == SystemP_SUCCESS);
+    Board_eepromClose();
+            % }
+        %}
+}
+    % }
+%}

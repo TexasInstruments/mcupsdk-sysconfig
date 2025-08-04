@@ -384,6 +384,9 @@ let flash_module = {
         "/board/board/board_config.h.xdt": {
             board_config: "/board/flash/templates/flash.h.xdt",
         },
+        "/board/board/board_config.c.xdt": {
+            flash_reset: "/board/flash/templates/flash_reset.c.xdt", 
+        }
 
     },
     defaultInstanceName: "CONFIG_FLASH",
@@ -418,8 +421,12 @@ function getConfigurables()
                 if(inst.device == "TI_DEFAULT_FLASH") {
                     inst.fname = soc.getDefaultFlashName();
                     inst.protocol = soc.getDefaultProtocol().name;
+                    ui.customFlashResetFxn.hidden = true;
                 } else if(inst.device == "CUSTOM_FLASH") {
                     inst.fname = "";
+                    if(inst.enableFlashReset == true){
+                        ui.customFlashResetFxn.hidden = false;
+                    }
                 }
             }
         },
@@ -1496,6 +1503,33 @@ function getConfigurables()
         },
     )
 
+    if(common.getSocName() == "am261x" || common.getSocName() == "am263px") {
+        config.push(
+            {
+                name: "enableFlashReset",
+                displayName: "Enable Flash Reset API",
+                description: "Generate the Flash Reset Function",
+                default: false,
+                hidden: false,
+                onChange: (inst, ui) => {
+                    if((inst.device == "CUSTOM_FLASH") && (inst.enableFlashReset == true)) {
+                        ui.customFlashResetFxn.hidden = false;
+                    }
+                    else{
+                        ui.customFlashResetFxn.hidden = true;
+                    }
+                }
+            },
+            {
+                name: "customFlashResetFxn",
+                displayName: "Flash Reset Function",
+                default: "NULL",
+                hidden: true,
+                description: "Flash reset function to be used for custom flash",
+            },
+        )
+    }
+
     return config;
 }
 
@@ -1511,6 +1545,21 @@ function isValidHexString(s, n) {
 function validateCmd(inst, cmdName, report) {
     if(!isValidHexString(inst[cmdName], 2)) {
         report.logError(`${cmdName} should be a 2 digit hexadecimal string with leading 0x, for example 0x03 !!!`, inst, cmdName);
+    }
+}
+
+function validateFlashReset(inst, report) {
+
+    if(inst.enableFlashReset) {
+        if(inst.device == "TI_DEFAULT_FLASH"){
+            report.logInfo("Ensure that the board interfaces (EEPROM/IO Expander) are properly configured to support the reset functionality.", inst, "enableFlashReset");
+        }
+        else if(inst.device == "CUSTOM_FLASH" ) {
+            common.validate.checkValidCName(inst, report, "customFlashResetFxn");
+            if((inst.customFlashResetFxn == "NULL") || (inst.customFlashResetFxn == "")) {
+                report.logError("Flash reset function MUST be provided for custom flash", inst, "customFlashResetFxn");
+            }
+        }
     }
 }
 
@@ -1571,6 +1620,7 @@ function validate(inst, report) {
     if(!isValidHexString(inst.xspiWipReg, 8)) {
         report.logError("Register Address should be an 8 digit hexadecimal string with leading 0x, for example 0x00800000 !!!", inst, "xspiWipReg");
     }
+    validateFlashReset(inst, report);
 
     common.validate.checkNumberRange(inst, report, "modeClksCmd", 0, 255, "dec");
     common.validate.checkNumberRange(inst, report, "modeClksRd", 0, 255, "dec");
