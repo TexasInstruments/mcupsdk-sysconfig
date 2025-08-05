@@ -157,6 +157,7 @@ function getConfig(){
             {
                 name: "isAppimageSigned",
                 displayName: "Application Image Is X509 Signed",
+                description: "SBL expects a signed image (appimage with x509 certificate concatenated) if this option is enabled, disable this if you are trying to boot an unsigned image",
                 default: true,
                 onChange: function(inst, ui) {
                     if(inst.isAppimageSigned) {
