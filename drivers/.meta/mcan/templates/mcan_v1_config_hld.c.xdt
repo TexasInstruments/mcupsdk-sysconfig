@@ -212,10 +212,6 @@ CANFD_DmaHandle gCanfdDmaHandle[`canfdEdmaInstances.length.length`] =
 };
 % }
 %else {
-CANFD_DmaConfig gCanfdDmaConfig =
-{
-    .canfdDmaArgs = (void *)NULL,
-};
 
 CANFD_EdmaArgs gCanfdEdmaArgs =
 {
@@ -237,7 +233,7 @@ CANFD_DmaChConfig gCanfdDmaChCfg[`module.$instances.length`] =
     % let instNameCamelCase = common.camelSentence(instance.$name);
     % let config = module.getInstanceConfig(instance);
     %if(config.operMode == "DMA") {
-    &gEdmaDmaChCfg,
+    gEdmaDmaChCfg,
     %}
     % else {
     NULL,

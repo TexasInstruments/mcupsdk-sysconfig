@@ -256,10 +256,6 @@ CANFD_DmaHandle gCanfdDmaHandle[`canfdUdmaInstances.length.length`] =
 
 %}
 %else {
-CANFD_DmaConfig gCanfdDmaConfig =
-{
-    .canfdDmaArgs = (void *)NULL,
-};
 
 CANFD_UdmaArgs gCanfdUdmaArgs =
 {
