@@ -242,6 +242,7 @@ function getConfigurables()
         {
             name: "inputClkFreq",
             displayName: "Input Clock Frequency (Hz)",
+            longDescription: `Only in Tap Mode of operation, the OSPI Output Clock is Input Clock Frequency / Input Clock Divider `,
             default: ["am263px", "am261x"].includes(common.getSocName())? soc.getDefaultClkRate(): soc.getDefaultConfig().inputClkFreq,
             displayFormat: "dec",
             getValue: (inst) => {
@@ -262,6 +263,7 @@ function getConfigurables()
             {
                 name: "inputClkFreq",
                 displayName: "Input Clock Frequency (Hz)",
+                longDescription: `Only in Tap Mode of operation, the OSPI Output Clock is Input Clock Frequency / Input Clock Divider `,
                 default: soc.getDefaultConfig().inputClkFreq,
             },
         )
@@ -347,6 +349,8 @@ function getConfigurables()
             displayName: "Enable DMA",
             default: false,
             description: `Enable data transfer using DMA`,
+            longDescription: `For NOR Flash: DMA is initiated for transfers more than 1024 bytes.
+                              For NAND Flash: DMA is initiated for transfers more than 256 bytes. `,
         },
         {
             name: "dacEnable",
@@ -605,7 +609,7 @@ function getConfigurables()
                                 name: "txDllLowWindowStart",
                                 displayName : "RxDLL Search - TxDLL Low Start",
                                 description : "Tx Dll window lower value to search RxDLL low and high. \
-                                This corresponds to the bottom left point serach.",
+                                This corresponds to the bottom left point search.",
                                 default: soc.getPhyTuningParams().txDllLowWindowStart,
                                 displayFormat: "dec",
                                 hidden: true,

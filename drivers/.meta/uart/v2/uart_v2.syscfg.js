@@ -524,8 +524,10 @@ function getConfigurables()
             hidden: false,
             options: getTrigList(),
             description: "TX trigger level",
-            longDescription:`
-- Triggers the interrupt when TX FIFO reaches the trigger level`,
+            longDescription:`TX Trigger level: If 64 characters are to be sent and TX Trigger level is set to 32
+                             then, in 2 Controller Interrupts the data will be sent in chunks of 32 bytes. If 
+                             50 characters are to be sent and TX Trigger level is set to 8, then in 6 Controller Interrupts
+                             48 bytes will be sent and in the last interrupt, 2 bytes will be sent. `,
         },
         /* Open attributes */
         {
