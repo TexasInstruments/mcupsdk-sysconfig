@@ -72,11 +72,6 @@ McspiDma_EdmaArgs gMcspiEdmaArgs =
     .drvHandle        = (void *)&gEdmaConfig[`mcspiEdmaInstances[0].$name`],
 };
 
-MCSPI_DmaConfig gMcspiDmaConfig =
-{
-    .fxns        = &gMcspiDmaEdmaFxns,
-    .mcspiDmaArgs = (void *)&gMcspiEdmaArgs,
-};
 
 MCSPI_DmaHandle gMcspiDmaHandle[`mcspiEdmaInstances.length.length`] =
 {
@@ -87,11 +82,6 @@ MCSPI_DmaHandle gMcspiDmaHandle[`mcspiEdmaInstances.length.length`] =
 
 %}
 %else {
-MCSPI_DmaConfig gMcspiDmaConfig =
-{
-    .fxns        = NULL,
-    .mcspiDmaArgs = (void *)NULL,
-};
 
 McspiDma_EdmaArgs gMcspiEdmaArgs =
 {

@@ -192,7 +192,7 @@ MCSPI_DmaChConfig gMcspiDmaChConfig[`module.$instances.length`] =
     % let instance = module.$instances[i];
     % let instNameCamelCase = common.camelSentence(instance.$name);
     %if(instance.intrEnable == "DMA") {
-    &g`instNameCamelCase`DmaChCfg,
+    g`instNameCamelCase`DmaChCfg,
     %}
     % else {
     NULL,
