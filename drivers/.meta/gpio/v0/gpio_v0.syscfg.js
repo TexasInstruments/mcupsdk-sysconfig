@@ -165,6 +165,17 @@ function validate(inst, report) {
         validateInterruptRouter(inst, report, "intrOut");
 }
 
+function isInterruptConfigSupported()
+{
+    let isInterruptConfigSupported = true;
+
+    if ((common.getSocName() == "am263x") || (common.getSocName() == "am263px") || (common.getSocName() == "am261x"))
+    {
+        isInterruptConfigSupported = false;
+    }
+
+    return isInterruptConfigSupported;
+}
 
 //Function to validate if same interrupt router is selected for other instances
 function validateInterruptRouter(instance, report, fieldname) {
@@ -270,6 +281,7 @@ function getConfigurables() {
         displayName: "Enable Interrupt Configuration",
         description: "Enable this option to do the interrupt configuration for GPIO Pin",
         default: false,
+        hidden: !isInterruptConfigSupported(),
         onChange: function (inst, ui) {
             if (common.isSciClientSupported())
             {

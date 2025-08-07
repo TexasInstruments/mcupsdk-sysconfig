@@ -1,5 +1,6 @@
 %%{
     let module = system.modules[args[0]];
+    let common = system.getScript("/common");
 %%}
 /*
  * GPIO
@@ -15,7 +16,7 @@
 #define `instance.$name.toUpperCase()`_PIN (`config.pinIndex`)
 #define `instance.$name.toUpperCase()`_DIR (GPIO_DIRECTION_`config.pinDir`)
 #define `instance.$name.toUpperCase()`_TRIG_TYPE (GPIO_TRIG_TYPE_`config.trigType`)
-% if(config.enableIntr){
+% if(config.enableIntr && (!["am263x", "am263px", "am261x"].includes(common.getSocName()))){
 
 %if(config.routerId === 'MCU_M4FSS0_CORE0_NVIC_MCU_MCU') {
 /* On M4F, interrupt number as specified in TRM is input to the NVIC but from M4 point of view there are 16 internal interrupts
