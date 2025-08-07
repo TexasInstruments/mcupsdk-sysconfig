@@ -470,7 +470,7 @@ let mpu_armv7_module = {
         },
         {
             name: "subregionDisableMask",
-            displayName: "Sub-Region Disable Mark (hex)",
+            displayName: "Sub-Region Disable Mask (hex)",
             default: 0x0,
             displayFormat: "hex",
             description: "Value MUST be between 0x00 .. 0xFF"
