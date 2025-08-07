@@ -75,8 +75,8 @@ let ioexp_devices = [
         pinSet      : [
             {portNumber : 0, pinNumber : 0, pinName : "UART/EPWM_MUX_SEL"},
             {portNumber : 0, pinNumber : 1, pinName : "EMMC_RST_EN"},
-            {portNumber : 0, pinNumber : 2, pinName : "CPSW RGMI1/ICSSM_MII1_RST_EN"},
-            {portNumber : 0, pinNumber : 3, pinName : "CPSW RGMI2/ICSSM_MII0_RST_EN"},
+            {portNumber : 0, pinNumber : 2, pinName : "CPSW_RGMI1/ICSSM_MII1_RST_EN"},
+            {portNumber : 0, pinNumber : 3, pinName : "CPSW_RGMI2/ICSSM_MII0_RST_EN"},
             {portNumber : 0, pinNumber : 4, pinName : "AM263P_LED_DRIVER_EN"},
             {portNumber : 0, pinNumber : 5, pinName : "AM263P_LED_EN"},
             {portNumber : 0, pinNumber : 6, pinName : "AM263P_BP_MUX_SEL"},
