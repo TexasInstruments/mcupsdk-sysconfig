@@ -34,8 +34,8 @@
  * Auto generated file 
  */
 
-#ifndef TI_DRVIERS_OPEN_CLOSE_H_
-#define TI_DRVIERS_OPEN_CLOSE_H_
+#ifndef TI_DRIVERS_OPEN_CLOSE_H_
+#define TI_DRIVERS_OPEN_CLOSE_H_
 
 #include <stdint.h>
 #include "ti_drivers_config.h"
@@ -60,4 +60,4 @@ void Drivers_close(void);
 }
 #endif
 
-#endif /* TI_DRVIERS_OPEN_CLOSE_H_ */
+#endif /* TI_DRIVERS_OPEN_CLOSE_H_ */
