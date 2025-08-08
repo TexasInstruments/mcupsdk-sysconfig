@@ -33,23 +33,24 @@ extern UARTLLD_InitObject gUartInitObject[CONFIG_UART_NUM_LLD_INSTANCES];
 /* EDMA Driver handles */
 extern EDMA_Handle gEdmaHandle[CONFIG_EDMA_NUM_INSTANCES];
 
+UART_EdmaChConfig gUartDmaChCfg[CONFIG_UART_NUM_DMA_LLD_INSTANCES] = {
 % let j = 0;
-%  for(let i=0; i < module.$instances.length; i++) {
-%      let instance = module.$instances[i];
-       % if(instance.sdkInfra == "LLD") {
-%      if(instance.intrEnable == "DMA") {
-
-UART_EdmaChConfig gUartDmaChCfg[CONFIG_UART_NUM_DMA_LLD_INSTANCES] =
-{
+% for(let i = 0; i < module.$instances.length; i++) {
+% let instance = module.$instances[i];
+% if(instance.sdkInfra == "LLD") {
+% if(instance.intrEnable == "DMA") {
     {
         .edmaRxChId = `instance.uartRxConfigXbar.instance`,
         .edmaTxChId = `instance.uartTxConfigXbar.instance`,
-    },
-};
+    }
+    % if(j < module.$instances.length - 1) {
+        ,
+%}
 % j++;
 %}
 %}
 %}
+};
 %}
 
 void Drivers_uartOpenLld(void)
