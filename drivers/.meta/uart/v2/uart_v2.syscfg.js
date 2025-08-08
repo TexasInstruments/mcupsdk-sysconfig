@@ -512,23 +512,7 @@ function getConfigurables()
             displayName: "RX Trigger Level",
             default: "8",
             hidden: false,
-            options: [
-                {
-                    name: "1",
-                },
-                {
-                    name: "8",
-                },
-                {
-                    name: "16",
-                },
-                {
-                    name: "56",
-                },
-                {
-                    name: "60",
-                },
-            ],
+            options: getTrigList(),
             description: "RX trigger level",
             longDescription:`
 - Triggers the interrupt when RX FIFO reaches the trigger level`,
@@ -538,23 +522,7 @@ function getConfigurables()
             displayName: "TX Trigger Level",
             default: "32",
             hidden: false,
-            options: [
-                {
-                    name: "1",
-                },
-                {
-                    name: "8",
-                },
-                {
-                    name: "16",
-                },
-                {
-                    name: "32",
-                },
-                {
-                    name: "56",
-                },
-            ],
+            options: getTrigList(),
             description: "TX trigger level",
             longDescription:`
 - Triggers the interrupt when TX FIFO reaches the trigger level`,
@@ -668,6 +636,20 @@ function validateBaudrate(inst, report) {
     }
 }
 
+function getTrigList() {
+    let triggerList = []
+
+    for (let trigger = 1; trigger <= 63; trigger++)
+    {
+        triggerList.push({name: trigger.toString()});
+    }
+    return triggerList;
+}
+
+function isPowerOfTwo(num) {
+    return ((num & (num - 1)) === 0);
+  }
+
 function validate(inst, report) {
     common.validate.checkValidCName(inst, report, "readCallbackFxn");
     common.validate.checkValidCName(inst, report, "writeCallbackFxn");
@@ -686,6 +668,14 @@ function validate(inst, report) {
         if(inst.edmaDriver.intrEnable == "FALSE")
         {
             report.logError(`Interrupt must be enabled in `+system.getReference(inst.edmaDriver,"intrEnable"), inst, "intrEnable");
+        }
+        if(!isPowerOfTwo(inst.rxTrigLvl))
+        {
+            report.logError("Trigger level must be a power of 2 in DMA mode", inst, "rxTrigLvl");
+        }
+        if(!isPowerOfTwo(inst.txTrigLvl))
+        {
+            report.logError("Trigger level must be a power of 2 in DMA mode", inst, "txTrigLvl");
         }
     }
     if((inst.hwFlowControl == true) && (Number(inst.rxTrigLvl) > Number(inst.hwFlowControlThr))) {

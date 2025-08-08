@@ -114,8 +114,8 @@ UARTLLD_InitObject gUartInitObject[CONFIG_UART_NUM_LLD_INSTANCES] =
         .uartDmaHandle      = (UART_DmaHandle) &gEdmaConfig[0],
         .dmaChCfg           = (UART_DmaChConfig) &gUartDmaChCfg,
         %}
-        .rxTrigLvl          = UART_RXTRIGLVL_`config.rxTrigLvl`,
-        .txTrigLvl          = UART_TXTRIGLVL_`config.txTrigLvl`,
+        .rxTrigLvl          = `config.rxTrigLvl`U,
+        .txTrigLvl          = `config.txTrigLvl`U,
         .clockP_get         = ClockP_getTicks,
         .clockP_usecToTick  = ClockP_usecToTicks,
         % if(config.intrEnable != "DISABLE") {
