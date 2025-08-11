@@ -34,10 +34,58 @@ const uart_config_r5fss = [
                 clkRate : uart_input_clk_freq,
             },
         ],
-    }
+    },
+    {
+        name            : "DSS_UARTA",
+        baseAddr        : "CSL_DSS_SCIA_U_BASE",
+        inputClkFreq    : uart_input_clk_freq,
+        intrNum         : 37,
+        rxDmaEvt        : 14,
+        txDmaEvt        : 15,
+        clockIds        : [ "SOC_RcmPeripheralId_DSS_SCIA" ],
+        clockFrequencies: [
+            {
+                moduleId: "SOC_RcmPeripheralId_DSS_SCIA",
+                clkId   : "SOC_RcmPeripheralClockSource_SYS_CLK",
+                clkRate : uart_input_clk_freq,
+            },
+        ],
+    },
 ];
 
 const uart_config_c66ss = [
+    {
+        name            : "MSS_UARTA",
+        baseAddr        : "CSL_MSS_SCIA_U_BASE",
+        inputClkFreq    : uart_input_clk_freq,
+        intrNum         : 53,
+        rxDmaEvt        : 57,
+        txDmaEvt        : 58,
+        clockIds        : [ "SOC_RcmPeripheralId_MSS_SCIA" ],
+        clockFrequencies: [
+            {
+                moduleId: "SOC_RcmPeripheralId_MSS_SCIA",
+                clkId   : "SOC_RcmPeripheralClockSource_SYS_CLK",
+                clkRate : uart_input_clk_freq,
+            },
+        ],
+    },
+    {
+        name            : "MSS_UARTB",
+        baseAddr        : "CSL_MSS_SCIB_U_BASE",
+        inputClkFreq    : uart_input_clk_freq,
+        intrNum         : 55,
+        rxDmaEvt        : 59,
+        txDmaEvt        : 60,
+        clockIds        : [ "SOC_RcmPeripheralId_MSS_SCIB" ],
+        clockFrequencies: [
+            {
+                moduleId: "SOC_RcmPeripheralId_MSS_SCIB",
+                clkId   : "SOC_RcmPeripheralClockSource_SYS_CLK",
+                clkRate : uart_input_clk_freq,
+            },
+        ],
+    },
     {
         name            : "DSS_UARTA",
         baseAddr        : "CSL_DSS_SCIA_U_BASE",
@@ -74,9 +122,15 @@ function getConfigArr() {
 
 function getInterfaceName(inst) {
 
-    if(common.getSelfSysCfgCoreName().includes("c66")) {
+    if(inst.useDSSDomainPeripherals)
+    {
         return "DSS_UART";
     }
+    if(inst.useMSSDomainPeripherals)
+    {
+        return "MSS_UART";
+    }
+
     return "MSS_UART";
 }
 

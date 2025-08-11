@@ -92,7 +92,29 @@ let uart_module = {
     },
     maxInstances: getConfigArr().length,
     defaultInstanceName: "CONFIG_UART",
-    config: [
+    config: getConfigurables(),
+    validate: validate,
+    moduleStatic: {
+        modules: function(inst) {
+            return [{
+                name: "system_common",
+                moduleName: "/system_common",
+            }]
+        },
+    },
+    sharedModuleInstances: addModuleInstances,
+    pinmuxRequirements,
+    getInstanceConfig,
+    getInterfaceName,
+    getPeripheralPinNames,
+    getClockEnableIds,
+    getClockFrequencies,
+};
+function getConfigurables()
+{
+    let config = [];
+
+    config.push(
         {
             name: "baudRate",
             displayName: "Baudrate",
@@ -309,25 +331,19 @@ let uart_module = {
             hidden: true,
             description: "Write transfer callback function when callback mode is selected",
         },
-    ],
-    validate: validate,
-    moduleStatic: {
-        modules: function(inst) {
-            return [{
-                name: "system_common",
-                moduleName: "/system_common",
-            }]
-        },
-    },
-    sharedModuleInstances: addModuleInstances,
-    pinmuxRequirements,
-    getInstanceConfig,
-    getInterfaceName,
-    getPeripheralPinNames,
-    getClockEnableIds,
-    getClockFrequencies,
-};
+    )
 
+    if((common.isMSSDomainSupported()))
+    {
+        config.push(common.getUseMSSDomainPeripheralsConfig());
+    }
+
+    if((common.isDSSDomainSupported()))
+    {
+        config.push(common.getUseDSSDomainPeripheralsConfig());
+    }
+    return config;
+}
 function validate(inst, report) {
     common.validate.checkValidCName(inst, report, "readCallbackFxn");
     common.validate.checkValidCName(inst, report, "writeCallbackFxn");

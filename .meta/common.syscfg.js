@@ -340,6 +340,81 @@ function isWakeupDomainSupported()
             return false;
     }
 }
+function isMSSDomainSupported()
+{
+    switch(getSocName()) {
+        case "am273x":
+            return true;
+        default:
+            return false;
+    }
+}
+
+function getUseMSSDomainPeripheralsConfig()
+{
+  let config = {
+        name: "useMSSDomainPeripherals",
+        displayName: "Use MSS Domain Peripherals",
+        default: false,
+        readOnly: false,
+        onChange: function(inst, ui) {
+            if(inst.useMSSDomainPeripherals == true &&
+                inst.useDSSDomainPeripherals != undefined)
+            {
+                inst.useDSSDomainPeripherals = false;
+            }
+        }
+    }
+
+    if(getSocName().match(/am273x/))
+    {
+        if(getSelfSysCfgCoreName().includes("r5f"))
+        {
+            /*For MSS Domain r5*/
+            config.default = true;
+        }
+
+    }
+
+    return config;
+}
+
+function isDSSDomainSupported()
+{
+    switch(getSocName()) {
+    case "am273x":
+        return true;
+    default:
+        return false;
+    }
+}
+
+function getUseDSSDomainPeripheralsConfig()
+{
+    let config = {
+        name: "useDSSDomainPeripherals",
+        displayName: "Use DSS Domain Peripherals",
+        default: false,
+        readOnly: false,
+        onChange: function(inst, ui) {
+            if(inst.useDSSDomainPeripherals == true &&
+                inst.useMSSDomainPeripherals != undefined)
+            {
+                inst.useMSSDomainPeripherals = false;
+            }
+        }
+    }
+
+    if(getSocName().match(/am273x/))
+    {
+        if(getSelfSysCfgCoreName().includes("c66"))
+        {
+            config.default = true;
+        }
+    }
+
+    return config;
+}
 
 function findDuplicates(arrayToCheck)
 {
@@ -488,6 +563,10 @@ exports = {
     getOtherContextNames,
     onMigrate,
     getBoardName,
+    isDSSDomainSupported,
+    getUseDSSDomainPeripheralsConfig,
+    isMSSDomainSupported,
+    getUseMSSDomainPeripheralsConfig,
 
     validate: {
         checkSameInstanceName : function (instance, report) {
