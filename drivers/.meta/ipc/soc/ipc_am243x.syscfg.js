@@ -55,15 +55,7 @@ function getConfigurables() {
             configurables.push(cpuConfig2);
         }
     }
-    configurables.push (
-        {
-            name: "enableLinuxIpc",
-            displayName: "Linux A53 IPC RP Message",
-            description: `Enable IPC with Linux. Only IPC RP Message supported`,
-            default: false,
-        }
-    );
-
+    
     return configurables;
 }
 

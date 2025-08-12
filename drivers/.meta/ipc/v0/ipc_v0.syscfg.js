@@ -620,7 +620,7 @@ let ipc_module = {
 IPC (Inter Processor Communication) provides a fast and low latency means to exchange
 messages between applications on different CPUs on a SOC. There are two means to do IPC,
 
-1. IPC Notify, here users can exchange small 28b messages, at exterme low latencies.
+1. IPC Notify, here users can exchange small 28b messages, at extreme low latencies.
    This typically uses direct HW mechanism for message exchange, hence is very fast but also constrained
    on message size.
 2. IPC RP Message, here users can exchange larger messages between multiple clients or tasks
