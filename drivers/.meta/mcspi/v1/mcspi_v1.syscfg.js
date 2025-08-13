@@ -627,16 +627,25 @@ function validate(inst, report) {
     if (inst.trMode == "TX_RX") {
         common.validate.checkNumberRange(inst, report, "txFifoTrigLevel", 1, 32, "dec");
         common.validate.checkNumberRange(inst, report, "rxFifoTrigLevel", 1, 32, "dec");
-        checkTrigLevel(inst, report, "txFifoTrigLevel");
-        checkTrigLevel(inst, report, "rxFifoTrigLevel");
+        if(common.getSocName() != "am263x" && inst.intrEnable == "DMA")
+        {
+            checkTrigLevel(inst, report, "txFifoTrigLevel");
+            checkTrigLevel(inst, report, "rxFifoTrigLevel");
+        }
     }
     if (inst.trMode == "TX_ONLY") {
         common.validate.checkNumberRange(inst, report, "txFifoTrigLevel", 1, 64, "dec");
-        checkTrigLevel(inst, report, "txFifoTrigLevel");
+        if(common.getSocName() != "am263x" && inst.intrEnable == "DMA")
+        {
+            checkTrigLevel(inst, report, "txFifoTrigLevel");
+        }
     }
     if (inst.trMode == "RX_ONLY") {
         common.validate.checkNumberRange(inst, report, "rxFifoTrigLevel", 1, 64, "dec");
-        checkTrigLevel(inst, report, "rxFifoTrigLevel");
+        if(common.getSocName() != "am263x" && inst.intrEnable == "DMA")
+        {
+            checkTrigLevel(inst, report, "rxFifoTrigLevel");
+        }
     }
 }
 
