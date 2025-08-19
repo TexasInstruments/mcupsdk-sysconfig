@@ -9,7 +9,7 @@ const ospi_config_r5fss = [
         dataBaseAddr1    : "CSL_FLASH_DATA_REG1_U_BASE",
         inputClkFreq    : getDefaultClkRate(),
         dacEnable       : false,
-        baudRateDiv     : 4,
+        baudRateDiv     : 8,
         intrNum         : 88,
         clockIds        : [ "SOC_RcmPeripheralId_OSPI0" ],
         clockFrequencies: [
