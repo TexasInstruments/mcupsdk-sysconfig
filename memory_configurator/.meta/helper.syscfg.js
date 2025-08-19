@@ -52,7 +52,7 @@ function memoryRegionInformation(mpu_instance, mpu_set) {
 
         let mp_start = mpu_instance.baseAddr
         let mp_size = Math.pow(2, mpu_instance.size)
-        let mp_end = Number(mp_start) + Number(mp_size)
+        let mp_end = Number(mp_start) + Number(mp_size) - 0x1
         _.each(sorted_memory_regions, (region) => {
             let mr_start = ( region.auto ? region.autoStartAddress: region.manualStartAddress )
             let mr_end =  mr_start + region.size - 0x1
