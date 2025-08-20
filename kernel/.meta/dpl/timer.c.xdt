@@ -26,7 +26,10 @@ void TimerP_isr`i`(void *args)
     `config.timerCallback`(args);
 % }
     TimerP_clearOverflowInt(gTimerBaseAddr[`config.$name`]);
+% let soc = common.getSocName();
+% if(soc != "am263px" && soc != "am261x" && soc != "am263x") {
     HwiP_clearInt(`config.$name`_INT_NUM);
+% }
 }
 % }
 
