@@ -145,7 +145,7 @@ function getBoardName() {
     if(system.deviceData.device == "AM263Px") {
         if (system.deviceData.package == "ZCZ_C")
             return "am263px-lp";
-        if (system.deviceData.package == "ZCZ_S")
+        if (system.deviceData.package == "ZCZ_S" || system.deviceData.package == "ZCZ_F")
             return "am263px-cc";
     }
     if(system.deviceData.device == "AM261x_ZCZ")
