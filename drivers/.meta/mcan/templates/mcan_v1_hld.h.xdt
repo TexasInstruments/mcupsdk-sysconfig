@@ -30,8 +30,8 @@
 #define CONFIG_MCAN_NUM_INSTANCES (`module.$instances.length`U)
 
 /*  CANFD objects - initialized by the driver */
-CANFD_Object gCanfdObj[CONFIG_MCAN_NUM_INSTANCES];
+extern CANFD_Object gCanfdObj[CONFIG_MCAN_NUM_INSTANCES];
 /*  CANFD global configuration array */
 extern CANFD_Config gCanfdConfig[CONFIG_MCAN_NUM_INSTANCES];
 /* CANFD Driver handles */
-CANFD_Handle gCanfdHandle[CONFIG_MCAN_NUM_INSTANCES];
+extern CANFD_Handle gCanfdHandle[CONFIG_MCAN_NUM_INSTANCES];

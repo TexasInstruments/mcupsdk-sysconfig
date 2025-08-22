@@ -97,7 +97,8 @@ static CANFD_Attrs gCanfdAttrs[CONFIG_MCAN_NUM_INSTANCES] =
     % }
 };
 
-extern CANFD_Object gCanfdObj[CONFIG_MCAN_NUM_INSTANCES];
+CANFD_Object gCanfdObj[CONFIG_MCAN_NUM_INSTANCES];
+CANFD_Handle gCanfdHandle[CONFIG_MCAN_NUM_INSTANCES];
 extern CANFD_OpenParams openParams[CONFIG_MCAN_NUM_INSTANCES];
 
 /* CANFD driver configuration */
