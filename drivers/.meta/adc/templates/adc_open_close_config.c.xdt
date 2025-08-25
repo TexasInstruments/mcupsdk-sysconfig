@@ -8,6 +8,7 @@ void Drivers_adcOpen()
 %if (module != null)
 %{
 	% for(let i = 0; i < module.$instances.length; i++) {
+		% let flag1, flag2 = ""
 	    % let instance = module.$instances[i];
 		% let baseName = instance.$name + "_BASE_ADDR";
 	/* `instance.$name` initialization */
@@ -107,10 +108,15 @@ void Drivers_adcOpen()
             % if( (common.getSocName() === "am263px") || (common.getSocName() == "am261x")){
                 % let sociTotal = 16
 		        % for(let socNumber = 0; socNumber < sociTotal; socNumber++) {
-                    % if(instance["soc" + socNumber.toString() + "Triggermode"] == "repeatermode"){
+                    % if((instance["soc" + socNumber.toString() + "Triggermode"] == "repeatermode") || (instance.enableBurstMode && (instance.burstTrigger == "ADC_TRIGGER_REPEATER1" || instance.burstTrigger == "ADC_TRIGGER_REPEATER2"))){
                         % let rptrTotal = 2
 		                % for(let rptriNumber = 1; rptriNumber <= rptrTotal; rptriNumber++) {
-					    % if((instance["soc" + socNumber.toString() + "Trigger"].replace(/[^0-9]/g,'')==rptriNumber)){
+					    % if((instance["soc" + socNumber.toString() + "Trigger"].replace(/[^0-9]/g,'')==rptriNumber) || (instance.enableBurstMode && (instance[`burstTrigger`].replace(/[^0-9]/g,'')==rptriNumber))){
+							% if((flag1 != "SET" && rptriNumber == "1") || (flag2 != "SET" && rptriNumber == "2")){
+	//
+	// Configgures Repeater Modules
+	//
+
 	//
 	// 		Repeater module `rptriNumber` parameters
 	//      base: 			`baseName`
@@ -130,6 +136,17 @@ void Drivers_adcOpen()
 	ADC_triggerRepeaterPhase(`baseName`, ADC_REPINST`rptriNumber`, `instance["repeater"+rptriNumber+" Phase"]`);
 	ADC_triggerRepeaterSpread(`baseName`, ADC_REPINST`rptriNumber`, `instance["repeater"+rptriNumber+" Spread"]`);
                         % }
+							% }
+					% for(var socValue = 0; socValue<16; ++socValue){
+						% if((instance["soc" + socValue.toString() + "Trigger"].replace(/[^0-9]/g,'') == rptriNumber) || instance.enableBurstMode){
+							% if(rptriNumber == "1"){
+								% flag1 = "SET"
+							% }
+							% else{
+								% flag2 = "SET"
+							% }
+						% }
+					% }
                     % }
                 % }
             % }
