@@ -424,7 +424,7 @@ let configHLD = [
                 name: "inputClkFreqHLD",
                 displayName: "Input Clock Frequency (Hz)",
                 default: soc.getClkRate(),
-                // hidden: true,
+                hidden: true,
                 getValue: (inst) => {
                     const interfaceName = getInterfaceName(inst)
                     const linSolution = inst[interfaceName].$solution
