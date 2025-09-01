@@ -6,7 +6,7 @@ let pruicss_top_module_name = "/drivers/pruicss/m_v0/pruicss_m_v0_gpio";
 let device = common.getDeviceName();
 let is_am263x_soc = (device === "am263x-cc") ? true : false;
 let is_am263px_soc = (device === "am263px-cc") ? true : false;
-let is_am261x_soc = (device === "am261x-lp") ? true : false;
+let is_am261x_soc = (device === "am261x-lp" || device === "am261x-som") ? true : false;
 
 let pruicss_top_module = {
     displayName: "PRU (ICSS) IO Settings",

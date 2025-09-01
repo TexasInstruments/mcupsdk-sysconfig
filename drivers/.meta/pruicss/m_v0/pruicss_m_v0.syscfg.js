@@ -4,7 +4,7 @@ let soc = system.getScript(`/drivers/pruicss/soc/pruicss_${common.getSocName()}`
 let device = common.getDeviceName();
 let is_am263x_soc = (device === "am263x-cc") ? true : false;
 let is_am263px_soc = (device === "am263px-cc") ? true : false;
-let is_am261x_soc = (device === "am261x-lp") ? true : false;
+let is_am261x_soc = (device === "am261x-lp" || device === "am261x-som") ? true : false;
 
 function getConfigArr() {
     return soc.getConfigArr();
@@ -120,7 +120,59 @@ function getConfigurables()
             },
             
         )
-    } else {
+    }
+    else if(device == "am261x-som") 
+    {
+        config.push(
+            {
+                name: "instance",
+                displayName: "Instance",
+                default: "ICSSM0",
+                options: [
+                    {
+                        name: "ICSSM0",
+                    },
+                    {
+                        name: "ICSSM1",
+                    },
+                ],
+            },
+            {
+                name: "coreClk",
+                displayName: "Core Clk (Hz)",
+                default: 200*1000000,
+                options: [
+                    {
+                        name: 200*1000000,
+                        description: "ICSS core clock is derived from SYS_CLK(200 MH)"
+                    }
+                ],
+            }, 
+            {
+                name: "iepClk",
+                displayName: "IEP Clk (Hz)",
+                default: 200*1000000,
+                options: [
+                    {
+                        name: 200*1000000,
+                        description: "ICSS iep clock is derived from SYS_CLK(200 MHz)"
+                    }
+                ]
+            }, 
+            {
+                name: "uartClk",
+                displayName: "Uart Clk (Hz)",
+                default: 160*1000000,
+                options: [
+                    {
+                        name: 160*1000000,
+                        description: "UART clock is derived from DPLL_PER_HSDIV0_CLKOUT2(160 MHz)"
+                    }
+                ],
+            }
+        )     
+    }
+    else {
         config.push(
             {
                 name: "instance",
