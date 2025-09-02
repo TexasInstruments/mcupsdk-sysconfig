@@ -6,6 +6,7 @@
     let module_reg = system.modules[`/security/firewall_service/${driverVer}/firewall_service_v0_region`];
     let module_array = system.modules[`/security/firewall_service/${driverVer}/firewall_service_v0`];
 %%}
+#include <security_common/drivers/hsmclient/hsmclient.h>
 /*
  * SET MPU Firewall Configuration
  */
@@ -13,8 +14,6 @@
     % let instance = module.$instances[i];
 FirewallRegionReq_t gMpuFirewallRegionConfig_`i`[FIREWALL_ARRAY`i`_NUM_REGIONS] =
 {
-
-
     % let region_instances = instance.mpu_region;
     % for(let reg = 0; reg < region_instances.length; reg++) {
         % let reg_instance = region_instances[reg];
