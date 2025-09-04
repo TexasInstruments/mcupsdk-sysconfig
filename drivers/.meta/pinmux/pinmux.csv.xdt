@@ -3,7 +3,7 @@
 % let output = {};
 % let printThis = "";
 % Object.entries(devicePins).forEach(([devPin, info]) => {
-%  
+%
 %         let ball = info.ball;
 %         let name = info.designSignalName;
 %         let muxSetting = info.mux?.muxSetting;
@@ -23,38 +23,40 @@
 % })
 % Object.keys(output).sort();
 % let modulesList = system.modules;
-% 
+%
 % Object.keys(modulesList).forEach( (item) => {
 %     let moduleDefinition = modulesList[item];
 %     let instances = moduleDefinition.$instances;
-% 
+%
 %     instances.forEach(inst => {
 %           let arr = moduleDefinition.pinmuxRequirements?.(inst)
 %            arr?.forEach( ele => {
 %                let peripheralName = ele.name // ADC_EXTCH_XBAR
-%                let instanceInterface = inst[peripheralName] 
+%                let instanceInterface = inst[peripheralName]
 %
 %                ele?.resources?.forEach(res => {
 %                    let pinName = res.name
 %                    let devicePinName = instanceInterface[pinName]?.$solution?.devicePinName
 %                    let packagePinName = instanceInterface[pinName]?.$solution?.packagePinName
-%                    if(devicePinName && packagePinName){
-%                        output[packagePinName].selectedMode = devicePinName
+%                    let peripheralPinName = instanceInterface[pinName]?.$solution?.peripheralPinName
+%                    if(devicePinName && packagePinName && peripheralPinName){
+%                        output[packagePinName].selectedMode = peripheralPinName
 %                    }
 %                })
 %                if(ele.resources === undefined){  // for mcspi_channel
 %                    let devicePinName = instanceInterface.$solution?.devicePinName
 %                    let packagePinName = instanceInterface.$solution?.packagePinName
-%                    if(devicePinName && packagePinName){
-%                        output[packagePinName].selectedMode = devicePinName
+%                    let peripheralPinName = instanceInterface.$solution?.peripheralPinName
+%                    if(devicePinName && packagePinName && peripheralPinName){
+%                        output[packagePinName].selectedMode = peripheralPinName
 %                    }
 %                }
-%            })      
+%            })
 %     })
 % })
 
 % Object.keys(output).forEach( ball => {
-% 
+%
 %     let val = output[ball]
 %     printThis += val.ball + ",";
 %     printThis += val.name + ",";
