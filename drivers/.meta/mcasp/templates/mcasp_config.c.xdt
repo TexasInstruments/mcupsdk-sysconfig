@@ -114,6 +114,7 @@ static MCASP_Attrs gMcaspAttrs[CONFIG_MCASP_NUM_INSTANCES] =
 % {
 %      aclkr |= (instance.rxAclkSource << 5);
 % }
+% aclkr |= (instance.rxBitClkPolarity << 7);
 % if (instance.rxHclkSource == 0)
 % {
 %      hiClkr = (instance.rxHclkSource << 15);
@@ -164,6 +165,7 @@ static MCASP_Attrs gMcaspAttrs[CONFIG_MCASP_NUM_INSTANCES] =
 % {
 %      aclkx |= (instance.txAclkSource << 5);
 % }
+% aclkx |= (instance.txBitClkPolarity << 7);
 % if (instance.txHclkSource == 0)
 % {
 %      hiClkx = (instance.txHclkSource << 15);
