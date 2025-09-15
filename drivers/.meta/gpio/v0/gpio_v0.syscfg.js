@@ -167,19 +167,16 @@ function getPeripheralPinNames(inst) {
 }
 
 function validate(inst, report) {
-        validateInterruptRouter(inst, report, "intrOut");
-}
+    validateInterruptRouter(inst, report, "intrOut");
 
-function isInterruptConfigSupported()
-{
-    let isInterruptConfigSupported = true;
-
-    if ((common.getSocName() == "am263x") || (common.getSocName() == "am263px") || (common.getSocName() == "am261x"))
+    if((common.getSocName() == "am263x") || (common.getSocName() == "am263px") || (common.getSocName() == "am261x"))
     {
-        isInterruptConfigSupported = false;
+        if(inst.enableIntr)
+        {
+            report.logInfo(`GPIO Interrupt XBAR Configuration needs to be done additionally to route the GPIO interrupt to VIM.
+                Interrupt registration has to be done in application.`, inst, "enableIntr");
+        }
     }
-
-    return isInterruptConfigSupported;
 }
 
 //Function to validate if same interrupt router is selected for other instances
@@ -286,7 +283,6 @@ function getConfigurables() {
         displayName: "Enable Interrupt Configuration",
         description: "Enable this option to do the interrupt configuration for GPIO Pin",
         default: false,
-        hidden: !isInterruptConfigSupported(),
         onChange: function (inst, ui) {
             if (common.isSciClientSupported())
             {
