@@ -152,6 +152,8 @@ function getBoardName() {
         return "am261x-som";
     if(system.deviceData.device == "AM261x_ZFG")
         return "am261x-lp";
+    if(system.deviceData.device == "AM261x_ZFG_400")
+        return "am261x-lp";
     if(system.deviceData.device == "AM273x")
         return "am273x-evm";
     if(system.deviceData.device == "AWR294X")
