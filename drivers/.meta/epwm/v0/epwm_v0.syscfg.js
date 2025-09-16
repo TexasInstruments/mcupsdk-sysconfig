@@ -85,7 +85,7 @@ let epwm_module = {
     longDescription: `The Enhanced PWM (EPWM) modules are highly programmable and flexible,
 capable of generating complex pulse width waveforms with minimal CPU overhead.
 Each EPWM module provides a complete PWM channel composed of two outputs: EPWMxA and EPWMxB.
-Multiple EPWM modules can be synchronized via a daisy-chain (EPWMxSYNCI → EPWMxSYNCO) to operate together as a single system.
+Multiple EPWM modules can be synchronized via a daisy-chain (EPWMxSYNCI -> EPWMxSYNCO) to operate together as a single system.
 
 The EPWM module can also generate various system-level events:
 1. Interrupts: It generates general-purpose interrupts and specific trip-zone interrupts.
