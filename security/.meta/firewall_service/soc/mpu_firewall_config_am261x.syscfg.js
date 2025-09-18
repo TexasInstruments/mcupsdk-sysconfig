@@ -24,12 +24,10 @@ const mpu_firewall_config = [
         name: "R5SS0_CORE0_AXIS_SLV",
         regionCount: 8,
         memSpace : [
-            { startAddr: 0x78000000, size: 0x20000 },
-            { startAddr: 0x78100000, size: 0x20000 },
+            { startAddr: 0x78000000, size: 0x40000 },
+            { startAddr: 0x78100000, size: 0x40000 },
             { startAddr: 0x74000000, size: 0x800000 },
-            { startAddr: 0x74800000, size: 0x800000 },
-            { startAddr: 0x78060000, size: 0x400 },            
-            
+            { startAddr: 0x74800000, size: 0x800000 },            
         ]
     },
     {
@@ -40,7 +38,6 @@ const mpu_firewall_config = [
             { startAddr: 0x78300000, size: 0x20000 },
             { startAddr: 0x75000000, size: 0x800000 },
             { startAddr: 0x75800000, size: 0x800000 },
-            { startAddr: 0x78260000, size: 0x400},
         ]
     },
     {
@@ -109,10 +106,10 @@ const mpu_firewall_config = [
         ]
     },
     {
-        name: "R5SS0_CONFIG_SLV",
+        name: "R5SS0_SLV",
         regionCount: 8,
         memSpace : [
-            { startAddr: 0x53000000, size: 0x300000 },
+            { startAddr: 0x50000000, size: 0x10000000 },
         ]
     },
 ];
