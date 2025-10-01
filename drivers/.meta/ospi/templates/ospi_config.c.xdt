@@ -56,6 +56,7 @@ static OSPI_Attrs gOspiAttrs[CONFIG_OSPI_NUM_INSTANCES] =
         .decChipSelect        = `config.decChipSelect`,
         .baudRateDiv          = `config.baudRateDiv`,
         .dmaRestrictedRegions = gOspiDmaRestrictRegions,
+        .validateOtp          = `config.validateOtp`,
     },
 % }
 };

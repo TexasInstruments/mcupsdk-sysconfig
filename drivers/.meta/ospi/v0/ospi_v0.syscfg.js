@@ -407,6 +407,16 @@ function getConfigurables()
                 }
             }
         },
+        {
+            name : "validateOtp",
+            displayName : "Validate OTP",
+            description : "Enable validation of OTP memory during phy read.",
+            longDescription : "During phy enable read tuning point is validated by perfoming a digonal check, \
+            length of diagonal on each side is equal to the radius, if any point returns failure, \
+            find new tuning point.",
+            default : false,
+            hidden : false,
+        },
         /* Advanced parameters */
         {
             name: "advanced",
