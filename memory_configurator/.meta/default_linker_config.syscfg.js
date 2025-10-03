@@ -811,7 +811,7 @@ function def_memory_regions(regionInst, ind, device, core){
             }
         }
     }
-	else if(device == "AM261x_ZCZ" || device == "AM261x_ZFG" || system.deviceData.device == "AM261x_ZFG_400")
+	else if(device == "AM261x_ZCZ" || device == "AM261x_ZNC" || device == "AM261x_ZEJ" || device == "AM261x_ZFG" || system.deviceData.device == "AM261x_ZFG_400")
 	{
 		if(core.includes("r5fss0-0")){
 			if(ind == 0){
@@ -2164,7 +2164,7 @@ function def_sections(sectionInst, ind, device, core){
             }
         }
     }
-	else if(device == "AM261x_ZCZ" || device == "AM261x_ZFG" || system.deviceData.device == "AM261x_ZFG_400"){
+	else if(device == "AM261x_ZCZ" || device == "AM261x_ZNC" || device == "AM261x_ZEJ" || device == "AM261x_ZFG" || system.deviceData.device == "AM261x_ZFG_400"){
         if( core.includes("r5f") ) {
             if(ind == 1) {
                 sectionInst.load_memory                  = "R5F_VECS";

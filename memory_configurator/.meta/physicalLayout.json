@@ -263,6 +263,60 @@
             "access": "all"
 		},
 	},
+	"AM261x_ZNC": {
+		"OCRAM": {
+			"start": 0x70000000,
+			"size":  0x00180000,
+            "access": "all"
+		},
+		"FLASH": {
+			"start": 0x60000000,
+			"size": 0x8000000,
+            "access": "all"
+		},
+        "TCMA": {
+			"start": 0x00000000,
+			"size": 0x00040000,
+            "access": "individual"
+		},
+        "TCMB": {
+			"start": 0x00080000,
+			"size": 0x00040000,
+            "access": "individual"
+		},
+        "CUSTOM": {
+			"start": 0x00000000,
+			"size": 0xFFFFFFFF,
+            "access": "all"
+		},
+	},
+	"AM261x_ZEJ": {
+		"OCRAM": {
+			"start": 0x70000000,
+			"size":  0x00180000,
+            "access": "all"
+		},
+		"FLASH": {
+			"start": 0x60000000,
+			"size": 0x8000000,
+            "access": "all"
+		},
+        "TCMA": {
+			"start": 0x00000000,
+			"size": 0x00040000,
+            "access": "individual"
+		},
+        "TCMB": {
+			"start": 0x00080000,
+			"size": 0x00040000,
+            "access": "individual"
+		},
+        "CUSTOM": {
+			"start": 0x00000000,
+			"size": 0xFFFFFFFF,
+            "access": "all"
+		},
+	},
 	"AM261x_ZFG": {
 		"OCRAM": {
 			"start": 0x70000000,

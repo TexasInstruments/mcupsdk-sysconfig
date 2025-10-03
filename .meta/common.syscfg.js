@@ -90,7 +90,7 @@ function getSocName() {
         return "am263x";
     if(system.deviceData.device == "AM263Px")
         return "am263px";
-    if((system.deviceData.device == "AM261x_ZCZ") || (system.deviceData.device == "AM261x_ZFG") || (system.deviceData.device == "AM261x_ZFG_400"))
+    if((system.deviceData.device == "AM261x_ZCZ") || (system.deviceData.device == "AM261x_ZNC") || (system.deviceData.device == "AM261x_ZEJ") || (system.deviceData.device == "AM261x_ZFG") || (system.deviceData.device == "AM261x_ZFG_400"))
         return "am261x";
     if(system.deviceData.device == "AM273x")
         return "am273x";
