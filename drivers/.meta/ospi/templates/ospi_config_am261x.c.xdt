@@ -113,7 +113,6 @@ OSPI_DmaConfig gOspiDmaConfig[CONFIG_OSPI_NUM_DMA_INSTANCES] =
 {
 %for(let i = 0; i < 1; i++) {
     {
-        .fxns        = &gOspiDmaEdmaFxns,
         .ospiDmaArgs = &(gOspiEdmaArgs[`i`])
     },
 %}

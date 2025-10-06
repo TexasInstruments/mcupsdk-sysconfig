@@ -156,9 +156,7 @@ OSPI_DmaConfig gOspiDmaConfig[CONFIG_OSPI_NUM_DMA_INSTANCES] =
 {
 %for(let i = 0; i < ospiUdmaInstances.length; i++) {
     {
-        .fxns        = &gOspiDmaUdmaFxns,
         .ospiDmaArgs = (void *)&gOspiUdma`i`Args,
-        .ospiDrvHandle = &gOspiObject[CONFIG_OSPI0],
     }
 %}
 };

@@ -130,9 +130,7 @@ OSPI_DmaConfig gOspiDmaConfig[CONFIG_OSPI_NUM_DMA_INSTANCES] =
 {
 %for(let i = 0; i < module.$instances.length; i++) {
     {
-        .fxns        = &gOspiDmaEdmaFxns,
         .ospiDmaArgs = &(gOspiEdmaArgs[`i`]),
-        .ospiDrvHandle = &gOspiObject[CONFIG_OSPI0],
     }
 %}
 };
