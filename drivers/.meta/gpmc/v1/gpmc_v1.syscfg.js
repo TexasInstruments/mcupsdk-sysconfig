@@ -649,7 +649,7 @@ let gpmc_module = {
             name: "dmaEnable",
             displayName: "Enable DMA",
             default: false,
-            hidden: true,
+            hidden: false,
             description: `Enable data transfer using DMA`,
         },
         {
