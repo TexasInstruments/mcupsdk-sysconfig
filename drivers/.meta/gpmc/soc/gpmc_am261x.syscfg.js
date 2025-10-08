@@ -1,8 +1,9 @@
 let common = system.getScript("/common");
+let helperScript = system.getScript(`/clockTree/helperScript.js`);
 
 const gpmc_config_r5fss = [
     {
-        name            : "GPMC",
+        name            : "GPMC0",
         baseAddr        : "CSL_GPMC0_CFG",
         dataBaseAddr    : "CSL_GPMC0_MEM_U_BASE",
         elmBaseAddr     : "CSL_ELM0_BASE",

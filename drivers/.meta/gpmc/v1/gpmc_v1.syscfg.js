@@ -22,11 +22,18 @@ function getInstanceConfig(moduleInstance) {
 
 function getInterfaceName(inst) {
 
-    return "GPMC";
+    if(common.getSocName() === "am261x")
+        return "GPMC0";
+    else
+        return "GPMC";
 }
 
 function getPeripheralPinNames(inst) {
-    return [ "GPMC_CLK", "GPMC_CSn0", "GPMC_CSn1", "GPMC_CSn2", "GPMC_CSn3", "GPMC_DIR", "GPMC_OEn_REn", "GPMC_WAIT0", "GPMC_WAIT1", "GPMC_WEn", "GPMC_WPn", "GPMC_BE0n_CLE", "GPMC_ADVn_ALE",
+    if(common.getSocName()=="am261x")
+        return [ "GPMC0_CLK", "GPMC0_CSn0", "GPMC0_CSn1", "GPMC0_CSn2", "GPMC0_CSn3", "GPMC0_DIR", "GPMC0_OEn_REn", "GPMC0_WAIT0", "GPMC0_WAIT1", "GPMC0_WEn", "GPMC0_WPn", "GPMC0_BE0n_CLE", "GPMC0_ADVn_ALE",
+            "GPMC0_AD0", "GPMC0_AD1", "GPMC0_AD2", "GPMC0_AD3", "GPMC0_AD4", "GPMC0_AD5", "GPMC0_AD6", "GPMC0_AD7", "GPMC0_AD8", "GPMC0_AD9", "GPMC0_AD10", "GPMC0_AD11", "GPMC0_AD12", "GPMC0_AD13", "GPMC0_AD14", "GPMC0_AD15", "GPMC0_A0", "GPMC0_A1", "GPMC0_A2", "GPMC0_A3", "GPMC0_A4", "GPMC0_A5", "GPMC0_A6", "GPMC0_A7", "GPMC0_A8", "GPMC0_A9", "GPMC0_A10", "GPMC0_BE1n", "GPMC0_A11", "GPMC0_A12", "GPMC0_A13", "GPMC0_A14", "GPMC0_A15", "GPMC0_A16", "GPMC0_A17", "GPMC0_A18", "GPMC0_A19", "GPMC0_A20", "GPMC0_A21"];
+    else
+        return [ "GPMC_CLK", "GPMC_CSn0", "GPMC_CSn1", "GPMC_CSn2", "GPMC_CSn3", "GPMC_DIR", "GPMC_OEn_REn", "GPMC_WAIT0", "GPMC_WAIT1", "GPMC_WEn", "GPMC_WPn", "GPMC_BE0n_CLE", "GPMC_ADVn_ALE",
                 "GPMC_AD0", "GPMC_AD1", "GPMC_AD2", "GPMC_AD3", "GPMC_AD4", "GPMC_AD5", "GPMC_AD6", "GPMC_AD7", "GPMC_AD8", "GPMC_AD9", "GPMC_AD10", "GPMC_AD11", "GPMC_AD12", "GPMC_AD13", "GPMC_AD14", "GPMC_AD15", "GPMC_A0", "GPMC_A1", "GPMC_A2", "GPMC_A3", "GPMC_A4", "GPMC_A5", "GPMC_A6", "GPMC_A7", "GPMC_A8", "GPMC_A9", "GPMC_A10", "GPMC_BE1n", "GPMC_A11", "GPMC_A12", "GPMC_A13", "GPMC_A14", "GPMC_A15", "GPMC_A16", "GPMC_A17", "GPMC_A18", "GPMC_A19", "GPMC_A20", "GPMC_A21"]
 }
 
@@ -49,118 +56,118 @@ function getGpmcDeviceConfig(moduleInstance) {
     return deviceConfig;
 }
 
-
-function pinmuxRequirements(inst) {
-   let interfaceName = getInterfaceName(inst);
+function pinmuxRequirements_am261x(inst)
+{
+    let interfaceName = getInterfaceName(inst);
 
     let resources = [];
     let pinResource = {};
 
-    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_OEn_REn", "GPMC OEn_REn Pin");
+    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_OEn_REn", "GPMC OEn_REn Pin");
     pinmux.setConfigurableDefault( pinResource, "rx", true );
     resources.push( pinResource);
 
-    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_ADVn_ALE", "GPMC ADVn_ALE Pin");
+    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_ADVn_ALE", "GPMC ADVn_ALE Pin");
     pinmux.setConfigurableDefault( pinResource, "rx", false );
     resources.push( pinResource);
 
-    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_WEn", "GPMC WEn Pin");
+    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_WEn", "GPMC WEn Pin");
     pinmux.setConfigurableDefault( pinResource, "rx", false );
     resources.push( pinResource);
 
-    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_BE0n_CLE", "GPMC BE0n_CLE Pin");
+    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_BE0n_CLE", "GPMC BE0n_CLE Pin");
     pinmux.setConfigurableDefault( pinResource, "rx", false );
     resources.push( pinResource);
 
-    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A0", "GPMC_A0");
+    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_A0", "GPMC_A0");
     pinmux.setConfigurableDefault( pinResource, "rx", false );
     resources.push( pinResource);
 
-    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A1", "GPMC_A1");
+    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_A1", "GPMC_A1");
     pinmux.setConfigurableDefault( pinResource, "rx", false );
     resources.push( pinResource);
 
-    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A2", "GPMC_A2");
+    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_A2", "GPMC_A2");
     pinmux.setConfigurableDefault( pinResource, "rx", false );
     resources.push( pinResource);
 
-    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A3", "GPMC_A3");
+    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_A3", "GPMC_A3");
     pinmux.setConfigurableDefault( pinResource, "rx", false );
     resources.push( pinResource);
 
-    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A4", "GPMC_A4");
+    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_A4", "GPMC_A4");
     pinmux.setConfigurableDefault( pinResource, "rx", false );
     resources.push( pinResource);
 
-    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A5", "GPMC_A5");
+    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_A5", "GPMC_A5");
     pinmux.setConfigurableDefault( pinResource, "rx", false );
     resources.push( pinResource);
 
-    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A6", "GPMC_A6");
+    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_A6", "GPMC_A6");
     pinmux.setConfigurableDefault( pinResource, "rx", false );
     resources.push( pinResource);
 
-    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A7", "GPMC_A7");
+    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_A7", "GPMC_A7");
     pinmux.setConfigurableDefault( pinResource, "rx", false );
     resources.push( pinResource);
 
-    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A8", "GPMC_A8");
+    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_A8", "GPMC_A8");
     pinmux.setConfigurableDefault( pinResource, "rx", false );
     resources.push( pinResource);
 
-    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A9", "GPMC_A9");
+    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_A9", "GPMC_A9");
     pinmux.setConfigurableDefault( pinResource, "rx", false );
     resources.push( pinResource);
 
-    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A10", "GPMC_A10");
+    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_A10", "GPMC_A10");
     pinmux.setConfigurableDefault( pinResource, "rx", false );
     resources.push( pinResource);
 
-    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A11", "GPMC_A11");
+    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_A11", "GPMC_A11");
     pinmux.setConfigurableDefault( pinResource, "rx", false );
     resources.push( pinResource);
 
-    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A12", "GPMC_A12");
+    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_A12", "GPMC_A12");
     pinmux.setConfigurableDefault( pinResource, "rx", false );
     resources.push( pinResource);
 
-    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A13", "GPMC_A13");
+    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_A13", "GPMC_A13");
     pinmux.setConfigurableDefault( pinResource, "rx", false );
     resources.push( pinResource);
 
-    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A14", "GPMC_A14");
+    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_A14", "GPMC_A14");
     pinmux.setConfigurableDefault( pinResource, "rx", false );
     resources.push( pinResource);
 
-    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A15", "GPMC_A15");
+    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_A15", "GPMC_A15");
     pinmux.setConfigurableDefault( pinResource, "rx", false );
     resources.push( pinResource);
 
-    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A16", "GPMC_A16");
+    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_A16", "GPMC_A16");
     pinmux.setConfigurableDefault( pinResource, "rx", false );
     resources.push( pinResource);
 
-    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A17", "GPMC_A17");
+    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_A17", "GPMC_A17");
     pinmux.setConfigurableDefault( pinResource, "rx", false );
     resources.push( pinResource);
 
-    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A18", "GPMC_A18");
+    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_A18", "GPMC_A18");
     pinmux.setConfigurableDefault( pinResource, "rx", false );
     resources.push( pinResource);
 
-    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A19", "GPMC_A19");
+    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_A19", "GPMC_A19");
     pinmux.setConfigurableDefault( pinResource, "rx", false );
     resources.push( pinResource);
 
-    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A20", "GPMC_A20");
+    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_A20", "GPMC_A20");
     pinmux.setConfigurableDefault( pinResource, "rx", false );
     resources.push( pinResource);
 
-    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A21", "GPMC_A21");
+    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_A21", "GPMC_A21");
     pinmux.setConfigurableDefault( pinResource, "rx", false );
     resources.push( pinResource);
 
-    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_BE1n", "GPMC_BE1n");
+    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_BE1n", "GPMC_BE1n");
     pinmux.setConfigurableDefault( pinResource, "rx", false );
     resources.push( pinResource);
 
@@ -168,22 +175,22 @@ function pinmuxRequirements(inst) {
     {
         default:
         case "CS0":
-            pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_CSn0", "GPMC CS0 Pin");
+            pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_CSn0", "GPMC CS0 Pin");
             pinmux.setConfigurableDefault( pinResource, "rx", false );
             resources.push( pinResource);
             break;
         case "CS1":
-            pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_CSn1", "GPMC CS1 Pin");
+            pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_CSn1", "GPMC CS1 Pin");
             pinmux.setConfigurableDefault( pinResource, "rx", false );
             resources.push( pinResource);
             break;
         case "CS2":
-            pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_CSn2", "GPMC CS2 Pin");
+            pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_CSn2", "GPMC CS2 Pin");
             pinmux.setConfigurableDefault( pinResource, "rx", false );
             resources.push( pinResource);
             break;
         case "CS3":
-            pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_CSn3", "GPMC CS3 Pin");
+            pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_CSn3", "GPMC CS3 Pin");
             pinmux.setConfigurableDefault( pinResource, "rx", false );
             resources.push( pinResource);
             break;
@@ -197,52 +204,52 @@ function pinmuxRequirements(inst) {
             {
                 default:
                 case "16 bit":
-                    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_AD0", "GPMC Data I/O Pin0");
+                    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_AD0", "GPMC Data I/O Pin0");
                     pinmux.setConfigurableDefault( pinResource, "rx", true );
                     resources.push( pinResource);
-                    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_AD1", "GPMC Data I/O Pin1");
+                    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_AD1", "GPMC Data I/O Pin1");
                     pinmux.setConfigurableDefault( pinResource, "rx", true );
                     resources.push( pinResource);
-                    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_AD2", "GPMC Data I/O Pin2");
+                    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_AD2", "GPMC Data I/O Pin2");
                     pinmux.setConfigurableDefault( pinResource, "rx", true );
                     resources.push( pinResource);
-                    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_AD3", "GPMC Data I/O Pin3");
+                    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_AD3", "GPMC Data I/O Pin3");
                     pinmux.setConfigurableDefault( pinResource, "rx", true );
                     resources.push( pinResource);
-                    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_AD4", "GPMC Data I/O Pin4");
+                    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_AD4", "GPMC Data I/O Pin4");
                     pinmux.setConfigurableDefault( pinResource, "rx", true );
                     resources.push( pinResource);
-                    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_AD5", "GPMC Data I/O Pin5");
+                    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_AD5", "GPMC Data I/O Pin5");
                     pinmux.setConfigurableDefault( pinResource, "rx", true );
                     resources.push( pinResource);
-                    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_AD6", "GPMC Data I/O Pin6");
+                    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_AD6", "GPMC Data I/O Pin6");
                     pinmux.setConfigurableDefault( pinResource, "rx", true );
                     resources.push( pinResource);
-                    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_AD7", "GPMC Data I/O Pin7");
+                    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_AD7", "GPMC Data I/O Pin7");
                     pinmux.setConfigurableDefault( pinResource, "rx", true );
                     resources.push( pinResource);
-                    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_AD8", "GPMC Data I/O Pin8");
+                    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_AD8", "GPMC Data I/O Pin8");
                     pinmux.setConfigurableDefault( pinResource, "rx", true );
                     resources.push( pinResource);
-                    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_AD9", "GPMC Data I/O Pin9");
+                    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_AD9", "GPMC Data I/O Pin9");
                     pinmux.setConfigurableDefault( pinResource, "rx", true );
                     resources.push( pinResource);
-                    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_AD10", "GPMC Data I/O Pin10");
+                    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_AD10", "GPMC Data I/O Pin10");
                     pinmux.setConfigurableDefault( pinResource, "rx", true );
                     resources.push( pinResource);
-                    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_AD11", "GPMC Data I/O Pin11");
+                    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_AD11", "GPMC Data I/O Pin11");
                     pinmux.setConfigurableDefault( pinResource, "rx", true );
                     resources.push( pinResource);
-                    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_AD12", "GPMC Data I/O Pin12");
+                    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_AD12", "GPMC Data I/O Pin12");
                     pinmux.setConfigurableDefault( pinResource, "rx", true );
                     resources.push( pinResource);
-                    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_AD13", "GPMC Data I/O Pin13");
+                    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_AD13", "GPMC Data I/O Pin13");
                     pinmux.setConfigurableDefault( pinResource, "rx", true );
                     resources.push( pinResource);
-                    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_AD14", "GPMC Data I/O Pin14");
+                    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_AD14", "GPMC Data I/O Pin14");
                     pinmux.setConfigurableDefault( pinResource, "rx", true );
                     resources.push( pinResource);
-                    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_AD15", "GPMC Data I/O Pin15");
+                    pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_AD15", "GPMC Data I/O Pin15");
                     pinmux.setConfigurableDefault( pinResource, "rx", true );
                     resources.push( pinResource);
                     break;
@@ -255,12 +262,12 @@ function pinmuxRequirements(inst) {
     {
         default:
         case "WAIT0 PIN":
-            pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_WAIT0", "GPMC WAIT0 Pin");
+            pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_WAIT0", "GPMC WAIT0 Pin");
             pinmux.setConfigurableDefault( pinResource, "rx", true );
             resources.push( pinResource);
             break;
         case "WAIT1 PIN":
-            pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_WAIT1", "GPMC WAIT1 Pin");
+            pinResource = pinmux.getPinRequirements(interfaceName, "GPMC0_WAIT1", "GPMC WAIT1 Pin");
             pinmux.setConfigurableDefault( pinResource, "rx", true );
             resources.push( pinResource);
             break;
@@ -275,6 +282,239 @@ function pinmuxRequirements(inst) {
     };
 
     return [peripheral];
+}
+
+function pinmuxRequirements(inst) {
+
+    if(common.getSocName() === "am261x")
+        return pinmuxRequirements_am261x(inst);
+    else
+    {
+        let interfaceName = getInterfaceName(inst);
+
+        let resources = [];
+        let pinResource = {};
+
+        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_OEn_REn", "GPMC OEn_REn Pin");
+        pinmux.setConfigurableDefault( pinResource, "rx", true );
+        resources.push( pinResource);
+
+        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_ADVn_ALE", "GPMC ADVn_ALE Pin");
+        pinmux.setConfigurableDefault( pinResource, "rx", false );
+        resources.push( pinResource);
+
+        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_WEn", "GPMC WEn Pin");
+        pinmux.setConfigurableDefault( pinResource, "rx", false );
+        resources.push( pinResource);
+
+        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_BE0n_CLE", "GPMC BE0n_CLE Pin");
+        pinmux.setConfigurableDefault( pinResource, "rx", false );
+        resources.push( pinResource);
+
+        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A0", "GPMC_A0");
+        pinmux.setConfigurableDefault( pinResource, "rx", false );
+        resources.push( pinResource);
+
+        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A1", "GPMC_A1");
+        pinmux.setConfigurableDefault( pinResource, "rx", false );
+        resources.push( pinResource);
+
+        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A2", "GPMC_A2");
+        pinmux.setConfigurableDefault( pinResource, "rx", false );
+        resources.push( pinResource);
+
+        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A3", "GPMC_A3");
+        pinmux.setConfigurableDefault( pinResource, "rx", false );
+        resources.push( pinResource);
+
+        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A4", "GPMC_A4");
+        pinmux.setConfigurableDefault( pinResource, "rx", false );
+        resources.push( pinResource);
+
+        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A5", "GPMC_A5");
+        pinmux.setConfigurableDefault( pinResource, "rx", false );
+        resources.push( pinResource);
+
+        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A6", "GPMC_A6");
+        pinmux.setConfigurableDefault( pinResource, "rx", false );
+        resources.push( pinResource);
+
+        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A7", "GPMC_A7");
+        pinmux.setConfigurableDefault( pinResource, "rx", false );
+        resources.push( pinResource);
+
+        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A8", "GPMC_A8");
+        pinmux.setConfigurableDefault( pinResource, "rx", false );
+        resources.push( pinResource);
+
+        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A9", "GPMC_A9");
+        pinmux.setConfigurableDefault( pinResource, "rx", false );
+        resources.push( pinResource);
+
+        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A10", "GPMC_A10");
+        pinmux.setConfigurableDefault( pinResource, "rx", false );
+        resources.push( pinResource);
+
+        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A11", "GPMC_A11");
+        pinmux.setConfigurableDefault( pinResource, "rx", false );
+        resources.push( pinResource);
+
+        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A12", "GPMC_A12");
+        pinmux.setConfigurableDefault( pinResource, "rx", false );
+        resources.push( pinResource);
+
+        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A13", "GPMC_A13");
+        pinmux.setConfigurableDefault( pinResource, "rx", false );
+        resources.push( pinResource);
+
+        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A14", "GPMC_A14");
+        pinmux.setConfigurableDefault( pinResource, "rx", false );
+        resources.push( pinResource);
+
+        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A15", "GPMC_A15");
+        pinmux.setConfigurableDefault( pinResource, "rx", false );
+        resources.push( pinResource);
+
+        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A16", "GPMC_A16");
+        pinmux.setConfigurableDefault( pinResource, "rx", false );
+        resources.push( pinResource);
+
+        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A17", "GPMC_A17");
+        pinmux.setConfigurableDefault( pinResource, "rx", false );
+        resources.push( pinResource);
+
+        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A18", "GPMC_A18");
+        pinmux.setConfigurableDefault( pinResource, "rx", false );
+        resources.push( pinResource);
+
+        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A19", "GPMC_A19");
+        pinmux.setConfigurableDefault( pinResource, "rx", false );
+        resources.push( pinResource);
+
+        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A20", "GPMC_A20");
+        pinmux.setConfigurableDefault( pinResource, "rx", false );
+        resources.push( pinResource);
+
+        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_A21", "GPMC_A21");
+        pinmux.setConfigurableDefault( pinResource, "rx", false );
+        resources.push( pinResource);
+
+        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_BE1n", "GPMC_BE1n");
+        pinmux.setConfigurableDefault( pinResource, "rx", false );
+        resources.push( pinResource);
+
+        switch(inst.chipSelect)
+        {
+            default:
+            case "CS0":
+                pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_CSn0", "GPMC CS0 Pin");
+                pinmux.setConfigurableDefault( pinResource, "rx", false );
+                resources.push( pinResource);
+                break;
+            case "CS1":
+                pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_CSn1", "GPMC CS1 Pin");
+                pinmux.setConfigurableDefault( pinResource, "rx", false );
+                resources.push( pinResource);
+                break;
+            case "CS2":
+                pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_CSn2", "GPMC CS2 Pin");
+                pinmux.setConfigurableDefault( pinResource, "rx", false );
+                resources.push( pinResource);
+                break;
+            case "CS3":
+                pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_CSn3", "GPMC CS3 Pin");
+                pinmux.setConfigurableDefault( pinResource, "rx", false );
+                resources.push( pinResource);
+                break;
+        }
+
+        switch(inst.deviceType)
+        {
+            default:
+            case "PSRAM":
+                switch(inst.deviceWidth)
+                {
+                    default:
+                    case "16 bit":
+                        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_AD0", "GPMC Data I/O Pin0");
+                        pinmux.setConfigurableDefault( pinResource, "rx", true );
+                        resources.push( pinResource);
+                        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_AD1", "GPMC Data I/O Pin1");
+                        pinmux.setConfigurableDefault( pinResource, "rx", true );
+                        resources.push( pinResource);
+                        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_AD2", "GPMC Data I/O Pin2");
+                        pinmux.setConfigurableDefault( pinResource, "rx", true );
+                        resources.push( pinResource);
+                        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_AD3", "GPMC Data I/O Pin3");
+                        pinmux.setConfigurableDefault( pinResource, "rx", true );
+                        resources.push( pinResource);
+                        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_AD4", "GPMC Data I/O Pin4");
+                        pinmux.setConfigurableDefault( pinResource, "rx", true );
+                        resources.push( pinResource);
+                        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_AD5", "GPMC Data I/O Pin5");
+                        pinmux.setConfigurableDefault( pinResource, "rx", true );
+                        resources.push( pinResource);
+                        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_AD6", "GPMC Data I/O Pin6");
+                        pinmux.setConfigurableDefault( pinResource, "rx", true );
+                        resources.push( pinResource);
+                        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_AD7", "GPMC Data I/O Pin7");
+                        pinmux.setConfigurableDefault( pinResource, "rx", true );
+                        resources.push( pinResource);
+                        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_AD8", "GPMC Data I/O Pin8");
+                        pinmux.setConfigurableDefault( pinResource, "rx", true );
+                        resources.push( pinResource);
+                        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_AD9", "GPMC Data I/O Pin9");
+                        pinmux.setConfigurableDefault( pinResource, "rx", true );
+                        resources.push( pinResource);
+                        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_AD10", "GPMC Data I/O Pin10");
+                        pinmux.setConfigurableDefault( pinResource, "rx", true );
+                        resources.push( pinResource);
+                        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_AD11", "GPMC Data I/O Pin11");
+                        pinmux.setConfigurableDefault( pinResource, "rx", true );
+                        resources.push( pinResource);
+                        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_AD12", "GPMC Data I/O Pin12");
+                        pinmux.setConfigurableDefault( pinResource, "rx", true );
+                        resources.push( pinResource);
+                        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_AD13", "GPMC Data I/O Pin13");
+                        pinmux.setConfigurableDefault( pinResource, "rx", true );
+                        resources.push( pinResource);
+                        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_AD14", "GPMC Data I/O Pin14");
+                        pinmux.setConfigurableDefault( pinResource, "rx", true );
+                        resources.push( pinResource);
+                        pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_AD15", "GPMC Data I/O Pin15");
+                        pinmux.setConfigurableDefault( pinResource, "rx", true );
+                        resources.push( pinResource);
+                        break;
+                }
+
+
+        }
+
+        switch(inst.waitPinselect)
+        {
+            default:
+            case "WAIT0 PIN":
+                pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_WAIT0", "GPMC WAIT0 Pin");
+                pinmux.setConfigurableDefault( pinResource, "rx", true );
+                resources.push( pinResource);
+                break;
+            case "WAIT1 PIN":
+                pinResource = pinmux.getPinRequirements(interfaceName, "GPMC_WAIT1", "GPMC WAIT1 Pin");
+                pinmux.setConfigurableDefault( pinResource, "rx", true );
+                resources.push( pinResource);
+                break;
+
+        }
+
+        let peripheral = {
+            name: interfaceName,
+            displayName: "GPMC Instance",
+            interfaceName: interfaceName,
+            resources: resources,
+        };
+
+        return [peripheral];
+    }
 }
 
 function getClockEnableIds(inst) {
