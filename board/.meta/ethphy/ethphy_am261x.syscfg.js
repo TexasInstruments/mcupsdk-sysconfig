@@ -24,6 +24,10 @@ let mdio_instances = [
         name: "ICSSM0",
         displayName: "ICSSM0 MDIO",
     },
+    {
+        name: "ICSSM1",
+        displayName: "ICSSM1 MDIO",
+    },
 ];
 
 function getConfigArr()
