@@ -10,6 +10,18 @@
     % let config = module.getInstanceConfig(instance);
 /* FLASH Object - initialized during Flash_open() */
 Flash_NorOspiObject gFlashObject_`config.fname`;
+%if (common.getSocName() === 'am64x' || common.getSocName() === 'am243'){
+Flash_NorOspiFallBackCfg gFlashFallBackCfg_`config.fname` =
+{
+    .fallBackFreq = 200000000U,
+    .ddrBaudRateDiv = 8U,
+    .idDummy8 = 3U,
+    .dummyClksCmd8d = 3U,
+    .dummyClksRd8d = 24U,
+};
+% } else {
+    Flash_NorOspiFallBackCfg gFlashFallBackCfg_`config.fname`;
+% }
 % }
 
 /* FLASH Driver handles - opened during Board_flashOpen() */
@@ -145,7 +157,12 @@ Flash_Config gFlashConfig[CONFIG_FLASH_NUM_INSTANCES] =
         .fxns = &gFlashNorOspiFxns,
         .devConfig = &gFlashDevCfg_`config.fname`,
         .object = (void *)&gFlashObject_`config.fname`,
-        .skipHwInit = `config.skipHwInit.toString(10).toUpperCase()`
+        .skipHwInit = `config.skipHwInit.toString(10).toUpperCase()`,
+        %if (common.getSocName() === 'am64x' || common.getSocName() === 'am243'){
+        .fallBackCfg = (void *)&gFlashFallBackCfg_`config.fname`,
+        % } else {
+        .fallBackCfg = NULL,
+        % }
     },
 % }
 };
