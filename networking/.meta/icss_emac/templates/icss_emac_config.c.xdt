@@ -50,6 +50,9 @@ static ICSS_EMAC_Attrs gIcssEmacAttrs[CONFIG_ICSS_EMAC_INSTANCES] =
         .rxTaskPriority = `config.rxTaskPriority`,
         .txTaskPriority = `config.txTaskPriority`,
         .splitQueue = `Number(config.splitQueue)`,
+#ifdef BUILD_HSR_PRP_MII
+        .txOccupied = 0,
+#endif
     },
 % }
 };
