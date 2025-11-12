@@ -420,6 +420,9 @@ function moduleInstances(inst) {
 
 function validate(instance, report) {
     common.validate.checkSameInstanceName(instance, report);
+    if((common.getSocName() == "am273x") && (instance.inputClkFreq > 66666666)) {
+        common.validate.checkNumberRange(instance, report, "inputClkFreq", 0x0, 66666666, "dec");
+    }
 }
 
 exports = qspi_module;

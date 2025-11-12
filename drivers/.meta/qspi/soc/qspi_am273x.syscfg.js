@@ -1,4 +1,7 @@
-let qspi_input_clk_freq = 80000000;
+/* Maximum frequency supported is 66.66 MHz not 67MHz as it should
+ * be multiple of core frequency/CORE_PLL_HSDIV0_CLKOUT2 i.e, 400MHz
+ */
+let qspi_input_clk_freq = 66666666;
 
 const qspi_config_r5fss = [
     {
