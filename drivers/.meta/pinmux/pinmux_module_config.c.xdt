@@ -35,6 +35,18 @@
                 % }
             % }
             %}
+            %{
+            % let peripheral = instance["AUX_CLK_SRC"];
+            % if(peripheral) {
+            % let pinNames = module.getPeripheralPinNames(instance);
+            % for (let pinName of pinNames) {
+                % let peripheralPin = peripheral[pinName];
+                % if (peripheralPin && peripheralPin.$solution.peripheralPinName) {
+    `soc.getPinConfigCStruct(peripheralPin, interfaceName)`
+                % }
+            % }
+            % }
+            % }
         % }
     % }
     % if (module.getInterfaceNameList) {

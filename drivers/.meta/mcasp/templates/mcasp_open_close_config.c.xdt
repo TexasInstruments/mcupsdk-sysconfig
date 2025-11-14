@@ -4,11 +4,14 @@
     let driverVer = soc.getDriverVer("mcasp");
     let module = system.modules['/drivers/mcasp/mcasp'];
     let module_ch = system.modules[`/drivers/mcasp/${driverVer}/mcasp_${driverVer}_channel`];
+    let EXTERNAL_CLOCK = 0;
+    let INTERNAL_CLOCK = 1;
 %%}
 
 /*
  * MCASP
  */
+extern MCASP_Config gMcaspConfig[CONFIG_MCASP_NUM_INSTANCES];
 
 % for(let i = 0; i < module.$instances.length; i++) {
     % let instance = module.$instances[i];
@@ -108,10 +111,46 @@ MCASP_OpenParams gMcaspOpenParams[CONFIG_MCASP_NUM_INSTANCES] =
    %}
 };
 
+void Drivers_mcaspAuxClkCfg(void)
+{
+    const CSL_McaspRegs *pReg[CONFIG_MCASP_NUM_INSTANCES];
+    % for(let instCnt = 0; instCnt < module.$instances.length; instCnt++) {
+    % let instance = module.$instances[instCnt];
+    % let config = module.getInstanceConfig(instance);
+        
+    pReg[`instCnt`] = (const CSL_McaspRegs *)&gMcaspConfig[`instCnt`].attrs->baseAddr;
+
+    /* Configure Tx frame sync source as Internal/External */
+    CSL_REG32_FINS(&pReg[`instCnt`]->AFSXCTL, MCASP_AFSXCTL_FSXM, `config.txFsSource`); 
+    /* Configure Tx bit clk source as Internal/External */
+    CSL_REG32_FINS(&pReg[`instCnt`]->ACLKXCTL, MCASP_ACLKXCTL_CLKXM, `config.txAclkSource`); 
+    /* Configure Tx bit clk divider value */
+    CSL_REG32_FINS(&pReg[`instCnt`]->ACLKXCTL, MCASP_ACLKXCTL_CLKXDIV, `config.txClkDiv`);  
+    /* Configure Tx high freq clk source as Internal/external */
+    CSL_REG32_FINS(&pReg[`instCnt`]->AHCLKXCTL, MCASP_AHCLKXCTL_HCLKXM, `config.txHclkSource`); 
+    /* Configure Tx high freq clk divider value */
+    CSL_REG32_FINS(&pReg[`instCnt`]->AHCLKXCTL, MCASP_AHCLKXCTL_HCLKXDIV, `config.txHclkDiv`); 
+
+    /* Configure Rx frame sync source as Internal/external */
+    CSL_REG32_FINS(&pReg[`instCnt`]->AFSRCTL, MCASP_AFSRCTL_FSRM, `config.rxFsSource`); 
+    /* Configure Rx bit clk source as Internal/external */
+    CSL_REG32_FINS(&pReg[`instCnt`]->ACLKRCTL, MCASP_ACLKRCTL_CLKRM, `config.rxAclkSource`); 
+    /* Configure Rx bit clk divider value */
+    CSL_REG32_FINS(&pReg[`instCnt`]->ACLKRCTL, MCASP_ACLKRCTL_CLKRDIV, `config.rxClkDiv`);  
+    /* Configure Rx high freq clk source as Internal/external */
+    CSL_REG32_FINS(&pReg[`instCnt`]->AHCLKRCTL, MCASP_AHCLKRCTL_HCLKRM, `config.rxHclkSource`); 
+    /* Configure Rx high freq clk divider value */
+    CSL_REG32_FINS(&pReg[`instCnt`]->AHCLKRCTL, MCASP_AHCLKRCTL_HCLKRDIV, `config.rxHclkDiv`);
+    %}
+}
+
 void Drivers_mcaspOpen(void)
 {
     uint32_t instCnt;
     int32_t  status = SystemP_SUCCESS;
+
+    /* Config AuxClks for MCASP */
+    Drivers_mcaspAuxClkCfg();
 
     for(instCnt = 0U; instCnt < CONFIG_MCASP_NUM_INSTANCES; instCnt++)
     {

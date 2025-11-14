@@ -2,6 +2,9 @@ let common = system.getScript("/common");
 let pinmux = system.getScript("/drivers/pinmux/pinmux");
 let soc = system.getScript(`/drivers/mcasp/soc/mcasp_${common.getSocName()}`);
 
+const EXTERNAL_CLOCK = 0;
+const INTERNAL_CLOCK = 1;
+
 function getConfigArr() {
     return soc.getConfigArr();
 }
@@ -21,6 +24,7 @@ function pinmuxRequirements(inst) {
 
     let interfaceName = getInterfaceName(inst);
     let resources = [];
+    let systemResources = [];
     if (inst.enableMcaspTx == true) {
         resources.push( pinmux.getPinRequirements(interfaceName, "FSX", "Frame Sync Transmit Pin") );
         resources.push( pinmux.getPinRequirements(interfaceName, "ACLKX", "Audio Clock Transmit Pin") );
@@ -39,6 +43,13 @@ function pinmuxRequirements(inst) {
         resources: resources,
     };
 
+    if (inst.txHclkSource == EXTERNAL_CLOCK || inst.rxHclkSource  == EXTERNAL_CLOCK)
+    {
+        systemResources = soc.getPinmuxReq(inst.txHclkSourceMux, inst.rxHclkSourceMux);
+        let systemPinmux = soc.getSystemPinmux(systemResources, inst.txHclkSourceMux, inst.rxHclkSourceMux);
+        return [mcasp, systemPinmux];
+    }
+
     return [mcasp];
 }
 
@@ -49,7 +60,12 @@ function getInterfaceName(inst) {
 
 function getPeripheralPinNames(inst) {
 
-    return [ "FSR", "ACLKR", "FSX", "ACLKX", "AHCLKX", "DAT0", "DAT1", "DAT2", "DAT3", "DAT4", "DAT5", "DAT6", "DAT7", "DAT8", "DAT9", "DAT10", "DAT11", "DAT12", "DAT13", "DAT14", "DAT15" ];
+    let pins = [ "REFCLK", "ACLKR", "FSX", "ACLKX", "AHCLKX", "DAT0", "DAT1", "DAT2", "DAT3", "DAT4", "DAT5", "DAT6", "DAT7", "DAT8", "DAT9", "DAT10", "DAT11", "DAT12", "DAT13", "DAT14", "DAT15" ];
+    let extPins = soc.getExtClkPins();
+
+    pins = pins.concat(extPins);
+
+    return pins;
 }
 
 function getClockEnableIds(instance) {
@@ -69,7 +85,6 @@ function getNumSerializers(inst) {
     let instConfig = getInstanceConfig(inst);
     return instConfig.numSerializers;
 }
-
 
 let mcasp_module_name = "/drivers/mcasp/mcasp";
 let mcasp_module = {
@@ -144,13 +159,10 @@ let mcasp_module = {
             ],
             onChange: function (inst, ui) {
                 if(inst.clkSyncMode == "SYNC") {
-                    inst.rxAuxClk = inst.txAuxClk;
                     inst.afsr = inst.afsx;
                     inst.rxFsSource = inst.txFsSource;
                     inst.rxAclkSource = inst.txAclkSource;
-                    inst.controllerClkr = inst.controllerClkx;
                     inst.rxHclkSource = inst.txHclkSource;
-                    ui.rxAuxClk.readOnly = true;
                     ui.afsr.readOnly = true;
                     ui.rxFsSource.readOnly = true;
                     ui.rxAclkSource.readOnly = true;
@@ -158,7 +170,6 @@ let mcasp_module = {
                     ui.rxHclkSource.readOnly = true;
                 }
                 else {
-                    ui.rxAuxClk.readOnly = false;
                     ui.afsr.readOnly = false;
                     ui.rxFsSource.readOnly = false;
                     ui.rxAclkSource.readOnly = false;
@@ -177,7 +188,7 @@ let mcasp_module = {
                     displayName: "Enable McASP Transmission",
                     default: true,
                     readOnly: true,
-                    description: `Enable McASP Transmission`,
+                    description: "Enable McASP Transmission",
                     onChange: function (inst, ui) {
                         if(inst.enableMcaspTx == true) {
                             ui.TxMode.hidden = false;
@@ -196,14 +207,12 @@ let mcasp_module = {
                             ui.txAclkSource.hidden = false;
                             ui.txHclkSource.hidden = false;
                             ui.afsx.hidden = false;
-                            ui.controllerClkx.hidden = false;
                             ui.txCallbackFxn.hidden = false;
                             ui.txAfifoEnable.hidden = false;
                             ui.txAfifoNumEvt.hidden = false;
                             ui.txLoopjobEnable.hidden = false;
                             ui.txLoopjobBuf.hidden = false;
                             ui.txLoopjobBufLength.hidden = false;
-                            //ui.xmtConfig.xmtClockConfig.readOnly = false;
                         }
                         else {
                             ui.TxMode.hidden = true;
@@ -222,14 +231,12 @@ let mcasp_module = {
                             ui.txAclkSource.hidden = true;
                             ui.txHclkSource.hidden = true;
                             ui.afsx.hidden = true;
-                            ui.controllerClkx.hidden = true;
                             ui.txCallbackFxn.hidden = true;
                             ui.txAfifoEnable.hidden = true;
                             ui.txAfifoNumEvt.hidden = true;
                             ui.txLoopjobEnable.hidden = true;
                             ui.txLoopjobBuf.hidden = true;
                             ui.txLoopjobBufLength.hidden = true;
-                            //ui.xmtClockConfig.readOnly = true;
                         }
                     },
                 },
@@ -241,6 +248,7 @@ let mcasp_module = {
                         { name: "I2S", displayName: "I2S"},
                         { name: "TDM", displayName: "TDM"},
                     ],
+                    description: "Configure Mcasp transmission to either run in I2S or TDM mode",
                     onChange: function (inst, ui) {
                         if(inst.TxMode == "I2S") {
                             inst.NumTxSlots = 2;
@@ -274,6 +282,7 @@ let mcasp_module = {
                     default: 2,
                     readOnly: true,
                     displayFormat: "dec",
+                    description: "Configure number of slots in TDM mode",
                 },
                 {
                     name: "txDataDelay",
@@ -285,6 +294,7 @@ let mcasp_module = {
                         { name: 1, displayName: "1-bit delay between FS and Data"},
                         { name: 2, displayName: "2-bit delay between FS and Data"},
                     ],
+                    description: "Number of bits delay between Frame Sync and Data",
                 },
                 {
                     name: "txDataOrder",
@@ -294,6 +304,23 @@ let mcasp_module = {
                     options: [
                         { name: 0, displayName: "LSB First"},
                         { name: 1, displayName: "MSB First"},
+                    ],
+                    description: "Configure McASP to send MSB first or LSB first",
+                },
+                {
+                    name: "txDataRotation",
+                    displayName: "Transmit Right-rotation Value",
+                    default: 0,
+                    readOnly: true,
+                    options: [
+                        { name: 0, displayName: "No rotation"},
+                        { name: 1, displayName: "Rotate Right by 4 bits"},
+                        { name: 2, displayName: "Rotate Right by 8 bits"},
+                        { name: 3, displayName: "Rotate Right by 12 bits"},
+                        { name: 4, displayName: "Rotate Right by 16 bits"},
+                        { name: 5, displayName: "Rotate Right by 20 bits"},
+                        { name: 6, displayName: "Rotate Right by 24 bits"},
+                        { name: 7, displayName: "Rotate Right by 28 bits"},
                     ],
                 },
                 {
@@ -315,6 +342,7 @@ let mcasp_module = {
                         { name: 0, displayName: "Rising Edge Indicates Frame Start"},
                         { name: 1, displayName: "Falling Edge Indicates Frame Start"},
                     ],
+                    description: "Configure new frame to start form rising edge or falling edge of frame sync signal",
                 },
                 {
                     name: "txBitClkPolarity",
@@ -325,27 +353,13 @@ let mcasp_module = {
                         { name: 0, displayName: "Data shift out in rising edge"},
                         { name: 1, displayName: "Data shift out in falling edge"},
                     ],
-                },
-                {
-                    name: "txDataRotation",
-                    displayName: "Transmit Right-rotation Value",
-                    default: 0,
-                    readOnly: true,
-                    options: [
-                        { name: 0, displayName: "No rotation"},
-                        { name: 1, displayName: "Rotate Right by 4 bits"},
-                        { name: 2, displayName: "Rotate Right by 8 bits"},
-                        { name: 3, displayName: "Rotate Right by 12 bits"},
-                        { name: 4, displayName: "Rotate Right by 16 bits"},
-                        { name: 5, displayName: "Rotate Right by 20 bits"},
-                        { name: 6, displayName: "Rotate Right by 24 bits"},
-                        { name: 7, displayName: "Rotate Right by 28 bits"},
-                    ],
+                    description: "Configure bit clock to shift out data in rising or falling edge",
                 },
                 {
                     name: "txBufferFormat",
                     displayName: "Transmit Audio Buffer Format",
                     default: "1SER_MULTISLOT_INTERLEAVED",
+                    readOnly: true,
                     options: [
                         { name: "1SER_MULTISLOT_INTERLEAVED", displayName: "1-Serializer Multi-Slot Interleaved" },
                         { name: "1SER_MULTISLOT_NON_INTERLEAVED", displayName: "1-Serializer Multi-Slot NonInterleaved" },
@@ -389,18 +403,21 @@ let mcasp_module = {
                         { name: 28, displayName: "28"},
                         { name: 32, displayName: "32"},
                     ],
+                    description: "Number of bits in a slot",
                 },
                 {
                     name: "txDataMask",
                     displayName: "Transmit Data Bitmask",
                     default: 0,
                     displayFormat: "hex",
+                    description: "Configure on which bits of the slot to send out data",
                 },
                 {
                     name: "txActiveSlotMask",
                     displayName: "Transmit Active Slot Bitmask",
                     default: 0,
                     displayFormat: "hex",
+                    description: "Configure which slots of the frame are active (contains audio data)",
                 },
                 {
                     name: "txCallbackFxn",
@@ -412,6 +429,7 @@ let mcasp_module = {
                     name: "txLoopjobEnable",
                     displayName: "Transmit Loopjob Enable",
                     default: true,
+                    readOnly: true,
                     description: "Transmit Loopjob Enable",
                 },
                 {
@@ -426,30 +444,14 @@ let mcasp_module = {
                     default: 256,
                     displayFormat: "dec",
                     description: "Transmit Loopjob Buffer Length in Bytes",
+                    longDescription:
+`Note: Loopjob length must be same as the transactions submitted by the application.`,
                 },
                 {
                     name: "xmtClockConfig",
                     displayName: "MCASP Transmit Clock Configuration",
                     collapsed: true,
                     config: [
-                        {
-                            name: "txAuxClk",
-                            displayName: "McASP AUXCLK Rate",
-                            default: soc.mcasp_input_clk_freq,
-                            displayFormat: "dec",
-                            longDescription: `If txAclkSource is selected as Internally Generated, 
-                                              high-frequency clock output: AHCLKX (Tx) is optional.`,
-                            options: [
-                                { name: 48000000, displayName: "48000000"},
-                                { name: 24576000, displayName: "24576000"},
-                                { name: 12288000, displayName: "12288000"},
-                            ],
-                            onChange: function (inst) {
-                                if(inst.clkSyncMode == "SYNC") {
-                                    inst.rxAuxClk = inst.txAuxClk;
-                                }
-                            },
-                        },
                         {
                             name: "afsx",
                             displayName: "Transmit Frame Sync Rate",
@@ -460,6 +462,7 @@ let mcasp_module = {
                                 { name: 96, displayName: "96 KHz"},
                                 { name: 0,  displayName: "Custom"},
                             ],
+                            description: "McASP Transmit Frame Sync frequency",
                             onChange: function (inst, ui) {
                                 if(inst.afsx == 0) {
                                     ui.fsx.hidden = false;
@@ -481,29 +484,33 @@ let mcasp_module = {
                         {
                             name: "txFsSource",
                             displayName: "Transmit Frame Sync Source",
-                            default: 1,
+                            default: INTERNAL_CLOCK,
                             options: [
-                                { name: 0, displayName: "Externally Generated"},
-                                { name: 1, displayName: "Internally Generated"},
+                                { name: EXTERNAL_CLOCK, displayName: "Externally Generated"},
+                                { name: INTERNAL_CLOCK, displayName: "Internally Generated"},
                             ],
-                            onChange: function (inst) {
+                            description: "Transmit Frame Sync Source",
+                            onChange: function (inst, ui) {
                                 if(inst.clkSyncMode == "SYNC") {
                                     inst.rxFsSource = inst.txFsSource;
                                 }
+                                OnChangeHideTxParameters(inst, ui);
                             },
                         },
                         {
                             name: "txAclkSource",
                             displayName: "Transmit Bit Clock Source",
-                            default: 1,
+                            default: INTERNAL_CLOCK,
                             options: [
-                                { name: 0, displayName: "Externally Generated"},
-                                { name: 1, displayName: "Internally Generated"},
+                                { name: EXTERNAL_CLOCK, displayName: "Externally Generated"},
+                                { name: INTERNAL_CLOCK, displayName: "Internally Generated"},
                             ],
-                            onChange: function (inst) {
+                            description: "Transmit Bit Clock Source",
+                            onChange: function (inst, ui) {
                                 if(inst.clkSyncMode == "SYNC") {
                                     inst.rxAclkSource = inst.txAclkSource;
                                 }
+                                OnChangeHideTxParameters(inst, ui);
                             },
                         },
                         {
@@ -516,29 +523,66 @@ let mcasp_module = {
                                 { name: 256, displayName: "256 times Fs"},
                                 { name: 512, displayName: "512 times Fs"},
                                 { name: 1024, displayName: "1024 times Fs"},
+                                { name: 0   , displayName: "Any"},
                             ],
-                            onChange: function (inst) {
-                                if(inst.clkSyncMode == "SYNC") {
-                                    inst.controllerClkr = inst.controllerClkx;
-                                }
-                            },
+                            description: "Transmit Master Clock Rate | Deprecated configurable",
+                            longDescription: "This configurable is deprecated in the current version,\
+                                            but maintained as a hiiden configurable for leagacy reason.",
+                            hidden: true,
                         },
                         {
                             name: "txHclkSource",
                             displayName: "Transmit High Clock Source",
-                            default: 1,
+                            default: INTERNAL_CLOCK,
                             options: [
-                                { name: 0, displayName: "Externally Generated"},
-                                { name: 1, displayName: "Internally Generated"},
+                                { name: EXTERNAL_CLOCK, displayName: "Externally Generated"},
+                                { name: INTERNAL_CLOCK, displayName: "Internally Generated"},
                             ],
-                            onChange: function (inst) {
-                                if(inst.clkSyncMode == "SYNC") {
-                                    inst.rxHclkSource = inst.txHclkSource;
+                            description: "Transmit High Clock Source",
+                            onChange: function (inst, ui) {
+                                if(inst.txHclkSource == EXTERNAL_CLOCK) {
+                                    ui.txHclkSourceMux.hidden = false;
+                                    inst.txHclkSourceMux = 16;
                                 }
-                            },
+                                else {
+                                    ui.txHclkSourceMux.hidden = true;
+                                }
+                                OnChangeHideTxParameters(inst, ui);
+                            }
+                        },
+                        {
+                            name: "txHclkSourceMux",
+                            displayName: "Trasmit High Clock Parent",
+                            default: 16,
+                            hidden: true,
+                            options: soc.getExtTxHclkSrc(),
+                            onChange: function (inst, ui) {
+                                OnChangeHideTxParameters(inst, ui);
+                            }
+                        },
+                        {
+                            name: "txHclkDiv",
+                            displayName: "TX HCLK Divider",
+                            longDescription: `![](../source/sysconfig/drivers/.meta/mcasp/v0/mcasp_hclkdiv.png)`,
+                            default: 2,
+                        },
+                        {
+                            name: "txClkDiv",
+                            displayName: "TX CLK Divider",
+                            longDescription: `![](../source/sysconfig/drivers/.meta/mcasp/v0/mcasp_aclkdiv.png)`,
+                            default: 8,
                         },
                     ]
                 },
+            {
+                name: "auxClkSource",
+                displayName: "AUX Clock Source",
+                default: 6,
+                options: soc.getAuxClkSrc(),
+                onChange: function (inst, ui) {
+                    OnChangeHideTxParameters(inst, ui);
+            }
+        },
             ],
         },
         {
@@ -577,7 +621,6 @@ let mcasp_module = {
                             ui.rxLoopjobEnable.hidden = false;
                             ui.rxLoopjobBuf.hidden = false;
                             ui.rxLoopjobBufLength.hidden = false;
-                            //ui.rcvConfig.rcvClockConfig.readOnly = false;
                         }
                         else {
                             ui.RxMode.hidden = true;
@@ -603,7 +646,6 @@ let mcasp_module = {
                             ui.rxLoopjobEnable.hidden = true;
                             ui.rxLoopjobBuf.hidden = true;
                             ui.rxLoopjobBufLength.hidden = true;
-                            //ui.rcvConfig.rcvClockConfig.readOnly = true;
                         }
                     },
                 },
@@ -615,6 +657,7 @@ let mcasp_module = {
                         { name: "I2S", displayName: "I2S"},
                         { name: "TDM", displayName: "TDM"},
                     ],
+                    description: "Configure Mcasp reception to either run in I2S or TDM mode",
                     onChange: function (inst, ui) {
                         if(inst.RxMode == "I2S") {
                             inst.NumRxSlots = 2;
@@ -634,6 +677,7 @@ let mcasp_module = {
                             ui.NumRxSlots.readOnly = false;
                             ui.rxDataDelay.readOnly = false;
                             ui.rxDataOrder.readOnly = false;
+                            ui.rxDataRotation.readOnly = false;
                             ui.rxFsWidth.readOnly = false;
                             ui.rxFsPolarity.readOnly = false;
                             ui.rxBitClkPolarity.readOnly = false;
@@ -646,6 +690,7 @@ let mcasp_module = {
                     default: 2,
                     readOnly: true,
                     displayFormat: "dec",
+                    description: "Configure number of slots in TDM mode",
                 },
                 {
                     name: "rxDataDelay",
@@ -657,6 +702,7 @@ let mcasp_module = {
                         { name: 1, displayName: "1-bit delay between FS and Data"},
                         { name: 2, displayName: "2-bit delay between FS and Data"},
                     ],
+                    description: "Number of bits delay between Frame Sync and Data",
                 },
                 {
                     name: "rxDataOrder",
@@ -666,6 +712,51 @@ let mcasp_module = {
                     options: [
                         { name: 0, displayName: "LSB First"},
                         { name: 1, displayName: "MSB First"},
+                    ],
+                    description: "Configure McASP to send MSB first or LSB first",
+                },
+                {
+                    name: "rxPaddingMode",
+                    displayName: "Receive Slot Extra Bits Padding",
+                    default: 0,
+                    hidden: false,
+                    options: [
+                        { name: 0, displayName: "Pad extra bits with 0"},
+                        { name: 1, displayName: "Pad extra bits with 1"},
+                        { name: 2, displayName: "Pad extra bits with existing bit"},
+                    ],
+                    description: "Configure McASP to pad extra bits not belonging to the word defined by Data Bitmask",
+                    onChange: function (inst, ui) {
+                        if(inst.rxPaddingMode == 2) {
+                            ui.rxPaddingBit.hidden = false;
+                        }
+                        else {
+                            ui.rxPaddingBit.hidden = true;
+                        }
+                    },
+                },
+                {
+                    name: "rxPaddingBit",
+                    displayName: "Receive Slot Bit Used For Padding",
+                    default: 1,
+                    hidden: true,
+                    displayFormat: "dec",
+                    description: "Configure McASP to use the bit position in the slot to be used for padding",
+                },
+                {
+                    name: "rxDataRotation",
+                    displayName: "Receive Right-rotation Value",
+                    default: 0,
+                    readOnly: true,
+                    options: [
+                        { name: 0, displayName: "No rotation"},
+                        { name: 1, displayName: "Rotate Right by 4 bits"},
+                        { name: 2, displayName: "Rotate Right by 8 bits"},
+                        { name: 3, displayName: "Rotate Right by 12 bits"},
+                        { name: 4, displayName: "Rotate Right by 16 bits"},
+                        { name: 5, displayName: "Rotate Right by 20 bits"},
+                        { name: 6, displayName: "Rotate Right by 24 bits"},
+                        { name: 7, displayName: "Rotate Right by 28 bits"},
                     ],
                 },
                 {
@@ -687,6 +778,7 @@ let mcasp_module = {
                         { name: 0, displayName: "Rising Edge Indicates Frame Start"},
                         { name: 1, displayName: "Falling Edge Indicates Frame Start"},
                     ],
+                    description: "Configure new frame to start form rising edge or falling edge of frame sync signal",
                 },
                 {
                     name: "rxBitClkPolarity",
@@ -697,26 +789,13 @@ let mcasp_module = {
                         { name: 0, displayName: "Data sampled in falling edge"},
                         { name: 1, displayName: "Data sampled in rising edge"},
                     ],
-                },
-                {
-                    name: "rxDataRotation",
-                    displayName: "Receive Right-rotation Value",
-                    default: 0,
-                    options: [
-                        { name: 0, displayName: "No rotation"},
-                        { name: 1, displayName: "Rotate Right by 4 bits"},
-                        { name: 2, displayName: "Rotate Right by 8 bits"},
-                        { name: 3, displayName: "Rotate Right by 12 bits"},
-                        { name: 4, displayName: "Rotate Right by 16 bits"},
-                        { name: 5, displayName: "Rotate Right by 20 bits"},
-                        { name: 6, displayName: "Rotate Right by 24 bits"},
-                        { name: 7, displayName: "Rotate Right by 28 bits"},
-                    ],
+                    description: "Configure data to be sampled in rising or falling edge",
                 },
                 {
                     name: "rxBufferFormat",
                     displayName: "Receive Audio Buffer Format",
                     default: "1SER_MULTISLOT_INTERLEAVED",
+                    readOnly: true,
                     options: [
                         { name: "1SER_MULTISLOT_INTERLEAVED", displayName: "1-Serializer Multi-Slot Interleaved" },
                         { name: "1SER_MULTISLOT_NON_INTERLEAVED", displayName: "1-Serializer Multi-Slot NonInterleaved" },
@@ -760,18 +839,21 @@ let mcasp_module = {
                         { name: 28, displayName: "28"},
                         { name: 32, displayName: "32"},
                     ],
+                    description: "Number of bits in a slot",
                 },
                 {
                     name: "rxDataMask",
                     displayName: "Receive Data Bitmask",
                     default: 0,
                     displayFormat: "hex",
+                    description: "Configure on which bits of the slot to receive data",
                 },
                 {
                     name: "rxActiveSlotMask",
                     displayName: "Receive Active Slot Bitmask",
                     default: 0,
                     displayFormat: "hex",
+                    description: "Configure which slots of the frame are active (contains audio data)",
                 },
                 {
                     name: "rxCallbackFxn",
@@ -783,8 +865,8 @@ let mcasp_module = {
                     name: "rxLoopjobEnable",
                     displayName: "Receive Loopjob Enable",
                     default: true,
+                    readOnly: true,
                     description: "Receive Loopjob Enable",
-
                 },
                 {
                     name: "rxLoopjobBuf",
@@ -798,165 +880,126 @@ let mcasp_module = {
                     default: 256,
                     displayFormat: "dec",
                     description: "Receive Loopjob Buffer Length in Bytes",
+                    longDescription: `Note: Loopjob length must be same as the transactions submitted by the application.`,
                 },
                 {
                     name: "rcvClockConfig",
-                    displayName: "MCASP Receive Clock Configuration",
-                    longDescription: `Configure McASP Receive Clock settings
-                                      \r\n1: In Synchronous Operation (Tx and Rx clock in Sync mode), Rx 
-                                             clock settings are same as Tx clock settings and readOnly`,
-                    collapsed: true,
-                    config: [
-                        {
-                            name: "rxAuxClk",
-                            displayName: "McASP AUXCLK Rate",
-                            default: soc.mcasp_input_clk_freq,
-                            displayFormat: "dec",
-                            longDescription: `If rxAclkSource is selected as Internally Generated, 
-                                              high-frequency clock output: AHCLKR (Rx) is optional.`,
-                            readOnly: true,
-                            options: (inst) => {
-                                let optionList = [];
-                                if (inst.clkSyncMode == "SYNC"){
-                                    optionList = optionList.concat(
-                                        { name: inst.rxAuxClk, displayName: `${inst.rxAuxClk}` }
-                                    )
-                                }
-                                else {
-                                    optionList = optionList.concat(
-                                        { name: 48000000, displayName: "48000000"},
-                                        { name: 24576000, displayName: "24576000"},
-                                        { name: 12288000, displayName: "12288000"},
-                                    )
-                                }
-                                return optionList;
+                        displayName: "MCASP Receive Clock Configuration",
+                        collapsed: true,
+                        config: [
+                            {
+                                name: "afsr",
+                                displayName: "Receive Frame Sync Rate",
+                                default: 48,
+                                displayFormat: "dec",
+                                options: [
+                                    { name: 48, displayName: "48 KHz"},
+                                    { name: 96, displayName: "96 KHz"},
+                                    { name: 0,  displayName: "Custom"},
+                                ],
+                                description: "McASP Receive Frame Sync frequency",
+                                onChange: function (inst, ui) {
+                                    if(inst.afsr == 0) {
+                                        ui.fsr.hidden = false;
+                                    }
+                                    else {
+                                        ui.fsr.hidden = true;
+                                        inst.fsr = inst.afsr;
+                                    }
+                                },
                             },
-                        },
-                        {
-                            name: "afsr",
-                            displayName: "Receive Frame Sync Rate",
-                            default: 48,
-                            displayFormat: "dec",
-                            readOnly: true,
-                            options: (inst) => {
-                                let optionList = [];
-                                if (inst.clkSyncMode == "SYNC"){
-                                    optionList = optionList.concat(
-                                        { name: inst.afsr, displayName: `${inst.afsr} KHz`}
-                                    )
-                                }
-                                else {
-                                    optionList = optionList.concat(
-                                        { name: 48, displayName: "48 KHz"},
-                                        { name: 96, displayName: "96 KHz"},
-                                        { name: 0,  displayName: "Custom"},
-                                    )
-                                }
-                                return optionList;
+                            {
+                                name: "fsr",
+                                displayName: "Custom Frame Sync Rate (KHz)",
+                                default: 10,
+                                hidden: true,
+                                displayFormat: "dec",
                             },
-                            onChange: function (inst, ui) {
-                                if(inst.afsr == 0) {
-                                    ui.fsr.hidden = false;
-                                }
-                                else {
-                                    ui.fsr.hidden = true;
-                                    inst.fsr = inst.afsr;
+                            {
+                                name: "rxFsSource",
+                                displayName: "Receive Frame Sync Source",
+                                default: INTERNAL_CLOCK,
+                                options: [
+                                    { name: EXTERNAL_CLOCK, displayName: "Externally Generated"},
+                                    { name: INTERNAL_CLOCK, displayName: "Internally Generated"},
+                                ],
+                                description: "Receive Frame Sync Source",
+                                onChange: function (inst, ui) {
+                                   OnChangeHideRxParameters(inst, ui);
                                 }
                             },
-                        },
-                        {
-                            name: "fsr",
-                            displayName: "Custom Frame Sync Rate (KHz)",
-                            default: 10,
-                            hidden: true,
-                            displayFormat: "dec",
-                        },
-                        {
-                            name: "rxFsSource",
-                            displayName: "Receive Frame Sync Source",
-                            default: 1,
-                            readOnly:true,
-                            options: (inst) => {
-                                let optionList = [];
-                                if (inst.clkSyncMode == "SYNC"){
-                                    optionList = optionList.concat(
-                                        { name: inst.rxFsSource, displayName: inst.rxFsSource == 0 ? "Externally Generated" : "Internally Generated" }
-                                    )
+                            {
+                                name: "rxAclkSource",
+                                displayName: "Receive Bit Clock Source",
+                                default: INTERNAL_CLOCK,
+                                options: [
+                                    { name: EXTERNAL_CLOCK, displayName: "Externally Generated"},
+                                    { name: INTERNAL_CLOCK, displayName: "Internally Generated"},
+                                ],
+                                description: "Receive Bit Clock Source",
+                                onChange: function (inst, ui) {
+                                   OnChangeHideRxParameters(inst, ui);
                                 }
-                                else {
-                                    optionList = optionList.concat(
-                                        { name: 0, displayName: "Externally Generated"},
-                                        { name: 1, displayName: "Internally Generated"},
-                                    )
-                                }
-                                return optionList;
                             },
-                        },
-                        {
-                            name: "rxAclkSource",
-                            displayName: "Receive Bit Clock Source",
-                            default: 1,
-                            readOnly: true,
-                            options: (inst) => {
-                                let optionList = [];
-                                if (inst.clkSyncMode == "SYNC"){
-                                    optionList = optionList.concat(
-                                        { name: inst.rxAclkSource, displayName: inst.rxAclkSource == 0 ? "Externally Generated" : "Internally Generated" }
-                                    )
-                                }
-                                else {
-                                    optionList = optionList.concat(
-                                        { name: 0, displayName: "Externally Generated"},
-                                        { name: 1, displayName: "Internally Generated"},
-                                    )
-                                }
-                                return optionList;
+                            {
+                                name: "controllerClkr",
+                                displayName: "Receive Master Clock Rate",
+                                default: 512,
+                                displayFormat: "dec",
+                                options: [
+                                    { name: 128, displayName: "128 times Fs"},
+                                    { name: 256, displayName: "256 times Fs"},
+                                    { name: 512, displayName: "512 times Fs"},
+                                    { name: 1024, displayName: "1024 times Fs"},
+                                    { name: 0   , displayName: "Any"},
+                                ],
+                                description: "Receive Master Clock Rate | Deprecated configurable",
+                                longDescription: "This configurable is deprecated in the current version,\
+                                            but maintained as a hiiden configurable for leagacy reason.",
+                                hidden: true,
                             },
-                        },
-                        {
-                            name: "controllerClkr",
-                            displayName: "Receive Master Clock Rate",
-                            default: 512,
-                            displayFormat: "dec",
-                            options: (inst) => {
-                                let optionList = []
-                                if (inst.clkSyncMode == "SYNC"){
-                                    optionList = optionList.concat(
-                                        { name: inst.controllerClkx, displayName: `${inst.controllerClkx} times Fs`}
-                                    )                                        
-                                }
-                                else{
-                                    optionList = optionList.concat(
-                                        { name: 128, displayName: "128 times Fs"},
-                                        { name: 256, displayName: "256 times Fs"},
-                                        { name: 512, displayName: "512 times Fs"},
-                                        { name: 1024, displayName: "1024 times Fs"},
-                                    )
-                                }
-                                return optionList;
+                            {
+                                name: "rxHclkSource",
+                                displayName: "Receive High Clock Source",
+                                default: INTERNAL_CLOCK,
+                                options: [
+                                    { name: EXTERNAL_CLOCK, displayName: "Externally Generated"},
+                                    { name: INTERNAL_CLOCK, displayName: "Internally Generated"},
+                                ],
+                                description: "Receive High Clock Source",
+                                onChange: function (inst, ui) {
+                                    if(inst.rxHclkSource == EXTERNAL_CLOCK) {
+                                        ui.rxHclkSourceMux.hidden = false;
+                                        inst.rxHclkSourceMux = 16;
+                                    }
+                                    else {
+                                        ui.rxHclkSourceMux.hidden = true;
+                                    }
+                                    OnChangeHideRxParameters(inst, ui);
+                                },
                             },
-                        },
-                        {
-                            name: "rxHclkSource",
-                            displayName: "Receive High Clock Source",
-                            default: 1,
-                            readOnly: true,
-                            options: (inst) => {
-                                let optionList = [];
-                                if (inst.clkSyncMode == "SYNC"){
-                                    optionList = optionList.concat(
-                                        { name: inst.rxHclkSource, displayName: inst.txHclkSource == 0 ? "Externally Generated" : "Internally Generated" }
-                                    )
+                            {
+                                name: "rxHclkSourceMux",
+                                displayName: "Receive High Clock Parent",
+                                default: 16,
+                                hidden: true,
+                                options: soc.getExtRxHclkSrc(),
+                                onChange: function (inst, ui) {
+                                    OnChangeHideRxParameters(inst, ui);
                                 }
-                                else {
-                                    optionList = optionList.concat(
-                                        { name: 0, displayName: "Externally Generated"},
-                                        { name: 1, displayName: "Internally Generated"},
-                                    )
-                                }
-                                return optionList;
                             },
-                        },
+                            {
+                                name: "rxHclkDiv",
+                                displayName: "RX HCLK Divider",
+                                longDescription: `![](../source/sysconfig/drivers/.meta/mcasp/v0/mcasp_hclkdiv.png)`,
+                                default: 2,
+                            },
+                            {
+                                name: "rxClkDiv",
+                                displayName: "RX CLK Divider",
+                                longDescription: `![](../source/sysconfig/drivers/.meta/mcasp/v0/mcasp_aclkdiv.png)`,
+                                default: 8,
+                            },
                     ]
                 },
             ],
@@ -990,58 +1033,136 @@ function addModuleInstances(inst) {
     return modInstances;
 }
 
+function OnChangeHideTxParameters(inst, ui) {
+    /* If txFsSource and txAclkSource are external, txHclkSource and auxClkSource should be hidden.
+     *
+     * If txFsSource and txAclkSource are internal, txHclkSource is optional (INTERNAL/EXTERNAL). 
+     * If Internal, txHclkDiv should be configuable. 
+     * If External, txHclkDiv should be hidden.
+     */
+    if((inst.txFsSource == EXTERNAL_CLOCK) && (inst.txAclkSource == EXTERNAL_CLOCK)) {
+        ui.txHclkSource.hidden = true;
+        ui.txHclkDiv.hidden = true;
+        ui.auxClkSource.hidden = true;
+    }
+    else if((inst.txFsSource == INTERNAL_CLOCK) && (inst.txAclkSource == INTERNAL_CLOCK)) {
+        if(inst.txHclkSource == INTERNAL_CLOCK) {
+            ui.txHclkDiv.hidden = false;
+            ui.txHclkSourceMux.hidden = true;
+        }
+        else {
+            ui.txHclkDiv.hidden = true;
+            ui.txHclkSourceMux.hidden = false;
+        }    
+    }
+    else {
+        ui.txHclkSource.hidden = false;
+        ui.auxClkSource.hidden = false;
+    }
+}
+
+function OnChangeHideRxParameters(inst, ui) {
+    /* If txFsSource and txAclkSource are external, txHclkSource and auxClkSource should be hidden
+     * 
+     * If txFsSource and txAclkSource are internal, txHclkSource is optional (INTERNAL/EXTERNAL). 
+     * If Internal, rxHclkDiv should be configuable. 
+     * If External, txHclkDiv should be hidden.
+     */
+    if((inst.rxFsSource == EXTERNAL_CLOCK) && (inst.rxAclkSource == EXTERNAL_CLOCK)) 
+    {
+        ui.rxHclkSource.hidden = true;
+        ui.rxHclkDiv.hidden = true;
+        ui.auxClkSource.hidden = true;
+    }
+    else if((inst.rxFsSource == INTERNAL_CLOCK) && (inst.rxAclkSource == INTERNAL_CLOCK)) 
+    {
+        if(inst.rxHclkSource == INTERNAL_CLOCK) {
+            ui.rxHclkDiv.hidden = false;
+            ui.rxHclkSourceMux.hidden = true;
+        }
+        else {
+            ui.rxHclkDiv.hidden = true;
+            ui.rxHclkSourceMux.hidden = false;
+        }
+    }
+    else
+    {
+        ui.rxHclkSource.hidden = false;
+        ui.auxClkSource.hidden = false;
+    }
+}
+
 /*
  *  ======== validate ========
  */
 function validate(inst, report) {
-    if (inst.NumTxSlots * inst.TxSlotSize > inst.controllerClkx)
-    {
-        report.logError(`controllerClkx not supported. Master Clk Multiplier should greater than Slot width * num slots`, inst,  "controllerClkx");
-    }
-    if(inst.clkSyncMode == "SYNC")
-    {
-        if ((inst.NumTxSlots * inst.TxSlotSize) != (inst.NumRxSlots * inst.RxSlotSize))
-        {
+    if(inst.clkSyncMode == "SYNC") {
+        if ((inst.NumTxSlots * inst.TxSlotSize) != (inst.NumRxSlots * inst.RxSlotSize)) {
             report.logError(`The total number of bits per frame must be the same in SYNC mode (XSSZ*XMOD = RSSZ*RMOD)`, inst,  "clkSyncMode");
         }
-        if (inst.rxFsSource != inst.txFsSource)
-        {
+        if (inst.rxFsSource != inst.txFsSource) {
             report.logError(` TX and RX Frame Sync Source must match in SYNC mode`, inst,  "rxFsSource");
         }
-        if (inst.rxFsWidth != inst.txFsWidth)
-        {
+        if (inst.rxFsWidth != inst.txFsWidth) {
             report.logError(` TX and RX Frame Sync width must match in SYNC mode`, inst,  "rxFsWidth");
         }
     }
+
+    if(inst.txHclkSource == EXTERNAL_CLOCK && inst.rxHclkSource == EXTERNAL_CLOCK && inst.txHclkSourceMux != inst.rxHclkSourceMux)
+    {
+        report.logError(`Choose same valid external clock source for Tx & Rx`, inst, "txHclkSourceMux");
+        report.logError(`Choose same valid external clock source for Tx & Rx`, inst, "rxHclkSourceMux")
+    }
+
+    if (inst.txHclkSource == EXTERNAL_CLOCK && inst.txHclkSourceMux == 16)
+    {
+        report.logError(`Choose a valid external clock source`, inst, "txHclkSourceMux")
+    }
+
+    if (((inst.txHclkSource == INTERNAL_CLOCK) && (inst.auxClkSource == 16) && ((inst.txFsSource == INTERNAL_CLOCK)) && (inst.txAclkSource == INTERNAL_CLOCK)) || 
+        ((inst.rxHclkSource == INTERNAL_CLOCK) && (inst.auxClkSource == 16) && ((inst.rxFsSource == INTERNAL_CLOCK)) && (inst.rxAclkSource == INTERNAL_CLOCK)))
+    {
+        report.logError(`Choose a valid Aux clock source`, inst, "auxClkSource");
+    }
+
+    if (inst.rxHclkSource == EXTERNAL_CLOCK && inst.rxHclkSourceMux == 16)
+    {
+        report.logError(`Choose a valid external clock source`, inst, "rxHclkSourceMux")
+    }
+
     common.validate.checkNumberRange(inst, report, "NumTxSlots", 2, 32, "dec");
     common.validate.checkNumberRange(inst, report, "NumRxSlots", 2, 32, "dec");
     common.validate.checkNumberRange(inst, report, "txActiveSlotMask", 0, (1 << inst.NumTxSlots)-1, "dec");
     common.validate.checkNumberRange(inst, report, "rxActiveSlotMask", 0, (1 << inst.NumRxSlots)-1, "dec");
     common.validate.checkNumberRange(inst, report, "txAfifoNumEvt", 0, 64, "dec");
     common.validate.checkNumberRange(inst, report, "rxAfifoNumEvt", 0, 64, "dec");
+    common.validate.checkNumberRange(inst, report, "txHclkDiv", 1, 4096, "dec");
+    common.validate.checkNumberRange(inst, report, "rxHclkDiv", 1, 4096, "dec");
+    common.validate.checkNumberRange(inst, report, "txClkDiv", 1, 32, "dec");
+    common.validate.checkNumberRange(inst, report, "rxClkDiv", 1, 32, "dec");
 
     common.validate.checkValidCName(inst, report, "txCallbackFxn");
     common.validate.checkValidCName(inst, report, "rxCallbackFxn");
+
     if((inst.enableMcaspTx == true) &&
         ((inst.txCallbackFxn == "NULL") ||
             (inst.txCallbackFxn == ""))) {
         report.logError("Callback function MUST be provided", inst, "txCallbackFxn");
     }
+
     if((inst.enableMcaspRx == true) &&
         ((inst.rxCallbackFxn == "NULL") ||
             (inst.rxCallbackFxn == ""))) {
         report.logError("Callback function MUST be provided", inst, "rxCallbackFxn");
     }
 
-    if((inst.enableMcaspTx == true) && (inst.txLoopjobEnable == true))
-    {
+    if((inst.enableMcaspTx == true) && (inst.txLoopjobEnable == true)) {
         common.validate.checkValidCName(inst, report, "txLoopjobBuf");
         if (inst.txLoopjobBuf == "NULL") {
             report.logError("tx loopjob buffer must be provided", inst, "txLoopjobBuf");
         }
     }
-    if((inst.enableMcaspRx == true) && (inst.rxLoopjobEnable == true))
-    {
+    if((inst.enableMcaspRx == true) && (inst.rxLoopjobEnable == true)) {
         common.validate.checkValidCName(inst, report, "rxLoopjobBuf");
         if (inst.rxLoopjobBuf == "NULL") {
             report.logError("rx loopjob buffer must be provided", inst, "rxLoopjobBuf");
@@ -1161,93 +1282,6 @@ function validatePinmux(inst, report) {
             report.logInfo(`Allocate dma channel no: ${edmaRxCh} in "Reserved Dma Channel Resource Manager" in "EDMA" Configuration for event triggered transfers`, inst, "transferMode");
         }
     }
-
-    let aclkr_ext = inst.NumRxSlots * inst.RxSlotSize * inst.fsr * 1000;
-    let ahclkr_ext = inst.controllerClkr * inst.fsr * 1000;
-    let aclkx_ext = inst.NumTxSlots * inst.TxSlotSize * inst.fsx * 1000;
-    let ahclkx_ext = inst.controllerClkx * inst.fsx * 1000;
-    let ahclkr = 0, ahclkx = 0, aclkr = 0, aclkx = 0;
-
-    if (inst.rxHclkSource == 0)
-    {
-        ahclkr = ahclkr_ext;
-        report.logInfo(`Expected AHCLKR: ${ahclkr} Hz`, inst, "rxHclkSource");
-    }
-    else
-    {
-        if ((ahclkr_ext > inst.rxAuxClk))
-        {
-            report.logError(`AHCLKR outside scope`, inst,  "controllerClkr");
-        }
-        else
-        {
-            ahclkr = inst.rxAuxClk / Math.round(inst.rxAuxClk / ahclkr_ext);
-            report.logInfo(`Calculated AHCLKR: ${ahclkr} Hz`, inst, "rxHclkSource");
-        }
-    }
-
-    if (inst.rxAclkSource == 0)
-    {
-        aclkr = aclkr_ext;
-        report.logInfo(`Expected ACLKR: ${aclkr} Hz`, inst, "rxAclkSource");
-    }
-    else
-    {
-        aclkr = ahclkr / Math.round(ahclkr/(inst.NumRxSlots * inst.RxSlotSize * inst.fsr * 1000));
-        report.logInfo(`Calculated ACLKR: ${aclkr} Hz`, inst, "rxAclkSource");
-    }
-
-    if ((ahclkr % aclkr) != 0)
-    {
-        report.logError(`AHCLKR is not multiple of ACLKR`, inst,  "controllerClkr");
-    }
-
-    let afsr_int = aclkr / (inst.NumRxSlots * inst.RxSlotSize * 1000);
-    if (inst.rxFsSource == 1)
-    {
-        report.logInfo(`Calculated FSR: ${afsr_int} KHz`, inst, "afsr");
-    }
-
-    if (inst.txHclkSource == 0)
-    {
-        ahclkx = ahclkx_ext;
-        report.logInfo(`Expected AHCLKX: ${ahclkx} Hz`, inst, "txHclkSource");
-    }
-    else
-    {
-        if ((ahclkx_ext > instConfig.txAuxClk))
-        {
-            report.logError(`AHCLKX outside scope`, inst,  "controllerClkx");
-        }
-        else
-        {
-            ahclkx = instConfig.txAuxClk / Math.round(instConfig.txAuxClk / ahclkx_ext);
-            report.logInfo(`Calculated AHCLKX: ${ahclkx} Hz`, inst, "txHclkSource");
-        }
-    }
-
-    if (inst.txAclkSource == 0)
-    {
-        aclkx = aclkx_ext;
-        report.logInfo(`Expected ACLKX: ${aclkx} Hz`, inst, "txAclkSource");
-    }
-    else
-    {
-        aclkx = ahclkx / Math.round(ahclkx/(inst.NumTxSlots * inst.TxSlotSize * inst.fsx * 1000));
-        report.logInfo(`Calculated ACLKX: ${aclkx} Hz`, inst, "txAclkSource");
-    }
-
-    if ((ahclkx % aclkx) != 0)
-    {
-        report.logError(`AHCLKX is not multiple of ACLKX`, inst,  "controllerClkx");
-    }
-
-    let afsx_int = aclkx / (inst.NumTxSlots * inst.TxSlotSize * 1000);
-    if (inst.txFsSource == 1)
-    {
-        report.logInfo(`Calculated FSX: ${afsx_int} KHz`, inst, "afsx");
-    }
-
 }
 
 function moduleInstances(inst) {
