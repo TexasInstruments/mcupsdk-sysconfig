@@ -564,7 +564,7 @@ let mcasp_module = {
                             name: "txHclkDiv",
                             displayName: "TX HCLK Divider",
                             longDescription: `![](../source/sysconfig/drivers/.meta/mcasp/v0/mcasp_hclkdiv.png)`,
-                            default: 2,
+                            default: 3,
                         },
                         {
                             name: "txClkDiv",
@@ -577,7 +577,7 @@ let mcasp_module = {
             {
                 name: "auxClkSource",
                 displayName: "AUX Clock Source",
-                default: 6,
+                default: 2,
                 options: soc.getAuxClkSrc(),
                 onChange: function (inst, ui) {
                     OnChangeHideTxParameters(inst, ui);
